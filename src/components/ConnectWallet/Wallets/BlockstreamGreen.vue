@@ -48,7 +48,7 @@
       </step>
       <step>
         Congratulations! You have successfully connected Blockstream Green to
-        your Umbrel.
+        your Citadel.
       </step>
     </step-list>
   </connection-details>

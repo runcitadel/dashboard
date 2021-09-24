@@ -28,7 +28,7 @@
         >.
       </step>
       <step>
-        Congratulations! You have successfully connected Zeus to your Umbrel.
+        Congratulations! You have successfully connected Zeus to your Citadel.
       </step>
     </step-list>
     <hr />
@@ -66,7 +66,7 @@
         >.
       </step>
       <step>
-        Congratulations! You have successfully connected Zeus to your Umbrel.
+        Congratulations! You have successfully connected Zeus to your Citadel.
       </step>
     </step-list>
   </connection-details>

@@ -57,7 +57,7 @@
       </step>
       <step>
         Click <span class="font-weight-bold">"Test"</span> to verify if Specter
-        is able to connect to your Umbrel.
+        is able to connect to your Citadel.
       </step>
       <step>
         After verifying, click <span class="font-weight-bold">"Save"</span>.

@@ -33,7 +33,7 @@
       </step>
       <step>
         Click <span class="font-weight-bold">"Check"</span> to verify if
-        BitBoxApp is able to connect to your Umbrel.
+        BitBoxApp is able to connect to your Citadel.
       </step>
       <step>
         Click <span class="font-weight-bold">"Add"</span> and restart BitBoxApp.

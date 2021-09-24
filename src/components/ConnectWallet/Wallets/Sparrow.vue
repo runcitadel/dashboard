@@ -27,13 +27,13 @@
       <step> Disable <span class="font-weight-bold">"Use SSL"</span>. </step>
       <step>
         Click <span class="font-weight-bold">"Test Connection"</span> to verify
-        Sparrow is able to connect to your Umbrel.
+        Sparrow is able to connect to your Citadel.
       </step>
       <step>
         After verifying, click <span class="font-weight-bold">"Close"</span>.
       </step>
       <step>
-        Congratulations! You have successfully connected Sparrow to your Umbrel.
+        Congratulations! You have successfully connected Sparrow to your Citadel.
       </step>
     </step-list>
   </connection-details>

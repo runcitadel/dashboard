@@ -194,15 +194,15 @@ export default {
         },
         {
           heading: "what is your name?",
-          text: "Your name stays on your Umbrel and is never shared with a 3rd party.",
+          text: "Your name stays on your Citadel and is never shared with a 3rd party.",
         },
         {
           heading: "set your password",
-          text: "You'll need this password to login to your Umbrel.",
+          text: "You'll need this password to login to your Citadel.",
         },
         {
           heading: "confirm your password",
-          text: "You'll need this password to login to your Umbrel.",
+          text: "You'll need this password to login to your Citadel.",
         },
         {
           heading: "note down your secret words",
@@ -210,11 +210,11 @@ export default {
         },
         {
           heading: "note down your secret words",
-          text: 'Remember, there is no "forgot password" button. You will need these 24 words to recover your Umbrel.',
+          text: 'Remember, there is no "forgot password" button. You will need these 24 words to recover your Citadel.',
         },
         {
           heading: "access from anywhere",
-          text: "Even when you're not on your home network, you can access your Umbrel using Tor Browser on the following URL",
+          text: "Even when you're not on your home network, you can access your Citadel using Tor Browser on the following URL",
         },
         {
           heading: "one last thing",
@@ -247,7 +247,7 @@ export default {
     },
     text() {
       if (this.currentStep === 5 && this.recover) {
-        return "Enter your 24 secret words in the exact order to recover your Umbrel.";
+        return "Enter your 24 secret words in the exact order to recover your Citadel.";
       }
       return this.steps[this.currentStep]["text"];
     },

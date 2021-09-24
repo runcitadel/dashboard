@@ -21,7 +21,7 @@
       <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
       <h1 class="text-center mb-2">welcome back</h1>
       <p class="text-muted w-75 text-center">
-        Enter the password to login to your Umbrel
+        Enter the password to login to your Citadel
       </p>
 
       <form

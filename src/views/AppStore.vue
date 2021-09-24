@@ -4,7 +4,7 @@
       <div class="">
         <h1>app store</h1>
         <p class="text-muted">
-          Add super powers to your Umbrel with amazing self-hosted applications
+          Add super powers to your Citadel with amazing self-hosted applications
         </p>
       </div>
     </div>
@@ -35,7 +35,7 @@
                 :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
               />
             </div>
-            <div class="d-flex justify-content-center flex-column">
+            <div class="d-flex justify-content-center flex-column my-4">
               <h3 class="app-name font-weight-bolder text-dark mb-1">
                 {{ app.name }}
               </h3>
@@ -68,7 +68,7 @@
           </div>
         </router-link>
       </card-widget>
-      <card-widget class="pb-2 card-app-list umbrel-dev-note mt-2">
+      <!--<card-widget class="pb-2 card-app-list umbrel-dev-note mt-2">
         <div class="px-3 px-lg-4 py-3">
           <span class="rocket ml-3 ml-lg-4">🚀</span>
           <h4 class="font-weight-normal mt-4">
@@ -84,7 +84,7 @@
             >Learn more</b-link
           >
         </div>
-      </card-widget>
+      </card-widget>-->
     </div>
   </div>
 </template>

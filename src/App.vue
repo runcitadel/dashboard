@@ -28,7 +28,7 @@
           }}</small>
           <b-alert class="system-alert" variant="warning" show>
             <small
-              >Please do not refresh this page or turn off your Umbrel while the
+              >Please do not refresh this page or turn off your Citadel while the
               update is in progress</small
             >
           </b-alert>
@@ -43,7 +43,7 @@
         <div class="text-center" v-if="shuttingDown || rebooting">
           <b-alert class="system-alert" variant="warning" show>
             <small
-              >Please do not refresh this page or turn off your Umbrel while it
+              >Please do not refresh this page or turn off your Citadel while it
               is {{ shuttingDown ? "shutting down" : "rebooting" }}</small
             >
           </b-alert>

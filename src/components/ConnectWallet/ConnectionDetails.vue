@@ -9,11 +9,11 @@
       <line x1="0" y1="0" x2="8" y2="0" class="hour" />
       <line x1="0" y1="0" x2="12" y2="0" class="minute" />
     </svg>
-    You will be able to connect {{ name }} to your Umbrel
+    You will be able to connect {{ name }} to your Citadel
     {{ requires === "electrum" ? "~24 hours" : "" }} after Bitcoin Core has
     synchronized 100%.
   </b-alert>
-  <card-widget v-else :header="`Here's how to connect ${name} to your Umbrel`">
+  <card-widget v-else :header="`Here's how to connect ${name} to your Citadel`">
     <div class="px-3 px-lg-4 pb-3">
       <slot></slot>
       <b-alert variant="info" v-if="requires === 'electrum'" show>

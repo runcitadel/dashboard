@@ -197,7 +197,7 @@
           >
             <b-icon icon="exclamation-circle" class="mr-2"></b-icon>
             <b>Low RAM:</b> Your Umbrel is running low on RAM. Consider
-            uninstalling some apps or upgrading your Umbrel's hardware.
+            uninstalling some apps or upgrading your Citadel's hardware.
             <router-link to="/settings#ram" class="alert-link float-right"
               >View usage</router-link
             >
@@ -238,11 +238,12 @@
         <footer class="d-flex justify-content-end text-muted pr-sm-2 pr-xl-3">
           <p>
             <small>
-              <a href="https://getumbrel.com" target="_blank">getumbrel.com</a>
+              <!--<a href="https://getumbrel.com" target="_blank">getumbrel.com</a>
               |
               <a href="https://community.getumbrel.com" target="_blank"
                 >community</a
-              >
+              >-->
+              Powered by Citadel
             </small>
           </p>
         </footer>

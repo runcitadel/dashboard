@@ -282,7 +282,7 @@ export default {
       if (this.app.torOnly && window.location.origin.indexOf(".onion") < 0) {
         event.preventDefault();
         alert(
-          `${this.app.name} can only be used over Tor. Please access your Umbrel in a Tor browser on your remote access URL (Settings > Tor > Remote Access URL) to open this app.`
+          `${this.app.name} can only be used over Tor. Please access your Citadel in a Tor browser on your remote access URL (Settings > Tor > Remote Access URL) to open this app.`
         );
       }
       return;

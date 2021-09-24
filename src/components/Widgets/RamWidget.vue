@@ -88,7 +88,7 @@
             show
           >
             <small
-              >Consider uninstalling some apps or upgrading your Umbrel's
+              >Consider uninstalling some apps or upgrading your Citadel's
               hardware.</small
             >
           </b-alert>

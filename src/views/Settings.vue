@@ -57,7 +57,7 @@
               <div class="w-75">
                 <span class="d-block">Remote access</span>
                 <small class="d-block" style="opacity: 0.4"
-                  >Remotely access your Umbrel from anywhere using a Tor browser
+                  >Remotely access your Citadel from anywhere using a Tor browser
                   on this URL</small
                 >
               </div>
@@ -133,7 +133,7 @@
             <div>
               <span class="d-block">Password</span>
               <small class="d-block" style="opacity: 0.4"
-                >Change your Umbrel's password</small
+                >Change your Citadel's password</small
               >
             </div>
 
@@ -214,7 +214,7 @@
                 <b-alert variant="warning" show>
                   <small>
                     ⚠ Remember, there is no "Forgot Password" button. If you
-                    lose your password, you will have to recover your Umbrel
+                    lose your password, you will have to recover your Citadel
                     using your 24 secret words and channel backup.
                   </small>
                 </b-alert>
@@ -263,7 +263,7 @@
             <div>
               <span class="d-block">Shutdown</span>
               <small class="d-block" style="opacity: 0.4"
-                >Power off your Umbrel</small
+                >Power off your Citadel</small
               >
             </div>
             <b-button variant="outline-danger" size="sm" @click="shutdownPrompt"
@@ -276,7 +276,7 @@
             <div>
               <span class="d-block">Restart</span>
               <small class="d-block" style="opacity: 0.4"
-                >Restart your Umbrel</small
+                >Restart your Citadel</small
               >
             </div>
 
@@ -293,7 +293,7 @@
               <div>
                 <p>
                   Your Lightning wallet will not be able to receive any payments
-                  while your Umbrel is restarting.
+                  while your Citadel is restarting.
                 </p>
               </div>
             </b-modal>
@@ -559,7 +559,7 @@ export default {
       }
 
       this.$bvToast.toast(
-        `You've successfully changed your Umbrel's password`,
+        `You've successfully changed your Citadel's password`,
         {
           title: "Password Changed",
           autoHideDelay: 3000,
@@ -631,7 +631,7 @@ export default {
 
       // Get user consent first
       const approved = await this.$bvModal.msgBoxConfirm(
-        "Your Lightning wallet will not be able to receive any payments while your Umbrel is offline.",
+        "Your Lightning wallet will not be able to receive any payments while your Citadel is offline.",
         { title: "Are you sure?" }
       );
       if (!approved) {

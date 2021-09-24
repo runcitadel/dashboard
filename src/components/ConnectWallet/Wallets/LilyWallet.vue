@@ -42,7 +42,7 @@
       </step>
       <step>
         Click <span class="font-weight-bold">"Connect to Node"</span> to verify
-        if Lily Wallet is able to connect to your Umbrel.
+        if Lily Wallet is able to connect to your Citadel.
       </step>
       <step>
         Congratulations! You have successfully connected Lily Wallet to your

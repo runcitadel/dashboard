@@ -4,7 +4,7 @@
       <step>
         Install
         <b-link to="/app-store/samourai-server">Samourai Server app</b-link> on
-        your Umbrel.
+        your Citadel.
       </step>
       <step>
         Open the app and follow instructions to connect Samourai Wallet to your

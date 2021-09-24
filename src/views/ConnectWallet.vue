@@ -4,7 +4,7 @@
       <div class="my-3">
         <div>
           <h1>connect wallet</h1>
-          <p>Connect your Bitcoin or Lightning wallet to your Umbrel</p>
+          <p>Connect your Bitcoin or Lightning wallet to your Citadel</p>
         </div>
       </div>
 

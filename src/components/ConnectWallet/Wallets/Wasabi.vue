@@ -16,7 +16,7 @@
       </step>
       <step> Restart Wasabi </step>
       <step>
-        Congratulations! You have successfully connected Wasabi to your Umbrel.
+        Congratulations! You have successfully connected Wasabi to your Citadel.
       </step>
     </step-list>
 

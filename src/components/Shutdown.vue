@@ -17,7 +17,7 @@
     />
     <span class="text-muted w-75 text-center">
       <small v-if="hasShutdown"
-        >Shutdown complete. You can now safely unplug your Umbrel from the power
+        >Shutdown complete. You can now safely unplug your Citadel from the power
         and internet.</small
       >
       <small v-else-if="shuttingDown">
