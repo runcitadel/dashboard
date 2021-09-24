@@ -8,7 +8,7 @@
         </p>
       </div>
     </div>
-    <div class="card-columns">
+    <div class="app-store-card-columns">
       <card-widget
         v-for="categorizedApps in categorizedAppStore"
         :key="categorizedApps[0].category"
@@ -68,6 +68,23 @@
           </div>
         </router-link>
       </card-widget>
+      <card-widget class="pb-2 card-app-list umbrel-dev-note mt-2">
+        <div class="px-3 px-lg-4 py-3">
+          <span class="rocket ml-3 ml-lg-4">🚀</span>
+          <h4 class="font-weight-normal mt-4">
+            Get your app on the Umbrel App Store
+          </h4>
+          <p class="text-muted mb-3">
+            Use any programming language, database or framework to build your
+            app for Umbrel.
+          </p>
+          <b-link
+            href="https://github.com/getumbrel/umbrel/blob/master/apps/README.md"
+            target="_blank"
+            >Learn more</b-link
+          >
+        </div>
+      </card-widget>
     </div>
   </div>
 </template>
@@ -122,13 +139,15 @@ export default {
     }
   }
 }
-.card-app-list {
-  // https://stackoverflow.com/a/34115300
-  box-shadow: 0 1px 10px rgba(209, 213, 223, 0.5),
-    0 1px 2px rgba(209, 213, 223, 0) !important;
-  margin-top: 16px !important;
-  margin-bottom: 16px !important;
-  display: inline-block;
-  width: 100%;
+
+.umbrel-dev-note {
+  position: relative;
+  overflow: visible;
+  .rocket {
+    font-size: 60px;
+    position: absolute;
+    top: -30px;
+    left: 0;
+  }
 }
 </style>

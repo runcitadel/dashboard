@@ -91,14 +91,6 @@
               >I should not put more funds on my Umbrel than I'm prepared to
               lose
             </span>
-            <span class="d-block text-muted text-small mb-1">
-              <b-icon
-                icon="exclamation-circle-fill"
-                variant="warning"
-                class="mr-1"
-              ></b-icon
-              >Craig Wright is a fraud
-            </span>
           </div>
         </div>
 
@@ -131,13 +123,14 @@
           variant="success"
           size="lg"
           @click="nextStep"
-          :disabled="!isStepValid || isRegistering"
+          :disabled="!isStepValid || isRegistering || !isLndOperational"
           class="mt-3 mx-auto d-block px-4"
           :class="{
-            'loading-fade-blink': currentStep === 8 && !unlocked,
+            'loading-fade-blink':
+              !isLndOperational || (currentStep === 8 && !unlocked),
             invisible: currentStep === 5 && recover && !isStepValid,
           }"
-          >{{ nextButtonText }}</b-button
+          >{{ !isLndOperational ? "Loading" : nextButtonText }}</b-button
         >
         <b-button
           variant="link"
@@ -178,6 +171,8 @@
 import Vue from "vue";
 import VueConfetti from "vue-confetti";
 import { mapState } from "vuex";
+
+import delay from "@/helpers/delay";
 
 import InputPassword from "@/components/Utility/InputPassword";
 import Seed from "@/components/Utility/Seed";
@@ -238,6 +233,7 @@ export default {
   },
   computed: {
     ...mapState({
+      isLndOperational: (state) => state.lightning.operational,
       registered: (state) => state.user.registered,
       seed: (state) => state.user.seed,
       unlocked: (state) => state.lightning.unlocked,
@@ -407,6 +403,12 @@ export default {
     //redirect to home if the user is already registered
     if (this.registered) {
       return this.$router.push("/");
+    }
+
+    // Wait for LND
+    while (!this.isLndOperational) {
+      await this.$store.dispatch("lightning/getStatus");
+      await delay(1000);
     }
 
     //generate a new seed on load

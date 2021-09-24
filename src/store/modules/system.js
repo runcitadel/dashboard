@@ -17,6 +17,10 @@ const state = () => ({
     status: "", //success, failed
     timestamp: null,
   },
+  debugResult: {
+    status: "", //success, processing
+    result: "",
+  },
   showUpdateConfirmationModal: false,
   loading: true,
   rebooting: false,
@@ -33,6 +37,20 @@ const state = () => ({
     version: "",
   },
   onionAddress: "",
+  storage: {
+    total: 0,
+    used: 0,
+    breakdown: [],
+  },
+  ram: {
+    total: 0,
+    used: 0,
+    breakdown: [],
+  },
+  isUmbrelOS: false,
+  cpuTemperature: 0, //in celsius
+  cpuTemperatureUnit: "celsius",
+  uptime: null,
 });
 
 // Functions to update the state directly
@@ -76,8 +94,29 @@ const mutations = {
   setBackupStatus(state, status) {
     state.backupStatus = status;
   },
+  setDebugResult(state, result) {
+    state.debugResult = result;
+  },
   setShowUpdateConfirmationModal(state, show) {
     state.showUpdateConfirmationModal = show;
+  },
+  setStorage(state, storage) {
+    state.storage = storage;
+  },
+  setRam(state, ram) {
+    state.ram = ram;
+  },
+  setIsUmbrelOS(state, isUmbrelOS) {
+    state.isUmbrelOS = isUmbrelOS;
+  },
+  setCpuTemperature(state, cpuTemperature) {
+    state.cpuTemperature = cpuTemperature;
+  },
+  setCpuTemperatureUnit(state, cpuTemperatureUnit) {
+    state.cpuTemperatureUnit = cpuTemperatureUnit;
+  },
+  setUptime(state, uptime) {
+    state.uptime = uptime;
   },
 };
 
@@ -88,7 +127,11 @@ const actions = {
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/info`
     );
     if (data && data.version) {
-      commit("setVersion", data.version);
+      let { version } = data;
+      if (data.build) {
+        version += `-build-${data.build}`;
+      }
+      commit("setVersion", version);
     }
   },
   async getUnit({ commit }) {
@@ -157,6 +200,28 @@ const actions = {
     if (status && status.timestamp) {
       commit("setBackupStatus", status);
     }
+  },
+  async getDebugResult({ commit }) {
+    const result = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/debug-result`
+    );
+
+    if (!result) {
+      throw new Error("Get debug request failed");
+    }
+
+    commit("setDebugResult", result);
+  },
+  async debug({ commit }) {
+    const result = await API.post(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/debug`
+    );
+
+    if (!result) {
+      throw new Error("Debug request failed");
+    }
+
+    commit("setDebugResult", result);
   },
   async shutdown({ commit }) {
     // Reset any cached hasShutdown value from previous shutdown
@@ -228,6 +293,63 @@ const actions = {
         return;
       }
     }, 2000);
+  },
+  async getStorage({ commit }) {
+    const storage = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/storage`
+    );
+    if (storage && storage.total) {
+      storage.breakdown.sort((app1, app2) => app2.used - app1.used);
+      commit("setStorage", storage);
+    }
+  },
+  async getRam({ commit }) {
+    const ram = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/memory`
+    );
+    if (ram && ram.total) {
+      ram.breakdown.sort((app1, app2) => app2.used - app1.used);
+      commit("setRam", ram);
+    }
+  },
+  async getIsUmbrelOS({ commit }) {
+    const isUmbrelOS = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/is-umbrel-os`
+    );
+    commit("setIsUmbrelOS", !!isUmbrelOS);
+  },
+  async getCpuTemperature({ commit }) {
+    const cpuTemperature = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/temperature`
+    );
+    if (cpuTemperature) {
+      commit("setCpuTemperature", cpuTemperature);
+    }
+  },
+  async getCpuTemperatureUnit({ commit }) {
+    if (
+      window.localStorage &&
+      window.localStorage.getItem("cpuTemperatureUnit")
+    ) {
+      commit(
+        "setCpuTemperatureUnit",
+        window.localStorage.getItem("cpuTemperatureUnit")
+      );
+    }
+  },
+  changeCpuTemperatureUnit({ commit }, unit) {
+    if (unit === "celsius" || unit === "fahrenheit") {
+      window.localStorage.setItem("cpuTemperatureUnit", unit);
+      commit("setCpuTemperatureUnit", unit);
+    }
+  },
+  async getUptime({ commit }) {
+    const uptime = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/uptime`
+    );
+    if (uptime) {
+      commit("setUptime", uptime);
+    }
   },
 };
 

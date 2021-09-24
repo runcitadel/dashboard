@@ -95,29 +95,9 @@
             </card-widget>
           </b-col>
           <b-col col cols="12" md="6" xl="12">
-            <card-widget
-              header="Tor"
-              :status="{ text: 'Running', variant: 'success', blink: false }"
-              title="100%"
-              sub-title="Traffic relayed through Tor"
-              icon="icon-app-tor.svg"
-            >
-              <div class="px-3 px-lg-4 pt-2 pb-3">
-                <router-link to="/settings" class="card-link"
-                  >Manage</router-link
-                >
-              </div>
-            </card-widget>
+            <storage-widget></storage-widget>
           </b-col>
         </b-row>
-        <!-- <card-widget
-            header="Example App"
-            status="Running"
-            status-type="success"
-            title="Title"
-            sub-title="Subtitle"
-            icon="icon-app-chaind.svg"
-        ></card-widget>-->
       </b-col>
     </b-row>
   </div>
@@ -132,6 +112,7 @@ import CountUp from "@/components/Utility/CountUp";
 import CardWidget from "@/components/CardWidget";
 import Blockchain from "@/components/Blockchain";
 import LightningWallet from "@/components/LightningWallet";
+import StorageWidget from "../components/Widgets/StorageWidget.vue";
 
 export default {
   data() {
@@ -177,6 +158,7 @@ export default {
     CardWidget,
     Blockchain,
     LightningWallet,
+    StorageWidget,
   },
 };
 </script>

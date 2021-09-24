@@ -15,14 +15,14 @@ RUN yarn
 # build app for production
 RUN yarn build
 
-# copy index.html to 404.html as http-server serves 404.html on all non "/" routes
-RUN cp ./dist/index.html ./dist/404.html
 
 FROM node:16-bullseye-slim AS umbrel-dashboard
 
-RUN yarn global add http-server
+RUN yarn global add serve
 
 COPY --from=umbrel-dashboard-builder /app/dist/ /dist
 
+ENV PORT=3004
 EXPOSE 3004
-CMD [ "http-server", "-p 3004", "/dist" ]
+
+CMD [ "serve", "--single", "/dist" ]
