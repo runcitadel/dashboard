@@ -1,5 +1,14 @@
 <template>
-  <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
+  <div
+    class="
+      d-flex
+      flex-column
+      align-items-center
+      justify-content-center
+      min-vh100
+      p-2
+    "
+  >
     <img alt="Umbrel" src="@/assets/logo.svg" class="mb-5 logo" />
 
     <!-- <b-spinner class="my-4" variant="primary"></b-spinner> -->
@@ -23,7 +32,7 @@ export default {
   props: { progress: Number },
   created() {},
   methods: {},
-  components: {}
+  components: {},
 };
 </script>
 

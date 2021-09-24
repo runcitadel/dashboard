@@ -1525,7 +1525,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/json-schema@npm:^7.0.5":
+"@types/json-schema@npm:^7.0.5, @types/json-schema@npm:^7.0.8":
   version: 7.0.9
   resolution: "@types/json-schema@npm:7.0.9"
   checksum: 259d0e25f11a21ba5c708f7ea47196bd396e379fddb79c76f9f4f62c945879dc21657904914313ec2754e443c5018ea8372362f323f30e0792897fdb2098a705
@@ -2349,7 +2349,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:^6.1.0, ajv@npm:^6.10.0, ajv@npm:^6.10.2, ajv@npm:^6.12.3, ajv@npm:^6.12.4":
+"ajv@npm:^6.1.0, ajv@npm:^6.10.0, ajv@npm:^6.10.2, ajv@npm:^6.12.3, ajv@npm:^6.12.4, ajv@npm:^6.12.5":
   version: 6.12.6
   resolution: "ajv@npm:6.12.6"
   dependencies:
@@ -10069,17 +10069,20 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"sass-loader@npm:^12.1.0":
-  version: 12.1.0
-  resolution: "sass-loader@npm:12.1.0"
+"sass-loader@npm:^10":
+  version: 10.2.0
+  resolution: "sass-loader@npm:10.2.0"
   dependencies:
     klona: ^2.0.4
+    loader-utils: ^2.0.0
     neo-async: ^2.6.2
+    schema-utils: ^3.0.0
+    semver: ^7.3.2
   peerDependencies:
     fibers: ">= 3.1.0"
     node-sass: ^4.0.0 || ^5.0.0 || ^6.0.0
     sass: ^1.3.0
-    webpack: ^5.0.0
+    webpack: ^4.36.0 || ^5.0.0
   peerDependenciesMeta:
     fibers:
       optional: true
@@ -10087,7 +10090,7 @@ fsevents@~2.3.2:
       optional: true
     sass:
       optional: true
-  checksum: 69c66ea3482922064f1e907fc204283e5e9cc02eb20b7ab1761d478922f77b3e2c47c8e3c585f771d75ce57bb088b226ae2eb4c736849b29c8727e921a6e0d41
+  checksum: d53212e5d199cdd221a67046ab4276c352d56b50ca64347115b36e8ebbb2c68ec396a14d6cf5a08853c830a6b0ec1fd2b016cdc53cbe90a0332a908f50ec2043
   languageName: node
   linkType: hard
 
@@ -10128,6 +10131,17 @@ fsevents@~2.3.2:
     ajv: ^6.12.4
     ajv-keywords: ^3.5.2
   checksum: 32c62fc9e28edd101e1bd83453a4216eb9bd875cc4d3775e4452b541908fa8f61a7bbac8ffde57484f01d7096279d3ba0337078e85a918ecbeb72872fb09fb2b
+  languageName: node
+  linkType: hard
+
+"schema-utils@npm:^3.0.0":
+  version: 3.1.1
+  resolution: "schema-utils@npm:3.1.1"
+  dependencies:
+    "@types/json-schema": ^7.0.8
+    ajv: ^6.12.5
+    ajv-keywords: ^3.5.2
+  checksum: fb73f3d759d43ba033c877628fe9751620a26879f6301d3dbeeb48cf2a65baec5cdf99da65d1bf3b4ff5444b2e59cbe4f81c2456b5e0d2ba7d7fd4aed5da29ce
   languageName: node
   linkType: hard
 
@@ -10174,7 +10188,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.2.1, semver@npm:^7.3.5":
+"semver@npm:^7.2.1, semver@npm:^7.3.2, semver@npm:^7.3.5":
   version: 7.3.5
   resolution: "semver@npm:7.3.5"
   dependencies:
@@ -11318,7 +11332,7 @@ fsevents@~2.3.2:
     prettier: ^2.4.1
     qrcode.vue: ^1.7.0
     sass: ^1.42.1
-    sass-loader: ^12.1.0
+    sass-loader: ^10
     vue: ^2.6.14
     vue-confetti: ^2.2.2
     vue-router: ^3.5.2

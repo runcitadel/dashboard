@@ -7,7 +7,7 @@ const state = () => ({
   jwt: window.localStorage.getItem("jwt") || "",
   registered: true,
   seed: [],
-  installedApps: []
+  installedApps: [],
 });
 
 // Functions to update the state directly
@@ -27,15 +27,13 @@ const mutations = {
   },
   setSeed(state, seed) {
     state.seed = seed;
-  }
+  },
 };
 
 // Functions to get data from the API
 const actions = {
   async login({ commit }, password) {
-    const {
-      data
-    } = await API.post(
+    const { data } = await API.post(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/login`,
       { password }
     );
@@ -87,7 +85,7 @@ const actions = {
       rawSeed = await API.post(
         `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/seed`,
         {
-          password: plainTextPassword
+          password: plainTextPassword,
         },
         false
       );
@@ -113,7 +111,7 @@ const actions = {
         {
           name,
           password,
-          seed
+          seed,
         },
         false
       );
@@ -124,7 +122,7 @@ const actions = {
         commit("setSeed", []); //remove seed from store
       }
     }
-  }
+  },
 };
 
 const getters = {};
@@ -134,5 +132,5 @@ export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

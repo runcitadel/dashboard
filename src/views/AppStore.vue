@@ -19,7 +19,14 @@
           :to="`/app-store/${app.id}`"
           v-for="app in categorizedApps"
           :key="app.id"
-          class="app-list-app d-flex justify-content-between align-items-center px-3 px-lg-4 py-3"
+          class="
+            app-list-app
+            d-flex
+            justify-content-between
+            align-items-center
+            px-3 px-lg-4
+            py-3
+          "
         >
           <div class="d-flex">
             <div class="d-block">

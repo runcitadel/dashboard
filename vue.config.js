@@ -9,17 +9,15 @@ module.exports = {
   //     }
   // }
   devServer: {
-    allowedHosts: [
-      'umbrel-dev.local',
-    ]
+    allowedHosts: ["umbrel-dev.local"],
   },
-  chainWebpack: config => {
-    config.plugin("html").tap(args => {
+  chainWebpack: (config) => {
+    config.plugin("html").tap((args) => {
       args[0].template =
         process.env.STAGING_DEPLOYMENT === "true"
           ? "./public/index-staging.html"
           : "./public/index.html";
       return args;
     });
-  }
+  },
 };

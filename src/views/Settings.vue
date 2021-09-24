@@ -3,7 +3,12 @@
     <div class="my-3 pb-2">
       <div class="d-flex justify-content-between align-items-center">
         <h1>settings</h1>
-        <b-dropdown variant="link" toggle-class="text-decoration-none p-0" no-caret right>
+        <b-dropdown
+          variant="link"
+          toggle-class="text-decoration-none p-0"
+          no-caret
+          right
+        >
           <template v-slot:button-content>
             <svg
               width="18"
@@ -32,7 +37,9 @@
               />
             </svg>
           </template>
-          <b-dropdown-item href="/logs" target="_blank">View system logs</b-dropdown-item>
+          <b-dropdown-item href="/logs" target="_blank"
+            >View system logs</b-dropdown-item
+          >
         </b-dropdown>
       </div>
     </div>
@@ -50,7 +57,9 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Bitcoin</span>
-                <small class="d-block" style="opacity: 0.4">Run Bitcoin Core on Tor</small>
+                <small class="d-block" style="opacity: 0.4"
+                  >Run Bitcoin Core on Tor</small
+                >
               </div>
               <toggle-switch
                 class="align-self-center"
@@ -61,7 +70,9 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Lightning Network</span>
-                <small class="d-block" style="opacity: 0.4">Run Lightning on Tor</small>
+                <small class="d-block" style="opacity: 0.4"
+                  >Run Lightning on Tor</small
+                >
               </div>
               <toggle-switch
                 class="align-self-center"
@@ -73,10 +84,10 @@
               <div class="d-flex justify-content-between w-100 mb-3">
                 <div class="w-75">
                   <span class="d-block">Remote access</span>
-                  <small
-                    class="d-block"
-                    style="opacity: 0.4"
-                  >Remotely access your Umbrel via Tor Browser on the following URL</small>
+                  <small class="d-block" style="opacity: 0.4"
+                    >Remotely access your Umbrel via Tor Browser on the
+                    following URL</small
+                  >
                 </div>
                 <toggle-switch
                   class="align-self-center"
@@ -84,7 +95,11 @@
                   tooltip="Sorry, Tor cannot be disabled for now"
                 ></toggle-switch>
               </div>
-              <input-copy class="w-100" size="sm" :value="onionAddress"></input-copy>
+              <input-copy
+                class="w-100"
+                size="sm"
+                :value="onionAddress"
+              ></input-copy>
             </div>
             <div class="px-3 px-lg-4 py-2"></div>
           </div>
@@ -97,12 +112,16 @@
               <div class="w-75">
                 <span class="d-block">Backup</span>
                 <small class="d-block">
-                  <span style="opacity: 0.4">Automatically encrypt and backup your payment channels.</span>
+                  <span style="opacity: 0.4"
+                    >Automatically encrypt and backup your payment
+                    channels.</span
+                  >
                   &nbsp;
                   <a
                     href="https://github.com/getumbrel/umbrel/blob/master/scripts/backup/README.md"
                     target="blank"
-                  >Learn more</a>
+                    >Learn more</a
+                  >
                 </small>
               </div>
               <toggle-switch
@@ -130,17 +149,33 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Secret words</span>
-                <small class="d-block" style="opacity: 0.4">Note down your 24 secret words</small>
+                <small class="d-block" style="opacity: 0.4"
+                  >Note down your 24 secret words</small
+                >
               </div>
 
-              <b-button variant="outline-primary" size="sm" v-b-modal.seed-modal>View</b-button>
+              <b-button variant="outline-primary" size="sm" v-b-modal.seed-modal
+                >View</b-button
+              >
 
               <b-modal id="seed-modal" centered hide-footer>
                 <template v-slot:modal-header="{ close }">
-                  <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+                  <div
+                    class="
+                      px-2 px-sm-3
+                      pt-2
+                      d-flex
+                      justify-content-between
+                      w-100
+                    "
+                  >
                     <h3>secret words</h3>
                     <!-- Emulate built in modal header close button action -->
-                    <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                    <a
+                      href="#"
+                      class="align-self-center"
+                      v-on:click.stop.prevent="close"
+                    >
                       <svg
                         width="18"
                         height="18"
@@ -166,7 +201,9 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Password</span>
-                <small class="d-block" style="opacity: 0.4">Change the password of your Umbrel</small>
+                <small class="d-block" style="opacity: 0.4"
+                  >Change the password of your Umbrel</small
+                >
               </div>
 
               <b-button
@@ -174,14 +211,27 @@
                 size="sm"
                 v-b-modal.change-password-modal
                 :disabled="isChangingPassword"
-              >Change</b-button>
+                >Change</b-button
+              >
 
               <b-modal id="change-password-modal" centered hide-footer>
                 <template v-slot:modal-header="{ close }">
-                  <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+                  <div
+                    class="
+                      px-2 px-sm-3
+                      pt-2
+                      d-flex
+                      justify-content-between
+                      w-100
+                    "
+                  >
                     <h3>change password</h3>
                     <!-- Emulate built in modal header close button action -->
-                    <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                    <a
+                      href="#"
+                      class="align-self-center"
+                      v-on:click.stop.prevent="close"
+                    >
                       <svg
                         width="18"
                         height="18"
@@ -200,16 +250,23 @@
                   </div>
                 </template>
                 <div class="px-4 pb-2">
-                  <label class="sr-onlsy" for="input-withdrawal-amount">Current password</label>
+                  <label class="sr-onlsy" for="input-withdrawal-amount"
+                    >Current password</label
+                  >
                   <input-password
                     v-model="currentPassword"
                     ref="password"
                     inputGroupClass="neu-input-group"
-                    :inputClass="[ isIncorrectPassword ? 'incorrect-password' : '', 'form-control form-control-lg neu-input w-100']"
+                    :inputClass="[
+                      isIncorrectPassword ? 'incorrect-password' : '',
+                      'form-control form-control-lg neu-input w-100',
+                    ]"
                     :disabled="isChangingPassword"
                   />
                   <div class="py-2"></div>
-                  <label class="sr-onlsy" for="input-withdrawal-amount">New password</label>
+                  <label class="sr-onlsy" for="input-withdrawal-amount"
+                    >New password</label
+                  >
                   <input-password
                     v-model="newPassword"
                     ref="password"
@@ -218,7 +275,9 @@
                     :disabled="isChangingPassword"
                   />
                   <div class="py-2"></div>
-                  <label class="sr-onlsy" for="input-withdrawal-amount">Confirm new password</label>
+                  <label class="sr-onlsy" for="input-withdrawal-amount"
+                    >Confirm new password</label
+                  >
                   <input-password
                     v-model="confirmNewPassword"
                     ref="password"
@@ -229,9 +288,9 @@
                   <div class="py-2"></div>
                   <b-alert variant="warning" show>
                     <small>
-                      ⚠ Remember, there is no "Forgot Password" button. If you lose
-                      your password, you will have to recover your Umbrel using your 24
-                      secret words and channel backup.
+                      ⚠ Remember, there is no "Forgot Password" button. If you
+                      lose your password, you will have to recover your Umbrel
+                      using your 24 secret words and channel backup.
                     </small>
                   </b-alert>
                   <b-button
@@ -240,7 +299,12 @@
                     size="lg"
                     :disabled="isChangingPassword || !isAllowedToChangePassword"
                     @click="changePassword"
-                  >{{ isChangingPassword ? 'Changing password...' : 'Change password'}}</b-button>
+                    >{{
+                      isChangingPassword
+                        ? "Changing password..."
+                        : "Change password"
+                    }}</b-button
+                  >
                 </div>
               </b-modal>
             </div>
@@ -249,24 +313,38 @@
         </card-widget>
       </b-col>
       <b-col col cols="12" md="6" xl="4">
-        <card-widget header="System" :loading="isCheckingForUpdate || isUpdating">
+        <card-widget
+          header="System"
+          :loading="isCheckingForUpdate || isUpdating"
+        >
           <div class="pt-2">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Shutdown</span>
-                <small class="d-block" style="opacity: 0.4">Power off your Umbrel</small>
+                <small class="d-block" style="opacity: 0.4"
+                  >Power off your Umbrel</small
+                >
               </div>
-              <b-button variant="outline-danger" size="sm" @click="shutdownPrompt">Shutdown</b-button>
+              <b-button
+                variant="outline-danger"
+                size="sm"
+                @click="shutdownPrompt"
+                >Shutdown</b-button
+              >
             </div>
           </div>
           <div class="pt-0">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Restart</span>
-                <small class="d-block" style="opacity: 0.4">Restart your Umbrel</small>
+                <small class="d-block" style="opacity: 0.4"
+                  >Restart your Umbrel</small
+                >
               </div>
 
-              <b-button variant="outline-danger" size="sm" @click="rebootPrompt">Restart</b-button>
+              <b-button variant="outline-danger" size="sm" @click="rebootPrompt"
+                >Restart</b-button
+              >
               <b-modal
                 ref="reboot-modal"
                 title="Are you sure?"
@@ -275,7 +353,11 @@
                 @ok="reboot($event)"
               >
                 <div>
-                  <p>Don't forget to login to your dashboard after the restart is complete (required only once after a restart for your Umbrel to be online).</p>
+                  <p>
+                    Don't forget to login to your dashboard after the restart is
+                    complete (required only once after a restart for your Umbrel
+                    to be online).
+                  </p>
                 </div>
               </b-modal>
             </div>
@@ -288,14 +370,17 @@
             <div v-show="!isCheckingForUpdate">
               <span v-show="!availableUpdate.version">
                 <b-icon icon="check-circle-fill" variant="success"></b-icon>
-                <small class="ml-1" style="opacity: 0.4">Your Umbrel is on the latest version</small>
+                <small class="ml-1" style="opacity: 0.4"
+                  >Your Umbrel is on the latest version</small
+                >
               </span>
               <div v-show="availableUpdate.version">
                 <span class="d-block">
                   <b-icon icon="bell-fill" variant="success"></b-icon>
-                  <small
-                    class="text-muted ml-1"
-                  >Umbrel v{{availableUpdate.version}} is now available to install</small>
+                  <small class="text-muted ml-1"
+                    >Umbrel v{{ availableUpdate.version }} is now available to
+                    install</small
+                  >
                 </span>
                 <b-button
                   class="mt-2"
@@ -303,19 +388,32 @@
                   size="sm"
                   @click.prevent="confirmUpdate"
                   :disabled="isUpdating"
-                >Install now</b-button>
+                  >Install now</b-button
+                >
               </div>
             </div>
           </div>
           <b-button
             class="w-100"
             variant="success"
-            style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+            style="
+              border-radius: 0;
+              border-bottom-left-radius: 1rem;
+              border-bottom-right-radius: 1rem;
+              padding-top: 1rem;
+              padding-bottom: 1rem;
+            "
             :disabled="isCheckingForUpdate || isUpdating"
             @click="checkForUpdate"
           >
-            <b-icon icon="arrow-repeat" class="mr-2" :animation="isCheckingForUpdate ? 'spin' : ''"></b-icon>
-            {{ isCheckingForUpdate ? "Checking for update" : "Check for update"}}
+            <b-icon
+              icon="arrow-repeat"
+              class="mr-2"
+              :animation="isCheckingForUpdate ? 'spin' : ''"
+            ></b-icon>
+            {{
+              isCheckingForUpdate ? "Checking for update" : "Check for update"
+            }}
           </b-button>
         </card-widget>
       </b-col>
@@ -344,16 +442,16 @@ export default {
       confirmNewPassword: "",
       isChangingPassword: false,
       isCheckingForUpdate: false,
-      isUpdating: false
+      isUpdating: false,
     };
   },
   computed: {
     ...mapState({
-      version: state => state.system.version,
-      onionAddress: state => state.system.onionAddress,
-      availableUpdate: state => state.system.availableUpdate,
-      updateStatus: state => state.system.updateStatus,
-      backupStatus: state => state.system.backupStatus
+      version: (state) => state.system.version,
+      onionAddress: (state) => state.system.onionAddress,
+      availableUpdate: (state) => state.system.availableUpdate,
+      updateStatus: (state) => state.system.updateStatus,
+      backupStatus: (state) => state.system.backupStatus,
     }),
     isAllowedToChangePassword() {
       if (!this.currentPassword) {
@@ -369,7 +467,7 @@ export default {
         return false;
       }
       return true;
-    }
+    },
   },
   created() {
     this.$store.dispatch("system/getOnionAddress");
@@ -388,13 +486,13 @@ export default {
           autoHideDelay: 3000,
           variant: "danger",
           solid: true,
-          toaster: "b-toaster-bottom-right"
+          toaster: "b-toaster-bottom-right",
         });
       }
 
       const payload = {
         password: this.currentPassword,
-        newPassword: this.newPassword
+        newPassword: this.newPassword,
       };
 
       this.isChangingPassword = true;
@@ -412,7 +510,7 @@ export default {
             autoHideDelay: 3000,
             variant: "danger",
             solid: true,
-            toaster: "b-toaster-bottom-right"
+            toaster: "b-toaster-bottom-right",
           });
           if (error.response.data === "Incorrect password") {
             this.isIncorrectPassword = true;
@@ -429,7 +527,7 @@ export default {
           autoHideDelay: 3000,
           variant: "success",
           solid: true,
-          toaster: "b-toaster-bottom-right"
+          toaster: "b-toaster-bottom-right",
         }
       );
 
@@ -456,7 +554,7 @@ export default {
           autoHideDelay: 3000,
           variant: "danger",
           solid: true,
-          toaster: "b-toaster-bottom-right"
+          toaster: "b-toaster-bottom-right",
         });
       }
 
@@ -474,7 +572,7 @@ export default {
       let toastOptions = {
         autoHideDelay: 3000,
         solid: true,
-        toaster: "b-toaster-bottom-right"
+        toaster: "b-toaster-bottom-right",
       };
       try {
         await this.$store.dispatch("system/shutdown");
@@ -494,7 +592,7 @@ export default {
           autoHideDelay: 3000,
           variant: "danger",
           solid: true,
-          toaster: "b-toaster-bottom-right"
+          toaster: "b-toaster-bottom-right",
         });
       }
       // Reset any cached hasRebooted value from previous reboot
@@ -512,11 +610,11 @@ export default {
             autoHideDelay: 3000,
             variant: "danger",
             solid: true,
-            toaster: "b-toaster-bottom-right"
+            toaster: "b-toaster-bottom-right",
           });
         }
       }
-    }
+    },
   },
   beforeDestroy() {
     if (this.pollUpdateStatus) {
@@ -524,17 +622,17 @@ export default {
     }
   },
   watch: {
-    currentPassword: function() {
+    currentPassword: function () {
       this.isIncorrectPassword = false;
-    }
+    },
   },
   components: {
     CardWidget,
     ToggleSwitch,
     InputPassword,
     InputCopy,
-    Seed
-  }
+    Seed,
+  },
 };
 </script>
 

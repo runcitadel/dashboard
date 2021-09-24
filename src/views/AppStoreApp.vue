@@ -20,7 +20,12 @@
         Back</router-link
       >
       <div
-        class="d-flex flex-column flex-sm-row justify-content-between align-items-center"
+        class="
+          d-flex
+          flex-column flex-sm-row
+          justify-content-between
+          align-items-center
+        "
       >
         <div class="d-flex w-xs-100 justify-content-start pr-2">
           <div class="d-block">
@@ -264,5 +269,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -13,7 +13,7 @@ const state = () => ({
     rpcuser: "",
     rpcpassword: "",
     address: "",
-    connectionString: ""
+    connectionString: "",
   },
   currentBlock: 0,
   chain: "",
@@ -25,25 +25,25 @@ const state = () => ({
     peers: -1,
     mempool: -1,
     hashrate: -1,
-    blockchainSize: -1
+    blockchainSize: -1,
   },
   peers: {
     total: 0,
     inbound: 0,
-    outbound: 0
+    outbound: 0,
   },
   balance: {
     total: -1, //loading
     confirmed: -1,
     pending: -1,
     pendingIn: -1,
-    pendingOut: -1
+    pendingOut: -1,
   },
   transactions: [
     { type: "loading" },
     { type: "loading" },
     { type: "loading" },
-    { type: "loading" }
+    { type: "loading" },
   ],
   pending: [],
   price: 0,
@@ -53,34 +53,34 @@ const state = () => ({
       perByte: "--",
       error: {
         code: "",
-        text: ""
-      }
+        text: "",
+      },
     },
     normal: {
       total: "--",
       perByte: "--",
       error: {
         code: "",
-        text: ""
-      }
+        text: "",
+      },
     },
     slow: {
       total: "--",
       perByte: "--",
       error: {
         code: "",
-        text: ""
-      }
+        text: "",
+      },
     },
     cheapest: {
       total: "--",
       perByte: "--",
       error: {
         code: "",
-        text: ""
-      }
-    }
-  }
+        text: "",
+      },
+    },
+  },
 });
 
 // Functions to update the state directly
@@ -117,7 +117,9 @@ const mutations = {
   setBlocks(state, blocks) {
     const mergedBlocks = [...blocks, ...state.blocks];
     // remove duplicate blocks
-    const uniqueBlocks = mergedBlocks.filter((v, i, a) => a.findIndex(t => (t.height === v.height)) === i);
+    const uniqueBlocks = mergedBlocks.filter(
+      (v, i, a) => a.findIndex((t) => t.height === v.height) === i
+    );
     state.blocks = uniqueBlocks;
   },
 
@@ -184,7 +186,7 @@ const mutations = {
         state.fees[speed].perByte = "N/A";
         state.fees[speed].error = {
           code: estimate.code,
-          text: estimate.text
+          text: estimate.text,
         };
       } else {
         state.fees[speed].total = estimate.feeSat;
@@ -197,7 +199,7 @@ const mutations = {
 
   price(state, usd) {
     state.price = usd;
-  }
+  },
 };
 
 // Functions to get data from the API
@@ -227,7 +229,7 @@ const actions = {
       commit("onionAddress", "Could not determine bitcoin onion address");
 
       if (addresses) {
-        addresses.forEach(address => {
+        addresses.forEach((address) => {
           if (address.includes(".onion")) {
             commit("onionAddress", address);
           } else {
@@ -245,7 +247,7 @@ const actions = {
     if (address) {
       commit("onionAddress", address);
     } else {
-      commit("onionAddress", "Couldn't get P2P address")
+      commit("onionAddress", "Couldn't get P2P address");
     }
   },
 
@@ -256,7 +258,7 @@ const actions = {
     if (address) {
       commit("electrumAddress", address);
     } else {
-      commit("electrumAddress", "Couldn't get Electrum address")
+      commit("electrumAddress", "Couldn't get Electrum address");
     }
   },
 
@@ -302,7 +304,8 @@ const actions = {
 
       //TODO: Fetch only new blocks
       const latestThreeBlocks = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL
+        `${
+          process.env.VUE_APP_MIDDLEWARE_API_URL
         }/v1/bitcoind/info/blocks?from=${currentBlock - 2}&to=${currentBlock}`
       );
 
@@ -355,7 +358,7 @@ const actions = {
           peers,
           mempool,
           hashrate,
-          blockchainSize
+          blockchainSize,
         });
       }
     }
@@ -414,14 +417,14 @@ const actions = {
         commit("fees", fees);
       }
     }
-  }
+  },
 };
 
 const getters = {
   status(state) {
     const data = {
       class: "loading",
-      text: "Loading..."
+      text: "Loading...",
     };
 
     if (state.operational) {
@@ -444,7 +447,7 @@ const getters = {
     }
 
     if (state.transactions) {
-      state.transactions.forEach(tx => {
+      state.transactions.forEach((tx) => {
         const amount = Number(tx.amount);
 
         let type = "incoming";
@@ -478,7 +481,7 @@ const getters = {
           timestamp: new Date(Number(tx.timeStamp) * 1000),
           description,
           hash: tx.txHash,
-          confirmations: tx.numConfirmations
+          confirmations: tx.numConfirmations,
         });
       });
 
@@ -489,7 +492,7 @@ const getters = {
     }
 
     return txs;
-  }
+  },
 };
 
 export default {
@@ -497,5 +500,5 @@ export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

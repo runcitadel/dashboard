@@ -33,9 +33,9 @@ const routes = [
             path: "",
             name: "login",
             component: Login,
-            meta: { requiresAuth: false }
-          }
-        ]
+            meta: { requiresAuth: false },
+          },
+        ],
       },
       {
         path: "/start",
@@ -45,9 +45,9 @@ const routes = [
           {
             path: "",
             name: "start",
-            component: Start
-          }
-        ]
+            component: Start,
+          },
+        ],
       },
       {
         path: "/dashboard",
@@ -57,9 +57,9 @@ const routes = [
           {
             path: "",
             name: "dashboard",
-            component: Dashboard
-          }
-        ]
+            component: Dashboard,
+          },
+        ],
       },
       {
         path: "/bitcoin",
@@ -69,9 +69,9 @@ const routes = [
           {
             path: "",
             name: "bitcoin",
-            component: Bitcoin
-          }
-        ]
+            component: Bitcoin,
+          },
+        ],
       },
       {
         path: "/lightning",
@@ -81,9 +81,9 @@ const routes = [
           {
             path: "",
             name: "lightning",
-            component: Lightning
-          }
-        ]
+            component: Lightning,
+          },
+        ],
       },
       {
         path: "/apps",
@@ -93,9 +93,9 @@ const routes = [
           {
             path: "",
             name: "apps",
-            component: Apps
-          }
-        ]
+            component: Apps,
+          },
+        ],
       },
       {
         path: "/app-store",
@@ -105,14 +105,14 @@ const routes = [
           {
             path: "",
             name: "app-store",
-            component: AppStore
+            component: AppStore,
           },
           {
             path: ":id",
             name: "app-store-app",
-            component: AppStoreApp
-          }
-        ]
+            component: AppStoreApp,
+          },
+        ],
       },
       {
         path: "/settings",
@@ -122,9 +122,9 @@ const routes = [
           {
             path: "",
             name: "settings",
-            component: Settings
-          }
-        ]
+            component: Settings,
+          },
+        ],
       },
       {
         path: "/logout",
@@ -134,12 +134,12 @@ const routes = [
           {
             path: "",
             name: "logout",
-            component: Logout
-          }
-        ]
-      }
-    ]
-  }
+            component: Logout,
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 const router = new VueRouter({
@@ -149,17 +149,17 @@ const router = new VueRouter({
   scrollBehavior: (to, from, savedPosition) => {
     // Exists when Browser's back/forward pressed
     if (savedPosition) {
-      return savedPosition
+      return savedPosition;
       // For anchors
     } else if (to.hash) {
-      return { selector: to.hash, behavior: 'smooth' }
+      return { selector: to.hash, behavior: "smooth" };
       // By changing queries we are still in the same component, so "from.path" === "to.path" (new query changes just "to.fullPath", but not "to.path").
     } else if (from.path === to.path) {
-      return {}
+      return {};
     }
     // Scroll to top
-    return { x: 0, y: 0 }
-  }
+    return { x: 0, y: 0 };
+  },
 });
 
 //Fake for now
@@ -167,13 +167,13 @@ const isLoggedIn = () => !!store.state.user.jwt;
 
 //Authentication Check
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (!isLoggedIn()) {
       next({
         path: "/",
-        query: { redirect: to.fullPath }
+        query: { redirect: to.fullPath },
       });
     } else {
       next();

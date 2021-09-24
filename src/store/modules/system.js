@@ -11,11 +11,11 @@ const state = () => ({
   updateStatus: {
     state: "", //available, unavailable, installing, successful, failed
     progress: 0, //progress of update installation
-    description: ""
+    description: "",
   },
   backupStatus: {
     status: "", //success, failed
-    timestamp: null
+    timestamp: null,
   },
   showUpdateConfirmationModal: false,
   loading: true,
@@ -26,13 +26,13 @@ const state = () => ({
   unit: "sats", //sats or btc
   api: {
     operational: false,
-    version: ""
+    version: "",
   },
   managerApi: {
     operational: false,
-    version: ""
+    version: "",
   },
-  onionAddress: ""
+  onionAddress: "",
 });
 
 // Functions to update the state directly
@@ -78,13 +78,15 @@ const mutations = {
   },
   setShowUpdateConfirmationModal(state, show) {
     state.showUpdateConfirmationModal = show;
-  }
+  },
 };
 
 // Functions to get data from the API
 const actions = {
   async getVersion({ commit }) {
-    const data = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/info`);
+    const data = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/info`
+    );
     if (data && data.version) {
       commit("setVersion", data.version);
     }
@@ -104,22 +106,26 @@ const actions = {
     const api = await API.get(`${process.env.VUE_APP_MIDDLEWARE_API_URL}/ping`);
     commit("setApi", {
       operational: !!(api && api.version),
-      version: api && api.version ? api.version : ""
+      version: api && api.version ? api.version : "",
     });
   },
   async getManagerApi({ commit }) {
     const api = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/ping`);
     commit("setManagerApi", {
       operational: !!(api && api.version),
-      version: api && api.version ? api.version : ""
+      version: api && api.version ? api.version : "",
     });
   },
   async getOnionAddress({ commit }) {
-    const address = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/dashboard-hidden-service`);
+    const address = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/dashboard-hidden-service`
+    );
     commit("setOnionAddress", address);
   },
   async getAvailableUpdate({ commit }) {
-    const update = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/get-update`);
+    const update = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/get-update`
+    );
     if (update && update.version) {
       commit("setAvailableUpdate", update);
     } else {
@@ -137,33 +143,40 @@ const actions = {
     commit("setShowUpdateConfirmationModal", true);
   },
   async getUpdateStatus({ commit }) {
-    const status = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/update-status`);
+    const status = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/update-status`
+    );
     if (status && status.progress) {
       commit("setUpdateStatus", status);
     }
   },
   async getBackupStatus({ commit }) {
-    const status = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/backup-status`);
+    const status = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/backup-status`
+    );
     if (status && status.timestamp) {
       commit("setBackupStatus", status);
     }
   },
   async shutdown({ commit }) {
-
     // Reset any cached hasShutdown value from previous shutdown
     commit("setHasShutDown", false);
 
     // Shutting down
-    const result = await API.post(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/shutdown`);
+    const result = await API.post(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/shutdown`
+    );
     if (!result) {
-      throw new Error('Shutdown request failed');
+      throw new Error("Shutdown request failed");
     }
 
     commit("setShuttingDown", true);
 
     // Poll to check if system has shut down
     const pollIfDown = window.setInterval(async () => {
-      const { version } = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/ping`);
+      const { version } = await API.get(
+        `${process.env.VUE_APP_MANAGER_API_URL}/ping`
+      );
       if (!version) {
         // System shut down succesfully
         window.clearInterval(pollIfDown);
@@ -176,14 +189,15 @@ const actions = {
     }, 2000);
   },
   async reboot({ commit }) {
-
     // Reset any cached hasRebooted value from previous reboot
     commit("setHasRebooted", false);
 
     // Rebooting
-    const result = await API.post(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/reboot`);
+    const result = await API.post(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/reboot`
+    );
     if (!result) {
-      throw new Error('Reboot request failed');
+      throw new Error("Reboot request failed");
     }
 
     commit("setRebooting", true);
@@ -192,14 +206,18 @@ const actions = {
 
     // Poll to check if system has shut down
     const pollIfDown = window.setInterval(async () => {
-      const { version } = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/ping`);
+      const { version } = await API.get(
+        `${process.env.VUE_APP_MANAGER_API_URL}/ping`
+      );
       if (!version) {
         // System shut down succesfully
         window.clearInterval(pollIfDown);
 
         // Now we'll poll to check if it's up
         pollIfUp = window.setInterval(async () => {
-          const { version } = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/ping`);
+          const { version } = await API.get(
+            `${process.env.VUE_APP_MANAGER_API_URL}/ping`
+          );
           if (version) {
             // System is online again
             commit("setRebooting", false);
@@ -210,7 +228,7 @@ const actions = {
         return;
       }
     }, 2000);
-  }
+  },
 };
 
 const getters = {};
@@ -220,5 +238,5 @@ export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

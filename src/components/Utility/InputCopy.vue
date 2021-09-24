@@ -1,6 +1,20 @@
 <template>
-  <b-input-group class="copy-input-container d-flex align-items-center" :size="size">
-    <b-form-input ref="copy-input-field" type="text" class="copy-input" readonly v-model="value"></b-form-input>
+  <b-input-group
+    class="copy-input-container align-items-center"
+    :class="autoWidth ? 'd-inline-flex auto-width mx-1' : 'd-flex'"
+    :style="{
+      width: autoWidth ? `${(10 + value.toString().length) * 8}px` : 'auto',
+      maxWidth: '100%',
+    }"
+    :size="size ? size : 'sm'"
+  >
+    <b-form-input
+      ref="copy-input-field"
+      type="text"
+      class="copy-input"
+      readonly
+      :value="value"
+    ></b-form-input>
 
     <b-input-group-append class="copy-icon-btn" @click="copyText">
       <svg
@@ -33,32 +47,42 @@ export default {
   props: {
     size: {
       type: String,
-      default: "sm"
+      default: "sm",
     },
-    value: String
+    value: {
+      type: String,
+      required: true,
+    },
+    autoWidth: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
-      isCopied: false
+      isCopied: false,
     };
+  },
+  watch: {
+    value: function () {
+      this.isCopied = false;
+    },
   },
   methods: {
     copyText() {
       //copy generated invoice's text to clipboard
-
       const copyText = this.$refs["copy-input-field"];
       copyText.select();
       copyText.setSelectionRange(0, 99999); /*For mobile devices*/
       document.execCommand("copy");
-
+      window.setTimeout(() => {
+        copyText.blur();
+        window.getSelection().removeAllRanges();
+        this.isCopied = false;
+      }, 1000);
       return (this.isCopied = true);
-    }
+    },
   },
-  watch: {
-    value: function() {
-      this.isCopied = false;
-    }
-  }
 };
 </script>
 

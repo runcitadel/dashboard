@@ -3,9 +3,14 @@
     <transition name="loading" mode>
       <loading v-if="updating" :progress="updateStatus.progress">
         <div class="text-center">
-          <small class="text-muted d-block">{{`${updateStatus.description}...`}}</small>
+          <small class="text-muted d-block">{{
+            `${updateStatus.description}...`
+          }}</small>
           <b-alert class="system-alert" variant="warning" show>
-            <small>Please do not refresh this page or turn off your Umbrel while the update is in progress</small>
+            <small
+              >Please do not refresh this page or turn off your Umbrel while the
+              update is in progress</small
+            >
           </b-alert>
         </div>
       </loading>
@@ -17,7 +22,10 @@
       >
         <div class="text-center" v-if="shuttingDown || rebooting">
           <b-alert class="system-alert" variant="warning" show>
-            <small>Please do not refresh this page or turn off your Umbrel while it is {{ shuttingDown ? 'shutting down' : 'rebooting'}}</small>
+            <small
+              >Please do not refresh this page or turn off your Umbrel while it
+              is {{ shuttingDown ? "shutting down" : "rebooting" }}</small
+            >
           </b-alert>
         </div>
       </shutdown>
@@ -50,24 +58,24 @@ export default {
       loadingText: "",
       loadingProgress: 0,
       bitcoinPollStarted: 0,
-      loadingPollInProgress: false
+      loadingPollInProgress: false,
     };
   },
   computed: {
     ...mapState({
-      hasShutdown: state => state.system.hasShutdown,
-      shuttingDown: state => state.system.shuttingDown,
-      rebooting: state => state.system.rebooting,
-      isManagerApiOperational: state => state.system.managerApi.operational,
-      isApiOperational: state => state.system.api.operational,
-      isBitcoinOperational: state => state.bitcoin.operational,
-      isLndOperational: state => state.lightning.operational,
-      jwt: state => state.user.jwt,
-      updateStatus: state => state.system.updateStatus
+      hasShutdown: (state) => state.system.hasShutdown,
+      shuttingDown: (state) => state.system.shuttingDown,
+      rebooting: (state) => state.system.rebooting,
+      isManagerApiOperational: (state) => state.system.managerApi.operational,
+      isApiOperational: (state) => state.system.api.operational,
+      isBitcoinOperational: (state) => state.bitcoin.operational,
+      isLndOperational: (state) => state.lightning.operational,
+      jwt: (state) => state.user.jwt,
+      updateStatus: (state) => state.system.updateStatus,
     }),
     updating() {
       return this.updateStatus.state === "installing";
-    }
+    },
   },
   methods: {
     //TODO: move this to the specific layout that needs this 100vh fix
@@ -118,7 +126,8 @@ export default {
         if (!this.bitcoinPollStarted) {
           this.bitcoinPollStarted = Date.now();
         } else if (Date.now() - this.bitcoinPollStarted > bitcoinSlowDelay) {
-           this.loadingText += " This can take a while, please don't turn off your Umbrel!";
+          this.loadingText +=
+            " This can take a while, please don't turn off your Umbrel!";
         }
 
         this.loadingProgress = 60;
@@ -160,7 +169,7 @@ export default {
       // Add slight delay so the progress bar makes
       // it to 100% before disappearing
       setTimeout(() => (this.loading = false), 300);
-    }
+    },
   },
   created() {
     //check if system is updating
@@ -172,7 +181,7 @@ export default {
   },
   watch: {
     loading: {
-      handler: function(isLoading) {
+      handler: function (isLoading) {
         window.clearInterval(this.loadingInterval);
         //if loading, check loading status every two seconds
         if (isLoading) {
@@ -188,10 +197,10 @@ export default {
           );
         }
       },
-      immediate: true
+      immediate: true,
     },
     updating: {
-      handler: function(isUpdating, wasUpdating) {
+      handler: function (isUpdating, wasUpdating) {
         window.clearInterval(this.updateStatusInterval);
         // if updating, check loading status every two seconds
         if (isUpdating) {
@@ -211,7 +220,7 @@ export default {
               autoHideDelay: 2000,
               variant: "success",
               solid: true,
-              toaster: "b-toaster-bottom-right"
+              toaster: "b-toaster-bottom-right",
             };
 
             if (this.updateStatus.state === "failed") {
@@ -228,8 +237,8 @@ export default {
           }
         }
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.updateViewPortHeightCSS);
@@ -238,8 +247,8 @@ export default {
   },
   components: {
     Loading,
-    Shutdown
-  }
+    Shutdown,
+  },
 };
 </script>
 
