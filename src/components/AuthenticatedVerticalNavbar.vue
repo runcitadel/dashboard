@@ -5,7 +5,9 @@
         <p class="text-muted">
           Balance
           <span style="cursor: pointer" @click="toggleBalance">
-            <!-- <b-icon :icon="state.showBalance ? 'eye-slash-fill' : 'eye-fill'"></b-icon> -->
+            <b-icon
+              :icon="state.showBalance ? 'eye-slash-fill' : 'eye-fill'"
+            ></b-icon>
           </span>
         </p>
 
@@ -322,9 +324,40 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media (prefers-color-scheme: dark) {
+  .nav-vertical {
+    background: transparent;
+    .nav-item {
+      .nav-link {
+        color: #dde2ee;
+        svg {
+          path,
+          rect {
+            fill: #dde2ee;
+          }
+        }
+        &:hover,
+        &:active,
+        &:focus {
+          color: #dde2ee;
+        }
+        &.active {
+          opacity: 1;
+          color: #5351fb;
+          svg {
+            path,
+            rect {
+              fill: #5351fb;
+            }
+          }
+        }
+      }
+    }
+  }
+}
 .nav-vertical {
-  background: #fff;
   position: sticky;
+  background: #fff;
   z-index: 9;
   // width: 280px;
   height: calc(var(--vh100, 100vh) - 82px);
@@ -360,9 +393,9 @@ export default {
     }
   }
 }
-
+/*
 .balance-container {
   border-top: solid 1px #eeeff3;
   border-bottom: solid 1px #eeeff3;
-}
+}*/
 </style>

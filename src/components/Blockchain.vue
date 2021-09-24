@@ -50,9 +50,9 @@
                     {{ block.numTransactions.toLocaleString() }}
                     transaction{{ block.numTransactions !== 1 ? "s" : "" }}
                   </small>
-                  <!-- <small class="text-muted" v-if="block.size">
+                  <small class="text-muted" v-if="block.size">
                     <span>&bull; {{ Math.round(block.size / 1000) }} KB</span>
-                  </small>-->
+                  </small>
                 </div>
               </div>
               <small
@@ -215,6 +215,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media (prefers-color-scheme: dark) {
+  .blockchain-container {
+    &:before,
+    &:after {
+      background-image: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0),
+        #2a3244
+      ) !important;
+    }
+  }
+}
 .blockchain-container {
   position: relative;
   ul {
@@ -445,10 +457,10 @@ export default {
   opacity: 0;
   transform: translateY(2rem);
 }
-
+/*
 .blockchain-leave-active {
   // position: absolute;
-}
+}*/
 
 @keyframes spin-cube {
   0% {

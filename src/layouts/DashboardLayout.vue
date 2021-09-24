@@ -1,16 +1,25 @@
 <template>
   <div>
-    <b-navbar type="light" variant="default" class="nav-horizontal">
-      <div>
-        <b-navbar-brand to="/dashboard">
-          <img src="@/assets/logo.svg" alt="Umbrel" height="50" />
-        </b-navbar-brand>
-      </div>
+    <b-navbar
+      :type="
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light'
+      "
+      variant="default"
+      class="nav-horizontal"
+    >
+      <div class="container-fluid">
+        <div>
+          <b-navbar-brand to="/dashboard">
+            <img src="@/assets/logo.svg" alt="Umbrel" height="50" />
+          </b-navbar-brand>
+        </div>
 
-      <!-- <b-navbar-toggle target="nav-collapse"></b-navbar-toggle> -->
+        <!-- <b-navbar-toggle target="nav-collapse"></b-navbar-toggle> -->
 
-      <!-- Search Bar -->
-      <!-- <b-navbar-nav>
+        <!-- Search Bar -->
+        <!-- <b-navbar-nav>
         <div class="px-lg-4 px-xl-5 mx-xl-4"></div>
         <b-nav-form class="input-search-form">
           <b-form-input
@@ -22,34 +31,35 @@
         </b-nav-form>
       </b-navbar-nav>-->
 
-      <!-- Right aligned nav items -->
-      <b-navbar-nav class="ml-auto">
-        <!-- Chain badge -->
-        <b-badge
-          variant="success"
-          v-if="chain !== 'main'"
-          class="align-self-center mr-2 text-capitalize"
-          pill
-          >{{ chain === "test" ? "testnet" : chain }}</b-badge
-        >
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="ml-auto">
+          <!-- Chain badge -->
+          <b-badge
+            variant="success"
+            v-if="chain !== 'main'"
+            class="align-self-center mr-2 text-capitalize"
+            pill
+            >{{ chain === "test" ? "testnet" : chain }}</b-badge
+          >
 
-        <div
-          class="nav-hamburger-icon d-lg-none d-xl-none ml-1"
-          :class="{ active: isMobileMenuOpen }"
-          @click="toggleMobileMenu"
-        >
-          <div></div>
-        </div>
-        <b-nav-item-dropdown
-          class="d-none d-lg-block d-xl-block"
-          right
-          no-caret
-        >
-          <!-- Using 'button-content' slot -->
-          <template v-slot:button-content>{{ name.split(" ")[0] }}</template>
-          <b-dropdown-item @click="logout">Log out</b-dropdown-item>
-        </b-nav-item-dropdown>
-      </b-navbar-nav>
+          <div
+            class="nav-hamburger-icon d-lg-none d-xl-none ml-1"
+            :class="{ active: isMobileMenuOpen }"
+            @click="toggleMobileMenu"
+          >
+            <div></div>
+          </div>
+          <b-nav-item-dropdown
+            class="d-none d-lg-block d-xl-block"
+            right
+            no-caret
+          >
+            <!-- Using 'button-content' slot -->
+            <template v-slot:button-content>{{ name.split(" ")[0] }}</template>
+            <b-dropdown-item @click="logout">Log out</b-dropdown-item>
+          </b-nav-item-dropdown>
+        </b-navbar-nav>
+      </div>
     </b-navbar>
 
     <!-- Mobile menu -->
