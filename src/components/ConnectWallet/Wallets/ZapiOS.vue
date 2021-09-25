@@ -37,7 +37,7 @@
       <step> Tap <span class="font-weight-bold">"Connect"</span> </step>
       <step>
         Congratulations! You have successfully connected Zap (iOS) to your
-        Umbrel.
+        Citadel.
       </step>
     </step-list>
   </connection-details>

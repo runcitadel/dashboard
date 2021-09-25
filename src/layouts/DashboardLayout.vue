@@ -12,7 +12,7 @@
       <div class="container-fluid">
         <div>
           <b-navbar-brand to="/dashboard">
-            <img src="@/assets/logo.svg" alt="Umbrel" height="50" />
+            <img src="@/assets/logo.svg" alt="Citadel" height="50" />
           </b-navbar-brand>
         </div>
 
@@ -101,7 +101,7 @@
         >
           <template v-slot:modal-header>
             <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
-              <h3>Umbrel v{{ availableUpdate.version }}</h3>
+              <h3>Citadel v{{ availableUpdate.version }}</h3>
               <!-- Emulate built in modal header close button action -->
               <a
                 href="#"
@@ -171,7 +171,7 @@
               :href="`https://github.com/getumbrel/umbrel/releases/tag/v${availableUpdate.version}`"
               target="_blank"
               class="alert-link"
-              >Umbrel v{{ availableUpdate.version }}</a
+              >Citadel v{{ availableUpdate.version }}</a
             >
             &nbsp;is now available to install
             <a
@@ -196,7 +196,7 @@
             dismissible
           >
             <b-icon icon="exclamation-circle" class="mr-2"></b-icon>
-            <b>Low RAM:</b> Your Umbrel is running low on RAM. Consider
+            <b>Low RAM:</b> Your Citadel is running low on RAM. Consider
             uninstalling some apps or upgrading your Citadel's hardware.
             <router-link to="/settings#ram" class="alert-link float-right"
               >View usage</router-link
@@ -210,7 +210,7 @@
             dismissible
           >
             <b-icon icon="exclamation-circle" class="mr-2"></b-icon>
-            <b>Low storage:</b> Your Umbrel only has
+            <b>Low storage:</b> Your Citadel only has
             {{ readableSize(storage.total - storage.used) }} of storage left.
             Consider uninstalling some apps or upgrading to a larger drive.
             <router-link to="/settings#storage" class="alert-link float-right"
@@ -237,14 +237,7 @@
         <!-- Footer -->
         <footer class="d-flex justify-content-end text-muted pr-sm-2 pr-xl-3">
           <p>
-            <small>
-              <!--<a href="https://getumbrel.com" target="_blank">getumbrel.com</a>
-              |
-              <a href="https://community.getumbrel.com" target="_blank"
-                >community</a
-              >-->
-              Powered by Citadel
-            </small>
+            <small> Powered by Citadel </small>
           </p>
         </footer>
       </b-col>
@@ -333,7 +326,7 @@ export default {
         `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/util/download-channel-backup`,
         {},
         true,
-        "my-umbrel-channels.backup"
+        "my-citadel-channels.backup"
       );
     },
     hideUpdateConfirmationModal() {

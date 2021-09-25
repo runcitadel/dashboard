@@ -63,7 +63,11 @@
               v-for="image in app.gallery"
               class="d-none"
               :key="app.id + image"
-              :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`"
+              :src="
+                image.startsWith('http')
+                  ? image
+                  : `https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`
+              "
             />
           </div>
         </router-link>

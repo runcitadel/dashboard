@@ -367,7 +367,7 @@ export default {
         `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/util/download-channel-backup`,
         {},
         true,
-        "my-umbrel-channels.backup"
+        "my-citadel-channels.backup"
       );
     },
     manageChannel(channel) {

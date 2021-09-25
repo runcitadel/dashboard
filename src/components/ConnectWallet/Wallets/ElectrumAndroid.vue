@@ -37,7 +37,7 @@
       </step>
       <step>
         Congratulations! You have successfully connected Electrum Wallet to your
-        Umbrel.
+        Citadel.
       </step>
     </step-list>
   </connection-details>

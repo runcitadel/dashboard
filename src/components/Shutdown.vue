@@ -10,7 +10,7 @@
     "
   >
     <img
-      alt="Umbrel"
+      alt="Citadel"
       src="@/assets/logo.svg"
       height="200"
       class="mb-5 logo"

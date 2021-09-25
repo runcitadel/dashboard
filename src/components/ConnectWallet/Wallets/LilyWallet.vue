@@ -46,12 +46,12 @@
       </step>
       <step>
         Congratulations! You have successfully connected Lily Wallet to your
-        Umbrel.
+        Citadel.
       </step>
     </step-list>
 
     <b-alert class="my-4 px-2 py-3" variant="info" show
-      >Note: After connecting Lily Wallet to Umbrel, your accounts in Lily will
+      >Note: After connecting Lily Wallet to Citadel, your accounts in Lily will
       need to sync which may take some time. <br /><br />
       For detailed instructions with pictures, check out
       <b-link

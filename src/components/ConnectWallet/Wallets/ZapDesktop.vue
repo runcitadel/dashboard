@@ -17,7 +17,7 @@
       </step>
       <step>
         Congratulations! You have successfully connected Zap (Desktop) to your
-        Umbrel.
+        Citadel.
       </step>
     </step-list>
   </connection-details>

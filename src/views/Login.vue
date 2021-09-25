@@ -4,7 +4,7 @@
       class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
       v-if="loading"
     >
-      <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
+      <img alt="Citadel" src="@/assets/logo.svg" class="mb-2 logo" />
       <b-spinner class="my-5"></b-spinner>
     </div>-->
 
@@ -19,7 +19,7 @@
       "
     >
       <img
-        alt="Umbrel"
+        alt="Citadel"
         src="@/assets/logo.svg"
         height="200"
         class="mb-2 logo"

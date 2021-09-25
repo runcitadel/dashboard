@@ -8,8 +8,8 @@
         >native Specter Desktop application</b-link
       >. If you're using the
       <b-link to="/app-store/specter-desktop"> Specter Desktop app</b-link> on
-      Umbrel, you do not need to follow these instructions as Specter
-      automatically connects to Bitcoin Core on Umbrel.</b-alert
+      Citadel, you do not need to follow these instructions as Specter
+      automatically connects to Bitcoin Core on your Citadel.</b-alert
     >
     <step-list>
       <step>
@@ -64,7 +64,7 @@
       </step>
       <step>
         Congratulations! You have successfully connected Specter Desktop to your
-        Umbrel.
+        Citadel.
       </step>
     </step-list>
 

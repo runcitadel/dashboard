@@ -11,7 +11,7 @@
       "
     >
       <img
-        alt="Umbrel"
+        alt="Citadel"
         src="@/assets/logo.svg"
         height="200"
         class="mb-2 logo"
@@ -85,7 +85,7 @@
                 variant="warning"
                 class="mr-1"
               ></b-icon
-              >Umbrel is in beta and should not be considered secure
+              >Citadel is in beta and should not be considered secure
             </span>
             <span class="d-block text-muted text-small mb-1">
               <b-icon
@@ -93,7 +93,7 @@
                 variant="warning"
                 class="mr-1"
               ></b-icon
-              >I should not put more funds on my Umbrel than I'm prepared to
+              >I should not put more funds on my Citadel than I'm prepared to
               lose
             </span>
           </div>
@@ -102,12 +102,12 @@
         <div class="text-center" v-show="currentStep === 8">
           <p class="text-muted">
             But you don't have to wait for the sync to complete... You can start
-            using Umbrel right away!
+            using Citadel right away!
           </p>
           <a
             href="#"
             v-b-tooltip.hover.bottom
-            title="Umbrel uses neutrino while the sync is in progress, and automatically switches to Bitcoin Core once it's synced"
+            title="Citadel uses neutrino while the sync is in progress, and automatically switches to Bitcoin Core once it's synced"
           >
             <small>
               <b-icon
@@ -194,7 +194,7 @@ export default {
       currentStep: 0,
       steps: [
         {
-          heading: "welcome to umbrel",
+          heading: "welcome to citadel",
           text: "Your journey to become bitcoin starts now.",
         },
         {
@@ -227,7 +227,7 @@ export default {
         },
         {
           heading: "🎉 that's it!",
-          text: "Congratulations! Your Umbrel is now set up and synchronizing the Bitcoin blockchain.",
+          text: "Congratulations! Your Citadel is now set up and synchronizing the Bitcoin blockchain.",
         },
       ],
       notedSeed: false,
@@ -246,7 +246,7 @@ export default {
     }),
     heading() {
       if (this.currentStep === 5 && this.recover) {
-        return "recover your umbrel";
+        return "recover your citadel";
       }
       return this.steps[this.currentStep]["heading"];
     },

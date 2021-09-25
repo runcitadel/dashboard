@@ -111,7 +111,7 @@
               >
                 <div class="d-flex align-items-center">
                   <img
-                    v-if="app.id === 'umbrel'"
+                    v-if="app.id === 'umbrel' || app.id === 'citadel'"
                     class="app-stat-list-item-icon mr-2"
                     :src="require(`@/assets/icon-system.svg`)"
                   />
@@ -124,7 +124,7 @@
                     <div
                       class="d-flex justify-content-between align-items-center"
                     >
-                      <span v-if="app.id === 'umbrel'"
+                      <span v-if="app.id === 'umbrel' || app.id === 'citadel'"
                         >System
                         <b-icon
                           icon="info-circle-fill"

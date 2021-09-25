@@ -57,8 +57,8 @@
               <div class="w-75">
                 <span class="d-block">Remote access</span>
                 <small class="d-block" style="opacity: 0.4"
-                  >Remotely access your Citadel from anywhere using a Tor browser
-                  on this URL</small
+                  >Remotely access your Citadel from anywhere using a Tor
+                  browser on this URL</small
                 >
               </div>
               <toggle-switch
@@ -328,7 +328,9 @@
               <template v-slot:modal-header="{ close }">
                 <div class="px-2 pt-2 d-flex justify-content-between w-100">
                   <h4 v-if="loadingDebug">Generating logs...</h4>
-                  <h4 v-else>{{ showDmesg ? "DMESG logs" : "Umbrel logs" }}</h4>
+                  <h4 v-else>
+                    {{ showDmesg ? "DMESG logs" : "Citadel logs" }}
+                  </h4>
                   <!-- Emulate built in modal header close button action -->
                   <a
                     href="#"
@@ -372,7 +374,7 @@
                     @click="showDmesg = !showDmesg"
                   >
                     <b-icon icon="arrow-left-right" class="mr-1"></b-icon> View
-                    {{ !showDmesg ? "DMESG logs" : "Umbrel logs" }}
+                    {{ !showDmesg ? "DMESG logs" : "Citadel logs" }}
                   </b-button>
                   <b-button
                     size="sm"
@@ -380,7 +382,7 @@
                     @click="downloadTextFile(debugContents, debugFilename)"
                   >
                     <b-icon icon="download" class="mr-2"></b-icon>Download
-                    {{ showDmesg ? "DMESG logs" : "Umbrel logs" }}
+                    {{ showDmesg ? "DMESG logs" : "Citadel logs" }}
                   </b-button>
                 </div>
               </template>
@@ -389,21 +391,21 @@
         </div>
         <div class="px-3 px-lg-4 pb-4">
           <div class="w-100 d-flex justify-content-between mb-1">
-            <span class="align-self-end">Umbrel Version</span>
+            <span class="align-self-end">Citadel Version</span>
             <span class="font-weight-normal mb-0">{{ version }}</span>
           </div>
           <div v-show="!isCheckingForUpdate">
             <span v-show="!availableUpdate.version">
               <b-icon icon="check-circle-fill" variant="success"></b-icon>
               <small class="ml-1" style="opacity: 0.4"
-                >Your Umbrel is on the latest version</small
+                >Your Citadel is on the latest version</small
               >
             </span>
             <div v-show="availableUpdate.version">
               <span class="d-block">
                 <b-icon icon="bell-fill" variant="success"></b-icon>
                 <small class="text-muted ml-1"
-                  >Umbrel v{{ availableUpdate.version }} is now available to
+                  >Citadel v{{ availableUpdate.version }} is now available to
                   install</small
                 >
               </span>
@@ -492,7 +494,7 @@ export default {
     },
     debugFilename() {
       const type = this.showDmesg ? "dmesg" : "debug";
-      return `umbrel-${Date.now()}-${type}.log`;
+      return `citadel-${Date.now()}-${type}.log`;
     },
     isAllowedToChangePassword() {
       if (!this.currentPassword) {
@@ -517,17 +519,6 @@ export default {
   },
   methods: {
     async changePassword() {
-      // disable on testnet
-      if (window.location.hostname === "testnet.getumbrel.com") {
-        return this.$bvToast.toast('y u try to do dis on testnet :"(', {
-          title: "Error",
-          autoHideDelay: 3000,
-          variant: "danger",
-          solid: true,
-          toaster: "b-toaster-bottom-right",
-        });
-      }
-
       const payload = {
         password: this.currentPassword,
         newPassword: this.newPassword,
@@ -618,17 +609,6 @@ export default {
       window.URL.revokeObjectURL(url);
     },
     async shutdownPrompt() {
-      // disable on testnet
-      if (window.location.hostname === "testnet.getumbrel.com") {
-        return this.$bvToast.toast('y u try to do dis on testnet :"(', {
-          title: "Error",
-          autoHideDelay: 3000,
-          variant: "danger",
-          solid: true,
-          toaster: "b-toaster-bottom-right",
-        });
-      }
-
       // Get user consent first
       const approved = await this.$bvModal.msgBoxConfirm(
         "Your Lightning wallet will not be able to receive any payments while your Citadel is offline.",
@@ -650,22 +630,12 @@ export default {
       } catch (e) {
         toastText = "Shutdown failed";
         toastOptions.title =
-          "Something went wrong and Umbrel was not able to shutdown";
+          "Something went wrong and Citadel was not able to shutdown";
         toastOptions.variant = "danger";
       }
       this.$bvToast.toast(toastText, toastOptions);
     },
     rebootPrompt() {
-      // disable on testnet
-      if (window.location.hostname === "testnet.getumbrel.com") {
-        return this.$bvToast.toast('y u try to do dis on testnet :"(', {
-          title: "Error",
-          autoHideDelay: 3000,
-          variant: "danger",
-          solid: true,
-          toaster: "b-toaster-bottom-right",
-        });
-      }
       // Reset any cached hasRebooted value from previous reboot
       this.$store.commit("system/setHasRebooted", false);
       this.$refs["reboot-modal"].show();
@@ -677,7 +647,7 @@ export default {
           await this.$store.dispatch("system/reboot");
         } catch (e) {
           this.$bvToast.toast("Reboot failed", {
-            title: "Something went wrong and Umbrel was not able to reboot",
+            title: "Something went wrong and Citadel was not able to reboot",
             autoHideDelay: 3000,
             variant: "danger",
             solid: true,

@@ -8,7 +8,7 @@
       </step>
       <step>
         Open the app and follow instructions to connect Samourai Wallet to your
-        Umbrel Dojo.
+        Citadel's Dojo.
       </step>
     </step-list>
   </connection-details>
