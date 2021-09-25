@@ -1,11 +1,7 @@
 <template>
   <div>
     <b-navbar
-      :type="
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-          ? 'dark'
-          : 'light'
-      "
+      :type="isDarkMode ? 'dark' : 'light'"
       variant="default"
       class="nav-horizontal"
     >
@@ -293,6 +289,15 @@ export default {
     },
     isMobileMenuOpen() {
       return this.$store.getters.isMobileMenuOpen;
+    },
+    isDarkMode() {
+      let dark = window
+        ? window.matchMedia("(prefers-color-scheme: dark)").matches
+        : false;
+      dark = matchMedia
+        ? matchMedia("(prefers-color-scheme: dark)").matches
+        : dark;
+      return dark;
     },
   },
   methods: {
