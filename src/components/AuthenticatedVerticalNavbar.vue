@@ -326,28 +326,28 @@ export default {
 <style lang="scss" scoped>
 @media (prefers-color-scheme: dark) {
   .nav-vertical {
-    background: transparent;
+    background: transparent !important;
     .nav-item {
       .nav-link {
-        color: #dde2ee;
+        color: #dde2ee !important;
         svg {
           path,
           rect {
-            fill: #dde2ee;
+            fill: #dde2ee !important;
           }
         }
         &:hover,
         &:active,
         &:focus {
-          color: #dde2ee;
+          color: #dde2ee !important;
         }
         &.active {
-          opacity: 1;
-          color: #5351fb;
+          opacity: 1 !important;
+          color: #5351fb !important;
           svg {
             path,
             rect {
-              fill: #5351fb;
+              fill: #5351fb !important;
             }
           }
         }
