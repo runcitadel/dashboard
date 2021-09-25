@@ -23,7 +23,9 @@
             </h3>
             <small class="text-muted"
               >~
-              {{ (this.btcBalance + this.lightningBalance) | satsToUSD }}</small
+              {{
+                $filters.satsToUSD(this.btcBalance + this.lightningBalance)
+              }}</small
             >
           </div>
           <span

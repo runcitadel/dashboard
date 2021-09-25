@@ -17,7 +17,7 @@
     <template v-slot:title>
       <div
         v-b-tooltip.hover.right
-        :title="walletBalanceInSats | satsToUSD"
+        :title="$filters.satsToUSD(walletBalanceInSats)"
         v-if="walletBalance !== -1"
       >
         <CountUp

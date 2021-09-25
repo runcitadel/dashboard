@@ -14,6 +14,7 @@ import { satsToBtc } from "@/helpers/units";
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 
+// TODO: Remove these
 //transforms a number to sats or btc based on store
 Vue.filter("unit", (value) => {
   if (store.state.system.unit === "sats") {
@@ -56,6 +57,44 @@ Vue.filter("satsToUSD", (value) => {
 Vue.filter("localize", (n) =>
   Number(n).toLocaleString(undefined, { maximumFractionDigits: 8 })
 );
+
+Vue.config.globalProperties.$filters = {
+  satsToUSD(value) {
+    if (isNaN(parseInt(value))) {
+      return value;
+    } else {
+      return (
+        "$" +
+        Number(
+          (satsToBtc(value) * store.state.bitcoin.price).toFixed(2)
+        ).toLocaleString()
+      );
+    }
+  },
+  sats(value) {
+    return Number(value);
+  },
+  btc(value) {
+    return satsToBtc(value);
+  },
+  unit(value) {
+    if (store.state.system.unit === "sats") {
+      return Number(value);
+    } else if (store.state.system.unit === "btc") {
+      return satsToBtc(value);
+    }
+  },
+  formatUnit(unit) {
+    if (unit === "sats") {
+      return "Sats";
+    } else if (unit === "btc") {
+      return "BTC";
+    }
+  },
+  localize(n) {
+    return Number(n).toLocaleString(undefined, { maximumFractionDigits: 8 });
+  },
+};
 
 Vue.config.productionTip = false;
 
