@@ -151,10 +151,11 @@
               <span>Developer</span>
               <a :href="app.website" target="_blank">{{ app.developer }}</a>
             </div>
-            <div class="d-flex justify-content-between mb-3">
+            <!-- We don't need to show this until there are incompatible apps -->
+            <!--<div class="d-flex justify-content-between mb-3">
               <span>Compatibility</span>
               <span>Compatible</span>
-            </div>
+            </div>-->
             <div class="mb-4" v-if="app.dependencies.length">
               <span class="d-block mb-3">Requires</span>
               <div

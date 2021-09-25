@@ -21,7 +21,7 @@
             <small class="ml-1 text-success">Running</small>
             <h3 class="d-block font-weight-bold mb-1">Bitcoin Core</h3>
             <span class="d-block text-muted">{{
-              version ? `v${version}` : "..."
+              version ? `v${version}` : "Loading..."
             }}</span>
           </div>
         </div>
