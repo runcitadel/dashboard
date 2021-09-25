@@ -33,8 +33,8 @@
           }}</small>
           <b-alert class="system-alert" variant="warning" show>
             <small
-              >Please do not refresh this page or turn off your Citadel while the
-              update is in progress</small
+              >Please do not refresh this page or turn off your Citadel while
+              the update is in progress</small
             >
           </b-alert>
         </div>
