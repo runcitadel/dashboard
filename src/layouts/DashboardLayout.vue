@@ -24,18 +24,18 @@
       </b-navbar-nav>-->
 
         <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
+        <b-navbar-nav class="ms-auto">
           <!-- Chain badge -->
           <b-badge
             variant="success"
             v-if="chain !== 'main'"
-            class="align-self-center mr-2 text-capitalize"
+            class="align-self-center me-2 text-capitalize"
             pill
             >{{ chain === "test" ? "testnet" : chain }}</b-badge
           >
 
           <div
-            class="nav-hamburger-icon d-lg-none d-xl-none ml-1"
+            class="nav-hamburger-icon d-lg-none d-xl-none ms-1"
             :class="{ active: isMobileMenuOpen }"
             @click="toggleMobileMenu"
           >
@@ -135,7 +135,7 @@
                   size="sm"
                   @click="downloadChannelBackup"
                 >
-                  <small> <b-icon icon="download" class="mr-1"></b-icon> </small
+                  <small> <b-icon icon="download" class="me-1"></b-icon> </small
                   >Download channel backup
                 </b-button>
               </b-alert>
@@ -158,7 +158,7 @@
             :show="!!availableUpdate.version"
             dismissible
           >
-            <b-icon icon="bell-fill" class="mr-2"></b-icon>
+            <b-icon icon="bell-fill" class="me-2"></b-icon>
             <a
               :href="`https://github.com/getumbrel/umbrel/releases/tag/v${availableUpdate.version}`"
               target="_blank"
@@ -187,7 +187,7 @@
             show
             dismissible
           >
-            <b-icon icon="exclamation-circle" class="mr-2"></b-icon>
+            <b-icon icon="exclamation-circle" class="me-2"></b-icon>
             <b>Low RAM:</b> Your Citadel is running low on RAM. Consider
             uninstalling some apps or upgrading your Citadel's hardware.
             <router-link to="/settings#ram" class="alert-link float-right"
@@ -201,7 +201,7 @@
             show
             dismissible
           >
-            <b-icon icon="exclamation-circle" class="mr-2"></b-icon>
+            <b-icon icon="exclamation-circle" class="me-2"></b-icon>
             <b>Low storage:</b> Your Citadel only has
             {{ readableSize(storage.total - storage.used) }} of storage left.
             Consider uninstalling some apps or upgrading to a larger drive.
@@ -216,7 +216,7 @@
             show
             dismissible
           >
-            <b-icon icon="exclamation-circle" class="mr-2"></b-icon>
+            <b-icon icon="exclamation-circle" class="me-2"></b-icon>
             <b>High temperature:</b> Your Raspberry Pi is running hot. Consider
             using a heatsink, fan or a cooling case.
           </b-alert>

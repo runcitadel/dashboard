@@ -4,7 +4,7 @@
     v-if="percent < 99 && (requires === 'electrum' || requires === 'bitcoind')"
     show
   >
-    <svg class="icon-clock icon-clock-warning mr-1" viewBox="0 0 40 40">
+    <svg class="icon-clock icon-clock-warning me-1" viewBox="0 0 40 40">
       <circle cx="20" cy="20" r="18" />
       <line x1="0" y1="0" x2="8" y2="0" class="hour" />
       <line x1="0" y1="0" x2="12" y2="0" class="minute" />

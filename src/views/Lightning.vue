@@ -5,7 +5,7 @@
         <div class="d-flex justify-content-start align-items-center">
           <img
             style="height: auto; width: 12vw; max-width: 100px"
-            class="mr-2 mr-sm-3"
+            class="me-2 me-sm-3"
             src="@/assets/icon-app-lnd.svg"
           />
           <div>
@@ -18,7 +18,7 @@
             >
               <circle cx="4" cy="4" r="4" fill="#00CD98" />
             </svg>
-            <small class="ml-1 text-success">{{ status }}</small>
+            <small class="ms-1 text-success">{{ status }}</small>
             <h3 class="d-block font-weight-bold mb-1">Lightning Network</h3>
             <span class="d-block text-muted">
               {{
@@ -109,7 +109,7 @@
                   class="qr-image mx-auto"
                   showLogo
                 ></qr-code>
-                <div class="w-100 align-self-center ml-3 ml-sm-4">
+                <div class="w-100 align-self-center ms-3 ms-sm-4">
                   <p>
                     Other Lightning nodes can open payment channels to your node
                     on the following address

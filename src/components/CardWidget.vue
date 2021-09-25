@@ -31,7 +31,7 @@
               toggle-class="text-decoration-none p-0"
               no-caret
               right
-              class="ml-2"
+              class="ms-2"
             >
               <template v-slot:button-content>
                 <svg

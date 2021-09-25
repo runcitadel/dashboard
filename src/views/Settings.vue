@@ -373,7 +373,7 @@
                     variant="outline-success"
                     @click="showDmesg = !showDmesg"
                   >
-                    <b-icon icon="arrow-left-right" class="mr-1"></b-icon> View
+                    <b-icon icon="arrow-left-right" class="me-1"></b-icon> View
                     {{ !showDmesg ? "DMESG logs" : "Citadel logs" }}
                   </b-button>
                   <b-button
@@ -381,7 +381,7 @@
                     variant="outline-success"
                     @click="downloadTextFile(debugContents, debugFilename)"
                   >
-                    <b-icon icon="download" class="mr-2"></b-icon>Download
+                    <b-icon icon="download" class="me-2"></b-icon>Download
                     {{ showDmesg ? "DMESG logs" : "Citadel logs" }}
                   </b-button>
                 </div>
@@ -397,14 +397,14 @@
           <div v-show="!isCheckingForUpdate">
             <span v-show="!availableUpdate.version">
               <b-icon icon="check-circle-fill" variant="success"></b-icon>
-              <small class="ml-1" style="opacity: 0.4"
+              <small class="ms-1" style="opacity: 0.4"
                 >Your Citadel is on the latest version</small
               >
             </span>
             <div v-show="availableUpdate.version">
               <span class="d-block">
                 <b-icon icon="bell-fill" variant="success"></b-icon>
-                <small class="text-muted ml-1"
+                <small class="text-muted ms-1"
                   >Citadel v{{ availableUpdate.version }} is now available to
                   install</small
                 >
@@ -435,7 +435,7 @@
         >
           <b-icon
             icon="arrow-repeat"
-            class="mr-2"
+            class="me-2"
             :animation="isCheckingForUpdate ? 'spin' : ''"
           ></b-icon>
           {{ isCheckingForUpdate ? "Checking for update" : "Check for update" }}

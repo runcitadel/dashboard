@@ -83,7 +83,7 @@
               <b-icon
                 icon="exclamation-circle-fill"
                 variant="warning"
-                class="mr-1"
+                class="me-1"
               ></b-icon
               >Citadel is in beta and should not be considered secure
             </span>
@@ -91,7 +91,7 @@
               <b-icon
                 icon="exclamation-circle-fill"
                 variant="warning"
-                class="mr-1"
+                class="me-1"
               ></b-icon
               >I should not put more funds on my Citadel than I'm prepared to
               lose
@@ -113,7 +113,7 @@
               <b-icon
                 icon="exclamation-circle-fill"
                 variant="primary"
-                class="mr-1"
+                class="me-1"
               ></b-icon
               >How?
             </small>

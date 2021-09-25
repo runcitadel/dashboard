@@ -10,7 +10,7 @@
           viewBox="0 0 7 13"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          class="mr-1"
+          class="me-1"
         >
           <path
             d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
@@ -30,7 +30,7 @@
         <div class="d-flex w-xs-100 justify-content-start pr-2">
           <div class="d-block">
             <img
-              class="app-icon app-icon-lg mr-2 mr-sm-3 align-self-top"
+              class="app-icon app-icon-lg me-2 me-sm-3 align-self-top"
               :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
             />
           </div>
@@ -122,7 +122,7 @@
     <div class="app-gallery pt-3 pb-4 mb-2 mb-sm-3">
       <img
         v-for="image in app.gallery"
-        class="app-gallery-screen mr-3"
+        class="app-gallery-screen me-3"
         :key="image"
         :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`"
       />
@@ -169,7 +169,7 @@
                       require(`@/assets/app-store/dependencies/${dependency}.svg`)
                     "
                     style="width: 50px; height: 50px"
-                    class="mr-2"
+                    class="me-2"
                   />
                   <span class="text-muted my-0">{{
                     formatDependency(dependency)

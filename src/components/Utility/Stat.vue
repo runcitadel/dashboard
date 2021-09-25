@@ -50,7 +50,7 @@
           />
         </svg>
         <span
-          class="change-text ml-1"
+          class="change-text ms-1"
           :class="{
             'text-success': change.value > 0,
             'text-danger': change.value < 0,

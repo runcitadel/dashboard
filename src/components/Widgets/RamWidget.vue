@@ -112,12 +112,12 @@
                 <div class="d-flex align-items-center">
                   <img
                     v-if="app.id === 'umbrel' || app.id === 'citadel'"
-                    class="app-stat-list-item-icon mr-2"
+                    class="app-stat-list-item-icon me-2"
                     :src="require(`@/assets/icon-system.svg`)"
                   />
                   <img
                     v-else
-                    class="app-stat-list-item-icon mr-2"
+                    class="app-stat-list-item-icon me-2"
                     :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
                   />
                   <div class="w-100">
@@ -130,7 +130,7 @@
                           icon="info-circle-fill"
                           style="opacity: 0.4"
                           variant="dark"
-                          class="ml-1"
+                          class="ms-1"
                           v-b-tooltip.hover.bottom
                           title="Including Bitcoin Core, LND, and Electrum server"
                         ></b-icon>

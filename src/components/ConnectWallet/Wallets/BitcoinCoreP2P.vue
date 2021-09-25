@@ -13,10 +13,10 @@
         @click="$emit('showQrModal', urls.bitcoin.p2p.connectionString)"
         v-bind:style="{ cursor: 'pointer' }"
       ></qr-code>
-      <div class="w-100 align-self-center ml-lg-3 connect-wallet-steps">
+      <div class="w-100 align-self-center ms-lg-3 connect-wallet-steps">
         <div class="connect-wallet-step">
           <label class="mb-1 d-block"
-            ><small class="ml-1 font-weight-bold"
+            ><small class="ms-1 font-weight-bold"
               >Bitcoin Core P2P Address (Host)</small
             ></label
           >
@@ -28,7 +28,7 @@
         </div>
         <div class="connect-wallet-step">
           <label class="mb-1 d-block"
-            ><small class="ml-1 font-weight-bold"
+            ><small class="ms-1 font-weight-bold"
               >Bitcoin Core P2P Port</small
             ></label
           >

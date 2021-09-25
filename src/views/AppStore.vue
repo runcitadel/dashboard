@@ -31,7 +31,7 @@
           <div class="d-flex">
             <div class="d-flex justify-content-center flex-column mx-2">
               <img
-                class="app-icon mr-2 mr-lg-3"
+                class="app-icon me-2 me-lg-3"
                 :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
               />
             </div>
@@ -50,7 +50,7 @@
             viewBox="0 0 14 25"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            class="ml-4 icon-arrow"
+            class="ms-4 icon-arrow"
           >
             <path
               d="M0.512563 3.0484C-0.170855 2.35104 -0.170855 1.22039 0.512563 0.523023C1.19598 -0.174341 2.30402 -0.174341 2.98744 0.523023L13.4874 11.2373C14.1499 11.9133 14.1731 13.0019 13.54 13.7066L3.91502 24.4209C3.26193 25.1479 2.15494 25.197 1.44248 24.5306C0.730023 23.8642 0.681893 22.7346 1.33498 22.0076L9.82776 12.5537L0.512563 3.0484Z"
@@ -74,7 +74,7 @@
       </card-widget>
       <!--<card-widget class="pb-2 card-app-list umbrel-dev-note mt-2">
         <div class="px-3 px-lg-4 py-3">
-          <span class="rocket ml-3 ml-lg-4">🚀</span>
+          <span class="rocket ms-3 ms-lg-4">🚀</span>
           <h4 class="font-weight-normal mt-4">
             Get your app on the Umbrel App Store
           </h4>

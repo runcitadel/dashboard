@@ -13,7 +13,7 @@
         @click="$emit('showQrModal', urls.lnd.restLocal)"
         v-bind:style="{ cursor: 'pointer' }"
       ></qr-code>
-      <div class="w-100 align-self-center ml-lg-3">
+      <div class="w-100 align-self-center ms-lg-3">
         <label class="mb-1 d-block"
           ><small class="font-weight-bold">lndconnect URL</small></label
         >

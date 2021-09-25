@@ -13,10 +13,10 @@
         @click="$emit('showQrModal', urls.bitcoin.electrum.connectionString)"
         v-bind:style="{ cursor: 'pointer' }"
       ></qr-code>
-      <div class="w-100 align-self-center ml-lg-3 connect-wallet-steps">
+      <div class="w-100 align-self-center ms-lg-3 connect-wallet-steps">
         <div class="connect-wallet-step">
           <label class="mb-1 d-block"
-            ><small class="ml-1 font-weight-bold"
+            ><small class="ms-1 font-weight-bold"
               >Electrum Address</small
             ></label
           >
@@ -28,7 +28,7 @@
         </div>
         <div class="connect-wallet-step">
           <label class="mb-1 d-block"
-            ><small class="ml-1 font-weight-bold">Electrum Port</small></label
+            ><small class="ms-1 font-weight-bold">Electrum Port</small></label
           >
           <input-copy
             class="my-1"
@@ -38,9 +38,9 @@
         </div>
         <div class="connect-wallet-step">
           <label class="mb-1 d-block"
-            ><small class="ml-1 font-weight-bold">SSL</small></label
+            ><small class="ms-1 font-weight-bold">SSL</small></label
           >
-          <small class="ml-1">Disabled</small>
+          <small class="ms-1">Disabled</small>
         </div>
       </div>
     </div>

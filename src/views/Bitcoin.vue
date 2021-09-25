@@ -5,7 +5,7 @@
         <div class="d-flex justify-content-start align-items-center">
           <img
             style="height: auto; width: 12vw; max-width: 100px"
-            class="mr-2 mr-sm-3"
+            class="me-2 me-sm-3"
             src="@/assets/icon-app-bitcoin.svg"
           />
           <div>
@@ -18,7 +18,7 @@
             >
               <circle cx="4" cy="4" r="4" fill="#00CD98" />
             </svg>
-            <small class="ml-1 text-success">Running</small>
+            <small class="ms-1 text-success">Running</small>
             <h3 class="d-block font-weight-bold mb-1">Bitcoin Core</h3>
             <span class="d-block text-muted">{{
               version ? `v${version}` : "Loading..."
