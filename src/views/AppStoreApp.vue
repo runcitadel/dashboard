@@ -27,7 +27,7 @@
           align-items-center
         "
       >
-        <div class="d-flex w-xs-100 justify-content-start pr-2">
+        <div class="d-flex w-xs-100 justify-content-start pe-2">
           <div class="d-block">
             <img
               class="app-icon app-icon-lg me-2 me-sm-3 align-self-top"
@@ -280,6 +280,7 @@ export default {
       this.pollOfflineApp();
     },
     openApp(event) {
+      if (this.app.id === "bluewallet") this.checkIfAppIsOffline = false;
       if (this.app.torOnly && window.location.origin.indexOf(".onion") < 0) {
         event.preventDefault();
         alert(

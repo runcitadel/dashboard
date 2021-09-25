@@ -108,6 +108,7 @@ export default {
     },
     async pollOfflineApp() {
       this.checkIfAppIsOffline = true;
+      if (this.id === "bluewallet") this.checkIfAppIsOffline = false;
       while (this.checkIfAppIsOffline) {
         try {
           await window.fetch(this.url, { mode: "no-cors" });

@@ -59,6 +59,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media (prefers-color-scheme: dark) {
+  .channel-list-containe {
+    &:before {
+      background-image: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0),
+        #2a3244
+      ) !important;
+    }
+
+    &:after {
+      background-image: linear-gradient(
+        to top,
+        rgba(255, 255, 255, 0),
+        #2a3244
+      ) !important;
+    }
+  }
+}
+
 .channel-list-container {
   overflow: hidden;
   position: relative;

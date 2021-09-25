@@ -10,7 +10,7 @@
       <b-form-select-option value="Windows">Windows</b-form-select-option>
     </b-form-select>
 
-    <ol class="pl-3" v-if="selectedOS == 'macOS'">
+    <ol class="ps-3" v-if="selectedOS == 'macOS'">
       <li class="mb-3">
         Open the "Terminal" app on your Mac and install
         <a href="https://brew.sh/" target="_blank">Homebrew</a> by running:
@@ -31,7 +31,7 @@
       </li>
     </ol>
 
-    <ol class="pl-3" v-else-if="selectedOS == 'Linux'">
+    <ol class="ps-3" v-else-if="selectedOS == 'Linux'">
       <li class="mb-3">
         Open Terminal and install Tor:
         <input-copy
@@ -42,7 +42,7 @@
       </li>
     </ol>
 
-    <ol class="pl-3" v-else-if="selectedOS == 'Windows'">
+    <ol class="ps-3" v-else-if="selectedOS == 'Windows'">
       <li class="mb-3">
         Download Tor "Windows Expert Bundle" from
         <a target="_blank" href="https://www.torproject.org/download/tor/"

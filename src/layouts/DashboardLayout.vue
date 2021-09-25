@@ -77,7 +77,7 @@
         col
         lg="3"
         xl="2"
-        class="d-none d-lg-block d-xl-block pl-0 pr-0 pr-xl-2"
+        class="d-none d-lg-block d-xl-block ps-0 pe-0 pe-xl-2"
       >
         <authenticated-vertical-navbar />
       </b-col>
@@ -151,7 +151,7 @@
             </div>
           </div>
         </b-modal>
-        <div class="pr-xl-2 content-container">
+        <div class="pe-xl-2 content-container">
           <b-alert
             class="mt-4 mb-0"
             variant="success"
@@ -227,7 +227,7 @@
         </div>
 
         <!-- Footer -->
-        <footer class="d-flex justify-content-end text-muted pr-sm-2 pr-xl-3">
+        <footer class="d-flex justify-content-end text-muted pe-sm-2 pe-xl-3">
           <p>
             <small> Powered by Citadel </small>
           </p>
