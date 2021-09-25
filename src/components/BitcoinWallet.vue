@@ -17,7 +17,7 @@
     <template v-slot:title>
       <div
         v-b-tooltip.hover.right
-        :title="$filters.satsToUSD(walletBalanceInSats)"
+        :title="walletBalanceInSats | satsToUSD"
         v-if="walletBalance !== -1"
       >
         <CountUp
@@ -210,7 +210,7 @@
                     <span
                       class="font-weight-bold d-block"
                       v-b-tooltip.hover.left
-                      :title="$filters.satsToUSD(satsToUSD)"
+                      :title="tx.amount | satsToUSD"
                     >
                       <!-- Positive or negative prefix with amount -->
                       <span v-if="tx.type === 'incoming'">+</span>
@@ -287,7 +287,7 @@
                 <small
                   class="text-muted mt-1 d-block text-right mb-0"
                   :style="{ opacity: withdraw.amount > 0 ? 1 : 0 }"
-                  >~ {{ $filters.satsToUSD(withdraw.amount) }}</small
+                  >~ {{ withdraw.amount | satsToUSD }}</small
                 >
               </div>
             </div>
@@ -349,7 +349,7 @@
                 {{ unit | formatUnit }}
               </span>
               <small class="text-muted d-block mb-3"
-                >~ {{ $filters.satsToUSD(withdraw.amount) }}</small
+                >~ {{ withdraw.amount | satsToUSD }}</small
               >
 
               <svg
@@ -381,11 +381,10 @@
                 <small>
                   ~
                   {{
-                    $filters.satsToUSD(
-                      (parseInt(fees.fast.total, 10) /
-                        parseInt(fees.fast.perByte, 10)) *
-                        parseInt(withdraw.selectedFee.satPerByte, 10)
-                    )
+                    ((parseInt(fees.fast.total, 10) /
+                      parseInt(fees.fast.perByte, 10)) *
+                      parseInt(withdraw.selectedFee.satPerByte, 10))
+                      | satsToUSD
                   }}
                   Transaction fee
                 </small>
@@ -408,9 +407,7 @@
                 <br />
                 <small>
                   ~
-                  {{
-                    $filters.satsToUSD(fees[withdraw.selectedFee.type]["total"])
-                  }}
+                  {{ fees[withdraw.selectedFee.type]["total"] | satsToUSD }}
                   Transaction fee
                 </small>
               </span>

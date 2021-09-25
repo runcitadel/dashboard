@@ -70,7 +70,7 @@
               <template v-slot:title>
                 <div
                   v-b-tooltip.hover.right
-                  :title="$filters.satsToUSD(btcBalanceInSats)"
+                  :title="btcBalanceInSats | satsToUSD"
                   v-if="btcBalance !== -1"
                 >
                   <CountUp
