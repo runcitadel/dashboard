@@ -50,7 +50,11 @@
           </div>
         </div>
 
-        <!-- <small>{{ btc.confirmed.toLocaleString() }} Sats available out of {{ btc.total.toLocaleString() }} and {{ btc.pending.toLocaleString() }} pending</small> -->
+        <small
+          >{{ btc.confirmed.toLocaleString() }} Sats available out of
+          {{ btc.total.toLocaleString() }} and
+          {{ btc.pending.toLocaleString() }} pending</small
+        >
       </b-col>
     </b-row>
     <b-row>

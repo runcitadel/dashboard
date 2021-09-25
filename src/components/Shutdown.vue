@@ -12,13 +12,14 @@
     <img
       alt="Umbrel"
       src="@/assets/logo.svg"
+      height="200"
       class="mb-5 logo"
       :class="hasShutdown ? 'logo-gray' : ''"
     />
     <span class="text-muted w-75 text-center">
       <small v-if="hasShutdown"
-        >Shutdown complete. You can now safely unplug your Citadel from the power
-        and internet.</small
+        >Shutdown complete. You can now safely unplug your Citadel from the
+        power and internet.</small
       >
       <small v-else-if="shuttingDown">
         <b-spinner small class="mr-2"></b-spinner>Shutting down...

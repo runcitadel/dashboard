@@ -9,7 +9,7 @@
       p-2
     "
   >
-    <img alt="Umbrel" src="@/assets/logo.svg" class="mb-5 logo" />
+    <img alt="Umbrel" src="@/assets/logo.svg" height="200" class="mb-5 logo" />
 
     <!-- <b-spinner class="my-4" variant="primary"></b-spinner> -->
     <b-progress

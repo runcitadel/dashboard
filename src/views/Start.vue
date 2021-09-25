@@ -10,7 +10,12 @@
         p-2
       "
     >
-      <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
+      <img
+        alt="Umbrel"
+        src="@/assets/logo.svg"
+        height="200"
+        class="mb-2 logo"
+      />
       <h1 class="text-center mb-2">{{ heading }}</h1>
       <p class="text-muted w-75 text-center">{{ text }}</p>
 
@@ -369,7 +374,7 @@ export default {
         // Refresh page after 60s if LND still hasn't unlocked
         window.setTimeout(() => {
           if (!this.unlocked) {
-            window.location.reload(true);
+            window.location.reload();
           }
         }, 60 * 1000);
 
