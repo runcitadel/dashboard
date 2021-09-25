@@ -1,10 +1,6 @@
 <template>
   <div>
-    <b-navbar
-      :type="isDarkMode ? 'dark' : 'light'"
-      variant="default"
-      class="nav-horizontal"
-    >
+    <b-navbar :type="light" variant="default" class="nav-horizontal">
       <div class="container-fluid">
         <div>
           <b-navbar-brand to="/dashboard">
@@ -290,15 +286,6 @@ export default {
     isMobileMenuOpen() {
       return this.$store.getters.isMobileMenuOpen;
     },
-    isDarkMode() {
-      let dark = window
-        ? window.matchMedia("(prefers-color-scheme: dark)").matches
-        : false;
-      dark = matchMedia
-        ? matchMedia("(prefers-color-scheme: dark)").matches
-        : dark;
-      return dark;
-    },
   },
   methods: {
     logout() {
@@ -391,6 +378,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media (prefers-color-scheme: dark) {
+  .nav-horizontal {
+    background: #2a3244 !important;
+  }
+}
+
 .nav-horizontal {
   background: #fff;
   position: sticky;

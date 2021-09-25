@@ -11,9 +11,6 @@
         <lightning-wallet></lightning-wallet>
       </b-col>
       <b-col col cols="12" md="6" xl="4">
-        <bitcoin-wallet></bitcoin-wallet>
-      </b-col>
-      <b-col col cols="12" md="6" xl="4">
         <card-widget
           header="Bitcoin Core"
           :status="{
@@ -45,7 +42,6 @@
               <p class="mb-1">Connected Peers</p>
               <p>8</p>
             </div>
-            <p class="px-3 px-lg-4">Latest Blocks</p>
             <blockchain></blockchain>
             <div class="px-3 px-lg-4 py-3">
               <router-link to="/bitcoin" class="card-link">Manage</router-link>
