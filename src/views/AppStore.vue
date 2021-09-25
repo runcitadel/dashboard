@@ -29,7 +29,7 @@
           "
         >
           <div class="d-flex">
-            <div class="d-block">
+            <div class="d-flex justify-content-center flex-column mx-2">
               <img
                 class="app-icon mr-2 mr-lg-3"
                 :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"

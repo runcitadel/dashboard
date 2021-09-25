@@ -89,7 +89,7 @@ body {
     }
 
     .btn.btn-success {
-      color:v white;
+      color: white !important;
     }
   }
   
@@ -122,6 +122,7 @@ body {
   // Overrides
   a {
     outline: 0 !important;
+    text-decoration: none !important;
   }
   
   .btn,
