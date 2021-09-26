@@ -66,6 +66,34 @@ body {
   .form-control {
     color: white !important;
   }
+
+  .wallet-transactions-container {
+    position: relative;
+
+    .transactions {
+      height: 22rem;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch; //momentum scroll on iOS
+    }
+
+    //bottom fade
+    &:before {
+      background-image: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0),
+        #2a3244
+      ) !important;
+    }
+
+    //top fade
+    &:after {
+      background-image: linear-gradient(
+        to top,
+        rgba(255, 255, 255, 0),
+        #2a3244
+      ) !important;
+    }
+  }
 }
 
 :root {
