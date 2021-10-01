@@ -15,7 +15,6 @@ import Lightning from "../views/Lightning.vue";
 import Apps from "../views/Apps.vue";
 import AppStore from "../views/AppStore.vue";
 import AppStoreApp from "../views/AppStoreApp.vue";
-import Donate from "../views/Donate.vue";
 import Settings from "../views/Settings.vue";
 import ConnectWallet from "../views/ConnectWallet.vue";
 import Logout from "../views/Logout.vue";
@@ -123,18 +122,6 @@ const routes = [
             path: "",
             name: "apps",
             component: Apps,
-          },
-        ],
-      },
-      {
-        path: "/donate",
-        component: DashboardLayout,
-        meta: { requiresAuth: true },
-        children: [
-          {
-            path: "",
-            name: "donate",
-            component: Donate,
           },
         ],
       },
