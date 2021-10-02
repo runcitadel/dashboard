@@ -1,26 +1,25 @@
-[![Umbrel Dashboard](https://static.getumbrel.com/github/github-banner-umbrel-dashboard.svg)](https://github.com/getumbrel/umbrel-dashboard)
-
-[![Version](https://img.shields.io/github/v/release/getumbrel/umbrel-dashboard?color=%235351FB&label=version)](https://github.com/getumbrel/umbrel-dashboard/releases)
-[![Docker Build](https://img.shields.io/github/workflow/status/getumbrel/umbrel-dashboard/Docker%20build%20on%20push?color=%235351FB)](https://github.com/getumbrel/umbrel-dashboard/actions?query=workflow%3A"Docker+build+on+push")
-[![Docker Pulls](https://img.shields.io/docker/pulls/getumbrel/dashboard?color=%235351FB)](https://hub.docker.com/repository/registry-1.docker.io/getumbrel/dashboard/tags?page=1)
-[![Community Chat](https://img.shields.io/badge/community%20chat-telegram-%235351FB)](https://t.me/getumbrel)
-[![Developer Chat](https://img.shields.io/badge/dev%20chat-keybase-%235351FB)](https://keybase.io/team/getumbrel)
-
-[![Twitter](https://img.shields.io/twitter/follow/getumbrel?style=social)](https://twitter.com/getumbrel)
-[![Reddit](https://img.shields.io/reddit/subreddit-subscribers/getumbrel?label=Subscribe%20%2Fr%2Fgetumbrel&style=social)](https://reddit.com/r/getumbrel)
+[![Version](https://img.shields.io/github/v/release/rubcitadel/dashboard?color=%235351FB&label=version)](https://github.com/runcitadel/dashboard/releases)
+[![Docker Build](https://img.shields.io/github/workflow/status/runcitadel/umbrel-dashboard/Docker%20build%20on%20push?color=%235351FB)](https://github.com/runcitadel/dashboard/actions?query=workflow%3A"Docker+build+on+push")
+[![Docker Pulls](https://img.shields.io/docker/pulls/runcitadel/dashboard?color=%235351FB)](https://hub.docker.com/repository/registry-1.docker.io/runcitadel/dashboard/tags?page=1)
+[![Discord Server](https://img.shields.io/badge/Community%20Chat-Discord-%235351FB)](https://discord.gg/6U3kM2cjdB)
+[![Twitter](https://img.shields.io/twitter/follow/runcitadel?style=social)](https://twitter.com/runcitadel)
 
 
-# ☂️ dashboard
+# 🏰 dashboard
 
-Dashboard is the web-based user interface of [Umbrel OS](https://github.com/getumbrel/umbrel-os) and is accessible at `http://umbrel.local`. It runs by-default as a containerized service.
+Dashboard is the web-based user interface of [Citadel] and is accessible at `http://umbrel.local`. It runs by-default as a containerized service.
+
+## ⚠️ Outdated information
+
+The information below might be outdated and / or refering to Umbrel. This project is not yet fully off it's Umbrel roots.
 
 ## 🚀 Getting started
 
-If you are looking to run Umbrel on your hardware, you do not need to run this service on it's own. Just download [Umbrel OS](https://github.com/getumbrel/umbrel-os/releases) and you're good to go.
+TBD
 
 ## 🛠 Running dashboard
 
-Make sure both [`umbrel-manager`](https://github.com/getumbrel/umbrel-manager) and [`umbrel-middleware`](https://github.com/getumbrel/umbrel-middleware) are running and available.
+Make sure both [`citadel-manager`](https://github.com/runcitadel/manager) and [`umbrel-middleware`](https://github.com/runcitadel/middleware) are running and available.
 
 ### Step 1. Install dependencies
 ```sh
@@ -60,20 +59,18 @@ Built code will be inside `/dist`.
 
 ### ⚡️ Don't be too reckless
 
-> Umbrel is still in an early stage and things are expected to break every now and then. We **DO NOT** recommend running it on the mainnet with real money just yet, unless you want to be really *#reckless*.
+> Cidadel is still in an early stage and things are expected to break every now and then. We **DO NOT** recommend running it on the mainnet with real money just yet, unless you want to be really *#reckless*.
 
 ## ❤️ Contributing
 
 We welcome and appreciate new contributions!
 
-If you're a developer looking to help but not sure where to begin, check out [these issues](https://github.com/getumbrel/umbrel-dashboard/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) that have specifically been marked as being friendly to new contributors.
-
-If you're looking for a bigger challenge, before opening a pull request please [create an issue](https://github.com/getumbrel/umbrel-dashboard/issues/new/choose) or [join our community chat](https://t.me/getumbrel) to get feedback, discuss the best way to tackle the challenge, and to ensure that there's no duplication of work.
 
 ## 📜 License
 
-Umbrel (and Umbrel Dashboard) is licensed under the PolyForm Noncommercial 1.0.0 license. TL;DR — You're free to use, fork, modify, and redestribute Umbrel for personal and nonprofit use under the same license. If you're interested to use Umbrel for commercial purposes, such as selling plug-and-play home servers with Umbrel, etc — please reach out to us at partner@getumbrel.com.
+### ⚠️ This information is refering Citadel's Umbrel basis, it is migrating off Umbrel to AGPL.
 
+Umbrel (and Umbrel Dashboard) is licensed under the PolyForm Noncommercial 1.0.0 license. [...]
 [![License](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-%235351FB)](https://github.com/getumbrel/umbrel/blob/master/LICENSE.md)
 
-[getumbrel.com](https://getumbrel.com)
+

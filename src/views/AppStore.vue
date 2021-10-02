@@ -83,7 +83,7 @@
             app for Umbrel.
           </p>
           <b-link
-            href="https://github.com/getumbrel/umbrel/blob/master/apps/README.md"
+            href="https://github.com/runcitadel/compose-nonfree/tree/main/apps
             target="_blank"
             >Learn more</b-link
           >
