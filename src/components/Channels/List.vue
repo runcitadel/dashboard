@@ -60,7 +60,7 @@ export default {
 
 <style lang="scss" scoped>
 @media (prefers-color-scheme: dark) {
-  .channel-list-containe {
+  .channel-list-container {
     &:before {
       background-image: linear-gradient(
         to bottom,
