@@ -160,7 +160,7 @@
           >
             <b-icon icon="bell-fill" class="me-2"></b-icon>
             <a
-              :href="`https://github.com/getumbrel/umbrel/releases/tag/v${availableUpdate.version}`"
+              :href="`https://github.com/runcitadel/compose-nonfree/releases/tag/v${availableUpdate.version}`"
               target="_blank"
               class="alert-link"
               >Citadel v{{ availableUpdate.version }}</a

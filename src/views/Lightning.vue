@@ -163,7 +163,7 @@
                     <span class="d-block">Automatic backups</span>
                     <small class="d-block">
                       <a
-                        href="https://github.com/getumbrel/umbrel/blob/master/scripts/backup/README.md"
+                        href="https://github.com/runcitadel/compose-nonfree/blob/main/scripts/backup/README.md"
                         target="blank"
                         >Learn more</a
                       >

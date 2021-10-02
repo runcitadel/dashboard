@@ -16,10 +16,7 @@ module.exports = {
   },
   chainWebpack: (config) => {
     config.plugin("html").tap((args) => {
-      args[0].template =
-        process.env.STAGING_DEPLOYMENT === "true"
-          ? "./public/index-staging.html"
-          : "./public/index.html";
+      args[0].template = "./public/index.html";
       return args;
     });
   },

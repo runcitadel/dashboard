@@ -271,7 +271,7 @@ export default {
             // since there's an edge case where if the error is due to low fee, it only
             // is a part of the lower fee(s) keys. so we can reliably pick the highest fee's
             // error text and show it
-            // https://github.com/getumbrel/umbrel-dashboard/issues/198
+            // https://github.com/runcitadel/dashboard/issues/198
 
             if (estimates.fast && estimates.fast.text) {
               this.error = estimates.fast.text;

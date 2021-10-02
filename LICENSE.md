@@ -1,3 +1,10 @@
+# DISCLAIMER:
+
+For now the below license applies to certain parts of Citadel, however we are working on bringing everything to a real FOSS License (AGPL) as migration off Umbrel continues.
+
+--------
+
+
 > Umbrel (and Umbrel Dashboard) is licensed under the PolyForm Noncommercial License 1.0.0. Please refer to our [License FAQ](https://github.com/getumbrel/umbrel/wiki/License-FAQ) if you have any questions or reach out to us directly at help@getumbrel.com.
 
 # PolyForm Noncommercial License 1.0.0
