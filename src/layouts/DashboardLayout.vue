@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-navbar :type="light" variant="default" class="nav-horizontal">
+    <b-navbar type="light" variant="default" class="nav-horizontal">
       <div class="container-fluid">
         <div>
           <b-navbar-brand to="/dashboard">
