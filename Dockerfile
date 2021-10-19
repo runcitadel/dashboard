@@ -1,4 +1,5 @@
-FROM node:16-bullseye-slim AS umbrel-dashboard-builder
+# Run the build on the host architecture, change this if you're building on arm64
+FROM amd64/node:16-bullseye-slim AS umbrel-dashboard-builder
 
 ARG STAGING_DEPLOYMENT=false
 
