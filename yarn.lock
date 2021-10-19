@@ -3579,6 +3579,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns@npm:^2.25.0":
+  version: 2.25.0
+  resolution: "date-fns@npm:2.25.0"
+  checksum: 8896dc1dde0ee5ef77616942423bfa11fa2017a5ac19457293b7aaedc8822ff94f0a14eaf93da573b09b601dc0149eb430988a046cc9f79a2eb15f8c66c9c50c
+  languageName: node
+  linkType: hard
+
 "de-indent@npm:^1.0.2":
   version: 1.0.2
   resolution: "de-indent@npm:1.0.2"
@@ -6124,13 +6131,6 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"moment@npm:^2.29.1":
-  version: 2.29.1
-  resolution: "moment@npm:2.29.1"
-  checksum: 1e14d5f422a2687996be11dd2d50c8de3bd577c4a4ca79ba5d02c397242a933e5b941655de6c8cb90ac18f01cc4127e55b4a12ae3c527a6c0a274e455979345e
-  languageName: node
-  linkType: hard
-
 "ms@npm:2.0.0":
   version: 2.0.0
   resolution: "ms@npm:2.0.0"
@@ -8578,10 +8578,10 @@ fsevents@~2.3.2:
     bootstrap-vue: ^2.21.2
     core-js: ^3.18.3
     countup.js: ^2.0.8
+    date-fns: ^2.25.0
     eslint: ^8.0.1
     eslint-plugin-prettier: ^4.0.0
     eslint-plugin-vue: ^7.19.1
-    moment: ^2.29.1
     prettier: ^2.4.1
     qrcode.vue: ^1.7.0
     sass: ^1.43.2

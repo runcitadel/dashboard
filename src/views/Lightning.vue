@@ -321,7 +321,7 @@
 
 <script>
 import { mapState } from "vuex";
-import moment from "moment";
+import { format } from "date-fns";
 
 import API from "@/helpers/api";
 
@@ -360,7 +360,7 @@ export default {
   },
   methods: {
     getReadableTime(timestamp) {
-      return moment(timestamp).format("MMM D, h:mm:ss a");
+      return format(new Date(timestamp), "MMM D, h:mm:ss a");
     },
     async downloadChannelBackup() {
       await API.download(

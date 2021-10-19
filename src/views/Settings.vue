@@ -446,7 +446,7 @@
 </template>
 
 <script>
-import moment from "moment";
+import { formatDuration } from "date-fns";
 import { mapState } from "vuex";
 
 import API from "@/helpers/api";
@@ -487,7 +487,7 @@ export default {
       uptime: (state) => state.system.uptime,
     }),
     getUptime() {
-      return moment.duration(this.uptime, "seconds").humanize();
+      return formatDuration({ seconds: this.uptime });
     },
     debugContents() {
       return this.showDmesg ? this.debugResult.dmesg : this.debugResult.debug;

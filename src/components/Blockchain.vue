@@ -135,7 +135,7 @@
 </template>
 
 <script>
-import moment from "moment";
+import { formatDistance, format } from "date-fns";
 import { mapState } from "vuex";
 
 export default {
@@ -177,14 +177,14 @@ export default {
     blockTime(timestamp) {
       const minedAt = timestamp * 1000;
       //sometimes the block can have a timestamp with a few seconds in the future compared to browser's time
-      if (moment(minedAt).isBefore(moment())) {
-        return moment(minedAt).fromNow();
+      if (new Date(minedAt) < new Date()) {
+        return formatDistance(new Date(minedAt), new Date());
       } else {
         return "just now";
       }
     },
     blockReadableTime(timestamp) {
-      return moment(timestamp * 1000).format("MMMM D, h:mm:ss a");
+      return format(new Date(timestamp * 1000), "MMMM D, h:mm:ss a");
     },
   },
   created() {

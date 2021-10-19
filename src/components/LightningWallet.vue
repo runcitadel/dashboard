@@ -815,7 +815,7 @@
 </template>
 
 <script>
-import moment from "moment";
+import {format, formatDistance, addHours} from "date-fns";
 
 import { mapState } from "vuex";
 
@@ -893,13 +893,11 @@ export default {
     },
   },
   methods: {
-    //used in the list of txs, eg "a few seconds ago"
     getTimeFromNow(timestamp) {
-      return moment(timestamp).fromNow();
+      return formatDistance(new Date(timestamp), new Date());  //used in the list of txs, eg "a few seconds ago"
     },
-    //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
     getReadableTime(timestamp) {
-      return moment(timestamp).format("MMMM D, h:mm:ss a");
+      return format(new Date(timestamp), "MMM d, yyyy h:mm a"); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
     },
     //change between different modes/screens of the wallet from - transactions (default), receive (create invoice), invoice, send, sent
     changeMode(mode) {
@@ -1011,7 +1009,7 @@ export default {
             res.data.paymentRequest;
 
           //TODO: find a cleaner way to make this dynamic as per backend's expiry setting. for now invoice expiries are 1 hr
-          this.receive.expiresOn = moment().add(1, "hour");
+          this.receive.expiresOn = addHours(new Date(), 1);
 
           //refresh txs
           this.$store.dispatch("lightning/getTransactions");
@@ -1065,7 +1063,7 @@ export default {
 
       if (now > invoiceExpiresOn) {
         this.send.isValidInvoice = false;
-        this.error = `Invoice expired ${moment(invoiceExpiresOn).fromNow()}`;
+        this.error = `Invoice expired ${formatDistance(new Date(invoiceExpiresOn), new Date())}`;
       } else {
         this.send.amount = Number(fetchedInvoice.numSatoshis);
         this.send.description = fetchedInvoice.description;
@@ -1165,7 +1163,6 @@ export default {
     },
   },
   async created() {
-    window.moment = moment;
     await this.$store.dispatch("lightning/getStatus");
   },
   beforeDestroy() {
