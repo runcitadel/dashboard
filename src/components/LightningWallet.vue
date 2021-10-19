@@ -815,7 +815,8 @@
 </template>
 
 <script>
-import {format, formatDistance, addHours} from "date-fns";
+import { formatDistance, format, getDateFormat } from "@/helpers/date.js";
+import { addHours } from "date-fns";
 
 import { mapState } from "vuex";
 
@@ -894,10 +895,10 @@ export default {
   },
   methods: {
     getTimeFromNow(timestamp) {
-      return formatDistance(new Date(timestamp), new Date());  //used in the list of txs, eg "a few seconds ago"
+      return formatDistance(new Date(timestamp), new Date()); //used in the list of txs, eg "a few seconds ago"
     },
     getReadableTime(timestamp) {
-      return format(new Date(timestamp), "MMM d, yyyy h:mm a"); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
+      return format(new Date(timestamp), getDateFormat()); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
     },
     //change between different modes/screens of the wallet from - transactions (default), receive (create invoice), invoice, send, sent
     changeMode(mode) {
@@ -1063,7 +1064,10 @@ export default {
 
       if (now > invoiceExpiresOn) {
         this.send.isValidInvoice = false;
-        this.error = `Invoice expired ${formatDistance(new Date(invoiceExpiresOn), new Date())}`;
+        this.error = `Invoice expired ${formatDistance(
+          new Date(invoiceExpiresOn),
+          new Date()
+        )}`;
       } else {
         this.send.amount = Number(fetchedInvoice.numSatoshis);
         this.send.description = fetchedInvoice.description;

@@ -135,7 +135,11 @@
 </template>
 
 <script>
-import { formatDistance, format } from "date-fns";
+import {
+  formatDistance,
+  format,
+  getDateFormatWithSeconds,
+} from "@/helpers/date.js";
 import { mapState } from "vuex";
 
 export default {
@@ -184,7 +188,7 @@ export default {
       }
     },
     blockReadableTime(timestamp) {
-      return format(new Date(timestamp * 1000), "MMMM D, h:mm:ss a");
+      return format(new Date(timestamp * 1000), getDateFormatWithSeconds());
     },
   },
   created() {

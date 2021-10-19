@@ -653,7 +653,8 @@
 </template>
 
 <script>
-import { formatDistance, format } from 'date-fns'
+import { formatDistance, format, getDateFormat } from "@/helpers/date.js";
+
 import { mapState, mapGetters } from "vuex";
 
 import { satsToBtc, btcToSats } from "@/helpers/units.js";
@@ -757,10 +758,10 @@ export default {
   },
   methods: {
     getTimeFromNow(timestamp) {
-      return formatDistance(new Date(timestamp), new Date());  //used in the list of txs, eg "a few seconds ago"
+      return formatDistance(new Date(timestamp), new Date()); //used in the list of txs, eg "a few seconds ago"
     },
     getReadableTime(timestamp) {
-      return format(new Date(timestamp), "MMM d, yyyy h:mm a"); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
+      return format(new Date(timestamp), getDateFormat()); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
     },
     getTxExplorerUrl(txHash) {
       if (this.localExplorerTxUrl) {
