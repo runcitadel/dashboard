@@ -98,6 +98,15 @@ body {
   .modal-content {
     background: #2a3244 !important;
   }
+
+  .app-name {
+    color: white !important;
+  }
+}
+
+.app-store-card-columns {
+  column-count: 2;
+  column-gap: 3em;
 }
 
 :root {
