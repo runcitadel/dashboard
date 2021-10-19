@@ -33,7 +33,8 @@
         After verifying, click <span class="font-weight-bold">"Close"</span>.
       </step>
       <step>
-        Congratulations! You have successfully connected Sparrow to your Citadel.
+        Congratulations! You have successfully connected Sparrow to your
+        Citadel.
       </step>
     </step-list>
   </connection-details>

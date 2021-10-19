@@ -7698,20 +7698,17 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"sass-loader@npm:^10":
-  version: 10.2.0
-  resolution: "sass-loader@npm:10.2.0"
+"sass-loader@npm:^12":
+  version: 12.2.0
+  resolution: "sass-loader@npm:12.2.0"
   dependencies:
     klona: ^2.0.4
-    loader-utils: ^2.0.0
     neo-async: ^2.6.2
-    schema-utils: ^3.0.0
-    semver: ^7.3.2
   peerDependencies:
     fibers: ">= 3.1.0"
     node-sass: ^4.0.0 || ^5.0.0 || ^6.0.0
     sass: ^1.3.0
-    webpack: ^4.36.0 || ^5.0.0
+    webpack: ^5.0.0
   peerDependenciesMeta:
     fibers:
       optional: true
@@ -7719,7 +7716,7 @@ fsevents@~2.3.2:
       optional: true
     sass:
       optional: true
-  checksum: d53212e5d199cdd221a67046ab4276c352d56b50ca64347115b36e8ebbb2c68ec396a14d6cf5a08853c830a6b0ec1fd2b016cdc53cbe90a0332a908f50ec2043
+  checksum: 2b2dd04ab5db65e8b9f5e6b6066735ef0bae134180ac7dc1912048065a6ce7797280f547937078c6f59bc8bd2889cbe8828240f5dd011cfb4a333b49fa628bdd
   languageName: node
   linkType: hard
 
@@ -7799,7 +7796,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.2.1, semver@npm:^7.3.2, semver@npm:^7.3.4, semver@npm:^7.3.5":
+"semver@npm:^7.2.1, semver@npm:^7.3.4, semver@npm:^7.3.5":
   version: 7.3.5
   resolution: "semver@npm:7.3.5"
   dependencies:
@@ -8588,7 +8585,7 @@ fsevents@~2.3.2:
     prettier: ^2.4.1
     qrcode.vue: ^1.7.0
     sass: ^1.43.2
-    sass-loader: ^10
+    sass-loader: ^12
     vue: ^2.6.14
     vue-confetti: ^2.2.2
     vue-router: ^3.5.2

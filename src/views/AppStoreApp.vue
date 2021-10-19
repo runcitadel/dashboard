@@ -31,7 +31,10 @@
           <div class="d-block">
             <img
               class="app-icon app-icon-lg me-2 me-sm-3 align-self-top"
-              :src="app.imageUrl || `https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
+              :src="
+                app.imageUrl ||
+                `https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`
+              "
             />
           </div>
           <div>
@@ -124,7 +127,11 @@
         v-for="image in app.gallery"
         class="app-gallery-screen me-3"
         :key="image"
-        :src="image.startsWith('http') ? image : `https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`"
+        :src="
+          image.startsWith('http')
+            ? image
+            : `https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`
+        "
       />
       <div class="d-block" style="padding: 1px"></div>
     </div>

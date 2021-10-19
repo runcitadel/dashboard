@@ -36,7 +36,7 @@
     "eslint-plugin-vue": "^7.19.1",
     "prettier": "^2.4.1",
     "sass": "^1.43.2",
-    "sass-loader": "^10",
+    "sass-loader": "^12",
     "vue-template-compiler": "^2.6.14"
   },
   "eslintConfig": {
@@ -57,7 +57,9 @@
   },
   "browserslist": [
     "> 1%",
-    "last 2 versions"
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
   ],
   "packageManager": "yarn@3.0.2"
 }
