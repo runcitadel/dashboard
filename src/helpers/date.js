@@ -38,11 +38,11 @@ export function formatDistance(Date, baseDate) {
 
 const dateFormats = {
   en: "MMM d, yyyy h:mm a",
-  de: "EEEE, i. MMM HH:mm",
+  de: "i. MMM yyyy HH:mm",
 };
 const dateFormatsWithSeconds = {
-  en: "MMMM d, h:mm:ss a",
-  de: "EEEE, i. MMMM HH:mm:ss",
+  en: "MMMM d, yyyy h:mm:ss a",
+  de: "i. MMMM yyyy HH:mm:ss",
 };
 
 export function getDateFormat() {
