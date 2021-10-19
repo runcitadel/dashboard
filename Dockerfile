@@ -18,7 +18,7 @@ RUN yarn build
 
 FROM node:16-bullseye-slim AS umbrel-dashboard
 
-RUN yarn global add serve
+RUN npm -g i serve
 
 COPY --from=umbrel-dashboard-builder /app/dist/ /dist
 
