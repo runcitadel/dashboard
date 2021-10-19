@@ -8,7 +8,7 @@
         </p>
       </div>
     </div>
-    <div class="app-store-card-columns">
+    <div class="app-store-card-columns card-columns">
       <card-widget
         v-for="categorizedApps in categorizedAppStore"
         :key="categorizedApps[0].category"
