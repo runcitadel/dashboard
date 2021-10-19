@@ -1,6 +1,8 @@
 import {
   format as dateFnsFormat,
   formatDistance as dateFnsFormatDistance,
+  formatDuration,
+  intervalToDuration,
 } from "date-fns";
 import locales from "date-fns/locale";
 
@@ -69,4 +71,9 @@ export function getDateFormatWithSeconds() {
     return dateFormatsWithSeconds[language.split("-")[0]];
   // Otherwise, return the default date format
   else return dateFormatsWithSeconds.en;
+}
+
+export function prettifySeconds(seconds) {
+  const duration = intervalToDuration({ start: 0, end: seconds * 1000 });
+  return formatDuration(duration);
 }

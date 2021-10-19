@@ -446,11 +446,11 @@
 </template>
 
 <script>
-import { formatDuration } from "date-fns";
 import { mapState } from "vuex";
 
 import API from "@/helpers/api";
 import delay from "@/helpers/delay";
+import { prettifySeconds } from "@/helpers/date.js";
 
 import CardWidget from "@/components/CardWidget";
 import StorageWidget from "@/components/Widgets/StorageWidget";
@@ -487,7 +487,7 @@ export default {
       uptime: (state) => state.system.uptime,
     }),
     getUptime() {
-      return formatDuration({ seconds: this.uptime });
+      return prettifySeconds(this.uptime);
     },
     debugContents() {
       return this.showDmesg ? this.debugResult.dmesg : this.debugResult.debug;
