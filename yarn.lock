@@ -1555,6 +1555,38 @@ __metadata:
   languageName: node
   linkType: hard
 
+"citadel-dashboard@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "citadel-dashboard@workspace:."
+  dependencies:
+    "@vue/cli-plugin-eslint": ^v5.0.0-beta.6
+    "@vue/cli-plugin-router": ^v5.0.0-beta.6
+    "@vue/cli-plugin-vuex": ^v5.0.0-beta.6
+    "@vue/cli-service": ^v5.0.0-beta.6
+    "@vue/eslint-config-prettier": ^6.0.0
+    animate.css: ^4.1.1
+    axios: ^0.23.0
+    bignumber.js: ^9.0.1
+    bootstrap: ^5.1.3
+    bootstrap-vue: ^2.21.2
+    countup.js: ^2.0.8
+    date-fns: ^2.25.0
+    eslint: ^8.0.1
+    eslint-plugin-prettier: ^4.0.0
+    eslint-plugin-vue: ^7.19.1
+    prettier: ^2.4.1
+    qrcode.vue: ^1.7.0
+    sass: ^1.43.2
+    sass-loader: ^12
+    vue: ^2.6.14
+    vue-confetti: ^2.2.2
+    vue-router: ^3.5.2
+    vue-slider-component: ^3.2.15
+    vue-template-compiler: ^2.6.14
+    vuex: ^3.6.2
+  languageName: unknown
+  linkType: soft
+
 "clean-css@npm:^5.1.5":
   version: 5.2.1
   resolution: "clean-css@npm:5.2.1"
@@ -6903,38 +6935,6 @@ resolve@^1.10.0:
   checksum: 2c8e47675d55f8b4e404bcf529abdf5036c537a04c2b20177bcf78c9e3c1da69da3942b1346e6edb09e823228c0ee656ef0e033765ec39a70d496ef601a0c657
   languageName: node
   linkType: hard
-
-"umbrel-dashboard@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "umbrel-dashboard@workspace:."
-  dependencies:
-    "@vue/cli-plugin-eslint": ^v5.0.0-beta.6
-    "@vue/cli-plugin-router": ^v5.0.0-beta.6
-    "@vue/cli-plugin-vuex": ^v5.0.0-beta.6
-    "@vue/cli-service": ^v5.0.0-beta.6
-    "@vue/eslint-config-prettier": ^6.0.0
-    animate.css: ^4.1.1
-    axios: ^0.23.0
-    bignumber.js: ^9.0.1
-    bootstrap: ^5.1.3
-    bootstrap-vue: ^2.21.2
-    countup.js: ^2.0.8
-    date-fns: ^2.25.0
-    eslint: ^8.0.1
-    eslint-plugin-prettier: ^4.0.0
-    eslint-plugin-vue: ^7.19.1
-    prettier: ^2.4.1
-    qrcode.vue: ^1.7.0
-    sass: ^1.43.2
-    sass-loader: ^12
-    vue: ^2.6.14
-    vue-confetti: ^2.2.2
-    vue-router: ^3.5.2
-    vue-slider-component: ^3.2.15
-    vue-template-compiler: ^2.6.14
-    vuex: ^3.6.2
-  languageName: unknown
-  linkType: soft
 
 "uniqs@npm:^2.0.0":
   version: 2.0.0

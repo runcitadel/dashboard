@@ -3,48 +3,128 @@ import VueRouter from "vue-router";
 
 import store from "@/store";
 
-import TransitionWrapperLayout from "../layouts/TransitionWrapperLayout.vue";
-import SimpleLayout from "../layouts/SimpleLayout.vue";
-import DashboardLayout from "../layouts/DashboardLayout.vue";
+const TransitionWrapperLayout = () =>
+  import(
+    /* webpackChunkName: "layouts" */ "../layouts/TransitionWrapperLayout.vue"
+  );
+const SimpleLayout = () =>
+  import(/* webpackChunkName: "layouts" */ "../layouts/SimpleLayout.vue");
+const DashboardLayout = () =>
+  import(/* webpackChunkName: "ui" */ "../layouts/DashboardLayout.vue");
 
-import Start from "../views/Start.vue";
-import Login from "../views/Login.vue";
-import Dashboard from "../views/Dashboard.vue";
-import Bitcoin from "../views/Bitcoin.vue";
-import Lightning from "../views/Lightning.vue";
-import Apps from "../views/Apps.vue";
-import AppStore from "../views/AppStore.vue";
-import AppStoreApp from "../views/AppStoreApp.vue";
-import Settings from "../views/Settings.vue";
-import ConnectWallet from "../views/ConnectWallet.vue";
-import Logout from "../views/Logout.vue";
+const Start = () => import(/* webpackChunkName: "setup" */ "../views/Start.vue");
+const Login = () => import(/* webpackChunkName: "core" */ "../views/Login.vue");
+const Dashboard = () =>
+  import(/* webpackChunkName: "ui" */ "../views/Dashboard.vue");
+const Bitcoin = () =>
+  import(/* webpackChunkName: "ui" */ "../views/Bitcoin.vue");
+const Lightning = () =>
+  import(/* webpackChunkName: "ui" */ "../views/Lightning.vue");
+const Apps = () => import(/* webpackChunkName: "ui" */ "../views/Apps.vue");
+const AppStore = () =>
+  import(/* webpackChunkName: "appstore" */ "../views/AppStore.vue");
+const AppStoreApp = () =>
+  import(/* webpackChunkName: "appstore" */ "../views/AppStoreApp.vue");
+const Settings = () =>
+  import(/* webpackChunkName: "ui" */ "../views/Settings.vue");
+const ConnectWallet = () =>
+  import(/* webpackChunkName: "connectors" */ "../views/ConnectWallet.vue");
 
 // Wallet components for wallet connector
-import BitBoxApp from "../components/ConnectWallet/Wallets/BitBoxApp.vue";
-import BitcoinCoreP2P from "../components/ConnectWallet/Wallets/BitcoinCoreP2P.vue";
-import BitcoinCoreRPC from "../components/ConnectWallet/Wallets/BitcoinCoreRPC.vue";
-import BlockstreamGreen from "../components/ConnectWallet/Wallets/BlockstreamGreen.vue";
-import BlueWallet from "../components/ConnectWallet/Wallets/BlueWallet.vue";
-import ElectrumAndroid from "../components/ConnectWallet/Wallets/ElectrumAndroid.vue";
-import ElectrumDesktop from "../components/ConnectWallet/Wallets/ElectrumDesktop.vue";
-import ElectrumServer from "../components/ConnectWallet/Wallets/ElectrumServer.vue";
-import FullyNoded from "../components/ConnectWallet/Wallets/FullyNoded.vue";
-import LilyWallet from "../components/ConnectWallet/Wallets/LilyWallet.vue";
-import Phoenix from "../components/ConnectWallet/Wallets/Phoenix.vue";
-import SamouraiWallet from "../components/ConnectWallet/Wallets/SamouraiWallet.vue";
-import Sparrow from "../components/ConnectWallet/Wallets/Sparrow.vue";
-import SpecterDesktop from "../components/ConnectWallet/Wallets/SpecterDesktop.vue";
-import Wasabi from "../components/ConnectWallet/Wallets/Wasabi.vue";
+const BitBoxApp = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/BitBoxApp.vue"
+  );
+const BitcoinCoreP2P = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/BitcoinCoreP2P.vue"
+  );
+const BitcoinCoreRPC = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/BitcoinCoreRPC.vue"
+  );
+const BlockstreamGreen = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/BlockstreamGreen.vue"
+  );
+const BlueWallet = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/BlueWallet.vue"
+  );
+const ElectrumAndroid = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/ElectrumAndroid.vue"
+  );
+const ElectrumDesktop = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/ElectrumDesktop.vue"
+  );
+const ElectrumServer = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/ElectrumServer.vue"
+  );
+const FullyNoded = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/FullyNoded.vue"
+  );
+const LilyWallet = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/LilyWallet.vue"
+  );
+const Phoenix = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/Phoenix.vue"
+  );
+const SamouraiWallet = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/SamouraiWallet.vue"
+  );
+const Sparrow = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/Sparrow.vue"
+  );
+const SpecterDesktop = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/SpecterDesktop.vue"
+  );
+const Wasabi = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/Wasabi.vue"
+  );
 
-import ZapAndroid from "../components/ConnectWallet/Wallets/ZapAndroid.vue";
-import ZapDesktop from "../components/ConnectWallet/Wallets/ZapDesktop.vue";
-import ZapiOS from "../components/ConnectWallet/Wallets/ZapiOS.vue";
-import Zeus from "../components/ConnectWallet/Wallets/Zeus.vue";
+const ZapAndroid = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/ZapAndroid.vue"
+  );
+const ZapDesktop = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/ZapDesktop.vue"
+  );
+const ZapiOS = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/ZapiOS.vue"
+  );
+const Zeus = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/Zeus.vue"
+  );
 
-import LNDConnectGRPCLocal from "../components/ConnectWallet/Wallets/LNDConnectGRPCLocal.vue";
-import LNDConnectGRPCTor from "../components/ConnectWallet/Wallets/LNDConnectGRPCTor.vue";
-import LNDConnectRESTLocal from "../components/ConnectWallet/Wallets/LNDConnectRESTLocal.vue";
-import LNDConnectRESTTor from "../components/ConnectWallet/Wallets/LNDConnectRESTTor.vue";
+const LNDConnectGRPCLocal = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/LNDConnectGRPCLocal.vue"
+  );
+const LNDConnectGRPCTor = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/LNDConnectGRPCTor.vue"
+  );
+const LNDConnectRESTLocal = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/LNDConnectRESTLocal.vue"
+  );
+const LNDConnectRESTTor = () =>
+  import(
+    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/LNDConnectRESTTor.vue"
+  );
 
 Vue.use(VueRouter);
 
@@ -326,18 +406,6 @@ const routes = [
                 },
               },
             ],
-          },
-        ],
-      },
-      {
-        path: "/logout",
-        component: DashboardLayout,
-        meta: { requiresAuth: true },
-        children: [
-          {
-            path: "",
-            name: "logout",
-            component: Logout,
           },
         ],
       },
