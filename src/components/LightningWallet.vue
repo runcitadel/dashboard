@@ -815,7 +815,11 @@
 </template>
 
 <script>
-import { formatDistance, format, getDateFormat } from "@/helpers/date.js";
+import {
+  formatDistance,
+  format,
+  getDateFormatWithSeconds,
+} from "@/helpers/date.js";
 import { addHours } from "date-fns";
 
 import { mapState } from "vuex";
@@ -898,7 +902,7 @@ export default {
       return formatDistance(new Date(timestamp), new Date()); //used in the list of txs, eg "a few seconds ago"
     },
     getReadableTime(timestamp) {
-      return format(new Date(timestamp), getDateFormat()); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
+      return format(new Date(timestamp), getDateFormatWithSeconds()); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
     },
     //change between different modes/screens of the wallet from - transactions (default), receive (create invoice), invoice, send, sent
     changeMode(mode) {
