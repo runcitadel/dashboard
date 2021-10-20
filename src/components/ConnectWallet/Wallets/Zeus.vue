@@ -78,6 +78,7 @@ import StepList from "@/components/ConnectWallet/StepList";
 import Step from "@/components/ConnectWallet/Step";
 import InputCopy from "@/components/Utility/InputCopy";
 import QrCode from "@/components/Utility/QrCode";
+import Buffer from "buffer/index.js";
 
 export default {
   props: {
