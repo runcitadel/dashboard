@@ -314,7 +314,7 @@ const actions = {
   },
   async getIsUmbrelOS({ commit }) {
     const isUmbrelOS = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/is-umbrel-os`
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/is-citadel-os`
     );
     commit("setIsUmbrelOS", !!isUmbrelOS);
   },
