@@ -12,7 +12,8 @@ const SimpleLayout = () =>
 const DashboardLayout = () =>
   import(/* webpackChunkName: "ui" */ "../layouts/DashboardLayout.vue");
 
-const Start = () => import(/* webpackChunkName: "setup" */ "../views/Start.vue");
+const Start = () =>
+  import(/* webpackChunkName: "setup" */ "../views/Start.vue");
 const Login = () => import(/* webpackChunkName: "core" */ "../views/Login.vue");
 const Dashboard = () =>
   import(/* webpackChunkName: "ui" */ "../views/Dashboard.vue");
@@ -100,10 +101,10 @@ const ZapDesktop = () =>
   import(
     /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/ZapDesktop.vue"
   );
-const ZapiOS = () =>
-  import(
-    /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/ZapiOS.vue"
-  );
+//const ZapiOS = () =>
+//import(
+//  /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/ZapiOS.vue"
+//);
 const Zeus = () =>
   import(
     /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/Zeus.vue"
@@ -363,13 +364,13 @@ const routes = [
                   wallet: "zap-desktop",
                 },
               },
-              {
+              /*{
                 path: "zap-ios",
                 component: ZapiOS,
                 meta: {
                   wallet: "zap-ios",
                 },
-              },
+              },*/
               {
                 path: "zeus",
                 component: Zeus,
