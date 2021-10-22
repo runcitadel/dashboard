@@ -96,10 +96,7 @@ const API = {
         responseTime[url] = (endTime.getTime() - startTime.getTime()) / 1000;
       } catch (error) {
         // Only display error messages in the browser console
-        if (process.browser) {
-          console.error(error);
-        }
-
+        console.error(error);
         response = false;
       } finally {
         responsePending[url] = false; // eslint-disable-line require-atomic-updates
