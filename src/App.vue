@@ -112,8 +112,8 @@ export default {
       this.loadingPollInProgress = true;
 
       // First check if manager api is up
-      if (this.loadingProgress <= 20) {
-        this.loadingProgress = 20;
+      if (this.loadingProgress <= 50) {
+        this.loadingProgress = 50;
         await this.$store.dispatch("system/getManagerApi");
         if (!this.isManagerApiOperational) {
           this.loading = true;
@@ -123,7 +123,7 @@ export default {
       }
 
       // Then check if middleware api is up
-      if (this.loadingProgress <= 40) {
+      /*if (this.loadingProgress <= 40) {
         this.loadingProgress = 40;
         await this.$store.dispatch("system/getApi");
         if (!this.isApiOperational) {
@@ -131,7 +131,7 @@ export default {
           this.loadingPollInProgress = false;
           return;
         }
-      }
+      }*/
 
       // Then trigger auth check
       if (this.loadingProgress <= 95 && this.jwt) {

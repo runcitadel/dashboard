@@ -145,13 +145,13 @@ const actions = {
       commit("setUnit", unit);
     }
   },
-  async getApi({ commit }) {
+  /*async getApi({ commit }) {
     const api = await API.get(`${process.env.VUE_APP_MIDDLEWARE_API_URL}/ping`);
     commit("setApi", {
       operational: !!(api && api.version),
       version: api && api.version ? api.version : "",
     });
-  },
+  },*/
   async getManagerApi({ commit }) {
     const api = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/ping`);
     commit("setManagerApi", {
