@@ -407,7 +407,7 @@ export default {
     right: 0;
     width: 100%;
     height: 100%;
-    background: #fff;
+    background: #2a3244;
     min-width: 80px;
     opacity: 0;
   }
