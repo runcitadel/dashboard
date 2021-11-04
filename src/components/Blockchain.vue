@@ -237,7 +237,16 @@ export default {
       ) !important;
     }
   }
+  
+  
+  .blockchain-block-timestamp {
+    &:before,
+    &:after {
+      background: #2a3244 !important;
+    }
+  }
 }
+
 .blockchain-container {
   position: relative;
   ul {
