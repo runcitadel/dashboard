@@ -237,7 +237,16 @@ export default {
       ) !important;
     }
   }
+  
+  
+  .blockchain-block-timestamp {
+    &:before,
+    &:after {
+      background: #2a3244 !important;
+    }
+  }
 }
+
 .blockchain-container {
   position: relative;
   ul {
@@ -407,7 +416,7 @@ export default {
     right: 0;
     width: 100%;
     height: 100%;
-    background: #2a3244;
+    background: #fff;
     min-width: 80px;
     opacity: 0;
   }
