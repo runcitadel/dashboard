@@ -382,6 +382,10 @@ export default {
   .nav-horizontal {
     background: #2a3244 !important;
   }
+  .mobile-vertical-menu {
+    background: #2a3244 !important;
+    box-shadow: 0px 10px 30px rgba(0,0,0,0.4);
+  }
 }
 
 .nav-horizontal {
