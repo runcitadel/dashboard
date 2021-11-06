@@ -24,7 +24,7 @@ jobs:
           echo "IMAGE_NAME=${IMAGE_NAME//docker-/}" >> $GITHUB_ENV
 
       - name: Login to Docker Hub
-        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+        run: echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
