@@ -5,6 +5,9 @@ on:
         branches:
             - main
 
+permissions:
+  packages: write
+
 jobs:
   build:
     name: Build image
@@ -21,10 +24,7 @@ jobs:
           echo "IMAGE_NAME=${IMAGE_NAME//docker-/}" >> $GITHUB_ENV
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -40,5 +40,5 @@ jobs:
                 --cache-from "type=local,src=/tmp/.buildx-cache" \
                 --cache-to "type=local,dest=/tmp/.buildx-cache" \
                 --platform linux/amd64,linux/arm64 \
-                --tag ${{ secrets.DOCKER_CONTAINER_USERNAME }}/$IMAGE_NAME:$BRANCH \
+                --tag ghcr.io/${{ secrets.DOCKER_CONTAINER_USERNAME }}/$IMAGE_NAME:$BRANCH \
                 --output "type=registry" ./
