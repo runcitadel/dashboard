@@ -25,8 +25,7 @@ jobs:
       - name: Set env variables
         run: |
           echo "TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
-          IMAGE_NAME="${GITHUB_REPOSITORY#*/}"
-          echo "IMAGE_NAME=${IMAGE_NAME//docker-/}" >> $GITHUB_ENV
+          echo "IMAGE_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
 
       - name: Login to Docker Hub
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
@@ -42,9 +41,7 @@ jobs:
       - name: Run Docker buildx
         run: |
                 docker buildx build \
-                --cache-from "type=local,src=/tmp/.buildx-cache" \
-                --cache-to "type=local,dest=/tmp/.buildx-cache" \
                 --platform linux/amd64,linux/arm64 \
                 --build-arg VERSION=$TAG \
-                --tag ghcr.io/${{ secrets.DOCKER_CONTAINER_USERNAME }}/$IMAGE_NAME:$TAG \
+                --tag ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:$TAG \
                 --output "type=registry" ./
