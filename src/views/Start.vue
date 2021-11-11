@@ -333,7 +333,6 @@ export default {
           });
         } catch (error) {
           this.isRegistering = false;
-          window.eerr = error;
           if (error.response && error.response.data) {
             this.$bvToast.toast(`${error.response.data}`, {
               title: "Error",
@@ -343,8 +342,7 @@ export default {
               toaster: "b-toaster-top-center",
             });
           }
-          console.error("Error registering user", error);
-          return;
+          //return;
         }
 
         this.isRegistering = false;
