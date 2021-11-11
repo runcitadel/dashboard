@@ -226,6 +226,7 @@ button {
     border-radius: 0.3rem !important;
   }
   .input-group-append {
+    display: flex;
     position: absolute;
     right: 0;
     top: 50%;
