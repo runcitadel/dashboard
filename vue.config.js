@@ -1,15 +1,6 @@
 module.exports = {
-  // css: {
-  //     loaderOptions: {
-  //         sass: {
-  //             prependData: `
-  //                 @import "@/global-styles/designs-ystem.scss";
-  //             `
-  //         }
-  //     }
-  // }
   devServer: {
-    allowedHosts: ["umbrel-dev.local"],
+    allowedHosts: ["citadel-dev.local"],
     watchOptions: {
       poll: true,
     },

@@ -101,10 +101,6 @@ const ZapDesktop = () =>
   import(
     /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/ZapDesktop.vue"
   );
-//const ZapiOS = () =>
-//import(
-//  /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/ZapiOS.vue"
-//);
 const Zeus = () =>
   import(
     /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/Zeus.vue"
@@ -364,13 +360,6 @@ const routes = [
                   wallet: "zap-desktop",
                 },
               },
-              /*{
-                path: "zap-ios",
-                component: ZapiOS,
-                meta: {
-                  wallet: "zap-ios",
-                },
-              },*/
               {
                 path: "zeus",
                 component: Zeus,

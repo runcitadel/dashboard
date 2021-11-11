@@ -20,7 +20,7 @@
           />
           <span class="text-muted w-75 text-center">
             <small
-              >For security reasons Citadel cannot be embedded in an
+              >For security reasons, Citadel cannot be embedded in an
               iframe.</small
             >
           </span>
