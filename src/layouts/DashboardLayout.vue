@@ -384,7 +384,7 @@ export default {
   }
   .mobile-vertical-menu {
     background: #2a3244 !important;
-    box-shadow: 0px 10px 30px rgba(0,0,0,0.4);
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.4);
   }
 }
 

@@ -237,8 +237,7 @@ export default {
       ) !important;
     }
   }
-  
-  
+
   .blockchain-block-timestamp {
     &:before,
     &:after {
