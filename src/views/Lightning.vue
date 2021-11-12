@@ -360,7 +360,7 @@ export default {
   },
   methods: {
     getReadableTime(timestamp) {
-      return format(new Date(timestamp), "MMM D, h:mm:ss a");
+      return format(new Date(timestamp), "MMM d, h:mm:ss a");
     },
     async downloadChannelBackup() {
       await API.download(
