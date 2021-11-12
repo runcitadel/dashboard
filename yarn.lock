@@ -1539,7 +1539,7 @@ __metadata:
     eslint-plugin-prettier: ^4.0.0
     eslint-plugin-vue: ^8.0.3
     prettier: ^2.4.1
-    qrcode.vue: ^3.3.3
+    qrcode.vue: ^1.7.0
     sass: ^1.43.4
     sass-loader: ^12
     vue: ^2.6.14
@@ -5621,12 +5621,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qrcode.vue@npm:^3.3.3":
-  version: 3.3.3
-  resolution: "qrcode.vue@npm:3.3.3"
+"qrcode.vue@npm:^1.7.0":
+  version: 1.7.0
+  resolution: "qrcode.vue@npm:1.7.0"
   peerDependencies:
-    vue: ^3.0.0
-  checksum: 6f1fb0fbdfac972115b6d48937b42fbe6dff41297be77fcc461f1287e21e1d76a1d695eb50230cca1929619ab75423a4bbace73a6d05ef1f5c45d0966d2170c1
+    vue: ^2.0.0
+  checksum: 940cd374feef2de3896ef4b2db80d3c3dc959a1558cc767b0844a130616387059932d80337c8ffcc24a6ea0ba744dff9100cb4d31aed38250e4052f92e55d365
   languageName: node
   linkType: hard
 
