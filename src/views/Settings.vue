@@ -14,7 +14,7 @@
       <temperature-widget
         id="temperature"
         class="card-app-list"
-        v-if="isUmbrelOS"
+        v-if="isCitadelOS"
       ></temperature-widget>
 
       <card-widget
@@ -244,8 +244,8 @@
       >
         <div class="d-block pt-2"></div>
 
-        <!-- Uptime monitoring is only available on Umbrel OS -->
-        <div class="pt-0" v-if="isUmbrelOS">
+        <!-- Uptime monitoring is only available on Citadel OS -->
+        <div class="pt-0" v-if="isCitadelOS">
           <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
             <div>
               <span class="d-block">Uptime</span>
@@ -405,8 +405,7 @@
               <span class="d-block">
                 <b-icon icon="bell-fill" variant="success"></b-icon>
                 <small class="text-muted ms-1"
-                  >Citadel v{{ availableUpdate.version }} is now available to
-                  install</small
+                  >{{ availableUpdate.name }} is now available to install</small
                 >
               </span>
               <b-button
@@ -483,7 +482,7 @@ export default {
       availableUpdate: (state) => state.system.availableUpdate,
       updateStatus: (state) => state.system.updateStatus,
       debugResult: (state) => state.system.debugResult,
-      isUmbrelOS: (state) => state.system.isUmbrelOS,
+      isCitadelOS: (state) => state.system.isCitadelOS,
       uptime: (state) => state.system.uptime,
     }),
     getUptime() {

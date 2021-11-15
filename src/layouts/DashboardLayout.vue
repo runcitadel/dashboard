@@ -212,7 +212,7 @@
           <b-alert
             class="mt-4 mb-0"
             variant="warning"
-            v-if="isUmbrelOS && isRunningHot"
+            v-if="isCitadelOS && isRunningHot"
             show
             dismissible
           >
@@ -259,7 +259,7 @@ export default {
         state.system.showUpdateConfirmationModal,
       ram: (state) => state.system.ram,
       storage: (state) => state.system.storage,
-      isUmbrelOS: (state) => state.system.isUmbrelOS,
+      isCitadelOS: (state) => state.system.isCitadelOS,
       cpuTemperature: (state) => state.system.cpuTemperature,
     }),
     isRunningLowOnRam() {
@@ -304,7 +304,7 @@ export default {
       this.$store.dispatch("lightning/getTransactions");
       this.$store.dispatch("lightning/getChannels");
       this.$store.dispatch("bitcoin/getPrice");
-      this.$store.dispatch("system/getIsUmbrelOS");
+      this.$store.dispatch("system/getIsCitadelOS");
       this.$store.dispatch("system/getAvailableUpdate");
       this.$store.dispatch("system/getRam");
       this.$store.dispatch("system/getStorage");

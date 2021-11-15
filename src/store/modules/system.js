@@ -47,7 +47,7 @@ const state = () => ({
     used: 0,
     breakdown: [],
   },
-  isUmbrelOS: false,
+  isCitadelOS: false,
   cpuTemperature: 0, //in celsius
   cpuTemperatureUnit: "celsius",
   uptime: null,
@@ -106,8 +106,8 @@ const mutations = {
   setRam(state, ram) {
     state.ram = ram;
   },
-  setIsUmbrelOS(state, isUmbrelOS) {
-    state.isUmbrelOS = isUmbrelOS;
+  setIsCitadelOS(state, isCitadelOS) {
+    state.isCitadelOS = isCitadelOS;
   },
   setCpuTemperature(state, cpuTemperature) {
     state.cpuTemperature = cpuTemperature;
@@ -312,11 +312,11 @@ const actions = {
       commit("setRam", ram);
     }
   },
-  async getIsUmbrelOS({ commit }) {
-    const isUmbrelOS = await API.get(
+  async getIsCitadelOS({ commit }) {
+    const isCitadelOS = await API.get(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/is-citadel-os`
     );
-    commit("setIsUmbrelOS", !!isUmbrelOS);
+    commit("setIsCitadelOS", !!isCitadelOS);
   },
   async getCpuTemperature({ commit }) {
     const cpuTemperature = await API.get(

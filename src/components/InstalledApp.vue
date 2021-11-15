@@ -10,7 +10,7 @@
       ><img
         class="installed-app-icon app-icon"
         :alt="name"
-        :src="`https://getumbrel.github.io/umbrel-apps-gallery/${id}/icon.svg`"
+        :src="`https://runcitadel.github.io/old-apps-gallery/${id}/icon.svg`"
       />
     </a>
     <span

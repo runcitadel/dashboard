@@ -33,7 +33,7 @@
               class="app-icon app-icon-lg me-2 me-sm-3 align-self-top"
               :src="
                 app.imageUrl ||
-                `https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`
+                `https://runcitadel.github.io/old-apps-gallery/${app.id}/icon.svg`
               "
             />
           </div>
@@ -130,7 +130,7 @@
         :src="
           image.startsWith('http')
             ? image
-            : `https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`
+            : `https://runcitadel.github.io/old-apps-gallery/${app.id}/${image}`
         "
       />
       <div class="d-block" style="padding: 1px"></div>

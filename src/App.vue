@@ -207,6 +207,8 @@ export default {
             if (this.updateStatus.state === "failed") {
               toastOptions.title = "Update failed";
               toastOptions.variant = "danger";
+            } else {
+              this.$store.dispatch("system/getAvailableUpdate");
             }
 
             this.$bvToast.toast(this.updateStatus.description, toastOptions);

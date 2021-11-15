@@ -32,7 +32,7 @@
             <div class="d-flex justify-content-center flex-column mx-2">
               <img
                 class="app-icon me-2 me-lg-3"
-                :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
+                :src="`https://runcitadel.github.io/old-apps-gallery/${app.id}/icon.svg`"
               />
             </div>
             <div class="d-flex justify-content-center flex-column my-4">
@@ -66,21 +66,21 @@
               :src="
                 image.startsWith('http')
                   ? image
-                  : `https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`
+                  : `https://runcitadel.github.io/old-apps-gallery/${app.id}/${image}`
               "
             />
           </div>
         </router-link>
       </card-widget>
-      <!--<card-widget class="pb-2 card-app-list umbrel-dev-note mt-2">
+      <!--<card-widget class="pb-2 card-app-list citadel-dev-note mt-2">
         <div class="px-3 px-lg-4 py-3">
           <span class="rocket ms-3 ms-lg-4">🚀</span>
           <h4 class="font-weight-normal mt-4">
-            Get your app on the Umbrel App Store
+            Get your app on the Citadel App Store
           </h4>
           <p class="text-muted mb-3">
             Use any programming language, database or framework to build your
-            app for Umbrel.
+            app for Citadel.
           </p>
           <b-link
             href="https://github.com/runcitadel/compose-nonfree/blob/main/apps/README.md
@@ -144,7 +144,7 @@ export default {
   }
 }
 
-.umbrel-dev-note {
+/*.citadel-dev-note {
   position: relative;
   overflow: visible;
   .rocket {
@@ -153,5 +153,5 @@ export default {
     top: -30px;
     left: 0;
   }
-}
+}*/
 </style>

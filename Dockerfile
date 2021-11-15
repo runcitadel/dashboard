@@ -1,5 +1,5 @@
 # Run the build on the host architecture, change this if you're building on arm64
-FROM amd64/node:16-bullseye-slim AS umbrel-dashboard-builder
+FROM amd64/node:16-bullseye-slim AS citadel-dashboard-builder
 
 ARG STAGING_DEPLOYMENT=false
 
@@ -17,11 +17,11 @@ RUN yarn
 RUN yarn build
 
 
-FROM node:16-bullseye-slim AS umbrel-dashboard
+FROM node:16-bullseye-slim AS citadel-dashboard
 
 RUN npm -g i serve
 
-COPY --from=umbrel-dashboard-builder /app/dist/ /dist
+COPY --from=citadel-dashboard-builder /app/dist/ /dist
 
 ENV PORT=3004
 EXPOSE 3004

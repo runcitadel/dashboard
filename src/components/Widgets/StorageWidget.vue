@@ -115,20 +115,20 @@
               >
                 <div class="d-flex align-items-center">
                   <img
-                    v-if="app.id === 'umbrel' || app.id === 'citadel'"
+                    v-if="app.id === 'citadel'"
                     class="app-stat-list-item-icon me-2"
                     :src="require(`@/assets/icon-system.svg`)"
                   />
                   <img
                     v-else
                     class="app-stat-list-item-icon me-2"
-                    :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
+                    :src="`https://runcitadel.github.io/old-apps-gallery/${app.id}/icon.svg`"
                   />
                   <div class="w-100">
                     <div
                       class="d-flex justify-content-between align-items-center"
                     >
-                      <span v-if="app.id === 'umbrel' || app.id === 'citadel'"
+                      <span v-if="app.id === 'citadel'"
                         >System
                         <b-icon
                           icon="info-circle-fill"

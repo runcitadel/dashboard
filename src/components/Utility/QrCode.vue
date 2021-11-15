@@ -8,7 +8,7 @@
     <transition name="qr-logo-popup" appear>
       <img
         v-show="showLogo"
-        src="@/assets/umbrel-qr-icon.svg"
+        src="@/assets/citadel-qr-icon.svg"
         class="qr-logo"
       />
     </transition>
@@ -55,7 +55,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// Transition for umbrel logo popping up on QR
+// Transition for logo popping up on QR
 .qr-logo-popup-enter-active,
 .qr-logo-popup-leave-active {
   &.qr-logo {
