@@ -69,11 +69,13 @@ body {
 
   .wallet-transactions-container {
     position: relative;
+    background: #2a3244 !important;
 
     .transactions {
       height: 22rem;
       overflow-y: scroll;
       -webkit-overflow-scrolling: touch; //momentum scroll on iOS
+      background: #2a3244 !important;
     }
 
     //bottom fade
