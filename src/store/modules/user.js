@@ -6,6 +6,9 @@ const state = () => ({
   name: "",
   jwt: window.localStorage.getItem("jwt") || "",
   registered: true,
+  totpKey: "",
+  totpEnabled: false,
+  totpAuthenticated: false,
   seed: [],
   installedApps: [],
 });
@@ -25,6 +28,15 @@ const mutations = {
   setInstalledApps(state, installedApps) {
     state.installedApps = installedApps;
   },
+  setTotpKey(state, totpKey) {
+    state.totpKey = totpKey;
+  },
+  setTotpEnabled(state, totpEnabled) {
+    state.totpEnabled = totpEnabled;
+  },
+  setTotpAuthenticated(state, totpAuthenticated) {
+    state.totpAuthenticated = totpAuthenticated;
+  },
   setSeed(state, seed) {
     state.seed = seed;
   },
@@ -35,7 +47,7 @@ const actions = {
   async login({ commit }, password) {
     const { data } = await API.post(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/login`,
-      { password }
+      { password, totpToken }
     );
 
     if (data && data.jwt) {
@@ -72,6 +84,20 @@ const actions = {
     );
     commit("setName", name);
     commit("setInstalledApps", installedApps);
+  },
+
+  async getTotpKey({ commit }) {
+    const totpKey = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/totp/setup`
+    );
+    commit("setTotpKey", totpKey);
+  },
+
+  async getTotpEnabledStatus({ commit }) {
+    const { totpEnabled } = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/totp/status`
+    );
+    commit("setTotpEnabled", totpEnabled);
   },
 
   async getSeed({ commit, state, dispatch }, plainTextPassword) {
