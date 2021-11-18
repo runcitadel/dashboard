@@ -90,7 +90,7 @@ const actions = {
     const totpKey = await API.get(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/totp/setup`
     );
-    commit("setTotpKey", totpKey);
+    commit("setTotpKey", totpKey.key);
   },
 
   async getTotpEnabledStatus({ commit }) {
