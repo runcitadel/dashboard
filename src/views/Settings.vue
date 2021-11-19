@@ -298,6 +298,7 @@
                     class="mb-3 mx-auto"
                     :value="authenticatorSecretUri"
                     :size="190"
+                    level="M"
                     showLogo
                   ></qr-code>
                   <input-copy
