@@ -1,24 +1,6 @@
 <template>
   <connection-details name="Zap (Android)" requires="lnd">
     <step-list>
-      <step>
-        Download
-        <b-link
-          href="https://play.google.com/store/apps/details?id=org.torproject.android"
-          target="_blank"
-          >Orbot</b-link
-        >
-        on your phone.
-      </step>
-      <step>
-        Open Orbot, tap the gear icon under
-        <span class="font-weight-bold">"Tor-Enabled apps"</span> and add Zap.
-      </step>
-      <step>
-        Tap <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn
-        on the <span class="font-weight-bold">"VPN Mode"</span>.
-      </step>
-      <step> Start Tor by tapping the big onion icon. </step>
       <step> Open the Zap app on your phone. </step>
       <step>
         Tap <span class="font-weight-bold">"Connect"</span> on the welcome
@@ -29,7 +11,7 @@
         <qr-code
           :value="urls.lnd.grpcTor.replace(/cert=(.*)&/gm, '')"
           :size="300"
-          class="qr-image mt-2"
+          class="qr-image mt-2 border border-white border-5"
           showLogo
           @click="
             $emit('showQrModal', urls.lnd.grpcTor.replace(/cert=(.*)&/gm, ''))
