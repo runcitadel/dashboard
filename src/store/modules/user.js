@@ -44,7 +44,7 @@ const mutations = {
 
 // Functions to get data from the API
 const actions = {
-  async login({ commit }, password) {
+  async login({ commit }, { password, totpToken }) {
     const { data } = await API.post(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/login`,
       { password, totpToken }
@@ -90,7 +90,7 @@ const actions = {
     const totpKey = await API.get(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/totp/setup`
     );
-    commit("setTotpKey", totpKey);
+    commit("setTotpKey", totpKey.key);
   },
 
   async getTotpEnabledStatus({ commit }) {
