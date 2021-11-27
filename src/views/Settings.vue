@@ -309,13 +309,9 @@
 
                   <br />
                 </div>
-                <label class="sr-onlsy" for="input-token" v-if="!totpEnabled">
+                <label class="sr-onlsy" for="input-token">
                   Enter the code from your authenticator app to verify and
-                  enable 2FA.
-                </label>
-                <label class="sr-onlsy" for="input-token" v-if="totpEnabled">
-                  Enter the code from your authenticator app to verify and
-                  disable 2FA.
+                  {{ totpEnabled ? "disable" : "enable" }} 2FA.
                 </label>
                 <b-input
                   id="input-token"
@@ -613,7 +609,9 @@ export default {
       totpEnabled: (state) => state.user.totpEnabled,
       authenticatorSecret: (state) => state.user.totpKey,
       authenticatorSecretUri: (state) =>
-        `otpauth://totp/Citadel@Citadel?secret=${state.user.totpKey}&period=30"`,
+        `otpauth://totp/${encodeURIComponent(
+          state.user.name + "'Citadel"
+        )}?secret=${state.user.totpKey}&period=30"`,
     }),
     getUptime() {
       return prettifySeconds(this.uptime);
