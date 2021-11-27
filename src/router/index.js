@@ -28,6 +28,8 @@ const AppStoreApp = () =>
   import(/* webpackChunkName: "appstore" */ "../views/AppStoreApp.vue");
 const Settings = () =>
   import(/* webpackChunkName: "ui" */ "../views/Settings.vue");
+const LightningAddress = () =>
+  import(/* webpackChunkName: "ui" */ "../views/LightningAddress.vue");
 const ConnectWallet = () =>
   import(/* webpackChunkName: "connectors" */ "../views/ConnectWallet.vue");
 
@@ -187,6 +189,18 @@ const routes = [
             path: "",
             name: "lightning",
             component: Lightning,
+          },
+        ],
+      },
+      {
+        path: "/lightning-address",
+        component: DashboardLayout,
+        meta: { requiresAuth: true },
+        children: [
+          {
+            path: "",
+            name: "lightning-address",
+            component: LightningAddress,
           },
         ],
       },
