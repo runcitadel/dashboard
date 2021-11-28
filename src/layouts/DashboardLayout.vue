@@ -359,6 +359,12 @@ export default {
   created() {
     //load this data once:
     this.$store.dispatch("user/getInfo");
+    if (
+      window.localStorage &&
+      window.localStorage.getItem("lightmode") === "true"
+    ) {
+      document.querySelector(":root").classList.add("prefer-light-mode");
+    }
 
     //refresh this data every 20s:
     this.fetchData();
@@ -379,12 +385,14 @@ export default {
 
 <style lang="scss" scoped>
 @media (prefers-color-scheme: dark) {
-  .nav-horizontal {
-    background: #2a3244 !important;
-  }
-  .mobile-vertical-menu {
-    background: #2a3244 !important;
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.4);
+  :root:not(.prefer-light-mode) {
+    .nav-horizontal {
+      background: #2a3244 !important;
+    }
+    .mobile-vertical-menu {
+      background: #2a3244 !important;
+      box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.4);
+    }
   }
 }
 

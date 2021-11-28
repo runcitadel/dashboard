@@ -342,29 +342,31 @@ export default {
 
 <style lang="scss" scoped>
 @media (prefers-color-scheme: dark) {
-  .nav-vertical {
-    background: transparent !important;
-    .nav-item {
-      .nav-link {
-        color: #dde2ee !important;
-        svg {
-          path,
-          rect {
-            fill: #dde2ee !important;
-          }
-        }
-        &:hover,
-        &:active,
-        &:focus {
+  :root:not(.prefer-light-mode) {
+    .nav-vertical {
+      background: transparent !important;
+      .nav-item {
+        .nav-link {
           color: #dde2ee !important;
-        }
-        &.active {
-          opacity: 1 !important;
-          color: #5351fb !important;
           svg {
             path,
             rect {
-              fill: #5351fb !important;
+              fill: #dde2ee !important;
+            }
+          }
+          &:hover,
+          &:active,
+          &:focus {
+            color: #dde2ee !important;
+          }
+          &.active {
+            opacity: 1 !important;
+            color: #5351fb !important;
+            svg {
+              path,
+              rect {
+                fill: #5351fb !important;
+              }
             }
           }
         }

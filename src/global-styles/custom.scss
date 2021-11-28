@@ -8,7 +8,7 @@ body {
 
 // Get bootstrap to use dark mode
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.prefer-light-mode) {
     --bs-blue: #0d6efd;
     --bs-indigo: #6610f2;
     --bs-purple: #6f42c1;
@@ -61,76 +61,76 @@ body {
     --bs-body-line-height: 1.5;
     --bs-body-color: #fff !important;
     --bs-body-bg: #1c1c26 !important;
-  }
 
-  .form-control {
-    color: white !important;
-  }
+    .form-control {
+      color: white !important;
+    }
 
-  .wallet-transactions-container {
-    position: relative;
-    background: #2a3244 !important;
+    .wallet-transactions-container {
+      position: relative;
+      background: #2a3244 !important;
 
-    .transactions {
-      height: 22rem;
-      overflow-y: scroll;
-      -webkit-overflow-scrolling: touch; //momentum scroll on iOS
+      .transactions {
+        height: 22rem;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch; //momentum scroll on iOS
+        background: #2a3244 !important;
+      }
+
+      //bottom fade
+      &:before {
+        background-image: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0),
+          #2a3244
+        ) !important;
+      }
+
+      //top fade
+      &:after {
+        background-image: linear-gradient(
+          to top,
+          rgba(255, 255, 255, 0),
+          #2a3244
+        ) !important;
+      }
+    }
+
+    .modal-content {
       background: #2a3244 !important;
     }
 
-    //bottom fade
-    &:before {
-      background-image: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0),
-        #2a3244
-      ) !important;
+    .app-name {
+      color: white !important;
     }
-
-    //top fade
-    &:after {
-      background-image: linear-gradient(
-        to top,
-        rgba(255, 255, 255, 0),
-        #2a3244
-      ) !important;
-    }
-  }
-
-  .modal-content {
-    background: #2a3244 !important;
-  }
-
-  .app-name {
-    color: white !important;
   }
 }
 
 :root {
   --card-bg: #fff;
   --card-shadow: 0px 10px 30px rgba(209, 213, 223, 0.5);
-  --card-shadow-hover: 0px 10px 40px rgba(209, 213, 223, 0.6);
+  --card-shadow-hover: 0px 10px 30px rgba(209, 213, 223, 0.6);
   --toggle-switch-bg: linear-gradient(346.78deg, #f7fcfc 0%, #fafcfa 100%);
   --toggle-switch-selected: #fff;
 }
 
+.btn.btn-success {
+  color: white !important;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.prefer-light-mode) {
     color: #fff !important;
     background: #1c1c26 !important;
     --card-bg: #2a3244;
     --card-shadow: 0px 10px 30px rgba(0, 0, 0, 0.4);
-    --card-shadow-hover: 0px 10px 40px rgba(0, 0, 0, 0.5);
+    --card-shadow-hover: 0px 10px 30px rgba(0, 0, 0, 0.5);
     --toggle-switch-bg: linear-gradient(346.78deg, #484848 0%, #414241 100%);
     --toggle-switch-selected: #1c1c26;
-  }
 
-  body {
-    background: #1c1c26 !important;
-  }
-
-  .btn.btn-success {
-    color: white !important;
+    body {
+      background: #1c1c26 !important;
+    }
   }
 }
 

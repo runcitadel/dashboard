@@ -220,28 +220,30 @@ export default {
 
 <style lang="scss" scoped>
 @media (prefers-color-scheme: dark) {
-  .blockchain-container {
-    &:before {
-      background-image: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0),
-        #2a3244
-      ) !important;
+  :root:not(.prefer-light-mode) {
+    .blockchain-container {
+      &:before {
+        background-image: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0),
+          #2a3244
+        ) !important;
+      }
+
+      &:after {
+        background-image: linear-gradient(
+          to top,
+          rgba(255, 255, 255, 0),
+          #2a3244
+        ) !important;
+      }
     }
 
-    &:after {
-      background-image: linear-gradient(
-        to top,
-        rgba(255, 255, 255, 0),
-        #2a3244
-      ) !important;
-    }
-  }
-
-  .blockchain-block-timestamp {
-    &:before,
-    &:after {
-      background: #2a3244 !important;
+    .blockchain-block-timestamp {
+      &:before,
+      &:after {
+        background: #2a3244 !important;
+      }
     }
   }
 }

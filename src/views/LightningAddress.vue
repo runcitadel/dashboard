@@ -27,7 +27,8 @@
           </step>
           <step>
             The following steps are optional, but if this Lightning address is
-            too long for you, you can get a free @ln.runcitadel.space address.
+            too long for you (and .onion addresses don't work everywhere), you
+            can get a free @ln.runcitadel.space address if you're on Twitter.
           </step>
           <step> First, you need a Twitter account. </step>
           <step> Add a 🏰 emoji to your Twitter name.</step>
