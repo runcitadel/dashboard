@@ -16,11 +16,6 @@
             <b-link to="/app-store/lnme">LnMe</b-link> app on your Citadel.
           </step>
           <step>
-            Open BlueWallet on your phone, tap the three dots to access the
-            settings and go to
-            <span class="font-weight-bold">Network > Lightning Settings</span>.
-          </step>
-          <step>
             You can now sent tips to this address:
 
             <input-copy class="my-1" :value="'tips@' + lnmeUrl"></input-copy>
