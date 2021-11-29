@@ -50,10 +50,17 @@ import InputCopy from "@/components/Utility/InputCopy";
 export default {
   computed: {
     ...mapState({
-      lnmeUrl: (state) => {
-        // Get the app from state.apps.installed where the ID is lnme
-        return state.apps.installed.find((app) => app.id === "lnme")
-          .hiddenService;
+      lnAddress: (state) => {
+        try {
+          // Get the app from state.apps.installed where the ID is lnme
+          return (
+            "tips@" +
+              state.apps.installed.find((app) => app.id === "lnme")
+                .hiddenService || "None yet, please install LnMe first."
+          );
+        } catch {
+          return "None yet, please install LnMe first.";
+        }
       },
     }),
   },
