@@ -18,7 +18,7 @@
           <step>
             You can now sent tips to this address:
 
-            <input-copy class="my-1" :value="'tips@' + lnmeUrl"></input-copy>
+            <input-copy class="my-1" :value="lnAddress"></input-copy>
           </step>
           <step>
             The following steps are optional, but if this Lightning address is
