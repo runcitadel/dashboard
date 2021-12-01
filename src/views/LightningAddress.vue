@@ -8,7 +8,7 @@
         </div>
       </div>
     </div>
-    <card-widget :header="`Here's how to get your Lightning address`">
+    <card-widget header="Here's how to get your Lightning address">
       <div class="px-3 px-lg-4 pb-3">
         <step-list>
           <step>
