@@ -15,23 +15,13 @@
               </h3>
               <div @click="toggleUnit" class="toggle toggle-sm mt-2">
                 <div
-                  class="
-                    toggle-bg-text
-                    justify-content-center
-                    d-flex
-                    align-items-center
-                  "
+                  class="toggle-bg-text justify-content-center d-flex align-items-center"
                 >
                   <span class="text-center">&#176;C</span>
                   <span class="text-center">&#176;F</span>
                 </div>
                 <div
-                  class="
-                    toggle-switch
-                    justify-content-center
-                    d-flex
-                    align-items-center
-                  "
+                  class="toggle-switch justify-content-center d-flex align-items-center"
                   :class="{
                     'toggle-left': cpuTemperatureUnit === 'celsius',
                     'toggle-right': cpuTemperatureUnit === 'fahrenheit',

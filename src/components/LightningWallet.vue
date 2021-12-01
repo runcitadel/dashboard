@@ -46,13 +46,7 @@
 
           <!-- No transactions -->
           <div
-            class="
-              d-flex
-              flex-column
-              justify-content-center
-              px-3 px-lg-4
-              zero-wallet-transactions-container
-            "
+            class="d-flex flex-column justify-content-center px-3 px-lg-4 zero-wallet-transactions-container"
             v-if="transactions.length === 0"
           >
             <!-- Piggy bank icon -->
@@ -123,11 +117,7 @@
                 <div class="d-flex w-100 justify-content-between" v-else>
                   <div class="transaction-description">
                     <h6
-                      class="
-                        mb-0
-                        font-weight-normal
-                        transaction-description-text
-                      "
+                      class="mb-0 font-weight-normal transaction-description-text"
                     >
                       <!-- Incoming tx icon -->
                       <svg

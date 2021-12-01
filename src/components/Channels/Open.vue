@@ -63,13 +63,7 @@
       </b-col>
       <b-col class="d-flex" col cols="12" sm="6">
         <div
-          class="
-            mt-4 mt-sm-0
-            d-flex
-            w-100
-            justify-content-between
-            align-self-end
-          "
+          class="mt-4 mt-sm-0 d-flex w-100 justify-content-between align-self-end"
         >
           <span>
             <small class="text-danger align-self-center" v-if="error">{{

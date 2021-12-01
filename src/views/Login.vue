@@ -9,14 +9,7 @@
     </div>-->
 
     <div
-      class="
-        d-flex
-        flex-column
-        align-items-center
-        justify-content-center
-        min-vh100
-        p-2
-      "
+      class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
     >
       <img
         alt="Citadel"
@@ -31,15 +24,7 @@
 
       <form
         v-on:submit.prevent="authenticateUser"
-        class="
-          form-container
-          mt-3
-          d-flex
-          flex-column
-          form-container
-          w-100
-          align-items-center
-        "
+        class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center"
       >
         <input-password
           v-model="password"
@@ -94,7 +79,7 @@
 
 <script>
 import { mapState } from "vuex";
-
+import Citadel from "@runcitadel/sdk";
 import InputPassword from "@/components/Utility/InputPassword";
 
 export default {
@@ -141,6 +126,13 @@ export default {
     async authenticateUser() {
       this.isLoggingIn = true;
 
+      /*try {
+        let citadel = new Citadel.Citadel(window.location.hostname);
+        citadel.login(this.password, this.totpToken);
+      } catch (error) {
+        console.error(error);
+        this.isIncorrectPassword = true;
+      }*/
       try {
         await this.$store.dispatch("user/login", {
           password: this.password,

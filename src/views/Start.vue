@@ -1,14 +1,7 @@
 <template>
   <div>
     <div
-      class="
-        d-flex
-        flex-column
-        align-items-center
-        justify-content-center
-        min-vh100
-        p-2
-      "
+      class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
     >
       <img
         alt="Citadel"
@@ -20,15 +13,7 @@
       <p class="text-muted w-75 text-center">{{ text }}</p>
 
       <div
-        class="
-          form-container
-          mt-3
-          d-flex
-          flex-column
-          form-container
-          w-100
-          align-items-center
-        "
+        class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center"
       >
         <b-form-input
           v-model="name"

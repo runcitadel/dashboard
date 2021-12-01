@@ -31,14 +31,7 @@
       <div class="my-3 pb-3">
         <h1>apps</h1>
         <div
-          class="
-            d-flex
-            flex-column
-            justify-content-center
-            align-items-center
-            py-5
-            mb-lg-5
-          "
+          class="d-flex flex-column justify-content-center align-items-center py-5 mb-lg-5"
         >
           <p class="text-muted mb-2">You don't have any apps installed yet</p>
           <b-button variant="success" class="px-4" :to="'app-store'"
