@@ -19,12 +19,7 @@
 
         <!-- on small screens -->
         <div
-          class="
-            d-xl-none d-flex
-            justify-content-between
-            align-items-center
-            mb-1
-          "
+          class="d-xl-none d-flex justify-content-between align-items-center mb-1"
         >
           <status :variant="statusVariant" size="sm">{{
             channel.status
@@ -79,57 +74,22 @@ export default {
       return this.$store.state.system.unit;
     },
     statusVariant() {
-      if (this.channel.status === "Online") {
-        return "success";
+      switch (this.channel.status) {
+        case "Online":
+          return "success";
+        case "Opening":
+          return "warning";
+        case "Closing":
+        case "unknown":
+          return "danger";
+        case "Offline":
+        default:
+          return "default";
       }
-      if (this.channel.status === "Offline") {
-        return "default";
-      }
-      if (this.channel.status === "Opening") {
-        return "warning";
-      }
-      if (this.channel.status === "Closing") {
-        return "danger";
-      }
-      if (this.channel.status === "Unkown") {
-        return "danger";
-      }
-      return "default";
     },
   },
   data() {
     return {};
-  },
-  methods: {
-    getStatusVariant() {
-      if (this.channel.type === "OPEN") {
-        return {
-          text: "Online",
-          variant: "success",
-        };
-      }
-      if (this.channel.type === "PENDING_OPEN_CHANNEL") {
-        return {
-          text: "Opening",
-          variant: "warning",
-        };
-      }
-      if (
-        this.channel.type === "WAITING_CLOSING_CHANNEL" ||
-        this.channel.type === "PENDING_CLOSING_CHANNEL"
-      ) {
-        return {
-          text: "Closing",
-          variant: "warning",
-        };
-      }
-      if (this.channel.type === "FORCE_CLOSING_CHANNEL") {
-        return {
-          text: "Force Closing",
-          variant: "danger",
-        };
-      }
-    },
   },
   props: {
     channel: Object,
