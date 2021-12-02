@@ -79,6 +79,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@bitcoin-design/bitcoin-icons-vue@npm:^0.1.8":
+  version: 0.1.8
+  resolution: "@bitcoin-design/bitcoin-icons-vue@npm:0.1.8"
+  peerDependencies:
+    vue: ">= 3"
+  checksum: 0615e1928692f9b9832d1793d5a056ed0e06cadf44ef9ca722ca98f3df450a48a2aecda932ed7ce75cbf9afe31bd2fa2411e1c4d3dc6e1db8849eeb2ad778faa
+  languageName: node
+  linkType: hard
+
 "@eslint/eslintrc@npm:^1.0.4":
   version: 1.0.4
   resolution: "@eslint/eslintrc@npm:1.0.4"
@@ -1741,6 +1750,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "citadel-dashboard@workspace:."
   dependencies:
+    "@bitcoin-design/bitcoin-icons-vue": ^0.1.8
     "@runcitadel/sdk": ^0.0.1-beta.6
     "@vue/cli-plugin-eslint": ^v5.0.0-rc.1
     "@vue/cli-plugin-router": ^v5.0.0-rc.1
