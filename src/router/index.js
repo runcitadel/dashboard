@@ -1,5 +1,4 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 
 import store from "@/store";
 
@@ -124,8 +123,6 @@ const LNDConnectRESTTor = () =>
   import(
     /* webpackChunkName: "connectors" */ "../components/ConnectWallet/Wallets/LNDConnectRESTTor.vue"
   );
-
-Vue.use(VueRouter);
 
 const routes = [
   {
@@ -417,10 +414,9 @@ const routes = [
   },
 ];
 
-const router = new VueRouter({
-  mode: "history",
-  base: process.env.BASE_URL,
+const router = createRouter({
   routes,
+  history: createWebHistory(),
   scrollBehavior: (to, from, savedPosition) => {
     // Exists when Browser's back/forward pressed
     if (savedPosition) {
@@ -436,13 +432,13 @@ const router = new VueRouter({
         }
       }, 500);
 
-      return { selector: to.hash };
+      return { el: to.hash };
       // By changing queries we are still in the same component, so "from.path" === "to.path" (new query changes just "to.fullPath", but not "to.path").
     } else if (from.path === to.path) {
       return {};
     }
     // Scroll to top
-    return { x: 0, y: 0 };
+    return { left: 0, top: 0 };
   },
 });
 

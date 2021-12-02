@@ -5,16 +5,18 @@
         <h4
           class="text-primary font-weight-bold"
           v-b-tooltip.hover.right
-          :title="channel.localBalance | satsToUSD"
+          :title="$filters.satsToUSD(channel.localBalance)"
         >
-          {{ channel.localBalance | unit | localize }} {{ unit | formatUnit }}
+          {{ $filters.localize($filters.unit(channel.localBalance)) }}
+          {{ $filters.formatUnit(unit) }}
         </h4>
         <h4
           class="text-success font-weight-bold text-right"
           v-b-tooltip.hover.left
-          :title="channel.remoteBalance | satsToUSD"
+          :title="$filters.satsToUSD(channel.remoteBalance)"
         >
-          {{ channel.remoteBalance | unit | localize }} {{ unit | formatUnit }}
+          {{ $filters.localize($filters.unit(channel.remoteBalance)) }}
+          {{ $filters.formatUnit(unit) }}
         </h4>
       </div>
       <bar
@@ -70,11 +72,11 @@
           <span class="text-muted">Local Balance</span>
           <span
             v-b-tooltip.hover.left
-            :title="channel.localBalance | satsToUSD"
+            :title="$filters.satsToUSD(channel.localBalance)"
             class="text-capitalize font-weight-bold"
           >
-            {{ channel.localBalance | unit | localize }}
-            {{ unit | formatUnit }}
+            {{ $filters.localize($filters.unit(channel.localBalance)) }}
+            {{ $filters.formatUnit(unit) }}
           </span>
         </div>
 
@@ -82,11 +84,11 @@
           <span class="text-muted">Remote Balance</span>
           <span
             v-b-tooltip.hover.left
-            :title="channel.remoteBalance | satsToUSD"
+            :title="$filters.satsToUSD(channel.remoteBalance)"
             class="text-capitalize font-weight-bold"
           >
-            {{ channel.remoteBalance | unit | localize }}
-            {{ unit | formatUnit }}
+            {{ $filters.localize($filters.unit(channel.remoteBalance)) }}
+            {{ $filters.formatUnit(unit) }}
           </span>
         </div>
 
@@ -94,11 +96,11 @@
           <span class="text-muted">Channel Capacity</span>
           <span
             v-b-tooltip.hover.left
-            :title="channel.capacity | satsToUSD"
+            :title="$filters.satsToUSD(channel.capacity)"
             class="text-capitalize font-weight-bold"
           >
-            {{ channel.capacity | unit | localize }}
-            {{ unit | formatUnit }}
+            {{ $filters.localize($filters.unit(channel.capacity)) }}
+            {{ $filters.formatUnit(unit) }}
           </span>
         </div>
 
@@ -118,8 +120,8 @@
         >
           <span class="text-muted">Commit Fee</span>
           <span class="text-capitalize font-weight-bold">
-            {{ channel.commitFee | unit | localize }}
-            {{ unit | formatUnit }}
+            {{ $filters.localize($filters.unit(channel.commitFee)) }}
+            {{ $filters.formatUnit(unit) }}
           </span>
         </div>
 

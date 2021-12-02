@@ -195,7 +195,7 @@ export default {
       this.poller(newPercent);
     },
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.clearInterval(this.polling);
   },
   props: {

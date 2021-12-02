@@ -35,16 +35,16 @@
             <span
               class="text-primary font-weight-bold"
               v-b-tooltip.hover.right
-              :title="channel.localBalance | satsToUSD"
-              >{{ channel.localBalance | unit | localize }}
-              {{ unit | formatUnit }}</span
+              :title="$filters.satsToUSD(channel.localBalance)"
+              >{{ $filters.localize($filters.unit(channel.localBalance)) }}
+              {{ $filters.formatUnit(unit) }}</span
             >
             <span
               v-b-tooltip.hover.left
-              :title="channel.remoteBalance | satsToUSD"
+              :title="$filters.satsToUSD(channel.remoteBalance)"
               class="text-success text-right font-weight-bold"
-              >{{ channel.remoteBalance | unit | localize }}
-              {{ unit | formatUnit }}</span
+              >{{ $filters.localize($filters.unit(channel.remoteBalance)) }}
+              {{ $filters.formatUnit(unit) }}</span
             >
           </div>
           <bar

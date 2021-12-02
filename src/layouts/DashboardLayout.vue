@@ -370,7 +370,7 @@ export default {
     this.fetchData();
     this.interval = window.setInterval(this.fetchData, 20000);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.clearInterval(this.interval);
     if (this.pollUpdateStatus) {
       window.clearInterval(this.pollUpdateStatus);

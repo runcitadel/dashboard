@@ -59,14 +59,14 @@
                 variant: 'success',
                 blink: false,
               }"
-              :sub-title="unit | formatUnit"
+              :sub-title="$filters.formatUnit(unit)"
               icon="icon-app-bitcoin.svg"
               :loading="lightningSyncPercent < 100"
             >
               <template v-slot:title>
                 <div
                   v-b-tooltip.hover.right
-                  :title="btcBalanceInSats | satsToUSD"
+                  :title="$filters.satsToUSD(btcBalanceInSats)"
                   v-if="btcBalance !== -1"
                 >
                   <CountUp

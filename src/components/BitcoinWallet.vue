@@ -6,7 +6,7 @@
       variant: 'success',
       blink: false,
     }"
-    :sub-title="unit | formatUnit"
+    :sub-title="$filters.formatUnit(unit)"
     icon="icon-app-bitcoin.svg"
     :loading="
       loading ||
@@ -17,7 +17,7 @@
     <template v-slot:title>
       <div
         v-b-tooltip.hover.right
-        :title="walletBalanceInSats | satsToUSD"
+        :title="$filters.satsToUSD(walletBalanceInSats)"
         v-if="walletBalance !== -1"
       >
         <CountUp
@@ -200,14 +200,16 @@
                     <span
                       class="font-weight-bold d-block"
                       v-b-tooltip.hover.left
-                      :title="tx.amount | satsToUSD"
+                      :title="$filters.satsToUSD(tx.amount)"
                     >
                       <!-- Positive or negative prefix with amount -->
                       <span v-if="tx.type === 'incoming'">+</span>
                       <span v-else-if="tx.type === 'outgoing'">-</span>
-                      {{ tx.amount | unit | localize }}
+                      {{ $filters.localize($filters.unit(tx.amount)) }}
                     </span>
-                    <small class="text-muted">{{ unit | formatUnit }}</small>
+                    <small class="text-muted">{{
+                      $filters.formatUnit(unit)
+                    }}</small>
                   </div>
                 </div>
               </b-list-group-item>
@@ -277,7 +279,7 @@
                 <small
                   class="text-muted mt-1 d-block text-right mb-0"
                   :style="{ opacity: withdraw.amount > 0 ? 1 : 0 }"
-                  >~ {{ withdraw.amount | satsToUSD }}</small
+                  >~ {{ $filters.satsToUSD(withdraw.amount) }}</small
                 >
               </div>
             </div>
@@ -334,12 +336,14 @@
               </a>
             </div>
             <div class="text-center pb-4">
-              <h3 class="mb-0">{{ withdraw.amount | unit | localize }}</h3>
+              <h3 class="mb-0">
+                {{ $filters.localize($filters.unit(withdraw.amount)) }}
+              </h3>
               <span class="d-block mb-1 text-muted">
-                {{ unit | formatUnit }}
+                {{ $filters.formatUnit(unit) }}
               </span>
               <small class="text-muted d-block mb-3"
-                >~ {{ withdraw.amount | satsToUSD }}</small
+                >~ {{ $filters.satsToUSD(withdraw.amount) }}</small
               >
 
               <svg
@@ -371,17 +375,20 @@
                 <small>
                   ~
                   {{
-                    ((parseInt(fees.fast.total, 10) /
-                      parseInt(fees.fast.perByte, 10)) *
-                      parseInt(withdraw.selectedFee.satPerByte, 10))
-                      | satsToUSD
+                    $filters.satsToUSD(
+                      (parseInt(fees.fast.total, 10) /
+                        parseInt(fees.fast.perByte, 10)) *
+                        parseInt(withdraw.selectedFee.satPerByte, 10)
+                    )
                   }}
                   Transaction fee
                 </small>
               </span>
               <span class="text-right text-muted">
-                <b>{{ projectedBalanceInSats | unit | localize }}</b>
-                <small>&nbsp;{{ unit | formatUnit }}</small>
+                <b>{{
+                  $filters.localize($filters.unit(projectedBalanceInSats))
+                }}</b>
+                <small>&nbsp;{{ $filters.formatUnit(unit) }}</small>
                 <br />
                 <small>Remaining balance</small>
               </span>
@@ -390,20 +397,26 @@
               <span class="text-muted">
                 <b>
                   {{
-                    fees[withdraw.selectedFee.type]["total"] | unit | localize
+                    $filters.localize(
+                      $filters.unit(fees[withdraw.selectedFee.type]["total"])
+                    )
                   }}
                 </b>
-                <small>&nbsp;{{ unit | formatUnit }}</small>
+                <small>&nbsp;{{ $filters.formatUnit(unit) }}</small>
                 <br />
                 <small>
                   ~
-                  {{ fees[withdraw.selectedFee.type]["total"] | satsToUSD }}
+                  {{
+                    $filters.satsToUSD(fees[withdraw.selectedFee.type]["total"])
+                  }}
                   Transaction fee
                 </small>
               </span>
               <span class="text-right text-muted">
-                <b>{{ projectedBalanceInSats | unit | localize }}</b>
-                <small>&nbsp;{{ unit | formatUnit }}</small>
+                <b>{{
+                  $filters.localize($filters.unit(projectedBalanceInSats))
+                }}</b>
+                <small>&nbsp;{{ $filters.formatUnit(unit) }}</small>
                 <br />
                 <small>Remaining balance</small>
               </span>
@@ -448,8 +461,8 @@
               <span class="d-block mb-2">
                 Successfully withdrawn
                 <b>
-                  {{ withdraw.amount | unit | localize }}
-                  {{ unit | formatUnit }}
+                  {{ $filters.localize($filters.unit(withdraw.amount)) }}
+                  {{ $filters.formatUnit(unit) }}
                 </b>
               </span>
               <small class="text-muted d-block">Transaction ID</small>

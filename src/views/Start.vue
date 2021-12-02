@@ -402,7 +402,7 @@ export default {
     //generate a new seed on load
     this.$store.dispatch("user/getSeed");
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.clearInterval(this.lndUnlockInterval);
   },
   components: {

@@ -311,7 +311,7 @@ export default {
       this.pollOfflineApp();
     }
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.checkIfAppIsOffline = false;
   },
   components: {

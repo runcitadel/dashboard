@@ -216,7 +216,7 @@ export default {
       immediate: true,
     },
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener("resize", this.updateViewPortHeightCSS);
     window.clearInterval(this.loadingInterval);
     window.clearInterval(this.updateStatusInterval);

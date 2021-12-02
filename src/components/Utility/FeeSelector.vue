@@ -40,10 +40,11 @@
             <small class="text-muted"
               >≈
               {{
-                ((parseInt(fee.fast.total, 10) /
-                  parseInt(fee.fast.perByte, 10)) *
-                  value)
-                  | satsToUSD
+                $filters.satsToUSD(
+                  (parseInt(fee.fast.total, 10) /
+                    parseInt(fee.fast.perByte, 10)) *
+                    value
+                )
               }}</small
             >
           </div>
@@ -83,7 +84,7 @@
               >{{ fee[value].perByte }} sat/vB
             </span>
             <small class="text-muted"
-              >≈ {{ fee[value].total | satsToUSD }}</small
+              >≈ {{ $filters.satsToUSD(fee[value].total) }}</small
             >
           </div>
         </template>

@@ -209,7 +209,7 @@ export default {
     this.fetchConnectionDetails();
     this.interval = window.setInterval(this.fetchStats, 5000);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.clearInterval(this.interval);
   },
   components: {

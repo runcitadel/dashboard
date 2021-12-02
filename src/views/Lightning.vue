@@ -209,8 +209,8 @@
                 <b-col col cols="6" xl="3">
                   <stat
                     title="Max Send"
-                    :value="maxSend | unit"
-                    :suffix="unit | formatUnit"
+                    :value="$filters.unit(maxSend)"
+                    :suffix="$filters.formatUnit(unit)"
                     :hasDecimals="unit === 'btc'"
                     abbreviateValue
                   ></stat>
@@ -218,8 +218,8 @@
                 <b-col col cols="6" xl="3">
                   <stat
                     title="Max Receive"
-                    :value="maxReceive | unit"
-                    :suffix="unit | formatUnit"
+                    :value="$filters.unit(maxReceive)"
+                    :suffix="$filters.formatUnit(unit)"
                     :hasDecimals="unit === 'btc'"
                     abbreviateValue
                   ></stat>
@@ -404,7 +404,7 @@ export default {
     this.$store.dispatch("system/getBackupStatus");
     this.interval = window.setInterval(this.fetchPageData, 10000);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.clearInterval(this.interval);
   },
   watch: {

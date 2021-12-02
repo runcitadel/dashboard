@@ -6,7 +6,7 @@
       variant: 'success',
       blink: false,
     }"
-    :sub-title="unit | formatUnit"
+    :sub-title="$filters.formatUnit(unit)"
     icon="icon-app-lightning.svg"
     :loading="
       loading ||
@@ -17,7 +17,7 @@
     <template v-slot:title>
       <div
         v-b-tooltip.hover.right
-        :title="walletBalanceInSats | satsToUSD"
+        :title="$filters.satsToUSD(walletBalanceInSats)"
         v-if="walletBalance !== -1"
       >
         <CountUp
@@ -224,14 +224,16 @@
                     <span
                       class="font-weight-bold d-block"
                       v-b-tooltip.hover.left
-                      :title="tx.amount | satsToUSD"
+                      :title="$filters.satsToUSD(tx.amount)"
                     >
                       <!-- Positive or negative prefix with amount -->
                       <span v-if="tx.type === 'incoming'">+</span>
                       <span v-else-if="tx.type === 'outgoing'">-</span>
-                      {{ tx.amount | unit | localize }}
+                      {{ $filters.localize($filters.unit(tx.amount)) }}
                     </span>
-                    <small class="text-muted">{{ unit | formatUnit }}</small>
+                    <small class="text-muted">{{
+                      $filters.formatUnit(unit)
+                    }}</small>
                   </div>
                 </div>
               </b-list-group-item>
@@ -287,14 +289,14 @@
               <div>
                 <small class="d-block text-muted mb-1">Paying</small>
                 <h4 class="d-block mb-0">
-                  {{ send.amount | unit | localize }}
+                  {{ $filters.localize($filters.unit(send.amount)) }}
                 </h4>
                 <small class="d-block text-muted">
-                  {{ unit | formatUnit }}
+                  {{ $filters.formatUnit(unit) }}
                 </small>
               </div>
               <small class="d-block text-muted"
-                >~ {{ send.amount | satsToUSD }}</small
+                >~ {{ $filters.satsToUSD(send.amount) }}</small
               >
             </div>
 
@@ -340,8 +342,8 @@
           <!-- Invoice amount + description -->
           <p class="text-center mb-4 pb-1">
             Paid
-            <b>{{ send.amount | unit | localize }}</b>
-            {{ unit | formatUnit }}
+            <b>{{ $filters.localize($filters.unit(send.amount)) }}</b>
+            {{ $filters.formatUnit(unit) }}
             <span v-if="send.description">
               for
               <b>{{ send.description }}</b>
@@ -401,7 +403,7 @@
             <small
               class="text-muted mt-2 d-block text-right mb-0"
               :style="{ opacity: receive.amount > 0 ? 1 : 0 }"
-              >~ {{ receive.amount | satsToUSD }}</small
+              >~ {{ $filters.satsToUSD(receive.amount) }}</small
             >
           </div>
 
@@ -456,10 +458,10 @@
             <!-- Invoice amount + description -->
             <span v-else>
               Invoice of
-              <!-- {{ receive.amount | unit | localize}} -->
+              <!-- {{ $filters.localize($filters.unit(receive.amount)) }} -->
               <b>
-                {{ receive.amount | unit | localize }}
-                {{ unit | formatUnit }}
+                {{ $filters.localize($filters.unit(receive.amount)) }}
+                {{ $filters.formatUnit(unit) }}
               </b>
               {{ receive.description ? "for" : null }}
               <b>{{ receive.description }}</b>
@@ -525,7 +527,8 @@
           <p class="text-center mb-4 pb-1">
             Received
             <b
-              >{{ receive.amount | unit | localize }} {{ unit | formatUnit }}</b
+              >{{ $filters.localize($filters.unit(receive.amount)) }}
+              {{ $filters.formatUnit(unit) }}</b
             >
             <span v-if="receive.description">
               for
@@ -573,8 +576,8 @@
           <p class="text-center mb-2">
             Paid
             <b>
-              {{ paymentInfo.amount | unit | localize }}
-              {{ unit | formatUnit }}
+              {{ $filters.localize($filters.unit(paymentInfo.amount)) }}
+              {{ $filters.formatUnit(unit) }}
             </b>
             <span v-if="paymentInfo.description">
               for
@@ -588,7 +591,8 @@
               }}</small>
               <small class="text-muted">
                 Fee:
-                {{ paymentInfo.fee | unit | localize }} {{ unit | formatUnit }}
+                {{ $filters.localize($filters.unit(paymentInfo.fee)) }}
+                {{ $filters.formatUnit(unit) }}
               </small>
             </div>
             <div class="pt-3 d-block pb-2">
@@ -1163,7 +1167,7 @@ export default {
   async created() {
     await this.$store.dispatch("lightning/getStatus");
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.clearInterval(this.QRAnimation);
     window.clearInterval(this.receive.invoiceStatusPoller);
   },

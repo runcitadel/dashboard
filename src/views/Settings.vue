@@ -889,7 +889,7 @@ export default {
       }
     },
   },
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.pollUpdateStatus) {
       window.clearInterval(this.pollUpdateStatus);
     }
