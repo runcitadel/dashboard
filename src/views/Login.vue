@@ -79,10 +79,13 @@
 
 <script>
 import { mapState } from "vuex";
-import Citadel from "@runcitadel/sdk";
+import { Citadel } from "@runcitadel/sdk";
 import InputPassword from "@/components/Utility/InputPassword";
 
 export default {
+  components: {
+    InputPassword,
+  },
   data() {
     return {
       loading: true,
@@ -93,18 +96,18 @@ export default {
       isLoggingIn: false,
     };
   },
-  watch: {
-    password: function () {
-      //bring up log in button after user retries new password after failed attempt
-      this.isIncorrectPassword = false;
-    },
-  },
   computed: {
     ...mapState({
       jwt: (state) => state.user.jwt,
       registered: (state) => state.user.registered,
       totpEnabled: (state) => state.user.totpEnabled,
     }),
+  },
+  watch: {
+    password: function () {
+      //bring up log in button after user retries new password after failed attempt
+      this.isIncorrectPassword = false;
+    },
   },
   async created() {
     //redirect to dashboard if already logged in
@@ -126,13 +129,13 @@ export default {
     async authenticateUser() {
       this.isLoggingIn = true;
 
-      /*try {
-        let citadel = new Citadel.Citadel(window.location.hostname);
+      try {
+        let citadel = new Citadel(window.location.hostname);
         citadel.login(this.password, this.totpToken);
       } catch (error) {
         console.error(error);
         this.isIncorrectPassword = true;
-      }*/
+      }
       try {
         await this.$store.dispatch("user/login", {
           password: this.password,
@@ -155,12 +158,9 @@ export default {
 
       //redirect to dashboard
       return this.$router.push(
-        this.$router.history.current.query.redirect || "/dashboard"
+        new URL(window.location).searchParams.get("redirect") || "/dashboard"
       );
     },
-  },
-  components: {
-    InputPassword,
   },
 };
 </script>
