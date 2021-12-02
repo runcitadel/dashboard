@@ -1,6 +1,7 @@
 <template>
   <small :class="`text-${variant}`" class="d-flex align-items-center">
     <svg
+      v-if="size === 'md'"
       width="8"
       height="8"
       class="me-1"
@@ -8,11 +9,11 @@
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       :class="{ blink: blink }"
-      v-if="size === 'md'"
     >
       <circle cx="4" cy="4" r="4" :class="`fill-${variant}`" />
     </svg>
     <svg
+      v-else-if="size === 'sm'"
       width="6"
       height="6"
       class="me-1"
@@ -20,7 +21,6 @@
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       :class="{ blink: blink }"
-      v-else-if="size === 'sm'"
     >
       <circle cx="3" cy="3" r="3" :class="`fill-${variant}`" />
     </svg>
@@ -45,12 +45,12 @@ export default {
       default: "md", //sm or md
     },
   },
-  computed: {},
   data() {
     return {
       state: {},
     };
   },
+  computed: {},
   methods: {},
 };
 </script>

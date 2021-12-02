@@ -19,13 +19,13 @@
 
 <script>
 export default {
+  components: {},
+  props: { progress: Number },
   data() {
     return {};
   },
-  props: { progress: Number },
   created() {},
   methods: {},
-  components: {},
 };
 </script>
 

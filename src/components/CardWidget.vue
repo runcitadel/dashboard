@@ -5,10 +5,10 @@
     no-body
     class="mb-4 card-custom"
   >
-    <div class="card-custom-loading-bar" v-if="loading"></div>
+    <div v-if="loading" class="card-custom-loading-bar"></div>
     <!-- <template v-slot:header></template> -->
     <div>
-      <div class="card-custom-header py-4 px-3 px-lg-4" v-if="header">
+      <div v-if="header" class="card-custom-header py-4 px-3 px-lg-4">
         <div class="d-flex w-100 justify-content-between align-items-center">
           <h6 class="mb-0 font-weight-normal text-muted">{{ header }}</h6>
           <status
@@ -33,7 +33,7 @@
               right
               class="ms-2"
             >
-              <template v-slot:button-content>
+              <template #button-content>
                 <svg
                   width="18"
                   height="4"
@@ -67,18 +67,18 @@
         </div>
       </div>
       <div class="card-custom-body">
-        <div class="card-app-info px-3 px-lg-4" v-if="title || subTitle">
+        <div v-if="title || subTitle" class="card-app-info px-3 px-lg-4">
           <div class="d-flex w-100 justify-content-between mb-4">
             <div>
               <div>
                 <h3 v-if="title" class="mb-1">{{ title }}</h3>
-                <h3 class="mb-1" v-else>
+                <h3 v-else class="mb-1">
                   <slot name="title"></slot>
                 </h3>
-                <p class="text-muted mb-0" v-if="subTitle">{{ subTitle }}</p>
+                <p v-if="subTitle" class="text-muted mb-0">{{ subTitle }}</p>
               </div>
             </div>
-            <img :alt="header" :src="require(`@/assets/${icon}`)" v-if="icon" />
+            <img v-if="icon" :alt="header" :src="require(`@/assets/${icon}`)" />
           </div>
         </div>
         <slot></slot>
@@ -92,8 +92,8 @@
 import Status from "@/components/Utility/Status";
 
 export default {
-  data() {
-    return {};
+  components: {
+    Status,
   },
   props: {
     header: String,
@@ -103,11 +103,11 @@ export default {
     icon: String,
     loading: Boolean,
   },
+  data() {
+    return {};
+  },
   computed: {},
   methods: {},
-  components: {
-    Status,
-  },
 };
 </script>
 

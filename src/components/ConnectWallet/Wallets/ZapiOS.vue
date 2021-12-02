@@ -12,11 +12,11 @@
           :value="urls.lnd.restTor.replace(/cert=(.*)&/gm, '')"
           :size="300"
           class="qr-image mt-2"
-          showLogo
+          show-logo
+          :style="{ cursor: 'pointer' }"
           @click="
             $emit('showQrModal', urls.lnd.restTor.replace(/cert=(.*)&/gm, ''))
           "
-          v-bind:style="{ cursor: 'pointer' }"
         ></qr-code>
         <hr />
         <p class="text-muted">Or manually enter the following details</p>
@@ -51,9 +51,6 @@ import InputCopy from "@/components/Utility/InputCopy.vue";
 import QrCode from "@/components/Utility/QrCode";
 
 export default {
-  props: {
-    urls: Object,
-  },
   components: {
     ConnectionDetails,
     StepList,
@@ -61,5 +58,12 @@ export default {
     Step,
     QrCode,
   },
+  props: {
+    urls: {
+      type: Object,
+      required: true,
+    },
+  },
+  emits: ["showQrModal"],
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <b-alert
-    variant="warning"
     v-if="percent < 99 && (requires === 'electrum' || requires === 'bitcoind')"
+    variant="warning"
     show
   >
     <svg class="icon-clock icon-clock-warning me-1" viewBox="0 0 40 40">
@@ -16,7 +16,7 @@
   <card-widget v-else :header="`Here's how to connect ${name} to your Citadel`">
     <div class="px-3 px-lg-4 pb-3">
       <slot></slot>
-      <b-alert variant="info" v-if="requires === 'electrum'" show>
+      <b-alert v-if="requires === 'electrum'" variant="info" show>
         Unable to connect to {{ name }}? If Bitcoin Core has only recently
         finished syncing, please try connecting again in ~24 hours.
       </b-alert>
@@ -29,15 +29,21 @@ import { mapState } from "vuex";
 import CardWidget from "@/components/CardWidget";
 
 export default {
-  data() {
-    return {};
+  components: {
+    CardWidget,
   },
   props: {
-    name: String,
+    name: {
+      type: String,
+      required: true,
+    },
     requires: {
       type: String,
       default: "", //electrum, bitcoin-core, lnd, or empty if no specific protocol required
     },
+  },
+  data() {
+    return {};
   },
   computed: {
     ...mapState({
@@ -45,9 +51,6 @@ export default {
     }),
   },
   methods: {},
-  components: {
-    CardWidget,
-  },
 };
 </script>
 

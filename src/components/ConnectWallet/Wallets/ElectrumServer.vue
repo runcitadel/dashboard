@@ -9,9 +9,9 @@
         :size="260"
         level="M"
         class="qr-image mx-auto mb-3 mb-lg-0"
-        showLogo
+        show-logo
+        :style="{ cursor: 'pointer' }"
         @click="$emit('showQrModal', urls.bitcoin.electrum.connectionString)"
-        v-bind:style="{ cursor: 'pointer' }"
       ></qr-code>
       <div class="w-100 align-self-center ms-lg-3 connect-wallet-steps">
         <div class="connect-wallet-step">
@@ -53,13 +53,17 @@ import InputCopy from "@/components/Utility/InputCopy";
 import QrCode from "@/components/Utility/QrCode";
 
 export default {
-  props: {
-    urls: Object,
-  },
   components: {
     ConnectionDetails,
     InputCopy,
     QrCode,
   },
+  props: {
+    urls: {
+      type: Object,
+      required: true,
+    },
+  },
+  emits: ["showQrModal"],
 };
 </script>

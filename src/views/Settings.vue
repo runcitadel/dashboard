@@ -12,9 +12,9 @@
       <ram-widget id="ram" class="card-app-list"></ram-widget>
 
       <temperature-widget
+        v-if="isCitadelOS"
         id="temperature"
         class="card-app-list"
-        v-if="isCitadelOS"
       ></temperature-widget>
 
       <card-widget
@@ -91,12 +91,12 @@
               >
             </div>
 
-            <b-button variant="outline-primary" size="sm" v-b-modal.seed-modal
+            <b-button v-b-modal.seed-modal variant="outline-primary" size="sm"
               >View</b-button
             >
 
             <b-modal id="seed-modal" centered hide-footer>
-              <template v-slot:modal-header="{ close }">
+              <template #modal-header="{ close }">
                 <div
                   class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
                 >
@@ -105,7 +105,7 @@
                   <a
                     href="#"
                     class="align-self-center"
-                    v-on:click.stop.prevent="close"
+                    @click.stop.prevent="close"
                   >
                     <svg
                       width="18"
@@ -138,15 +138,15 @@
             </div>
 
             <b-button
+              v-b-modal.change-password-modal
               variant="outline-primary"
               size="sm"
-              v-b-modal.change-password-modal
               :disabled="isChangingPassword"
               >Change</b-button
             >
 
             <b-modal id="change-password-modal" centered hide-footer>
-              <template v-slot:modal-header="{ close }">
+              <template #modal-header="{ close }">
                 <div
                   class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
                 >
@@ -155,7 +155,7 @@
                   <a
                     href="#"
                     class="align-self-center"
-                    v-on:click.stop.prevent="close"
+                    @click.stop.prevent="close"
                   >
                     <svg
                       width="18"
@@ -179,10 +179,10 @@
                   >Current password</label
                 >
                 <input-password
-                  v-model="currentPassword"
                   ref="password"
-                  inputGroupClass="neu-input-group"
-                  :inputClass="[
+                  v-model="currentPassword"
+                  input-group-class="neu-input-group"
+                  :input-class="[
                     isIncorrectPassword ? 'incorrect-password' : '',
                     'form-control form-control-lg neu-input w-100',
                   ]"
@@ -193,10 +193,10 @@
                   >New password</label
                 >
                 <input-password
-                  v-model="newPassword"
                   ref="password"
-                  inputGroupClass="neu-input-group"
-                  inputClass="form-control form-control-lg neu-input w-100"
+                  v-model="newPassword"
+                  input-group-class="neu-input-group"
+                  input-class="form-control form-control-lg neu-input w-100"
                   :disabled="isChangingPassword"
                 />
                 <div class="py-2"></div>
@@ -204,10 +204,10 @@
                   >Confirm new password</label
                 >
                 <input-password
-                  v-model="confirmNewPassword"
                   ref="password"
-                  inputGroupClass="neu-input-group"
-                  inputClass="form-control form-control-lg neu-input w-100"
+                  v-model="confirmNewPassword"
+                  input-group-class="neu-input-group"
+                  input-class="form-control form-control-lg neu-input w-100"
                   :disabled="isChangingPassword"
                 />
                 <div class="py-2"></div>
@@ -244,9 +244,9 @@
             </div>
 
             <b-button
+              v-b-modal.two-factor-auth-modal
               variant="outline-primary"
               size="sm"
-              v-b-modal.two-factor-auth-modal
               :disabled="isEnablingTwoFactorAuth"
             >
               <span v-if="!totpEnabled">Enable</span>
@@ -255,11 +255,11 @@
 
             <b-modal
               id="two-factor-auth-modal"
+              ref="two-factor-auth-modal"
               centered
               hide-footer
-              ref="two-factor-auth-modal"
             >
-              <template v-slot:modal-header="{ close }">
+              <template #modal-header="{ close }">
                 <div
                   class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
                 >
@@ -269,7 +269,7 @@
                   <a
                     href="#"
                     class="align-self-center"
-                    v-on:click.stop.prevent="close"
+                    @click.stop.prevent="close"
                   >
                     <svg
                       width="18"
@@ -299,7 +299,7 @@
                     :value="authenticatorSecretUri"
                     :size="190"
                     level="M"
-                    showLogo
+                    show-logo
                   ></qr-code>
                   <input-copy
                     class="w-100 mx-auto"
@@ -315,11 +315,12 @@
                 </label>
                 <b-input
                   id="input-token"
+                  v-model="authenticatorToken"
                   class="mb-4 neu-input"
                   size="lg"
-                  v-model="authenticatorToken"
                 ></b-input>
                 <b-button
+                  v-if="!totpEnabled"
                   class="w-100"
                   variant="success"
                   size="lg"
@@ -327,13 +328,13 @@
                     isEnablingTwoFactorAuth || !isAllowedToEnableTwoFactorAuth
                   "
                   @click="enableTwoFactorAuth"
-                  v-if="!totpEnabled"
                   >{{
                     isEnablingTwoFactorAuth ? "Enabling 2FA..." : "Enable 2FA"
                   }}</b-button
                 >
 
                 <b-button
+                  v-if="totpEnabled"
                   class="w-100"
                   variant="danger"
                   size="lg"
@@ -341,7 +342,6 @@
                     isDisablingTwoFactorAuth || !isAllowedToDisableTwoFactorAuth
                   "
                   @click="disableTwoFactorAuth"
-                  v-if="totpEnabled"
                   >{{
                     isDisablingTwoFactorAuth
                       ? "Disabling 2FA..."
@@ -363,7 +363,7 @@
         <div class="d-block pt-2"></div>
 
         <!-- Uptime monitoring is only available on Citadel OS -->
-        <div class="pt-0" v-if="isCitadelOS">
+        <div v-if="isCitadelOS" class="pt-0">
           <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
             <div>
               <span class="d-block">Uptime</span>
@@ -443,7 +443,7 @@
               body-text-variant="light"
               @close="closeDebugModal"
             >
-              <template v-slot:modal-header="{ close }">
+              <template #modal-header="{ close }">
                 <div class="px-2 pt-2 d-flex justify-content-between w-100">
                   <h4 v-if="loadingDebug">Generating logs...</h4>
                   <h4 v-else>
@@ -453,7 +453,7 @@
                   <a
                     href="#"
                     class="align-self-center"
-                    v-on:click.stop.prevent="close"
+                    @click.stop.prevent="close"
                   >
                     <svg
                       width="22"
@@ -485,7 +485,7 @@
 
               <template #modal-footer="{}">
                 <div v-if="loadingDebug"></div>
-                <div class="d-flex w-100 justify-content-between px-2" v-else>
+                <div v-else class="d-flex w-100 justify-content-between px-2">
                   <b-button
                     size="sm"
                     variant="outline-success"
@@ -530,8 +530,8 @@
                 class="mt-2"
                 variant="primary"
                 size="sm"
-                @click.prevent="confirmUpdate"
                 :disabled="isUpdating"
+                @click.prevent="confirmUpdate"
                 >Install now</b-button
               >
             </div>
@@ -653,6 +653,11 @@ export default {
       return true;
     },
   },
+  watch: {
+    currentPassword: function () {
+      this.isIncorrectPassword = false;
+    },
+  },
   created() {
     this.$store.dispatch("system/getOnionAddress");
     this.$store.dispatch("system/getVersion");
@@ -664,6 +669,11 @@ export default {
         this.$store.dispatch("user/getTotpKey");
       }
     });
+  },
+  beforeUnmount() {
+    if (this.pollUpdateStatus) {
+      window.clearInterval(this.pollUpdateStatus);
+    }
   },
   methods: {
     async enableTwoFactorAuth() {
@@ -887,16 +897,6 @@ export default {
           });
         }
       }
-    },
-  },
-  beforeUnmount() {
-    if (this.pollUpdateStatus) {
-      window.clearInterval(this.pollUpdateStatus);
-    }
-  },
-  watch: {
-    currentPassword: function () {
-      this.isIncorrectPassword = false;
     },
   },
   components: {

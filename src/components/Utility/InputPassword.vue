@@ -5,12 +5,12 @@
       :class="inputClass"
       :placeholder="placeholder"
       :type="showPassword ? 'text' : 'password'"
-      v-bind:value="value"
-      v-on:input="$emit('input', $event.target.value)"
+      :value="value"
       :disabled="disabled"
+      @input="$emit('input', $event.target.value)"
     />
     <b-input-group-append>
-      <b-button @click="togglePassword" :disabled="disabled">
+      <b-button :disabled="disabled" @click="togglePassword">
         <b-icon :icon="showPassword ? 'eye-slash-fill' : 'eye-fill'"></b-icon>
       </b-button>
     </b-input-group-append>
@@ -32,17 +32,17 @@ export default {
       default: false,
     },
   },
-  computed: {
-    showPassword() {
-      return this.state.showPassword;
-    },
-  },
   data() {
     return {
       state: {
         showPassword: false,
       },
     };
+  },
+  computed: {
+    showPassword() {
+      return this.state.showPassword;
+    },
   },
   methods: {
     togglePassword() {

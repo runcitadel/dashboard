@@ -5,11 +5,11 @@
       <div class="mb-1">
         <!-- Loading state -->
         <span
-          class="loading-placeholder loading-placeholder-lg w-50 mt-2"
           v-if="numberValue === -1"
+          class="loading-placeholder loading-placeholder-lg w-50 mt-2"
           style
         ></span>
-        <div class="d-flex align-items-baseline" v-else>
+        <div v-else class="d-flex align-items-baseline">
           <h3 class="font-weight-normal mb-0">
             <!-- suffix number like 100K, 120K, 2M, etc -->
             <CountUp
@@ -18,7 +18,7 @@
                 decimalPlaces: hasDecimals ? 5 : 0,
               }"
               :suffix="numberSuffix"
-              countOnLoad
+              count-on-load
             />
           </h3>
           <span class="text-muted" style="margin-left: 0.5rem">{{
@@ -61,7 +61,7 @@
           }}{{ change.suffix }}
         </span>
       </div>
-      <div class="d-block" v-else>
+      <div v-else class="d-block">
         <span style="opacity: 0">.</span>
       </div>
     </div>
@@ -81,6 +81,9 @@ const abbreviate = (n) => {
 };
 
 export default {
+  components: {
+    CountUp,
+  },
   props: {
     title: String,
     value: Number,
@@ -102,6 +105,14 @@ export default {
       default: false,
     },
   },
+  data() {
+    return {
+      change: {
+        value: 0,
+        suffix: "",
+      },
+    };
+  },
   computed: {
     numberValue() {
       if (!this.abbreviateValue) {
@@ -118,15 +129,6 @@ export default {
       }
     },
   },
-  data() {
-    return {
-      change: {
-        value: 0,
-        suffix: "",
-      },
-    };
-  },
-  methods: {},
   watch: {
     value(newValue, oldValue) {
       if (this.showNumericChange) {
@@ -171,9 +173,7 @@ export default {
       }
     },
   },
-  components: {
-    CountUp,
-  },
+  methods: {},
 };
 </script>
 

@@ -22,15 +22,12 @@
               />
             </h3>
             <small class="text-muted"
-              >~
-              {{
-                $filters.satsToUSD(this.btcBalance + this.lightningBalance)
-              }}</small
+              >~ {{ $filters.satsToUSD(btcBalance + lightningBalance) }}</small
             >
           </div>
           <span
-            class="loading-placeholder loading-placeholder-lg w-75"
             v-else
+            class="loading-placeholder loading-placeholder-lg w-75"
           ></span>
         </span>
         <h3 v-else>***,***</h3>
@@ -211,9 +208,9 @@
         </b-nav-item>
 
         <b-nav-item
+          v-if="isMobileMenu"
           to="/settings"
           class="my-1"
-          v-if="isMobileMenu"
           active-class="active"
         >
           <svg
@@ -236,10 +233,10 @@
     <div>
       <b-nav vertical class="px-1">
         <b-nav-item
-          @click="logout"
-          class="my-1"
           v-if="isMobileMenu"
+          class="my-1"
           active-class="active"
+          @click="logout"
         >
           <svg
             width="24"
@@ -260,7 +257,7 @@
           </svg>
           Log out
         </b-nav-item>
-        <b-nav-item to="/settings" class="my-1" v-else active-class="active">
+        <b-nav-item v-else to="/settings" class="my-1" active-class="active">
           <svg
             width="24"
             height="24"
@@ -297,15 +294,15 @@ import CountUp from "@/components/Utility/CountUp";
 import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch";
 
 export default {
+  props: {
+    isMobileMenu: Boolean,
+  },
   data() {
     return {
       state: {
         showBalance: true,
       },
     };
-  },
-  props: {
-    isMobileMenu: Boolean,
   },
   computed: {
     ...mapState({
@@ -323,6 +320,10 @@ export default {
       return this.btcBalance >= 0 && this.lightningBalance >= 0;
     },
   },
+  created() {
+    this.$store.dispatch("apps/getInstalledApps");
+    this.$store.dispatch("apps/getAppStore");
+  },
   methods: {
     logout() {
       this.$store.dispatch("user/logout");
@@ -330,10 +331,6 @@ export default {
     toggleBalance() {
       return (this.state.showBalance = !this.state.showBalance);
     },
-  },
-  created() {
-    this.$store.dispatch("apps/getInstalledApps");
-    this.$store.dispatch("apps/getAppStore");
   },
   components: {
     CountUp,

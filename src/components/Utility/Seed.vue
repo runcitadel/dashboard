@@ -24,10 +24,10 @@
         </svg>
       </button>
       <div class="d-block word-container">
-        <div class="px-3" v-if="recover">
+        <div v-if="recover" class="px-3">
           <b-form-input
-            v-model="inputWords[index]"
             ref="input-words-input"
+            v-model="inputWords[index]"
             :placeholder="`Enter word #${index + 1}`"
             class="neu-input"
             autofocus
@@ -35,15 +35,15 @@
             @keyup.enter="next"
           ></b-form-input>
         </div>
-        <h2 class="text-center mb-0" v-else>
+        <h2 v-else class="text-center mb-0">
           <scrambled-text :text="words[index]"></scrambled-text>
         </h2>
       </div>
       <button
         class="btn-neu-circle btn-neu-circle-next btn-neu"
         :class="{ 'btn-allowed': index > 0 }"
-        @click="next"
         :disabled="index === words.length - 1"
+        @click="next"
       >
         <svg
           width="12"
@@ -66,6 +66,9 @@
 import ScrambledText from "@/components/Utility/ScrambledText";
 
 export default {
+  components: {
+    ScrambledText,
+  },
   props: {
     words: Array,
     recover: {
@@ -106,6 +109,23 @@ export default {
     };
   },
   computed: {},
+  watch: {
+    inputWords: function () {
+      // Emit "complete" if user has entered all recovery words
+      if (
+        this.inputWords.length === 24 &&
+        !this.inputWords.includes(undefined) &&
+        !this.inputWords.includes("")
+      ) {
+        this.$emit("complete");
+      } else {
+        this.$emit("incomplete");
+      }
+      // Emit entered words
+      this.$emit("input", this.inputWords);
+    },
+  },
+  mounted() {},
   methods: {
     previous() {
       if (this.index !== 0) {
@@ -129,26 +149,6 @@ export default {
         }
       }
     },
-  },
-  mounted() {},
-  watch: {
-    inputWords: function () {
-      // Emit "complete" if user has entered all recovery words
-      if (
-        this.inputWords.length === 24 &&
-        !this.inputWords.includes(undefined) &&
-        !this.inputWords.includes("")
-      ) {
-        this.$emit("complete");
-      } else {
-        this.$emit("incomplete");
-      }
-      // Emit entered words
-      this.$emit("input", this.inputWords);
-    },
-  },
-  components: {
-    ScrambledText,
   },
 };
 </script>

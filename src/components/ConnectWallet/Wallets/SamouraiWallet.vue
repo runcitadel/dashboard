@@ -20,13 +20,17 @@ import StepList from "@/components/ConnectWallet/StepList";
 import Step from "@/components/ConnectWallet/Step";
 
 export default {
-  props: {
-    urls: Object,
-  },
   components: {
     ConnectionDetails,
     StepList,
     Step,
   },
+  props: {
+    urls: {
+      type: Object,
+      required: true,
+    },
+  },
+  emits: ["showQrModal"],
 };
 </script>

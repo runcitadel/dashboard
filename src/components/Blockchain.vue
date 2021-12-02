@@ -10,10 +10,10 @@
           :duration="5000"
         >
           <li
-            href="#"
-            class="flex-column align-items-start px-3 px-lg-4 blockchain-block"
             v-for="block in blocks"
             :key="block.height"
+            href="#"
+            class="flex-column align-items-start px-3 px-lg-4 blockchain-block"
           >
             <div class="d-flex w-100 justify-content-between">
               <div class="d-flex">
@@ -46,18 +46,18 @@
                   <h6 class="mb-1 font-weight-normal">
                     Block {{ block.height.toLocaleString() }}
                   </h6>
-                  <small class="text-muted" v-if="block.numTransactions">
+                  <small v-if="block.numTransactions" class="text-muted">
                     {{ block.numTransactions.toLocaleString() }}
                     transaction{{ block.numTransactions !== 1 ? "s" : "" }}
                   </small>
-                  <small class="text-muted" v-if="block.size">
+                  <small v-if="block.size" class="text-muted">
                     <span>&bull; {{ Math.round(block.size / 1000) }} KB</span>
                   </small>
                 </div>
               </div>
               <small
-                class="text-muted align-self-center text-right blockchain-block-timestamp"
                 v-if="block.time"
+                class="text-muted align-self-center text-right blockchain-block-timestamp"
                 :title="blockReadableTime(block.time)"
                 >{{ blockTime(block.time) }}</small
               >
@@ -68,10 +68,10 @@
       <div v-else>
         <ul>
           <li
-            href="#"
-            class="flex-column align-items-start px-3 px-lg-4 blockchain-block"
             v-for="(fake, index) in [1, 2, 3]"
             :key="index"
+            href="#"
+            class="flex-column align-items-start px-3 px-lg-4 blockchain-block"
           >
             <div class="d-flex w-100 justify-content-between">
               <div class="d-flex">
@@ -146,6 +146,22 @@ export default {
       blocks: (state) => state.bitcoin.blocks,
     }),
   },
+  watch: {
+    syncPercent(newPercent) {
+      // reset polling time depending upon sync %
+      this.poller(newPercent);
+    },
+  },
+  created() {
+    //immediately fetch blocks on first load
+    this.fetchBlocks();
+
+    //then start polling
+    this.poller(this.syncPercent);
+  },
+  beforeUnmount() {
+    window.clearInterval(this.polling);
+  },
   methods: {
     async fetchBlocks() {
       //prevent multiple polls if previous poll already in progress
@@ -182,30 +198,14 @@ export default {
       return format(new Date(timestamp * 1000), getDateFormatWithSeconds());
     },
   },
-  created() {
-    //immediately fetch blocks on first load
-    this.fetchBlocks();
 
-    //then start polling
-    this.poller(this.syncPercent);
-  },
-  watch: {
-    syncPercent(newPercent) {
-      // reset polling time depending upon sync %
-      this.poller(newPercent);
-    },
-  },
-  beforeUnmount() {
-    window.clearInterval(this.polling);
-  },
+  components: {},
   props: {
     numBlocks: {
       type: Number,
       default: 3,
     },
   },
-
-  components: {},
 };
 </script>
 

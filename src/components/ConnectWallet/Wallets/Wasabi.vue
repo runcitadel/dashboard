@@ -34,9 +34,6 @@ import TorSetup from "@/components/ConnectWallet/TorSetup.vue";
 import InputCopy from "@/components/Utility/InputCopy";
 
 export default {
-  props: {
-    urls: Object,
-  },
   components: {
     ConnectionDetails,
     StepList,
@@ -44,5 +41,12 @@ export default {
     InputCopy,
     TorSetup,
   },
+  props: {
+    urls: {
+      type: Object,
+      required: true,
+    },
+  },
+  emits: ["showQrModal"],
 };
 </script>

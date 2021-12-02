@@ -33,14 +33,14 @@
           :value="`${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}`"
           :size="300"
           class="qr-image mt-2"
-          showLogo
+          show-logo
+          :style="{ cursor: 'pointer' }"
           @click="
             $emit(
               'showQrModal',
               `${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}`
             )
           "
-          v-bind:style="{ cursor: 'pointer' }"
         ></qr-code>
       </step>
       <step>
@@ -61,14 +61,18 @@ import Step from "@/components/ConnectWallet/Step";
 import QrCode from "@/components/Utility/QrCode";
 
 export default {
-  props: {
-    urls: Object,
-  },
   components: {
     ConnectionDetails,
     StepList,
     Step,
     QrCode,
   },
+  props: {
+    urls: {
+      type: Object,
+      required: true,
+    },
+  },
+  emits: ["showQrModal"],
 };
 </script>

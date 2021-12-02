@@ -13,7 +13,7 @@
                   }"
                 />
               </h3>
-              <div @click="toggleUnit" class="toggle toggle-sm mt-2">
+              <div class="toggle toggle-sm mt-2" @click="toggleUnit">
                 <div
                   class="toggle-bg-text justify-content-center d-flex align-items-center"
                 >
@@ -28,13 +28,13 @@
                   }"
                 >
                   <span
-                    class="text-muted"
                     v-if="cpuTemperatureUnit === 'celsius'"
+                    class="text-muted"
                     >&#176;C</span
                   >
                   <span
-                    class="text-muted"
                     v-else-if="cpuTemperatureUnit === 'fahrenheit'"
+                    class="text-muted"
                     >&#176;F</span
                   >
                 </div>
@@ -96,12 +96,12 @@ import CountUp from "@/components/Utility/CountUp";
 import CardWidget from "@/components/CardWidget";
 
 export default {
+  props: {},
   data() {
     return {
       // cpuTemperature: 21
     };
   },
-  props: {},
   computed: {
     ...mapState({
       cpuTemperature: (state) => state.system.cpuTemperature, // in celsius

@@ -3,11 +3,11 @@
     <!-- <span>Enter your password to view your 24-word seed phrase</span> -->
     <div v-if="!seed.length">
       <input-password
-        v-model="password"
         ref="password"
+        v-model="password"
         placeholder="Password"
-        inputGroupClass="neu-input-group"
-        :inputClass="[
+        input-group-class="neu-input-group"
+        :input-class="[
           isIncorrectPassword ? 'incorrect-password' : '',
           'form-control form-control-lg neu-input w-100',
         ]"
@@ -15,8 +15,8 @@
       />
 
       <small
-        class="mt-2 text-danger error float-right"
         v-show="isIncorrectPassword"
+        class="mt-2 text-danger error float-right"
         >Incorrect password</small
       >
 
@@ -30,9 +30,9 @@
       </b-button>
     </div>
 
-    <div class="d-flex justify-content-center" v-else>
+    <div v-else class="d-flex justify-content-center">
       <!-- Seed phrase -->
-      <seed :words="seed" v-if="seed.length"></seed>
+      <seed v-if="seed.length" :words="seed"></seed>
       <b-spinner v-else></b-spinner>
     </div>
   </div>
@@ -56,6 +56,10 @@ export default {
       seed: (state) => state.user.seed,
     }),
   },
+  components: {
+    InputPassword,
+    Seed,
+  },
   props: { progress: Number },
   created() {},
   methods: {
@@ -77,10 +81,6 @@ export default {
       }
       this.isLoadingSeed = false;
     },
-  },
-  components: {
-    InputPassword,
-    Seed,
   },
 };
 </script>

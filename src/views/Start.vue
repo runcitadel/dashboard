@@ -16,38 +16,38 @@
         class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center"
       >
         <b-form-input
-          v-model="name"
-          ref="name"
-          placeholder="Your name"
           v-show="currentStep === 1"
+          ref="name"
+          v-model="name"
+          placeholder="Your name"
           class="card-input w-100"
           autofocus
         ></b-form-input>
 
         <input-password
-          v-model="password"
-          ref="password"
           v-show="currentStep === 2"
+          ref="password"
+          v-model="password"
           placeholder="Your password"
-          inputClass="card-input w-100"
+          input-class="card-input w-100"
         />
 
         <input-password
-          v-model="confirmPassword"
-          ref="confirmPassword"
-          placeholder="Re-enter your password"
           v-show="currentStep === 3"
-          inputClass="card-input w-100"
+          ref="confirmPassword"
+          v-model="confirmPassword"
+          placeholder="Re-enter your password"
+          input-class="card-input w-100"
         />
 
         <div v-show="currentStep === 5">
           <seed
+            v-show="seed.length && !isRegistering"
             :words="seed"
+            :recover="recover"
             @complete="finishedSeed"
             @incomplete="incompleteRecoverySeed"
             @input="inputRecoverySeed"
-            v-show="seed.length && !isRegistering"
-            :recover="recover"
           ></seed>
           <b-spinner v-show="!seed.length || isRegistering"></b-spinner>
         </div>
@@ -84,14 +84,14 @@
           </div>
         </div>
 
-        <div class="text-center" v-show="currentStep === 8">
+        <div v-show="currentStep === 8" class="text-center">
           <p class="text-muted">
             But you don't have to wait for the sync to complete... You can start
             using Citadel right away!
           </p>
           <a
-            href="#"
             v-b-tooltip.hover.bottom
+            href="#"
             title="Citadel uses neutrino while the sync is in progress, and automatically switches to Bitcoin Core once it's synced"
           >
             <small>
@@ -112,7 +112,6 @@
         <b-button
           variant="success"
           size="lg"
-          @click="nextStep"
           :disabled="!isStepValid || isRegistering || !isLndOperational"
           class="mt-3 mx-auto d-block px-4"
           :class="{
@@ -120,31 +119,32 @@
               !isLndOperational || (currentStep === 8 && !unlocked),
             invisible: currentStep === 5 && recover && !isStepValid,
           }"
+          @click="nextStep"
           >{{ !isLndOperational ? "Loading" : nextButtonText }}</b-button
         >
         <b-button
+          v-if="currentStep === 4 || (currentStep === 5 && !recover)"
           variant="link"
           size="sm"
           class="mt-3 mx-auto d-block"
-          v-if="currentStep === 4 || (currentStep === 5 && !recover)"
-          @click="skipSeed"
           :disabled="isRegistering"
+          @click="skipSeed"
           >Note Down Later</b-button
         >
         <b-button
+          v-if="currentStep === 4"
           variant="link"
           size="sm"
-          @click="recoverFromSeed"
-          v-if="currentStep === 4"
           class="mt-2 mx-auto d-block"
+          @click="recoverFromSeed"
           >Recover</b-button
         >
         <b-button
+          v-if="currentStep > 0 && currentStep !== 6 && currentStep !== 8"
           variant="link"
           size="sm"
-          @click="prevStep"
-          v-if="currentStep > 0 && currentStep !== 6 && currentStep !== 8"
           class="mt-2 mx-auto d-block text-dark"
+          @click="prevStep"
           >Back</b-button
         >
       </div>
@@ -287,6 +287,24 @@ export default {
         : Math.round((this.currentStep * 100) / (this.steps.length - 1));
     },
   },
+  async created() {
+    //redirect to home if the user is already registered
+    if (this.registered) {
+      return this.$router.push("/");
+    }
+
+    // Wait for LND
+    while (!this.isLndOperational) {
+      await this.$store.dispatch("lightning/getStatus");
+      await delay(1000);
+    }
+
+    //generate a new seed on load
+    this.$store.dispatch("user/getSeed");
+  },
+  beforeUnmount() {
+    window.clearInterval(this.lndUnlockInterval);
+  },
   methods: {
     skipSeed() {
       if (this.currentStep === 4) {
@@ -386,24 +404,6 @@ export default {
     incompleteRecoverySeed() {
       this.notedSeed = false;
     },
-  },
-  async created() {
-    //redirect to home if the user is already registered
-    if (this.registered) {
-      return this.$router.push("/");
-    }
-
-    // Wait for LND
-    while (!this.isLndOperational) {
-      await this.$store.dispatch("lightning/getStatus");
-      await delay(1000);
-    }
-
-    //generate a new seed on load
-    this.$store.dispatch("user/getSeed");
-  },
-  beforeUnmount() {
-    window.clearInterval(this.lndUnlockInterval);
   },
   components: {
     InputPassword,

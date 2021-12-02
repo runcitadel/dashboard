@@ -34,11 +34,11 @@
       </loading>
       <shutdown
         v-else-if="hasShutdown || shuttingDown || rebooting"
-        :hasShutdown="hasShutdown"
-        :shuttingDown="shuttingDown"
+        :has-shutdown="hasShutdown"
+        :shutting-down="shuttingDown"
         :rebooting="rebooting"
       >
-        <div class="text-center" v-if="shuttingDown || rebooting">
+        <div v-if="shuttingDown || rebooting" class="text-center">
           <b-alert class="system-alert" variant="warning" show>
             <small
               >Please do not refresh this page or turn off your Citadel while it
@@ -87,71 +87,6 @@ export default {
     updating() {
       return this.updateStatus.state === "installing";
     },
-  },
-  methods: {
-    //TODO: move this to the specific layout that needs this 100vh fix
-    updateViewPortHeightCSS() {
-      return document.documentElement.style.setProperty(
-        "--vh100",
-        `${window.innerHeight}px`
-      );
-    },
-    async getLoadingStatus() {
-      // Skip if previous poll in progress or if system is updating
-      if (this.loadingPollInProgress || this.updating) {
-        return;
-      }
-
-      this.loadingPollInProgress = true;
-
-      // First check if manager api is up
-      if (this.loadingProgress <= 50) {
-        this.loadingProgress = 50;
-        await this.$store.dispatch("system/getManagerApi");
-        if (!this.isManagerApiOperational) {
-          this.loading = true;
-          this.loadingPollInProgress = false;
-          return;
-        }
-      }
-
-      // Then check if middleware api is up
-      /*if (this.loadingProgress <= 40) {
-        this.loadingProgress = 40;
-        await this.$store.dispatch("system/getApi");
-        if (!this.isApiOperational) {
-          this.loading = true;
-          this.loadingPollInProgress = false;
-          return;
-        }
-      }*/
-
-      // Then trigger auth check
-      if (this.loadingProgress <= 95 && this.jwt) {
-        this.loadingProgress = 95;
-        try {
-          await this.$store.dispatch("user/refreshJWT");
-        } catch (error) {
-          // it will error if jwt has expired and automatically redirect the user to login page
-          null;
-        }
-      }
-
-      this.loadingProgress = 100;
-      this.loadingPollInProgress = false;
-
-      // Add slight delay so the progress bar makes
-      // it to 100% before disappearing
-      setTimeout(() => (this.loading = false), 300);
-    },
-  },
-  created() {
-    //check if system is updating
-    this.$store.dispatch("system/getUpdateStatus");
-
-    //for 100vh consistency
-    this.updateViewPortHeightCSS();
-    window.addEventListener("resize", this.updateViewPortHeightCSS);
   },
   watch: {
     loading: {
@@ -216,10 +151,75 @@ export default {
       immediate: true,
     },
   },
+  created() {
+    //check if system is updating
+    this.$store.dispatch("system/getUpdateStatus");
+
+    //for 100vh consistency
+    this.updateViewPortHeightCSS();
+    window.addEventListener("resize", this.updateViewPortHeightCSS);
+  },
   beforeUnmount() {
     window.removeEventListener("resize", this.updateViewPortHeightCSS);
     window.clearInterval(this.loadingInterval);
     window.clearInterval(this.updateStatusInterval);
+  },
+  methods: {
+    //TODO: move this to the specific layout that needs this 100vh fix
+    updateViewPortHeightCSS() {
+      return document.documentElement.style.setProperty(
+        "--vh100",
+        `${window.innerHeight}px`
+      );
+    },
+    async getLoadingStatus() {
+      // Skip if previous poll in progress or if system is updating
+      if (this.loadingPollInProgress || this.updating) {
+        return;
+      }
+
+      this.loadingPollInProgress = true;
+
+      // First check if manager api is up
+      if (this.loadingProgress <= 50) {
+        this.loadingProgress = 50;
+        await this.$store.dispatch("system/getManagerApi");
+        if (!this.isManagerApiOperational) {
+          this.loading = true;
+          this.loadingPollInProgress = false;
+          return;
+        }
+      }
+
+      // Then check if middleware api is up
+      /*if (this.loadingProgress <= 40) {
+        this.loadingProgress = 40;
+        await this.$store.dispatch("system/getApi");
+        if (!this.isApiOperational) {
+          this.loading = true;
+          this.loadingPollInProgress = false;
+          return;
+        }
+      }*/
+
+      // Then trigger auth check
+      if (this.loadingProgress <= 95 && this.jwt) {
+        this.loadingProgress = 95;
+        try {
+          await this.$store.dispatch("user/refreshJWT");
+        } catch (error) {
+          // it will error if jwt has expired and automatically redirect the user to login page
+          null;
+        }
+      }
+
+      this.loadingProgress = 100;
+      this.loadingPollInProgress = false;
+
+      // Add slight delay so the progress bar makes
+      // it to 100% before disappearing
+      setTimeout(() => (this.loading = false), 300);
+    },
   },
   components: {
     Loading,

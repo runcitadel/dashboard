@@ -4,6 +4,18 @@
 
 <script>
 export default {
+  components: {},
+  props: {
+    local: Number,
+    remote: Number,
+    size: {
+      type: String, //sm, lg
+      default: "sm",
+    },
+  },
+  data() {
+    return {};
+  },
   computed: {
     style() {
       const leftValue = this.local;
@@ -38,9 +50,6 @@ export default {
       };
     },
   },
-  data() {
-    return {};
-  },
   methods: {
     getChannelBarGradient(leftValue, rightValue) {
       const leftPercent = Math.round(
@@ -57,15 +66,6 @@ export default {
       }%, #00CD98 ${leftPercent + 7}%, #00CD98 100%)`;
     },
   },
-  props: {
-    local: Number,
-    remote: Number,
-    size: {
-      type: String, //sm, lg
-      default: "sm",
-    },
-  },
-  components: {},
 };
 </script>
 

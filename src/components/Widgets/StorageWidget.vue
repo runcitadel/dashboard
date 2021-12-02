@@ -131,11 +131,11 @@
                       <span v-if="app.id === 'citadel'"
                         >System
                         <b-icon
+                          v-b-tooltip.hover.bottom
                           icon="info-circle-fill"
                           style="opacity: 0.4"
                           variant="dark"
                           class="ms-1"
-                          v-b-tooltip.hover.bottom
                           title="Including Bitcoin Core, LND, and Electrum server"
                         ></b-icon>
                       </span>
@@ -173,6 +173,7 @@ import { readableSize } from "@/helpers/size";
 import CardWidget from "@/components/CardWidget";
 
 export default {
+  props: {},
   data() {
     return {
       // storage: {
@@ -182,7 +183,6 @@ export default {
       // }
     };
   },
-  props: {},
   computed: {
     ...mapState({
       store: (state) => state.apps.store,

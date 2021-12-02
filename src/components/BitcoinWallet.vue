@@ -14,11 +14,11 @@
       lightningSyncPercent < 100
     "
   >
-    <template v-slot:title>
+    <template #title>
       <div
+        v-if="walletBalance !== -1"
         v-b-tooltip.hover.right
         :title="$filters.satsToUSD(walletBalanceInSats)"
-        v-if="walletBalance !== -1"
       >
         <CountUp
           :value="{
@@ -28,9 +28,9 @@
         />
       </div>
       <span
+        v-else
         class="loading-placeholder loading-placeholder-lg"
         style="width: 140px"
-        v-else
       ></span>
     </template>
     <div class="wallet-content">
@@ -45,8 +45,8 @@
           <!-- List of transactions -->
           <!-- No transactions -->
           <div
-            class="d-flex flex-column justify-content-center px-3 px-lg-4 zero-wallet-transactions-container"
             v-if="transactions.length === 0"
+            class="d-flex flex-column justify-content-center px-3 px-lg-4 zero-wallet-transactions-container"
           >
             <svg
               width="150"
@@ -75,7 +75,7 @@
             >
           </div>
 
-          <div class="wallet-transactions-container" v-else>
+          <div v-else class="wallet-transactions-container">
             <transition-group
               name="slide-up"
               class="list-group pb-2 transactions"
@@ -91,8 +91,8 @@
               >
                 <!-- Loading Transactions Placeholder -->
                 <div
-                  class="d-flex w-100 justify-content-between"
                   v-if="tx.type === 'loading'"
+                  class="d-flex w-100 justify-content-between"
                 >
                   <div class="w-50">
                     <span class="loading-placeholder"></span>
@@ -113,19 +113,19 @@
                   </div>
                 </div>
 
-                <div class="d-flex w-100 justify-content-between" v-else>
+                <div v-else class="d-flex w-100 justify-content-between">
                   <div class="transaction-description">
                     <h6
                       class="mb-0 font-weight-normal transaction-description-text"
                     >
                       <!-- Incoming tx icon -->
                       <svg
+                        v-if="tx.type === 'incoming' && tx.confirmations > 0"
                         width="18"
                         height="18"
                         viewBox="0 0 18 18"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        v-if="tx.type === 'incoming' && tx.confirmations > 0"
                       >
                         <path
                           d="M13.5944 6.04611C13.6001 5.73904 13.3493 5.48755 13.0369 5.48712C12.7351 5.4867 12.4836 5.7375 12.4836 6.03895L12.4758 11.6999L4.94598 3.83615C4.72819 3.61848 4.16402 3.62477 3.94599 3.8422C3.72796 4.05963 3.73466 4.62433 3.95209 4.84236L11.6871 12.4864L6.03143 12.4733C5.72435 12.4782 5.47251 12.7293 5.47244 13.0308C5.47201 13.3431 5.72317 13.595 6.0299 13.5898L13.031 13.5994C13.3381 13.6051 13.5896 13.3543 13.5844 13.0476L13.5944 6.04611Z"
@@ -135,14 +135,14 @@
 
                       <!-- Outgoing tx icon -->
                       <svg
+                        v-else-if="
+                          tx.type === 'outgoing' && tx.confirmations > 0
+                        "
                         width="19"
                         height="19"
                         viewBox="0 0 19 19"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        v-else-if="
-                          tx.type === 'outgoing' && tx.confirmations > 0
-                        "
                       >
                         <path
                           d="M7.06802 4.71946C6.76099 4.71224 6.50825 4.96178 6.50627 5.27413C6.50435 5.57592 6.7539 5.82865 7.05534 5.83022L12.7162 5.86616L4.81508 13.3568C4.59632 13.5735 4.59981 14.1376 4.81615 14.3568C5.03249 14.5759 5.59723 14.572 5.81634 14.3556L13.4988 6.6587L13.4576 12.3143C13.4609 12.6214 13.7108 12.8745 14.0122 12.876C14.3246 12.878 14.5777 12.6281 14.574 12.3214L14.6184 5.32036C14.6257 5.01333 14.3761 4.76059 14.0694 4.76427L7.06802 4.71946Z"
@@ -151,7 +151,7 @@
                       </svg>
 
                       <!-- Pending tx -->
-                      <svg class="icon-clock" viewBox="0 0 40 40" v-else>
+                      <svg v-else class="icon-clock" viewBox="0 0 40 40">
                         <circle cx="20" cy="20" r="18" />
                         <line x1="0" y1="0" x2="8" y2="0" class="hour" />
                         <line x1="0" y1="0" x2="12" y2="0" class="minute" />
@@ -166,17 +166,17 @@
                     <!-- Timestamp of tx -->
                     <!-- TODO: Clean this -->
                     <small
+                      v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
+                      v-b-tooltip.hover.bottomright
                       class="text-muted mt-0 tx-timestamp"
                       :style="
                         tx.confirmations > 0
                           ? 'margin-left: 25px;'
                           : 'margin-left: 21px;'
                       "
-                      v-b-tooltip.hover.bottomright
                       :title="`${getReadableTime(tx.timestamp)} | ${
                         tx.confirmations
                       } confirmations`"
-                      v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
                     >
                       {{ getTimeFromNow(tx.timestamp) }}
                       <span
@@ -198,8 +198,8 @@
 
                   <div class="text-right">
                     <span
-                      class="font-weight-bold d-block"
                       v-b-tooltip.hover.left
+                      class="font-weight-bold d-block"
                       :title="$filters.satsToUSD(tx.amount)"
                     >
                       <!-- Positive or negative prefix with amount -->
@@ -219,9 +219,9 @@
 
         <!-- SCREEN/MODE: Withdraw Screen -->
         <div
-          class="wallet-mode"
           v-else-if="mode === 'withdraw'"
           key="mode-withdraw"
+          class="wallet-mode"
         >
           <div class="px-3 px-lg-4">
             <!-- Back Button -->
@@ -229,7 +229,7 @@
               <a
                 href="#"
                 class="card-link text-muted"
-                v-on:click.stop.prevent="reset"
+                @click.stop.prevent="reset"
               >
                 <svg
                   width="7"
@@ -258,14 +258,14 @@
               <b-input-group class="neu-input-group">
                 <b-input
                   id="input-withdrawal-amount"
+                  v-model="withdraw.amountInput"
                   class="neu-input"
                   type="text"
                   size="lg"
-                  v-model="withdraw.amountInput"
                   autofocus
-                  @input="fetchWithdrawalFees"
                   style="padding-right: 82px"
                   :disabled="withdraw.sweep"
+                  @input="fetchWithdrawalFees"
                 ></b-input>
                 <b-input-group-append class="neu-input-group-append">
                   <sats-btc-switch
@@ -289,17 +289,17 @@
             >
             <b-input
               id="input-withdrawal-address"
+              v-model="withdraw.address"
               class="mb-2 neu-input"
               type="text"
               size="lg"
               min="1"
-              v-model="withdraw.address"
               @input="fetchWithdrawalFees"
             ></b-input>
           </div>
-          <div class="px-3 px-lg-4 mt-1" v-show="!error">
+          <div v-show="!error" class="px-3 px-lg-4 mt-1">
             <fee-selector
-              :fee="this.fees"
+              :fee="fees"
               :disabled="!withdraw.amount || !withdraw.address"
               @change="selectWithdrawalFee"
             ></fee-selector>
@@ -308,9 +308,9 @@
 
         <!-- SCREEN/MODE: Review Withdrawal -->
         <div
-          class="wallet-mode"
           v-else-if="mode === 'review-withdraw'"
           key=" ode-review-withdraw"
+          class="wallet-mode"
         >
           <div class="px-3 px-lg-4">
             <!-- Back Button -->
@@ -318,7 +318,7 @@
               <a
                 href="#"
                 class="card-link text-muted"
-                v-on:click.stop.prevent="reset"
+                @click.stop.prevent="reset"
               >
                 <svg
                   width="7"
@@ -363,8 +363,8 @@
               <b class="d-block mt-3">{{ withdraw.address }}</b>
             </div>
             <div
-              class="d-flex justify-content-between pb-3"
               v-if="withdraw.selectedFee.type === 'custom'"
+              class="d-flex justify-content-between pb-3"
             >
               <span class="text-muted">
                 <b>
@@ -393,7 +393,7 @@
                 <small>Remaining balance</small>
               </span>
             </div>
-            <div class="d-flex justify-content-between pb-3" v-else>
+            <div v-else class="d-flex justify-content-between pb-3">
               <span class="text-muted">
                 <b>
                   {{
@@ -426,9 +426,9 @@
 
         <!-- SCREEN/MODE: Successfully Withdrawn -->
         <div
-          class="wallet-mode mode-withdrawn"
           v-else-if="mode === 'withdrawn'"
           key=" mode-withdrawn"
+          class="wallet-mode mode-withdrawn"
         >
           <div class="px-3 px-lg-4">
             <!-- Back Button -->
@@ -436,7 +436,7 @@
               <a
                 href="#"
                 class="card-link text-muted"
-                v-on:click.stop.prevent="reset"
+                @click.stop.prevent="reset"
               >
                 <svg
                   width="7"
@@ -474,9 +474,9 @@
 
         <!-- SCREEN/MODE: Show Deposit Address -->
         <div
-          class="wallet-mode mode-deposit"
-          v-else-if="this.mode === 'deposit'"
+          v-else-if="mode === 'deposit'"
           key="mode-deposit"
+          class="wallet-mode mode-deposit"
         >
           <div class="px-3 px-lg-4">
             <!-- Back Button -->
@@ -484,7 +484,7 @@
               <a
                 href="#"
                 class="card-link text-muted"
-                v-on:click.stop.prevent="reset"
+                @click.stop.prevent="reset"
               >
                 <svg
                   width="7"
@@ -513,7 +513,7 @@
               class="mb-3 mx-auto"
               :value="depositAddress"
               :size="190"
-              showLogo
+              show-logo
             ></qr-code>
 
             <!-- Copy Address Input Field -->
@@ -534,7 +534,7 @@
 
     <!-- Wallet buttons -->
     <div class="wallet-buttons">
-      <b-button-group class="w-100" v-if="mode === 'transactions'">
+      <b-button-group v-if="mode === 'transactions'" class="w-100">
         <b-button
           class="w-50"
           variant="primary"
@@ -587,6 +587,7 @@
         </b-button>
       </b-button-group>
       <b-button
+        v-else-if="mode === 'withdraw'"
         class="w-100"
         variant="primary"
         style="
@@ -596,14 +597,14 @@
           padding-top: 1rem;
           padding-bottom: 1rem;
         "
-        @click="changeMode('review-withdraw')"
-        v-else-if="mode === 'withdraw'"
         :disabled="
           !!error || !withdraw.amount || !withdraw.address || withdraw.isTyping
         "
+        @click="changeMode('review-withdraw')"
         >Review Withdrawal</b-button
       >
       <b-button
+        v-else-if="mode === 'review-withdraw'"
         class="w-100"
         variant="primary"
         style="
@@ -613,15 +614,13 @@
           padding-top: 1rem;
           padding-bottom: 1rem;
         "
-        @click="withdrawBtc"
         :disabled="withdraw.isWithdrawing || !!error"
-        v-else-if="mode === 'review-withdraw'"
+        @click="withdrawBtc"
       >
-        {{
-          this.withdraw.isWithdrawing ? "Withdrawing..." : "Confirm Withdrawal"
-        }}
+        {{ withdraw.isWithdrawing ? "Withdrawing..." : "Confirm Withdrawal" }}
       </b-button>
       <b-button
+        v-else-if="mode === 'withdrawn'"
         class="w-100"
         variant="success"
         style="
@@ -632,7 +631,6 @@
           padding-bottom: 1rem;
         "
         :disabled="withdraw.isWithdrawing"
-        v-else-if="mode === 'withdrawn'"
         :href="getTxExplorerUrl(withdraw.txHash)"
         target="_blank"
         @click="openTxInExplorer"
@@ -676,6 +674,7 @@ import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch";
 import FeeSelector from "@/components/Utility/FeeSelector";
 
 export default {
+  props: {},
   data() {
     return {
       //balance: 162500, //net user's balance in sats
@@ -695,7 +694,6 @@ export default {
       error: "", //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
     };
   },
-  props: {},
   computed: {
     ...mapState({
       lightningSyncPercent: (state) => state.lightning.percent,
@@ -762,6 +760,44 @@ export default {
         return parseInt(Math.round(remainingBalanceInSats), 10);
       }
     },
+  },
+  watch: {
+    "withdraw.amountInput": function (val) {
+      if (this.unit === "sats") {
+        this.withdraw.amount = Number(val);
+      } else if (this.unit === "btc") {
+        this.withdraw.amount = btcToSats(val);
+      }
+      this.fetchWithdrawalFees();
+    },
+    "withdraw.sweep": async function (val) {
+      if (val) {
+        if (this.unit === "sats") {
+          this.withdraw.amountInput = String(this.confirmedBtcBalance);
+        } else if (this.unit === "btc") {
+          this.withdraw.amountInput = String(
+            satsToBtc(this.confirmedBtcBalance)
+          );
+        }
+      } else {
+        this.fetchWithdrawalFees();
+      }
+    },
+    unit: function (val) {
+      if (val === "sats") {
+        this.withdraw.amount = Number(this.withdraw.amountInput);
+      } else if (val === "btc") {
+        this.withdraw.amount = btcToSats(this.withdraw.amountInput);
+      }
+      this.fetchWithdrawalFees();
+    },
+  },
+  async created() {
+    this.$store.dispatch("bitcoin/getStatus");
+
+    // to fetch any installed explorers
+    // and their hidden services
+    this.$store.dispatch("apps/getInstalledApps");
   },
   methods: {
     getTimeFromNow(timestamp) {
@@ -905,44 +941,6 @@ export default {
       this.loading = false;
       this.withdraw.isWithdrawing = false;
     },
-  },
-  watch: {
-    "withdraw.amountInput": function (val) {
-      if (this.unit === "sats") {
-        this.withdraw.amount = Number(val);
-      } else if (this.unit === "btc") {
-        this.withdraw.amount = btcToSats(val);
-      }
-      this.fetchWithdrawalFees();
-    },
-    "withdraw.sweep": async function (val) {
-      if (val) {
-        if (this.unit === "sats") {
-          this.withdraw.amountInput = String(this.confirmedBtcBalance);
-        } else if (this.unit === "btc") {
-          this.withdraw.amountInput = String(
-            satsToBtc(this.confirmedBtcBalance)
-          );
-        }
-      } else {
-        this.fetchWithdrawalFees();
-      }
-    },
-    unit: function (val) {
-      if (val === "sats") {
-        this.withdraw.amount = Number(this.withdraw.amountInput);
-      } else if (val === "btc") {
-        this.withdraw.amount = btcToSats(this.withdraw.amountInput);
-      }
-      this.fetchWithdrawalFees();
-    },
-  },
-  async created() {
-    this.$store.dispatch("bitcoin/getStatus");
-
-    // to fetch any installed explorers
-    // and their hidden services
-    this.$store.dispatch("apps/getInstalledApps");
   },
   components: {
     CardWidget,

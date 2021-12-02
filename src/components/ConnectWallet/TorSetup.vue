@@ -10,7 +10,7 @@
       <b-form-select-option value="Windows">Windows</b-form-select-option>
     </b-form-select>
 
-    <ol class="ps-3" v-if="selectedOS == 'macOS'">
+    <ol v-if="selectedOS == 'macOS'" class="ps-3">
       <li class="mb-3">
         Open the "Terminal" app on your Mac and install
         <a href="https://brew.sh/" target="_blank">Homebrew</a> by running:
@@ -31,7 +31,7 @@
       </li>
     </ol>
 
-    <ol class="ps-3" v-else-if="selectedOS == 'Linux'">
+    <ol v-else-if="selectedOS == 'Linux'" class="ps-3">
       <li class="mb-3">
         Open Terminal and install Tor:
         <input-copy
@@ -42,7 +42,7 @@
       </li>
     </ol>
 
-    <ol class="ps-3" v-else-if="selectedOS == 'Windows'">
+    <ol v-else-if="selectedOS == 'Windows'" class="ps-3">
       <li class="mb-3">
         Download Tor "Windows Expert Bundle" from
         <a target="_blank" href="https://www.torproject.org/download/tor/"
@@ -60,6 +60,9 @@
 import InputCopy from "@/components/Utility/InputCopy.vue";
 
 export default {
+  components: {
+    InputCopy,
+  },
   data() {
     return {
       selectedOS: null,
@@ -67,9 +70,6 @@ export default {
   },
   computed: {},
   methods: {},
-  components: {
-    InputCopy,
-  },
 };
 </script>
 

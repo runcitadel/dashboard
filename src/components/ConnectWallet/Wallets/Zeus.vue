@@ -11,11 +11,11 @@
           :value="urls.lnd.restTor.replace(/cert=(.*)&/gm, '')"
           :size="300"
           class="qr-image mt-2"
-          showLogo
+          show-logo
+          :style="{ cursor: 'pointer' }"
           @click="
             $emit('showQrModal', urls.lnd.restTor.replace(/cert=(.*)&/gm, ''))
           "
-          v-bind:style="{ cursor: 'pointer' }"
         ></qr-code>
       </step>
       <step> Check <span class="font-weight-bold">"Use Tor"</span>. </step>
@@ -81,9 +81,20 @@ import QrCode from "@/components/Utility/QrCode";
 import Buffer from "buffer/index.js";
 
 export default {
-  props: {
-    urls: Object,
+  components: {
+    ConnectionDetails,
+    StepList,
+    Step,
+    InputCopy,
+    QrCode,
   },
+  props: {
+    urls: {
+      type: Object,
+      required: true,
+    },
+  },
+  emits: ["showQrModal"],
   computed: {
     macaroonHex() {
       return Buffer.from(
@@ -94,13 +105,6 @@ export default {
         "base64"
       ).toString("hex");
     },
-  },
-  components: {
-    ConnectionDetails,
-    StepList,
-    Step,
-    InputCopy,
-    QrCode,
   },
 };
 </script>

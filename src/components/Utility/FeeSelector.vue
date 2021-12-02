@@ -12,22 +12,22 @@
         <small class="text-muted">Custom</small>
       </b-form-checkbox>
     </div>
-    <div class="vue-slider-container" v-if="useCustomFee">
+    <div v-if="useCustomFee" class="vue-slider-container">
       <vue-slider
+        key="custom-fee"
         v-model="customFee"
         :marks="false"
         hide-label
         :min="customMinFee"
         :max="customMaxFee"
         :interval="1"
-        :dotSize="[22, 22]"
+        :dot-size="[22, 22]"
         contained
         :tooltip="isDisabled ? 'none' : 'always'"
         :disabled="isDisabled"
         @change="emitValue"
-        key="custom-fee"
       >
-        <template v-slot:tooltip="{ value, focus }">
+        <template #tooltip="{ value, focus }">
           <div
             :class="[
               'vue-slider-dot-tooltip-inner vue-slider-dot-tooltip-inner-top',
@@ -55,25 +55,25 @@
         <small class="text-muted mb-0">Fast</small>
       </div>
     </div>
-    <div class="vue-slider-container" v-else>
+    <div v-else class="vue-slider-container">
       <vue-slider
+        key="recommended-fee"
         v-model="chosenFee"
         absorb
         marks
         :data="recommendedFees"
-        :dotSize="[22, 22]"
+        :dot-size="[22, 22]"
         contained
         :tooltip="isDisabled ? 'none' : 'always'"
         :disabled="isDisabled"
         @change="emitValue"
-        key="recommended-fee"
       >
-        <template v-slot:label="{ active, value }">
+        <template #label="{ active, value }">
           <div :class="['vue-slider-mark-label', 'text-center', { active }]">
             <span class="text-muted">~ {{ timeToConfirm(value) }}</span>
           </div>
         </template>
-        <template v-slot:tooltip="{ value, focus }">
+        <template #tooltip="{ value, focus }">
           <div
             :class="[
               'vue-slider-dot-tooltip-inner vue-slider-dot-tooltip-inner-top',
@@ -98,6 +98,9 @@ import VueSlider from "vue-slider-component";
 import "vue-slider-component/theme/default.css";
 
 export default {
+  components: {
+    VueSlider,
+  },
   props: {
     fee: Object,
     customMinFee: {
@@ -149,6 +152,14 @@ export default {
       return intervals;
     },
   },
+  watch: {
+    useCustomFee: function () {
+      this.emitValue();
+    },
+    "fee.fast.total": function () {
+      this.emitValue();
+    },
+  },
   methods: {
     emitValue() {
       if (this.useCustomFee) {
@@ -179,17 +190,6 @@ export default {
         return "24 hrs";
       }
     },
-  },
-  watch: {
-    useCustomFee: function () {
-      this.emitValue();
-    },
-    "fee.fast.total": function () {
-      this.emitValue();
-    },
-  },
-  components: {
-    VueSlider,
   },
 };
 </script>

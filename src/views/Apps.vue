@@ -14,15 +14,15 @@
       <div class="d-flex flex-wrap justify-content-start apps-container">
         <installed-app
           v-for="app in installedApps"
-          :key="app.id"
           :id="app.id"
+          :key="app.id"
           :name="app.name"
           :port="app.port"
           :path="app.path"
-          :hiddenService="app.hiddenService"
-          :torOnly="app.torOnly"
-          :showUninstallButton="isEditing"
-          :isUninstalling="uninstallingApps.includes(app.id)"
+          :hidden-service="app.hiddenService"
+          :tor-only="app.torOnly"
+          :show-uninstall-button="isEditing"
+          :is-uninstalling="uninstallingApps.includes(app.id)"
         >
         </installed-app>
       </div>

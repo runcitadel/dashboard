@@ -6,13 +6,13 @@
 
 <script>
 export default {
+  components: {},
+  props: {},
   data() {
     return {};
   },
-  props: {},
   computed: {},
   methods: {},
-  components: {},
 };
 </script>
 

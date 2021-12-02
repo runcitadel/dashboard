@@ -23,50 +23,50 @@
       </p>
 
       <form
-        v-on:submit.prevent="authenticateUser"
         class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center"
+        @submit.prevent="authenticateUser"
       >
         <input-password
-          v-model="password"
           ref="password"
+          v-model="password"
           placeholder="Password"
-          :inputClass="[
+          :input-class="[
             isIncorrectPassword ? 'incorrect-password' : '',
             'card-input w-100',
           ]"
           :disabled="isLoggingIn"
         />
         <input-password
-          v-model="totpToken"
+          v-if="totpEnabled"
           ref="totpToken"
+          v-model="totpToken"
           placeholder="2FA token"
-          :inputClass="[
+          :input-class="[
             isIncorrectToken ? 'incorrect-token' : '',
             'card-input w-100',
           ]"
-          :inputGroupClass="['mt-2 card-input-group']"
+          :input-group-class="['mt-2 card-input-group']"
           :disabled="isLoggingIn"
-          v-if="totpEnabled"
         />
         <div class="login-button-container">
           <transition name="fade">
-            <small class="mt-2 text-danger error" v-show="isIncorrectPassword"
+            <small v-show="isIncorrectPassword" class="mt-2 text-danger error"
               >Incorrect password</small
             >
           </transition>
           <transition name="fade">
-            <small class="mt-2 text-danger error" v-show="isIncorrectToken">
+            <small v-show="isIncorrectToken" class="mt-2 text-danger error">
               Incorrect token</small
             >
           </transition>
           <transition name="slide-up">
             <b-button
+              v-show="!!password && !isIncorrectPassword"
               variant="success"
               type="submit"
               size="lg"
               class="px-4 login-button"
               :class="{ 'loading-fade-blink': isLoggingIn }"
-              v-show="!!password && !isIncorrectPassword"
               :disabled="isLoggingIn"
               >Log in</b-button
             >

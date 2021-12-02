@@ -6,7 +6,7 @@
       class="d-block mb-3 installed-app-link"
       :class="isUninstalling || isOffline ? 'fade-in-out cursor-wait' : ''"
       :disabled="isUninstalling || isOffline"
-      v-on:click="openApp($event)"
+      @click="openApp($event)"
       ><img
         class="installed-app-icon app-icon"
         :alt="name"
@@ -25,8 +25,8 @@
     >
     <span v-else class="text-center text-truncate mb-1">{{ name }}</span>
     <b-button
-      class="uninstall-btn"
       v-if="showUninstallButton && !isUninstalling"
+      class="uninstall-btn"
       variant="outline-danger"
       size="sm"
       @click="uninstall(name, id)"
@@ -81,6 +81,12 @@ export default {
       }
     },
   },
+  created() {
+    this.pollOfflineApp();
+  },
+  beforeUnmount() {
+    this.checkIfAppIsOffline = false;
+  },
   methods: {
     uninstall(name, appId) {
       if (
@@ -120,12 +126,6 @@ export default {
         await delay(1000);
       }
     },
-  },
-  created() {
-    this.pollOfflineApp();
-  },
-  beforeUnmount() {
-    this.checkIfAppIsOffline = false;
   },
   components: {},
 };

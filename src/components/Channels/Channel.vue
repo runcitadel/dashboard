@@ -10,9 +10,9 @@
           <div>
             <span v-if="channel.remoteAlias">{{ channel.remoteAlias }}</span>
             <span
+              v-else
               class="loading-placeholder loading-placeholder-sm d-block"
               style="width: 80%; margin-top: 8px"
-              v-else
             ></span>
           </div>
         </div>
@@ -33,8 +33,8 @@
         <div class>
           <div class="d-flex justify-content-between">
             <span
-              class="text-primary font-weight-bold"
               v-b-tooltip.hover.right
+              class="text-primary font-weight-bold"
               :title="$filters.satsToUSD(channel.localBalance)"
               >{{ $filters.localize($filters.unit(channel.localBalance)) }}
               {{ $filters.formatUnit(unit) }}</span
@@ -69,6 +69,16 @@ import Status from "@/components/Utility/Status";
 import Bar from "@/components/Channels/Bar";
 
 export default {
+  components: {
+    Status,
+    Bar,
+  },
+  props: {
+    channel: Object,
+  },
+  data() {
+    return {};
+  },
   computed: {
     unit() {
       return this.$store.state.system.unit;
@@ -87,16 +97,6 @@ export default {
           return "default";
       }
     },
-  },
-  data() {
-    return {};
-  },
-  props: {
-    channel: Object,
-  },
-  components: {
-    Status,
-    Bar,
   },
 };
 </script>

@@ -5,11 +5,11 @@
         <label class="sr-onlsy" for="peer-connection">Lightning address</label>
         <b-input
           id="peer-connection"
+          v-model="peerConnectionCode"
           class="mb-3 neu-input"
           placeholder="pubkey@ip:port"
           type="text"
           size="lg"
-          v-model="peerConnectionCode"
           :disabled="isOpening"
           autofocus
         ></b-input>
@@ -21,10 +21,10 @@
             <b-input-group class="neu-input-group">
               <b-input
                 id="funding-amount"
+                v-model="fundingAmountInput"
                 class="neu-input"
                 type="text"
                 size="lg"
-                v-model="fundingAmountInput"
                 style="padding-right: 82px"
                 :disabled="isOpening || sweep"
               ></b-input>
@@ -66,7 +66,7 @@
           class="mt-4 mt-sm-0 d-flex w-100 justify-content-between align-self-end"
         >
           <span>
-            <small class="text-danger align-self-center" v-if="error">{{
+            <small v-if="error" class="text-danger align-self-center">{{
               error
             }}</small>
           </span>
@@ -74,7 +74,7 @@
             type="submit"
             variant="success"
             :disabled="isOpening || !!error"
-            >{{ this.isOpening ? "Opening..." : "Open Channel" }}</b-button
+            >{{ isOpening ? "Opening..." : "Open Channel" }}</b-button
           >
         </div>
       </b-col>
@@ -139,6 +139,34 @@ export default {
       unit: (state) => state.system.unit,
       confirmedBtcBalance: (state) => state.bitcoin.balance.confirmed,
     }),
+  },
+  watch: {
+    unit: function (val) {
+      if (val === "sats") {
+        this.fundingAmount = Number(this.fundingAmountInput);
+      } else if (val === "btc") {
+        this.fundingAmount = btcToSats(this.fundingAmountInput);
+      }
+      this.fetchFees();
+    },
+    sweep: function (val) {
+      if (val) {
+        if (this.unit === "btc") {
+          this.fundingAmountInput = String(satsToBtc(this.confirmedBtcBalance));
+        } else if (this.unit === "sats") {
+          this.fundingAmountInput = String(this.confirmedBtcBalance);
+        }
+      }
+      this.fetchFees();
+    },
+    fundingAmountInput: function (val) {
+      if (this.unit === "sats") {
+        this.fundingAmount = Number(val);
+      } else if (this.unit === "btc") {
+        this.fundingAmount = btcToSats(val);
+      }
+      this.fetchFees();
+    },
   },
   methods: {
     selectFee(fee) {
@@ -273,34 +301,6 @@ export default {
           }
         }
       }, 500);
-    },
-  },
-  watch: {
-    unit: function (val) {
-      if (val === "sats") {
-        this.fundingAmount = Number(this.fundingAmountInput);
-      } else if (val === "btc") {
-        this.fundingAmount = btcToSats(this.fundingAmountInput);
-      }
-      this.fetchFees();
-    },
-    sweep: function (val) {
-      if (val) {
-        if (this.unit === "btc") {
-          this.fundingAmountInput = String(satsToBtc(this.confirmedBtcBalance));
-        } else if (this.unit === "sats") {
-          this.fundingAmountInput = String(this.confirmedBtcBalance);
-        }
-      }
-      this.fetchFees();
-    },
-    fundingAmountInput: function (val) {
-      if (this.unit === "sats") {
-        this.fundingAmount = Number(val);
-      } else if (this.unit === "btc") {
-        this.fundingAmount = btcToSats(val);
-      }
-      this.fetchFees();
     },
   },
   components: {

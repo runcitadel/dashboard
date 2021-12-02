@@ -3,16 +3,16 @@
     <div class="mb-4">
       <div class="d-flex justify-content-between">
         <h4
-          class="text-primary font-weight-bold"
           v-b-tooltip.hover.right
+          class="text-primary font-weight-bold"
           :title="$filters.satsToUSD(channel.localBalance)"
         >
           {{ $filters.localize($filters.unit(channel.localBalance)) }}
           {{ $filters.formatUnit(unit) }}
         </h4>
         <h4
-          class="text-success font-weight-bold text-right"
           v-b-tooltip.hover.left
+          class="text-success font-weight-bold text-right"
           :title="$filters.satsToUSD(channel.remoteBalance)"
         >
           {{ $filters.localize($filters.unit(channel.remoteBalance)) }}
@@ -59,8 +59,8 @@
         </div>
 
         <div
-          class="d-flex justify-content-between align-items-center mb-3"
           v-if="channel.status !== 'Closing'"
+          class="d-flex justify-content-between align-items-center mb-3"
         >
           <span class="text-muted">Opened By</span>
           <span class="text-capitalize font-weight-bold">{{
@@ -105,8 +105,8 @@
         </div>
 
         <div
-          class="d-flex justify-content-between align-items-center mb-3"
           v-if="channel.status === 'Online'"
+          class="d-flex justify-content-between align-items-center mb-3"
         >
           <span class="text-muted">Withdrawal Timelock</span>
           <span class="text-capitalize font-weight-bold"
@@ -115,8 +115,8 @@
         </div>
 
         <div
-          class="d-flex justify-content-between align-items-center mb-3"
           v-if="channel.status === 'Online'"
+          class="d-flex justify-content-between align-items-center mb-3"
         >
           <span class="text-muted">Commit Fee</span>
           <span class="text-capitalize font-weight-bold">
@@ -134,7 +134,7 @@
           </div>
         </div>
 
-        <div class="d-flex justify-content-end" v-if="canCloseChannel">
+        <div v-if="canCloseChannel" class="d-flex justify-content-end">
           <b-button class="mt-2" variant="danger" @click="reviewChannelClose"
             >Close Channel</b-button
           >
@@ -159,8 +159,8 @@
           <b-button
             class="mt-2"
             variant="danger"
-            @click="confirmChannelClose"
             :disabled="isClosing"
+            @click="confirmChannelClose"
             >{{ isClosing ? "Closing Channel..." : "Confirm Close" }}</b-button
           >
         </div>
@@ -174,6 +174,9 @@ import Bar from "@/components/Channels/Bar";
 import API from "@/helpers/api";
 
 export default {
+  components: {
+    Bar,
+  },
   props: {
     channel: Object,
   },
@@ -237,9 +240,6 @@ export default {
       }
       this.isClosing = false;
     },
-  },
-  components: {
-    Bar,
   },
 };
 </script>

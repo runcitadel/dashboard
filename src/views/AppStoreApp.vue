@@ -43,8 +43,8 @@
           </div>
         </div>
         <div
-          class="w-xs-100 d-flex flex-column align-items-sm-center"
           v-if="isInstalled && !isUninstalling"
+          class="w-xs-100 d-flex flex-column align-items-sm-center"
         >
           <b-button
             v-if="isOffline"
@@ -61,10 +61,10 @@
             class="px-4"
             :href="url"
             target="_blank"
-            v-on:click="openApp($event)"
+            @click="openApp($event)"
             >Open</b-button
           >
-          <div class="mt-2 text-center" v-if="app.defaultPassword">
+          <div v-if="app.defaultPassword" class="mt-2 text-center">
             <small class="">The default password of this app is</small>
             <input-copy
               size="sm"
@@ -73,7 +73,7 @@
             ></input-copy>
           </div>
         </div>
-        <div class="d-flex flex-column align-items-sm-center w-xs-100" v-else>
+        <div v-else class="d-flex flex-column align-items-sm-center w-xs-100">
           <b-button
             v-if="isInstalling"
             variant="success"
@@ -104,8 +104,8 @@
             >This may take a few minutes</small
           >
           <div
-            class="mt-2 text-center"
             v-if="isInstalling && app.defaultPassword"
+            class="mt-2 text-center"
           >
             <small class="">The default password of this app is</small>
             <input-copy
@@ -120,8 +120,8 @@
     <div class="app-gallery pt-3 pb-4 mb-2 mb-sm-3">
       <img
         v-for="image in app.gallery"
-        class="app-gallery-screen me-3"
         :key="image"
+        class="app-gallery-screen me-3"
         :src="
           image.startsWith('http')
             ? image
@@ -145,7 +145,7 @@
               <span>Version</span>
               <span>{{ app.version }}</span>
             </div>
-            <div class="d-flex justify-content-between mb-3" v-if="app.repo">
+            <div v-if="app.repo" class="d-flex justify-content-between mb-3">
               <span>Source Code</span>
               <a :href="app.repo" target="_blank">Public</a>
             </div>
@@ -158,12 +158,12 @@
               <span>Compatibility</span>
               <span>Compatible</span>
             </div>-->
-            <div class="mb-4" v-if="app.dependencies.length">
+            <div v-if="app.dependencies.length" class="mb-4">
               <span class="d-block mb-3">Requires</span>
               <div
-                class="d-flex align-items-center justify-content-between mb-3"
                 v-for="dependency in app.dependencies"
                 :key="dependency"
+                class="d-flex align-items-center justify-content-between mb-3"
               >
                 <div class="d-flex align-items-center">
                   <img
@@ -264,6 +264,15 @@ export default {
       }
     },
   },
+  async created() {
+    await this.$store.dispatch("apps/getAppStore");
+    if (this.isInstalled) {
+      this.pollOfflineApp();
+    }
+  },
+  beforeUnmount() {
+    this.checkIfAppIsOffline = false;
+  },
   methods: {
     formatDependency(dependency) {
       let name;
@@ -304,15 +313,6 @@ export default {
         await delay(1000);
       }
     },
-  },
-  async created() {
-    await this.$store.dispatch("apps/getAppStore");
-    if (this.isInstalled) {
-      this.pollOfflineApp();
-    }
-  },
-  beforeUnmount() {
-    this.checkIfAppIsOffline = false;
   },
   components: {
     CardWidget,

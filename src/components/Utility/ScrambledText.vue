@@ -64,6 +64,7 @@ class TextScramble {
 }
 
 export default {
+  components: {},
   props: {
     text: String,
   },
@@ -71,6 +72,9 @@ export default {
     return {};
   },
   computed: {},
+  watch: {
+    text: "updateText",
+  },
   mounted() {
     const el = this.$refs.text;
     this.fx = new TextScramble(el);
@@ -80,10 +84,6 @@ export default {
     updateText(text) {
       this.fx.setText(text);
     },
-  },
-  components: {},
-  watch: {
-    text: "updateText",
   },
 };
 </script>

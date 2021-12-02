@@ -14,11 +14,11 @@
       lightningSyncPercent < 100
     "
   >
-    <template v-slot:title>
+    <template #title>
       <div
+        v-if="walletBalance !== -1"
         v-b-tooltip.hover.right
         :title="$filters.satsToUSD(walletBalanceInSats)"
-        v-if="walletBalance !== -1"
       >
         <CountUp
           :value="{
@@ -28,9 +28,9 @@
         />
       </div>
       <span
+        v-else
         class="loading-placeholder loading-placeholder-lg"
         style="width: 140px"
-        v-else
       ></span>
     </template>
     <div class="wallet-content">
@@ -46,8 +46,8 @@
 
           <!-- No transactions -->
           <div
-            class="d-flex flex-column justify-content-center px-3 px-lg-4 zero-wallet-transactions-container"
             v-if="transactions.length === 0"
+            class="d-flex flex-column justify-content-center px-3 px-lg-4 zero-wallet-transactions-container"
           >
             <!-- Piggy bank icon -->
             <svg
@@ -77,7 +77,7 @@
           </div>
 
           <!-- Actual Transactions -->
-          <div class="wallet-transactions-container" v-else>
+          <div v-else class="wallet-transactions-container">
             <transition-group
               name="slide-up"
               class="list-group pb-2 transactions"
@@ -91,8 +91,8 @@
               >
                 <!-- Loading Transactions Placeholder -->
                 <div
-                  class="d-flex w-100 justify-content-between"
                   v-if="tx.type === 'loading'"
+                  class="d-flex w-100 justify-content-between"
                 >
                   <div class="w-50">
                     <span class="loading-placeholder"></span>
@@ -114,19 +114,19 @@
                 </div>
 
                 <!-- Transaction -->
-                <div class="d-flex w-100 justify-content-between" v-else>
+                <div v-else class="d-flex w-100 justify-content-between">
                   <div class="transaction-description">
                     <h6
                       class="mb-0 font-weight-normal transaction-description-text"
                     >
                       <!-- Incoming tx icon -->
                       <svg
+                        v-if="tx.type === 'incoming'"
                         width="18"
                         height="18"
                         viewBox="0 0 18 18"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        v-if="tx.type === 'incoming'"
                       >
                         <path
                           d="M13.5944 6.04611C13.6001 5.73904 13.3493 5.48755 13.0369 5.48712C12.7351 5.4867 12.4836 5.7375 12.4836 6.03895L12.4758 11.6999L4.94598 3.83615C4.72819 3.61848 4.16402 3.62477 3.94599 3.8422C3.72796 4.05963 3.73466 4.62433 3.95209 4.84236L11.6871 12.4864L6.03143 12.4733C5.72435 12.4782 5.47251 12.7293 5.47244 13.0308C5.47201 13.3431 5.72317 13.595 6.0299 13.5898L13.031 13.5994C13.3381 13.6051 13.5896 13.3543 13.5844 13.0476L13.5944 6.04611Z"
@@ -136,12 +136,12 @@
 
                       <!-- Outgoing tx icon -->
                       <svg
+                        v-else-if="tx.type === 'outgoing'"
                         width="19"
                         height="19"
                         viewBox="0 0 19 19"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        v-else-if="tx.type === 'outgoing'"
                       >
                         <path
                           d="M7.06802 4.71946C6.76099 4.71224 6.50825 4.96178 6.50627 5.27413C6.50435 5.57592 6.7539 5.82865 7.05534 5.83022L12.7162 5.86616L4.81508 13.3568C4.59632 13.5735 4.59981 14.1376 4.81615 14.3568C5.03249 14.5759 5.59723 14.572 5.81634 14.3556L13.4988 6.6587L13.4576 12.3143C13.4609 12.6214 13.7108 12.8745 14.0122 12.876C14.3246 12.878 14.5777 12.6281 14.574 12.3214L14.6184 5.32036C14.6257 5.01333 14.3761 4.76059 14.0694 4.76427L7.06802 4.71946Z"
@@ -151,12 +151,12 @@
 
                       <!-- Expired invoice icon -->
                       <svg
+                        v-else-if="tx.type === 'expired'"
                         width="18"
                         height="18"
                         viewBox="0 0 18 18"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        v-else-if="tx.type === 'expired'"
                       >
                         <path
                           fill-rule="evenodd"
@@ -168,9 +168,9 @@
 
                       <!-- Pending invoice icon -->
                       <svg
+                        v-else-if="tx.type === 'pending'"
                         class="icon-clock"
                         viewBox="0 0 40 40"
-                        v-else-if="tx.type === 'pending'"
                       >
                         <circle cx="20" cy="20" r="18" />
                         <line x1="0" y1="0" x2="8" y2="0" class="hour" />
@@ -179,51 +179,51 @@
 
                       <!-- Invoice description -->
                       <span
+                        v-if="tx.description"
                         style="margin-left: 6px"
                         :title="tx.description"
-                        v-if="tx.description"
                         >{{ tx.description }}</span
                       >
 
                       <!-- If no description -->
-                      <span style="margin-left: 6px" v-else>Payment</span>
+                      <span v-else style="margin-left: 6px">Payment</span>
                     </h6>
 
                     <!-- Timestamp of tx -->
                     <small
+                      v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
+                      v-b-tooltip.hover.right
                       class="text-muted mt-0 tx-timestamp"
                       style="margin-left: 25px"
-                      v-b-tooltip.hover.right
                       :title="getReadableTime(tx.timestamp)"
-                      v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
                       >{{ getTimeFromNow(tx.timestamp) }}</small
                     >
 
                     <!-- if invoice isn't settled -->
                     <small
+                      v-else-if="tx.type === 'pending'"
                       class="text-muted mt-0 tx-timestamp"
                       style="margin-left: 21px"
                       :title="`Invoice expires on ${getReadableTime(
                         tx.expiresOn
                       )}`"
-                      v-else-if="tx.type === 'pending'"
                       >Unpaid invoice</small
                     >
 
                     <!-- If invoice expired -->
                     <small
+                      v-else-if="tx.type === 'expired'"
                       class="text-muted mt-0 tx-timestamp"
                       style="margin-left: 25px"
                       :title="getReadableTime(tx.expiresOn)"
-                      v-else-if="tx.type === 'expired'"
                       >Invoice expired {{ getTimeFromNow(tx.expiresOn) }}</small
                     >
                   </div>
 
                   <div class="text-right">
                     <span
-                      class="font-weight-bold d-block"
                       v-b-tooltip.hover.left
+                      class="font-weight-bold d-block"
                       :title="$filters.satsToUSD(tx.amount)"
                     >
                       <!-- Positive or negative prefix with amount -->
@@ -243,16 +243,16 @@
 
         <!-- SCREEN/MODE: Paste Invoice Screen -->
         <div
-          class="px-3 px-lg-4 mode-send wallet-mode"
           v-else-if="mode === 'send'"
           key="mode-send"
+          class="px-3 px-lg-4 mode-send wallet-mode"
         >
           <!-- Back Button -->
           <div class="pb-3">
             <a
               href="#"
               class="card-link text-muted"
-              v-on:click.stop.prevent="reset"
+              @click.stop.prevent="reset"
             >
               <svg
                 width="7"
@@ -273,14 +273,14 @@
           <label class="sr-onlsy" for="input-sats">Paste Invoice</label>
           <b-input
             id="input-sats"
+            v-model="send.paymentRequest"
             class="mb-4 neu-input"
             type="text"
             size="lg"
             min="1"
-            v-model="send.paymentRequest"
             autofocus
-            @input="fetchInvoiceDetails"
             :disabled="send.isSending"
+            @input="fetchInvoiceDetails"
           ></b-input>
 
           <!-- Invoice amount + description -->
@@ -309,16 +309,16 @@
 
         <!-- SCREEN/MODE: Successfully paid invoice -->
         <div
-          class="px-3 px-lg-4 mode-sent wallet-mode"
           v-else-if="mode === 'sent'"
           key="mode-sent"
+          class="px-3 px-lg-4 mode-sent wallet-mode"
         >
           <!-- Back Button -->
           <div class="pb-3">
             <a
               href="#"
               class="card-link text-muted"
-              v-on:click.stop.prevent="reset"
+              @click.stop.prevent="reset"
             >
               <svg
                 width="7"
@@ -353,16 +353,16 @@
 
         <!-- SCREEN/MODE: Create Invoice (Receive) -->
         <div
-          class="px-3 px-lg-4 mode-receive wallet-mode"
           v-else-if="mode === 'receive'"
           key="mode-receive"
+          class="px-3 px-lg-4 mode-receive wallet-mode"
         >
           <!-- Back Button -->
           <div class="pb-3">
             <a
               href="#"
               class="card-link text-muted"
-              v-on:click.stop.prevent="reset"
+              @click.stop.prevent="reset"
             >
               <svg
                 width="7"
@@ -385,11 +385,11 @@
             <b-input-group class="neu-input-group">
               <b-input
                 id="input-sats"
+                v-model.number="receive.amountInput"
                 class="neu-input"
                 type="text"
                 size="lg"
                 autofocus
-                v-model.number="receive.amountInput"
                 :disabled="receive.isGeneratingInvoice"
                 style="padding-right: 82px"
               ></b-input>
@@ -413,25 +413,25 @@
           </label>
           <b-input
             id="input-description"
+            v-model="receive.description"
             class="mb-4 neu-input"
             size="lg"
-            v-model="receive.description"
             :disabled="receive.isGeneratingInvoice"
           ></b-input>
         </div>
 
         <!-- SCREEN/MODE: Show Generated Invoice -->
         <div
-          class="px-3 px-lg-4 pb-2 mode-invoice wallet-mode"
-          v-else-if="this.mode === 'invoice'"
+          v-else-if="mode === 'invoice'"
           key="mode-invoice"
+          class="px-3 px-lg-4 pb-2 mode-invoice wallet-mode"
         >
           <!-- Back Button -->
           <div class="pb-3">
             <a
               href="#"
               class="card-link text-muted"
-              v-on:click.stop.prevent="reset"
+              @click.stop.prevent="reset"
             >
               <svg
                 width="7"
@@ -451,7 +451,7 @@
 
           <p class="text-center text-muted mb-2">
             <!-- If still generating invoice, show blinking loading text -->
-            <span class="blink" v-if="receive.isGeneratingInvoice"
+            <span v-if="receive.isGeneratingInvoice" class="blink"
               >Generating Invoice</span
             >
 
@@ -471,13 +471,13 @@
           <!-- QR Code -->
           <qr-code
             class="mb-3 mx-auto"
-            :showLogo="!receive.isGeneratingInvoice"
+            :show-logo="!receive.isGeneratingInvoice"
             :value="receive.invoiceQR"
           ></qr-code>
 
           <!-- Copy Invoice Input Field -->
           <transition name="slide-up" appear>
-            <div class v-show="!receive.isGeneratingInvoice">
+            <div v-show="!receive.isGeneratingInvoice" class>
               <input-copy
                 size="sm"
                 :value="receive.invoiceQR"
@@ -493,16 +493,16 @@
 
         <!-- SCREEN/MODE: Received (invoice settled) -->
         <div
-          class="px-3 px-lg-4 mode-sent wallet-mode"
           v-else-if="mode === 'received'"
           key="mode-sent"
+          class="px-3 px-lg-4 mode-sent wallet-mode"
         >
           <!-- Back Button -->
           <div class="pb-3">
             <a
               href="#"
               class="card-link text-muted"
-              v-on:click.stop.prevent="reset"
+              @click.stop.prevent="reset"
             >
               <svg
                 width="7"
@@ -543,16 +543,16 @@
 
         <!-- SCREEN/MODE: payment info -->
         <div
-          class="px-3 px-lg-4 mode-payment-success wallet-mode"
           v-else-if="mode === 'payment-success'"
           key="payment-success"
+          class="px-3 px-lg-4 mode-payment-success wallet-mode"
         >
           <!-- Back Button -->
           <div class="pb-3">
             <a
               href="#"
               class="card-link text-muted"
-              v-on:click.stop.prevent="reset"
+              @click.stop.prevent="reset"
             >
               <svg
                 width="7"
@@ -609,16 +609,16 @@
 
         <!-- SCREEN/MODE: invoice expired -->
         <div
-          class="px-3 px-lg-4 mode-invoice-expired wallet-mode"
-          v-else-if="this.mode === 'invoice-expired'"
+          v-else-if="mode === 'invoice-expired'"
           key="mode-invoice-info"
+          class="px-3 px-lg-4 mode-invoice-expired wallet-mode"
         >
           <!-- Back Button -->
           <div class="pb-3">
             <a
               href="#"
               class="card-link text-muted"
-              v-on:click.stop.prevent="reset"
+              @click.stop.prevent="reset"
             >
               <svg
                 width="7"
@@ -659,8 +659,8 @@
     <div class="wallet-buttons">
       <!-- Buttons: Transactions (default mode) -->
       <b-button-group
+        v-if="mode === 'transactions' && walletBalance !== 0"
         class="w-100"
-        v-if="this.mode === 'transactions' && walletBalance !== 0"
       >
         <b-button
           class="w-50"
@@ -715,6 +715,7 @@
       </b-button-group>
 
       <b-button
+        v-else-if="mode === 'transactions' && walletBalance === 0"
         class="w-100"
         variant="success"
         style="
@@ -725,7 +726,6 @@
           padding-bottom: 1rem;
         "
         @click="changeMode('receive')"
-        v-else-if="this.mode === 'transactions' && walletBalance === 0"
       >
         <svg
           width="18"
@@ -744,6 +744,7 @@
 
       <!-- Button: Send (paste invoice send) -->
       <b-button
+        v-else-if="mode === 'send'"
         class="w-100"
         variant="primary"
         style="
@@ -753,11 +754,10 @@
           padding-top: 1rem;
           padding-bottom: 1rem;
         "
-        @click="sendSats"
-        v-else-if="mode === 'send'"
         :disabled="
           !send.paymentRequest || !send.isValidInvoice || send.isSending
         "
+        @click="sendSats"
       >
         <svg
           width="19"
@@ -772,11 +772,12 @@
             fill="#FFFFFF"
           />
         </svg>
-        {{ this.send.isSending ? "Sending..." : "Send" }}
+        {{ send.isSending ? "Sending..." : "Send" }}
       </b-button>
 
       <!-- Button: Create Invoice (receive mode) -->
       <b-button
+        v-else-if="mode === 'receive'"
         class="w-100"
         variant="success"
         style="
@@ -786,9 +787,8 @@
           padding-top: 1rem;
           padding-bottom: 1rem;
         "
-        @click="createInvoice"
-        v-else-if="mode === 'receive'"
         :disabled="!receive.amount || receive.amount <= 0"
+        @click="createInvoice"
         >Create Invoice</b-button
       >
 
@@ -829,6 +829,7 @@ import CircularCheckmark from "@/components/Utility/CircularCheckmark.vue";
 import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch";
 
 export default {
+  props: {},
   data() {
     return {
       mode: "transactions", //transactions (default mode), receive (create invoice), invoice, send, sent, payment-success, invoice-info
@@ -869,7 +870,6 @@ export default {
       error: "", //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
     };
   },
-  props: {},
   computed: {
     ...mapState({
       lightningSyncPercent: (state) => state.lightning.percent,
@@ -890,6 +890,62 @@ export default {
     isLightningPage() {
       return this.$router.currentRoute.path === "/lightning";
     },
+  },
+  watch: {
+    "receive.paymentRequest": function (paymentRequest) {
+      window.clearInterval(this.receive.invoiceStatusPoller);
+
+      //if payment request is generated, fetch invoices to check settlement status as long as the user is on the generated invoice mode
+      if (paymentRequest) {
+        this.receive.invoiceStatusPoller = window.setInterval(async () => {
+          //if previous poll awaited then skip
+          if (this.receive.invoiceStatusPollerInprogress) {
+            return;
+          }
+          this.receive.invoiceStatusPollerInprogress = true;
+          const invoices = await API.get(
+            `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/lightning/invoices`
+          );
+          if (invoices && invoices.length) {
+            //search for invoice
+            const currentInvoice = invoices.filter((inv) => {
+              return inv.paymentRequest === this.receive.paymentRequest;
+            })[0];
+
+            if (currentInvoice && currentInvoice.settled) {
+              this.changeMode("received");
+              window.clearInterval(this.receive.invoiceStatusPoller);
+
+              //refresh
+              this.$store.dispatch("lightning/getChannels");
+              this.$store.dispatch("lightning/getTransactions");
+            }
+          }
+          this.receive.invoiceStatusPollerInprogress = false;
+        }, 1000);
+      }
+    },
+    "receive.amountInput": function (val) {
+      if (this.unit === "sats") {
+        this.receive.amount = Number(val);
+      } else if (this.unit === "btc") {
+        this.receive.amount = btcToSats(val);
+      }
+    },
+    unit: function (val) {
+      if (val === "sats") {
+        this.receive.amount = Number(this.receive.amountInput);
+      } else if (val === "btc") {
+        this.receive.amount = btcToSats(this.receive.amountInput);
+      }
+    },
+  },
+  async created() {
+    await this.$store.dispatch("lightning/getStatus");
+  },
+  beforeUnmount() {
+    window.clearInterval(this.QRAnimation);
+    window.clearInterval(this.receive.invoiceStatusPoller);
   },
   methods: {
     getTimeFromNow(timestamp) {
@@ -1114,62 +1170,6 @@ export default {
         this.changeMode("invoice-expired");
       }
     },
-  },
-  watch: {
-    "receive.paymentRequest": function (paymentRequest) {
-      window.clearInterval(this.receive.invoiceStatusPoller);
-
-      //if payment request is generated, fetch invoices to check settlement status as long as the user is on the generated invoice mode
-      if (paymentRequest) {
-        this.receive.invoiceStatusPoller = window.setInterval(async () => {
-          //if previous poll awaited then skip
-          if (this.receive.invoiceStatusPollerInprogress) {
-            return;
-          }
-          this.receive.invoiceStatusPollerInprogress = true;
-          const invoices = await API.get(
-            `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/lightning/invoices`
-          );
-          if (invoices && invoices.length) {
-            //search for invoice
-            const currentInvoice = invoices.filter((inv) => {
-              return inv.paymentRequest === this.receive.paymentRequest;
-            })[0];
-
-            if (currentInvoice && currentInvoice.settled) {
-              this.changeMode("received");
-              window.clearInterval(this.receive.invoiceStatusPoller);
-
-              //refresh
-              this.$store.dispatch("lightning/getChannels");
-              this.$store.dispatch("lightning/getTransactions");
-            }
-          }
-          this.receive.invoiceStatusPollerInprogress = false;
-        }, 1000);
-      }
-    },
-    "receive.amountInput": function (val) {
-      if (this.unit === "sats") {
-        this.receive.amount = Number(val);
-      } else if (this.unit === "btc") {
-        this.receive.amount = btcToSats(val);
-      }
-    },
-    unit: function (val) {
-      if (val === "sats") {
-        this.receive.amount = Number(this.receive.amountInput);
-      } else if (val === "btc") {
-        this.receive.amount = btcToSats(this.receive.amountInput);
-      }
-    },
-  },
-  async created() {
-    await this.$store.dispatch("lightning/getStatus");
-  },
-  beforeUnmount() {
-    window.clearInterval(this.QRAnimation);
-    window.clearInterval(this.receive.invoiceStatusPoller);
   },
   components: {
     CardWidget,

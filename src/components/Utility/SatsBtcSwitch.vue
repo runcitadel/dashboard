@@ -1,5 +1,5 @@
 <template>
-  <div @click="toggleUnit" class="toggle" :class="`toggle-${size}`">
+  <div class="toggle" :class="`toggle-${size}`" @click="toggleUnit">
     <div
       class="toggle-bg-text justify-content-center d-flex align-items-center"
     >
@@ -13,8 +13,8 @@
         'toggle-right': unit === 'btc',
       }"
     >
-      <span class="text-muted" v-if="unit === 'sats'">Sats</span>
-      <span class="text-muted" v-else-if="unit === 'btc'">BTC</span>
+      <span v-if="unit === 'sats'" class="text-muted">Sats</span>
+      <span v-else-if="unit === 'btc'" class="text-muted">BTC</span>
     </div>
   </div>
 </template>

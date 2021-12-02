@@ -27,17 +27,17 @@
 
 <script>
 export default {
-  data() {
-    return {};
-  },
-  created() {},
-  methods: {},
   components: {},
   props: {
     hasShutdown: Boolean,
     shuttingDown: Boolean,
     rebooting: Boolean,
   },
+  data() {
+    return {};
+  },
+  created() {},
+  methods: {},
 };
 </script>
 

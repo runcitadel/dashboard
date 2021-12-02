@@ -18,7 +18,7 @@
       :value="value"
       :size="size"
       :level="level"
-      renderAs="svg"
+      render-as="svg"
       class="d-flex justify-content-center qr-image"
     ></qrcode-vue>
   </div>
@@ -28,6 +28,9 @@
 import QrcodeVue from "qrcode.vue";
 
 export default {
+  components: {
+    QrcodeVue,
+  },
   props: {
     size: {
       type: Number,
@@ -48,9 +51,6 @@ export default {
   },
   computed: {},
   methods: {},
-  components: {
-    QrcodeVue,
-  },
 };
 </script>
 

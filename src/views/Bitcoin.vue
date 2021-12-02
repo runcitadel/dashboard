@@ -51,9 +51,9 @@
                   </span>
 
                   <span
+                    v-else
                     class="loading-placeholder loading-placeholder-lg d-block"
                     style="width: 6rem"
-                    v-else
                   ></span>
                 </h3>
               </div>
@@ -66,8 +66,8 @@
                 striped
               ></b-progress>
               <small
-                class="text-muted d-block text-right"
                 v-if="currentBlock < blockHeight - 1"
+                class="text-muted d-block text-right"
               >
                 {{ currentBlock.toLocaleString() }} of
                 {{ blockHeight.toLocaleString() }} blocks
@@ -82,7 +82,7 @@
               <toggle-switch class="align-self-center"></toggle-switch>
             </div>-->
             <p class="px-3 px-lg-4 mb-3">Latest Blocks</p>
-            <blockchain :numBlocks="3"></blockchain>
+            <blockchain :num-blocks="3"></blockchain>
             <div class="px-3 px-lg-4 py-2"></div>
           </div>
         </card-widget>
@@ -108,7 +108,7 @@
                     title="Connections"
                     :value="stats.peers"
                     suffix="Peers"
-                    showNumericChange
+                    show-numeric-change
                   ></stat>
                 </b-col>
                 <b-col col cols="6" md="3" xl="6">
@@ -116,7 +116,7 @@
                     title="Mempool"
                     :value="abbreviateSize(stats.mempool)[0]"
                     :suffix="abbreviateSize(stats.mempool)[1]"
-                    showPercentChange
+                    show-percent-change
                   ></stat>
                 </b-col>
                 <b-col col cols="6" md="3" xl="6">
@@ -124,7 +124,7 @@
                     title="Hashrate"
                     :value="abbreviateHashRate(stats.hashrate)[0]"
                     :suffix="abbreviateHashRate(stats.hashrate)[1]"
-                    showPercentChange
+                    show-percent-change
                   ></stat>
                 </b-col>
                 <b-col col cols="6" md="3" xl="6">
@@ -132,7 +132,7 @@
                     title="Blockchain Size"
                     :value="abbreviateSize(stats.blockchainSize)[0]"
                     :suffix="abbreviateSize(stats.blockchainSize)[1]"
-                    showPercentChange
+                    show-percent-change
                   ></stat>
                 </b-col>
               </b-row>
@@ -170,6 +170,15 @@ export default {
       rpc: (state) => state.bitcoin.rpc,
     }),
   },
+  created() {
+    this.$store.dispatch("bitcoin/getVersion");
+    this.fetchStats();
+    this.fetchConnectionDetails();
+    this.interval = window.setInterval(this.fetchStats, 5000);
+  },
+  beforeUnmount() {
+    window.clearInterval(this.interval);
+  },
   methods: {
     random(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -202,15 +211,6 @@ export default {
         this.$store.dispatch("bitcoin/getRpcInfo"),
       ]);
     },
-  },
-  created() {
-    this.$store.dispatch("bitcoin/getVersion");
-    this.fetchStats();
-    this.fetchConnectionDetails();
-    this.interval = window.setInterval(this.fetchStats, 5000);
-  },
-  beforeUnmount() {
-    window.clearInterval(this.interval);
   },
   components: {
     CardWidget,

@@ -27,8 +27,8 @@
         <b-navbar-nav class="ms-auto">
           <!-- Chain badge -->
           <b-badge
-            variant="success"
             v-if="chain !== 'main'"
+            variant="success"
             class="align-self-center me-2 text-capitalize"
             pill
             >{{ chain === "test" ? "testnet" : chain }}</b-badge
@@ -47,7 +47,7 @@
             no-caret
           >
             <!-- Using 'button-content' slot -->
-            <template v-slot:button-content>{{ name.split(" ")[0] }}</template>
+            <template #button-content>{{ name.split(" ")[0] }}</template>
             <b-dropdown-item @click="logout">Log out</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
@@ -57,17 +57,17 @@
     <!-- Mobile menu -->
     <transition name="mobile-vertical-menu">
       <div
-        class="mobile-vertical-menu d-lg-none d-xl-none"
         v-if="isMobileMenuOpen"
+        class="mobile-vertical-menu d-lg-none d-xl-none"
       >
-        <authenticated-vertical-navbar :isMobileMenu="true" />
+        <authenticated-vertical-navbar :is-mobile-menu="true" />
       </div>
     </transition>
 
     <transition name="mobile-vertical-menu-fader">
       <div
-        class="mobile-vertical-menu-fader d-lg-none d-xl-none"
         v-if="isMobileMenuOpen"
+        class="mobile-vertical-menu-fader d-lg-none d-xl-none"
         @click="toggleMobileMenu"
       ></div>
     </transition>
@@ -84,21 +84,21 @@
 
       <b-col col lg="9" xl="10">
         <b-modal
+          v-if="availableUpdate.version"
           id="confirm-update-modal"
+          v-model="showUpdateConfirmationModal"
           size="lg"
           centered
           hide-footer
-          v-if="availableUpdate.version"
-          v-model="showUpdateConfirmationModal"
         >
-          <template v-slot:modal-header>
+          <template #modal-header>
             <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
               <h3>Citadel v{{ availableUpdate.version }}</h3>
               <!-- Emulate built in modal header close button action -->
               <a
                 href="#"
                 class="align-self-center"
-                v-on:click.stop.prevent="hideUpdateConfirmationModal"
+                @click.stop.prevent="hideUpdateConfirmationModal"
               >
                 <svg
                   width="18"
@@ -119,7 +119,7 @@
           </template>
           <div class="px-2 px-sm-3 pb-2 pb-sm-3">
             <div class>
-              <p class="text-newlines" v-if="availableUpdate.notes">
+              <p v-if="availableUpdate.notes" class="text-newlines">
                 {{ availableUpdate.notes }}
               </p>
               <b-alert variant="warning" show>
@@ -167,10 +167,10 @@
             >
             &nbsp;is now available to install
             <a
+              v-show="!isUpdating"
               href="#"
               class="alert-link float-right"
               @click.prevent="confirmUpdate"
-              v-show="!isUpdating"
               >Install now</a
             >
             <b-spinner
@@ -181,9 +181,9 @@
             ></b-spinner>
           </b-alert>
           <b-alert
+            v-if="isRunningLowOnRam"
             class="mt-4 mb-0"
             variant="warning"
-            v-if="isRunningLowOnRam"
             show
             dismissible
           >
@@ -195,9 +195,9 @@
             >
           </b-alert>
           <b-alert
+            v-if="isRunningLowOnStorage"
             class="mt-4 mb-0"
             variant="warning"
-            v-if="isRunningLowOnStorage"
             show
             dismissible
           >
@@ -210,9 +210,9 @@
             >
           </b-alert>
           <b-alert
+            v-if="isCitadelOS && isRunningHot"
             class="mt-4 mb-0"
             variant="warning"
-            v-if="isCitadelOS && isRunningHot"
             show
             dismissible
           >
@@ -287,6 +287,27 @@ export default {
       return this.$store.getters.isMobileMenuOpen;
     },
   },
+  watch: {},
+  created() {
+    //load this data once:
+    this.$store.dispatch("user/getInfo");
+    if (
+      window.localStorage &&
+      window.localStorage.getItem("lightmode") === "true"
+    ) {
+      document.querySelector(":root").classList.add("prefer-light-mode");
+    }
+
+    //refresh this data every 20s:
+    this.fetchData();
+    this.interval = window.setInterval(this.fetchData, 20000);
+  },
+  beforeUnmount() {
+    window.clearInterval(this.interval);
+    if (this.pollUpdateStatus) {
+      window.clearInterval(this.pollUpdateStatus);
+    }
+  },
   methods: {
     logout() {
       //close mobile menu
@@ -356,27 +377,6 @@ export default {
       return readableSize(n);
     },
   },
-  created() {
-    //load this data once:
-    this.$store.dispatch("user/getInfo");
-    if (
-      window.localStorage &&
-      window.localStorage.getItem("lightmode") === "true"
-    ) {
-      document.querySelector(":root").classList.add("prefer-light-mode");
-    }
-
-    //refresh this data every 20s:
-    this.fetchData();
-    this.interval = window.setInterval(this.fetchData, 20000);
-  },
-  beforeUnmount() {
-    window.clearInterval(this.interval);
-    if (this.pollUpdateStatus) {
-      window.clearInterval(this.pollUpdateStatus);
-    }
-  },
-  watch: {},
   components: {
     AuthenticatedVerticalNavbar,
   },

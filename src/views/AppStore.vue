@@ -16,9 +16,9 @@
         :header="categorizedApps[0].category"
       >
         <router-link
-          :to="`/app-store/${app.id}`"
           v-for="app in categorizedApps"
           :key="app.id"
+          :to="`/app-store/${app.id}`"
           class="app-list-app d-flex justify-content-between align-items-center px-3 px-lg-4 py-3"
         >
           <div class="d-flex">
@@ -54,8 +54,8 @@
           <div class="d-none">
             <img
               v-for="image in app.gallery"
-              class="d-none"
               :key="app.id + image"
+              class="d-none"
               :src="
                 image.startsWith('http')
                   ? image

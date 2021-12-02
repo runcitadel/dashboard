@@ -11,9 +11,9 @@
           :value="urls.bitcoin.rpc.connectionString"
           :size="200"
           class="qr-image mt-2"
-          showLogo
+          show-logo
+          :style="{ cursor: 'pointer' }"
           @click="$emit('showQrModal', urls.bitcoin.rpc.connectionString)"
-          v-bind:style="{ cursor: 'pointer' }"
         ></qr-code>
         <hr />
         <p class="text-muted">Or manually enter the following details</p>
@@ -63,9 +63,6 @@ import InputCopy from "@/components/Utility/InputCopy";
 import QrCode from "@/components/Utility/QrCode";
 
 export default {
-  props: {
-    urls: Object,
-  },
   components: {
     ConnectionDetails,
     StepList,
@@ -73,6 +70,13 @@ export default {
     InputCopy,
     QrCode,
   },
+  props: {
+    urls: {
+      type: Object,
+      required: true,
+    },
+  },
+  emits: ["showQrModal"],
 };
 </script>
 

@@ -12,6 +12,7 @@ const typeOf = (type) => (object) =>
   Object.prototype.toString.call(object) === `[object ${type}]`;
 const isFunction = typeOf("Function");
 export default {
+  components: {},
   props: {
     delay: {
       type: Number,
@@ -44,6 +45,22 @@ export default {
     };
   },
   computed: {},
+  watch: {
+    value: {
+      handler(newVal, oldVal) {
+        if (newVal.decimalPlaces !== oldVal.decimalPlaces) {
+          this.destroy();
+          this.startVal = 0;
+          this.create();
+        } else {
+          if (newVal.endVal !== oldVal.endVal) {
+            this.update(newVal.endVal);
+          }
+        }
+      },
+      deep: true,
+    },
+  },
   mounted() {
     const that = this;
     that.create();
@@ -122,23 +139,6 @@ export default {
       }
     },
   },
-  watch: {
-    value: {
-      handler(newVal, oldVal) {
-        if (newVal.decimalPlaces !== oldVal.decimalPlaces) {
-          this.destroy();
-          this.startVal = 0;
-          this.create();
-        } else {
-          if (newVal.endVal !== oldVal.endVal) {
-            this.update(newVal.endVal);
-          }
-        }
-      },
-      deep: true,
-    },
-  },
-  components: {},
 };
 </script>
 

@@ -22,19 +22,19 @@
           icon="icon-app-bitcoin.svg"
           :loading="syncPercent < 100 || blocks.length === 0"
         >
-          <template v-slot:title>
+          <template #title>
             <CountUp
+              v-if="syncPercent !== -1"
               :value="{
                 endVal: syncPercent >= 99.99 ? 100 : syncPercent,
                 decimalPlaces: syncPercent >= 99.99 ? 0 : 2,
               }"
               suffix="%"
-              v-if="syncPercent !== -1"
             />
             <span
+              v-else
               class="loading-placeholder loading-placeholder-lg"
               style="width: 140px"
-              v-else
             ></span>
           </template>
           <div class>
@@ -63,11 +63,11 @@
               icon="icon-app-bitcoin.svg"
               :loading="lightningSyncPercent < 100"
             >
-              <template v-slot:title>
+              <template #title>
                 <div
+                  v-if="btcBalance !== -1"
                   v-b-tooltip.hover.right
                   :title="$filters.satsToUSD(btcBalanceInSats)"
-                  v-if="btcBalance !== -1"
                 >
                   <CountUp
                     :value="{
@@ -78,9 +78,9 @@
                 </div>
 
                 <span
+                  v-else
                   class="loading-placeholder loading-placeholder-lg"
                   style="width: 140px"
-                  v-else
                 ></span>
               </template>
               <div class="px-3 px-lg-4 pt-2 pb-3">

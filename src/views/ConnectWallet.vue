@@ -13,8 +13,8 @@
           <b-form-select
             :value="wallet"
             :options="options"
-            @change="selectWallet"
             class="mb-4"
+            @change="selectWallet"
           ></b-form-select>
         </b-col>
       </b-row>
@@ -25,10 +25,10 @@
     <b-modal id="qr-modal" ref="qr-modal" hide-footer size="lg">
       <div class="d-flex w-100 align-items-center justify-content-center">
         <qr-code
-          :value="this.qrModalData.value"
-          :size="this.qrModalData.size"
+          :value="qrModalData.value"
+          :size="qrModalData.size"
           class="qr-image mb-5"
-          showLogo
+          show-logo
         ></qr-code>
       </div>
     </b-modal>
@@ -40,6 +40,9 @@ import { mapState } from "vuex";
 import QrCode from "@/components/Utility/QrCode.vue";
 
 export default {
+  components: {
+    QrCode,
+  },
   data() {
     return {
       options: [
@@ -96,6 +99,9 @@ export default {
       return this.$route.meta.wallet || null;
     },
   },
+  created() {
+    this.fetchConnectionDetails();
+  },
   methods: {
     fetchConnectionDetails() {
       return Promise.all([
@@ -112,12 +118,6 @@ export default {
       this.qrModalData.value = value;
       this.$refs["qr-modal"].show();
     },
-  },
-  created() {
-    this.fetchConnectionDetails();
-  },
-  components: {
-    QrCode,
   },
 };
 </script>
