@@ -46,7 +46,6 @@ app.config.globalProperties.$filters = {
   },
 };
 
-Vue.config.productionTip = false;
 async function run() {
   const { default: BootstrapVue, BootstrapVueIcons } = await import(
     "bootstrap-vue/src"
