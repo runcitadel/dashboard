@@ -17,10 +17,10 @@ const Login = () => import(/* webpackChunkName: "core" */ "../views/Login.vue");
 const Dashboard = () =>
   import(/* webpackChunkName: "ui" */ "../views/Dashboard.vue");
 const Bitcoin = () =>
-  import(/* webpackChunkName: "ui" */ "../views/Bitcoin.vue");
+  import(/* webpackChunkName: "bitcoin" */ "../views/Bitcoin.vue");
 const Lightning = () =>
-  import(/* webpackChunkName: "ui" */ "../views/Lightning.vue");
-const Apps = () => import(/* webpackChunkName: "ui" */ "../views/Apps.vue");
+  import(/* webpackChunkName: "lightning" */ "../views/Lightning.vue");
+const Apps = () => import(/* webpackChunkName: "appstore" */ "../views/Apps.vue");
 const AppStore = () =>
   import(/* webpackChunkName: "appstore" */ "../views/AppStore.vue");
 const AppStoreApp = () =>
@@ -28,7 +28,7 @@ const AppStoreApp = () =>
 const Settings = () =>
   import(/* webpackChunkName: "ui" */ "../views/Settings.vue");
 const LightningAddress = () =>
-  import(/* webpackChunkName: "ui" */ "../views/LightningAddress.vue");
+  import(/* webpackChunkName: "lightning" */ "../views/LightningAddress.vue");
 const ConnectWallet = () =>
   import(/* webpackChunkName: "connectors" */ "../views/ConnectWallet.vue");
 

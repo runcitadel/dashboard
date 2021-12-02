@@ -250,7 +250,7 @@ export default {
   transition: transform 0.3s, opacity 0.3s linear;
 }
 
-.mode-change-enter {
+.mode-change-enter-from {
   transform: translate3d(20px, 0, 0);
   opacity: 0;
 }

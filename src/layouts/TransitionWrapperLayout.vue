@@ -19,7 +19,7 @@ export default {
 .change-page-leave-active {
   transition: transform 0.4s, opacity 0.4s ease;
 }
-.change-page-enter {
+.change-page-enter-from {
   transform: translate3d(-40px, 0, 0);
   opacity: 0;
 }

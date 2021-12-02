@@ -96,7 +96,7 @@ export default {
     }
   }
 }
-.checkmark-animation-enter {
+.checkmark-animation-enter-from {
   opacity: 0;
   &.checkmark {
     &:before {

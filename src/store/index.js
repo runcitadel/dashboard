@@ -1,5 +1,4 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import { createStore } from "vuex";
 
 //Modules
 import user from "./modules/user";
@@ -7,8 +6,6 @@ import system from "./modules/system";
 import bitcoin from "./modules/bitcoin";
 import lightning from "./modules/lightning";
 import apps from "./modules/apps";
-
-Vue.use(Vuex);
 
 // Initial State
 const state = {
@@ -43,7 +40,7 @@ const actions = {
   },
 };
 
-export default new Vuex.Store({
+export default createStore({
   state,
   mutations,
   actions,

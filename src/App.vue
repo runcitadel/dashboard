@@ -235,7 +235,7 @@ export default {
 .loading-leave-active {
   transition: opacity 0.4s ease;
 }
-.loading-enter {
+.loading-enter-from {
   opacity: 0;
   // filter: blur(70px);
 }

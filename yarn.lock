@@ -650,6 +650,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vue/compat@npm:^3.2.23":
+  version: 3.2.23
+  resolution: "@vue/compat@npm:3.2.23"
+  peerDependencies:
+    vue: 3.2.23
+  checksum: 8149f5feee4488882aabf0c6bb5ad1373b6c4ec3e1fe1da484156114f9baaef48bf49c141961361846485d3e5225fc0cf183c886e633502210043d8215d530df
+  languageName: node
+  linkType: hard
+
 "@vue/compiler-core@npm:3.2.23":
   version: 3.2.23
   resolution: "@vue/compiler-core@npm:3.2.23"
@@ -1428,6 +1437,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bootstrap-vue-upstream@npm:bootstrap-vue@2.21.2":
+  version: 2.21.2
+  resolution: "bootstrap-vue@npm:2.21.2"
+  dependencies:
+    "@nuxt/opencollective": ^0.3.2
+    bootstrap: ">=4.5.3 <5.0.0"
+    popper.js: ^1.16.1
+    portal-vue: ^2.1.7
+    vue-functional-data-merge: ^3.1.0
+  checksum: cf49df1a38917d9fcfca7f015f2660880c11cae8b36da612cb485c995af3823ec9da9620b65f9f5a8dfaa1c88d8bf03dfeb4a7501a6c2c52abc92c6c3af97319
+  languageName: node
+  linkType: hard
+
 "bootstrap-vue@https://github.com/xanf/bootstrap-vue.git#vue3-compat-build":
   version: 2.21.2
   resolution: "bootstrap-vue@https://github.com/xanf/bootstrap-vue.git#commit=5a0ec4c983527486ca2795ccc9f75351ede78787"
@@ -1724,12 +1746,14 @@ __metadata:
     "@vue/cli-plugin-router": ^v5.0.0-rc.1
     "@vue/cli-plugin-vuex": ^v5.0.0-rc.1
     "@vue/cli-service": ^v5.0.0-rc.1
+    "@vue/compat": ^3.2.23
     "@vue/eslint-config-prettier": ^6.0.0
     animate.css: ^4.1.1
     axios: ^0.24.0
     bignumber.js: ^9.0.1
     bootstrap: ^5.1.3
     bootstrap-vue: "https://github.com/xanf/bootstrap-vue.git#vue3-compat-build"
+    bootstrap-vue-upstream: "npm:bootstrap-vue@2.21.2"
     buffer: ^6.0.3
     countup.js: ^2.0.8
     date-fns: ^2.27.0
@@ -5237,12 +5261,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"portal-vue@npm:^2.1.7":
-  version: 2.1.7
-  resolution: "portal-vue@npm:2.1.7"
+"portal-vue@npm:^3.0.0-beta.0":
+  version: 3.0.0-beta.0
+  resolution: "portal-vue@npm:3.0.0-beta.0"
   peerDependencies:
-    vue: ^2.5.18
-  checksum: 1615c38469e11e2a2c01501fbb1cd52b07a6fa2252f90a39be67b6332d3cd215f05cabb1f7d9fbdc28c67124adf299abe36f645619dbe6ff57f6f7e1b9aba0c5
+    vue: ^3.0.4
+  checksum: fd6dfc8f339ec2bb55a798a00805a390ff632e77bda87ebd02c8dd4c5c2839cf14fc31bf4191fc75a12e53d9c1bd039bd7e5bdbb1a621f76dcfed922389a8e2c
   languageName: node
   linkType: hard
 

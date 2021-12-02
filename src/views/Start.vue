@@ -158,8 +158,6 @@
 </template>
 
 <script>
-import Vue from "vue";
-import VueConfetti from "vue-confetti";
 import { mapState } from "vuex";
 
 import delay from "@/helpers/delay";
@@ -168,9 +166,12 @@ import InputPassword from "@/components/Utility/InputPassword";
 import Seed from "@/components/Utility/Seed";
 import InputCopy from "@/components/Utility/InputCopy";
 
-Vue.use(VueConfetti);
-
 export default {
+  components: {
+    InputPassword,
+    Seed,
+    InputCopy,
+  },
   data() {
     return {
       name: "",
@@ -356,13 +357,13 @@ export default {
 
       if (this.currentStep === 7) {
         //Wohoo! Time to celebrate!
-        this.$confetti.start({
+        /*this.$confetti.start({
           particles: [
             {
               type: "rect",
             },
           ],
-        });
+        });*/
 
         this.lndUnlockInterval = window.setInterval(async () => {
           await this.$store.dispatch("lightning/getStatus");
@@ -380,9 +381,9 @@ export default {
         }, 60 * 1000);
 
         //Ok. 3s is more than enough to celebrate.
-        window.setTimeout(() => {
+        /*window.setTimeout(() => {
           this.$confetti.stop();
-        }, 3000);
+        }, 3000);*/
       }
 
       if (this.currentStep === 8) {
@@ -404,11 +405,6 @@ export default {
     incompleteRecoverySeed() {
       this.notedSeed = false;
     },
-  },
-  components: {
-    InputPassword,
-    Seed,
-    InputCopy,
   },
 };
 </script>

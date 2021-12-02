@@ -424,7 +424,7 @@ export default {
 
 //animations
 
-.blockchain-enter {
+.blockchain-enter-from {
   opacity: 0;
   transform: translateY(2rem);
   .blockchain-block-icon {

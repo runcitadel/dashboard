@@ -142,7 +142,7 @@ export default {
 .list-leave-active {
   transition: transform 0.8s, opacity 0.8s ease;
 }
-.list-enter {
+.list-enter-from {
   transform: translate3d(0, 10px, 0);
   opacity: 0;
 }

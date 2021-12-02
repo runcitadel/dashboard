@@ -39,7 +39,6 @@
         <!-- Default tx mode -->
         <div
           v-if="mode === 'transactions'"
-          key="mode-transactions"
           class="mode-transactions wallet-mode"
         >
           <!-- List of transactions -->
@@ -47,7 +46,13 @@
           <!-- No transactions -->
           <div
             v-if="transactions.length === 0"
-            class="d-flex flex-column justify-content-center px-3 px-lg-4 zero-wallet-transactions-container"
+            class="
+              d-flex
+              flex-column
+              justify-content-center
+              px-3 px-lg-4
+              zero-wallet-transactions-container
+            "
           >
             <!-- Piggy bank icon -->
             <svg
@@ -117,7 +122,11 @@
                 <div v-else class="d-flex w-100 justify-content-between">
                   <div class="transaction-description">
                     <h6
-                      class="mb-0 font-weight-normal transaction-description-text"
+                      class="
+                        mb-0
+                        font-weight-normal
+                        transaction-description-text
+                      "
                     >
                       <!-- Incoming tx icon -->
                       <svg
@@ -244,7 +253,6 @@
         <!-- SCREEN/MODE: Paste Invoice Screen -->
         <div
           v-else-if="mode === 'send'"
-          key="mode-send"
           class="px-3 px-lg-4 mode-send wallet-mode"
         >
           <!-- Back Button -->
@@ -310,7 +318,6 @@
         <!-- SCREEN/MODE: Successfully paid invoice -->
         <div
           v-else-if="mode === 'sent'"
-          key="mode-sent"
           class="px-3 px-lg-4 mode-sent wallet-mode"
         >
           <!-- Back Button -->
@@ -354,7 +361,6 @@
         <!-- SCREEN/MODE: Create Invoice (Receive) -->
         <div
           v-else-if="mode === 'receive'"
-          key="mode-receive"
           class="px-3 px-lg-4 mode-receive wallet-mode"
         >
           <!-- Back Button -->
@@ -423,7 +429,6 @@
         <!-- SCREEN/MODE: Show Generated Invoice -->
         <div
           v-else-if="mode === 'invoice'"
-          key="mode-invoice"
           class="px-3 px-lg-4 pb-2 mode-invoice wallet-mode"
         >
           <!-- Back Button -->
@@ -494,7 +499,6 @@
         <!-- SCREEN/MODE: Received (invoice settled) -->
         <div
           v-else-if="mode === 'received'"
-          key="mode-sent"
           class="px-3 px-lg-4 mode-sent wallet-mode"
         >
           <!-- Back Button -->
@@ -544,7 +548,6 @@
         <!-- SCREEN/MODE: payment info -->
         <div
           v-else-if="mode === 'payment-success'"
-          key="payment-success"
           class="px-3 px-lg-4 mode-payment-success wallet-mode"
         >
           <!-- Back Button -->
@@ -610,7 +613,6 @@
         <!-- SCREEN/MODE: invoice expired -->
         <div
           v-else-if="mode === 'invoice-expired'"
-          key="mode-invoice-info"
           class="px-3 px-lg-4 mode-invoice-expired wallet-mode"
         >
           <!-- Back Button -->
@@ -1201,7 +1203,7 @@ export default {
   transition: transform 0.3s, opacity 0.3s linear;
 }
 
-.lightning-mode-change-enter {
+.lightning-mode-change-enter-from {
   transform: translate3d(20px, 0, 0);
   opacity: 0;
 }

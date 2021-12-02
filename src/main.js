@@ -1,7 +1,5 @@
 import { createApp } from "vue";
 
-import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
-
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
@@ -12,14 +10,10 @@ import { satsToBtc } from "@/helpers/units";
 // import 'bootstrap/dist/css/bootstrap.css'
 // import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-const app = createApp({
-  router,
-  store,
-  render: (h) => h(App),
-});
+const app = createApp(App);
 
-app.use(BootstrapVue);
-app.use(BootstrapVueIcons);
+app.use(store);
+app.use(router);
 
 app.config.globalProperties.$filters = {
   unit: (value) => {
@@ -53,9 +47,13 @@ app.config.globalProperties.$filters = {
 };
 
 Vue.config.productionTip = false;
+async function run() {
+  const { default: BootstrapVue, BootstrapVueIcons } = await import(
+    "bootstrap-vue/src"
+  );
+  app.use(BootstrapVue);
+  app.use(BootstrapVueIcons);
+  app.mount("#app");
+}
 
-new Vue({
-  router,
-  store,
-  render: (h) => h(App),
-}).$mount("#app");
+run();

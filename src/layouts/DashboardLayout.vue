@@ -492,7 +492,7 @@ export default {
   transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
 }
 
-.mobile-vertical-menu-enter {
+.mobile-vertical-menu-enter-from {
   // opacity: 0;
   transform: translate3d(100%, 0, 0);
 }
@@ -521,7 +521,7 @@ export default {
   transition: opacity 0.6s ease-in-out;
 }
 
-.mobile-vertical-menu-fader-enter {
+.mobile-vertical-menu-fader-enter-from {
   opacity: 0;
 }
 .mobile-vertical-menu-fader-enter-to {
@@ -539,7 +539,7 @@ export default {
 .change-page-leave-active {
   transition: transform 0.4s, opacity 0.4s ease;
 }
-.change-page-enter {
+.change-page-enter-from {
   transform: translate3d(-40px, 0, 0);
   opacity: 0;
 }

@@ -971,7 +971,7 @@ export default {
 .lightning-mode-change-leave-active {
   transition: transform 0.3s, opacity 0.3s linear;
 }
-.lightning-mode-change-enter {
+.lightning-mode-change-enter-from {
   transform: translate3d(20px, 0, 0);
   opacity: 0;
 }

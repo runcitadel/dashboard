@@ -1,5 +1,4 @@
 import API from "@/helpers/api";
-// import Vue from "vue"
 
 // Initial state
 const state = () => ({

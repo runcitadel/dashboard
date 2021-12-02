@@ -243,7 +243,7 @@ export default {
     &.slide-up-leave-active {
       transition: transform 0.8s, opacity 0.8s ease;
     }
-    &.slide-up-enter {
+    &.slide-up-enter-from {
       transform: translate3d(-50%, 10px, 0);
       opacity: 0;
     }
