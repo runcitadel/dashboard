@@ -130,7 +130,7 @@ export default {
       this.isLoggingIn = true;
 
       try {
-        let citadel = new Citadel(window.location.hostname);
+        let citadel = new Citadel(window.location.origin);
         citadel.login(this.password, this.totpToken);
       } catch (error) {
         console.error(error);
