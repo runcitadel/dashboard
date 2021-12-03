@@ -834,3 +834,7 @@ body {
     }
   }
 }
+
+.card, .card * {
+  break-inside: avoid-column;
+}
