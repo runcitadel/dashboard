@@ -433,16 +433,6 @@ export default {
   }
 }
 
-::-webkit-input-placeholder {
-  /* Edge */
-  color: #c3c6d1;
-}
-
-:-ms-input-placeholder {
-  /* Internet Explorer 10-11 */
-  color: #c3c6d1;
-}
-
 ::placeholder {
   color: #c3c6d1;
 }
