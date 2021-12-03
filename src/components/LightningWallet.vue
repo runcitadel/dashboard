@@ -821,7 +821,14 @@ import CircularCheckmark from "@/components/Utility/CircularCheckmark.vue";
 import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch";
 
 export default {
-  props: {},
+  components: {
+    CardWidget,
+    CountUp,
+    QrCode,
+    InputCopy,
+    CircularCheckmark,
+    SatsBtcSwitch,
+  },
   data() {
     return {
       mode: "transactions", //transactions (default mode), receive (create invoice), invoice, send, sent, payment-success, invoice-info
@@ -1162,14 +1169,6 @@ export default {
         this.changeMode("invoice-expired");
       }
     },
-  },
-  components: {
-    CardWidget,
-    CountUp,
-    QrCode,
-    InputCopy,
-    CircularCheckmark,
-    SatsBtcSwitch,
   },
 };
 </script>

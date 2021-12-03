@@ -5,8 +5,11 @@
         <p class="text-muted">
           Balance
           <span style="cursor: pointer" @click="toggleBalance">
-            <HiddenIcon v-if="state.showBalance" />
-            <VisibleIcon v-else />
+            <HiddenIcon
+              v-if="state.showBalance"
+              style="width: 24px; height: 24px"
+            />
+            <VisibleIcon v-else style="width: 24px; height: 24px" />
           </span>
         </p>
 
@@ -106,19 +109,7 @@
           Log out
         </b-nav-item>
         <b-nav-item v-else to="/settings" class="my-1" active-class="active">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            class="me-2"
-          >
-            <path
-              d="M19.3845 9.97438H18.6201C18.49 9.54789 18.3187 9.14032 18.1115 8.75306L18.6543 8.21071C19.2839 7.5802 19.2848 6.55735 18.6543 5.92638L18.0736 5.34572C17.7708 5.04293 17.3591 4.87261 16.9308 4.87261C16.5015 4.87261 16.0916 5.04293 15.7874 5.34572L15.2446 5.88807C14.8578 5.68221 14.4503 5.51096 14.0238 5.37941V4.61551C14.0238 3.72282 13.3009 3 12.4083 3H11.5876C10.6949 3 9.97207 3.72282 9.97207 4.61551V5.37941C9.54604 5.50958 9.13801 5.68082 8.75121 5.88807L8.20932 5.34572C7.57835 4.71475 6.55504 4.71475 5.92407 5.34572L5.34526 5.92592C4.71429 6.55643 4.71429 7.57974 5.34526 8.21025L5.88715 8.7526C5.68128 9.14032 5.50958 9.54789 5.37849 9.97392H4.61551C3.72282 9.97392 3 10.6967 3 11.5894V12.4101C3 13.3019 3.72282 14.0256 4.61551 14.0256H5.37895C5.50958 14.4512 5.68082 14.8597 5.88761 15.2465L5.34526 15.7893C4.71475 16.4193 4.71475 17.4426 5.3448 18.0736L5.92546 18.6543C6.22825 18.9562 6.63951 19.1265 7.06785 19.1265H7.06831C7.49712 19.1265 7.90745 18.9562 8.21071 18.6543L8.75352 18.1115C9.13986 18.3178 9.54835 18.489 9.97392 18.6201V19.3845C9.97392 20.2763 10.6967 21 11.5894 21H12.4101C13.3028 21 14.0256 20.2763 14.0256 19.3845V18.6201C14.4521 18.4895 14.8597 18.3183 15.2465 18.1115L15.7898 18.6543C16.0921 18.9571 16.5038 19.1265 16.9326 19.1265C17.3619 19.1265 17.7713 18.9562 18.0759 18.6543L18.6557 18.0736C19.2862 17.4426 19.2857 16.4203 18.6557 15.7893L18.1129 15.2474C18.3192 14.8597 18.4904 14.4512 18.6215 14.0261H19.3859C20.2786 14.0261 21.0014 13.3023 21.0014 12.4106V11.5904C21 10.6981 20.2767 9.97438 19.3845 9.97438ZM12.0002 15.6924C9.96469 15.6924 8.30764 14.0362 8.30764 11.9998C8.30764 9.96377 9.96469 8.30718 12.0002 8.30718C14.0367 8.30718 15.6928 9.96377 15.6928 11.9998C15.6928 14.0362 14.0367 15.6924 12.0002 15.6924Z"
-              fill="#C3C6D1"
-            />
-          </svg>
+          <GearIcon class="me-2" style="width: 24px; height: 24px" />
           Settings
         </b-nav-item>
       </b-nav>
@@ -209,82 +200,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@media (prefers-color-scheme: dark) {
-  :root:not(.prefer-light-mode) {
-    .nav-vertical {
-      background: transparent !important;
-      .nav-item {
-        .nav-link {
-          color: #dde2ee !important;
-          svg {
-            path,
-            rect {
-              fill: #dde2ee !important;
-            }
-          }
-          &:hover,
-          &:active,
-          &:focus {
-            color: #dde2ee !important;
-          }
-          &.active {
-            opacity: 1 !important;
-            color: #5351fb !important;
-            svg {
-              path,
-              rect {
-                fill: #5351fb !important;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-.nav-vertical {
-  position: sticky;
-  background: #fff;
-  z-index: 9;
-  // width: 280px;
-  height: calc(var(--vh100, 100vh) - 82px);
-  top: 82px;
-  overflow-y: auto;
-  .nav-item {
-    .nav-link {
-      color: #141821;
-      opacity: 0.5;
-      transition: opacity 0.2s ease;
-      svg {
-        path,
-        rect {
-          fill: #141821;
-        }
-      }
-      &:hover,
-      &:active,
-      &:focus {
-        color: #141821;
-        opacity: 0.9;
-      }
-      &.active {
-        opacity: 1;
-        color: #5351fb;
-        svg {
-          path,
-          rect {
-            fill: #5351fb;
-          }
-        }
-      }
-    }
-  }
-}
-/*
-.balance-container {
-  border-top: solid 1px #eeeff3;
-  border-bottom: solid 1px #eeeff3;
-}*/
-</style>

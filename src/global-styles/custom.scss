@@ -758,3 +758,79 @@ body {
     }
   }
 }
+
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.prefer-light-mode) {
+    .nav-vertical {
+      background: transparent !important;
+      .nav-item {
+        .nav-link {
+          color: #dde2ee !important;
+          svg {
+            path,
+            rect {
+              fill: #dde2ee !important;
+            }
+          }
+          &:hover,
+          &:active,
+          &:focus {
+            color: #dde2ee !important;
+          }
+          &.active {
+            opacity: 1 !important;
+            color: #5351fb !important;
+            svg {
+              path,
+              rect {
+                fill: #5351fb !important;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.nav-vertical {
+  position: sticky;
+  background: #fff;
+  z-index: 9;
+  // width: 280px;
+  height: calc(var(--vh100, 100vh) - 82px);
+  top: 82px;
+  overflow-y: auto;
+  .nav-item {
+    .nav-link {
+      color: #141821;
+      opacity: 0.5;
+      transition: opacity 0.2s ease;
+      svg {
+        path,
+        rect {
+          fill: #141821;
+        }
+      }
+      svg {
+        width: 24px;
+      }
+      &:hover,
+      &:active,
+      &:focus {
+        color: #141821;
+        opacity: 0.9;
+      }
+      &.active {
+        opacity: 1;
+        color: #5351fb;
+        svg {
+          path,
+          rect {
+            fill: #5351fb;
+          }
+        }
+      }
+    }
+  }
+}
