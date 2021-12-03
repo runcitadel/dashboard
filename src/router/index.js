@@ -20,7 +20,8 @@ const Bitcoin = () =>
   import(/* webpackChunkName: "bitcoin" */ "../views/Bitcoin.vue");
 const Lightning = () =>
   import(/* webpackChunkName: "lightning" */ "../views/Lightning.vue");
-const Apps = () => import(/* webpackChunkName: "appstore" */ "../views/Apps.vue");
+const Apps = () =>
+  import(/* webpackChunkName: "appstore" */ "../views/Apps.vue");
 const AppStore = () =>
   import(/* webpackChunkName: "appstore" */ "../views/AppStore.vue");
 const AppStoreApp = () =>

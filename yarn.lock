@@ -1772,7 +1772,7 @@ __metadata:
     eslint-plugin-vue: ^8.1.1
     prettier: ^2.5.0
     qrcode.vue: ^3.3.3
-    sass: ^1.45.0-rc.1
+    sass: ^1.45.0-rc.2
     sass-loader: ^12
     vue: ^3.2.23
     vue-confetti: ^2.2.2
@@ -6124,15 +6124,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.45.0-rc.1":
-  version: 1.45.0-rc.1
-  resolution: "sass@npm:1.45.0-rc.1"
+"sass@npm:^1.45.0-rc.2":
+  version: 1.45.0-rc.2
+  resolution: "sass@npm:1.45.0-rc.2"
   dependencies:
     chokidar: ">=3.0.0 <4.0.0"
     immutable: ^4.0.0
+    source-map-js: ">=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: 240b063a7a7463f37755c3f0d9388ed4db8f58b8096dabcc307441c47ebbdbebc0d137d837c53d18ffe94acf4f76c4924daf650365f09940e91351a9ad0ae4ee
+  checksum: 79123e73a67848c467bc7189d3a5c821e327b6392f1d34242eb8f6e181686a5b97f71702f0377cc043c2be60997937fb672d03e478533fa8b9500b5b7eb43068
   languageName: node
   linkType: hard
 
@@ -6405,7 +6406,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"source-map-js@npm:^1.0.1":
+"source-map-js@npm:>=0.6.2 <2.0.0, source-map-js@npm:^1.0.1":
   version: 1.0.1
   resolution: "source-map-js@npm:1.0.1"
   checksum: 22606113d62bbd468712b0cb0c46e9a8629de7eb081049c62a04d977a211abafd7d61455617f8b78daba0b6c0c7e7c88f8c6b5aaeacffac0a6676ecf5caac5ce

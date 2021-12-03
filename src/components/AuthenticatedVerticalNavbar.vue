@@ -5,9 +5,8 @@
         <p class="text-muted">
           Balance
           <span style="cursor: pointer" @click="toggleBalance">
-            <b-icon
-              :icon="state.showBalance ? 'eye-slash-fill' : 'eye-fill'"
-            ></b-icon>
+            <HiddenIcon v-if="state.showBalance" />
+            <VisibleIcon v-else />
           </span>
         </p>
 
@@ -151,6 +150,8 @@ import {
   HomeIcon,
   CartIcon,
   WalletIcon,
+  VisibleIcon,
+  HiddenIcon,
 } from "@bitcoin-design/bitcoin-icons-vue/filled";
 
 export default {
@@ -165,6 +166,8 @@ export default {
     HomeIcon,
     CartIcon,
     WalletIcon,
+    VisibleIcon,
+    HiddenIcon,
   },
   props: {
     isMobileMenu: Boolean,
