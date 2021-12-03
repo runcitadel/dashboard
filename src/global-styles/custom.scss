@@ -103,6 +103,14 @@ body {
     .app-name {
       color: white !important;
     }
+
+    .list-group-item {
+      background: #2a3244 !important;
+
+    }
+    .list-group-item:hover {
+      background: #252d41 !important;
+    }
   }
 }
 
@@ -837,4 +845,9 @@ body {
 
 .card, .card * {
   break-inside: avoid-column;
+}
+
+.icon-container svg {
+  width: 24px;
+  height: 24px;
 }

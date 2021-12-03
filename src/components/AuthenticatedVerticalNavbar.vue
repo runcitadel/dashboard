@@ -4,7 +4,11 @@
       <div class="balance-container w-100 px-3 pt-4 pb-3 mb-3">
         <p class="text-muted">
           Balance
-          <span style="cursor: pointer" @click="toggleBalance">
+          <span
+            clas="icon-container"
+            style="cursor: pointer"
+            @click="toggleBalance"
+          >
             <HiddenIcon
               v-if="state.showBalance"
               style="width: 24px; height: 24px"
