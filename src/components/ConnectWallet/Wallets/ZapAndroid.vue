@@ -11,7 +11,7 @@
         <qr-code
           :value="urls.lnd.grpcTor.replace(/cert=(.*)&/gm, '')"
           :size="300"
-          class="qr-image mt-2 border border-white border-5"
+          class="qr-image mt-2"
           show-logo
           :style="{ cursor: 'pointer' }"
           @click="

@@ -20,6 +20,7 @@
       :level="level"
       render-as="svg"
       class="d-flex justify-content-center qr-image"
+      margin="20"
     ></qrcode-vue>
   </div>
 </template>
@@ -40,12 +41,16 @@ export default {
       type: String,
       default: "H",
     },
-    value: String,
+    value: {
+      required: true,
+      type: String,
+    },
     showLogo: {
       type: Boolean,
       default: true,
     },
   },
+  emits: ["click"],
   data() {
     return {};
   },

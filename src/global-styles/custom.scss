@@ -62,8 +62,8 @@ body {
     --bs-body-color: #fff !important;
     --bs-body-bg: #1c1c26 !important;
 
-    .form-control {
-      color: white !important;
+    input, .form-control {
+      color: black !important;
     }
 
     .wallet-transactions-container {

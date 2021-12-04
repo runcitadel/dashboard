@@ -244,6 +244,9 @@ import API from "@/helpers/api";
 import AuthenticatedVerticalNavbar from "@/components/AuthenticatedVerticalNavbar";
 
 export default {
+  components: {
+    AuthenticatedVerticalNavbar,
+  },
   data() {
     return {
       isUpdating: false,
@@ -376,9 +379,6 @@ export default {
     readableSize(n) {
       return readableSize(n);
     },
-  },
-  components: {
-    AuthenticatedVerticalNavbar,
   },
 };
 </script>

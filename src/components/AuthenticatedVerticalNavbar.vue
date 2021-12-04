@@ -5,7 +5,7 @@
         <p class="text-muted">
           Balance
           <span
-            clas="icon-container"
+            class="icon-container"
             style="cursor: pointer"
             @click="toggleBalance"
           >
