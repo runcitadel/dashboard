@@ -868,3 +868,12 @@ body {
 .navbar.nav-horizontal .dropdown-menu-right {
   right: 0;
 }
+
+// Helper classes like the above for the sizes 16, 24, 32, 48, 64, 96, 128, 256
+// Using SASS, we can auto-generate these classes for us
+@each $size in 16 24 32 48 64 96 128 256 {
+  .icon-#{$size}px svg {
+    width: #{$size}px;
+    height: #{$size}px;
+  }
+}

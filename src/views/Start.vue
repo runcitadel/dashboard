@@ -65,21 +65,14 @@
               >By clicking next, I agree that:</small
             >
             <span class="d-block text-muted text-small mb-1">
-              <b-icon
-                icon="exclamation-circle-fill"
+              <b-icon-exclamation-circle-fill
                 variant="warning"
                 class="me-1"
-              ></b-icon
-              >Citadel is in beta and should not be considered secure
+              />Citadel is in beta and should not be considered secure
             </span>
             <span class="d-block text-muted text-small mb-1">
-              <b-icon
-                icon="exclamation-circle-fill"
-                variant="warning"
-                class="me-1"
-              ></b-icon
-              >I should not put more funds on my Citadel than I'm prepared to
-              lose
+              <b-icon-exclamation-circle-fill variant="warning" class="me-1" />I
+              should not put more funds on my Citadel than I'm prepared to lose
             </span>
           </div>
         </div>
@@ -95,12 +88,11 @@
             title="Citadel uses neutrino while the sync is in progress, and automatically switches to Bitcoin Core once it's synced"
           >
             <small>
-              <b-icon
+              <b-icon-exclamation-circle-fill
                 icon="exclamation-circle-fill"
                 variant="primary"
                 class="me-1"
-              ></b-icon
-              >How?
+              />How?
             </small>
           </a>
         </div>
@@ -165,12 +157,14 @@ import delay from "@/helpers/delay";
 import InputPassword from "@/components/Utility/InputPassword";
 import Seed from "@/components/Utility/Seed";
 import InputCopy from "@/components/Utility/InputCopy";
+import { BIconExclamationCircleFill }  from "bootstrap-vue/src/index.js";
 
 export default {
   components: {
     InputPassword,
     Seed,
     InputCopy,
+    BIconExclamationCircleFill,
   },
   data() {
     return {
@@ -185,7 +179,7 @@ export default {
         },
         {
           heading: "what is your name?",
-          text: "Your name stays on your Citadel and is never shared with a 3rd party.",
+          text: "Your name stays on your Citadel and is never shared with us or a 3rd party.",
         },
         {
           heading: "set your password",

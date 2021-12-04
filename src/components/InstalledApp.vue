@@ -30,23 +30,45 @@
       variant="outline-danger"
       size="sm"
       @click="uninstall(name, id)"
-      ><small><b-icon icon="trash"></b-icon> Uninstall</small></b-button
+      ><small
+        ><div class="icon-16px"><TrashIcon /></div>
+        Uninstall</small
+      ></b-button
     >
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import { TrashIcon } from "@bitcoin-design/bitcoin-icons-vue/filled";
 
 import delay from "@/helpers/delay";
 
 export default {
+  components: {
+    TrashIcon,
+  },
   props: {
-    id: String,
-    name: String,
-    hiddenService: String,
-    port: Number,
-    path: String,
+    id: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    hiddenService: {
+      type: String,
+      required: true,
+    },
+    port: {
+      type: Number,
+      required: true,
+    },
+    path: {
+      type: String,
+      default: "/",
+    },
     showUninstallButton: {
       type: Boolean,
       default: false,
@@ -127,7 +149,6 @@ export default {
       }
     },
   },
-  components: {},
 };
 </script>
 

@@ -491,7 +491,8 @@
                     variant="outline-success"
                     @click="showDmesg = !showDmesg"
                   >
-                    <b-icon icon="arrow-left-right" class="me-1"></b-icon> View
+                    <div class="me-1"><FlipHorizontalIcon /></div>
+                    View
                     {{ !showDmesg ? "DMESG logs" : "Citadel logs" }}
                   </b-button>
                   <b-button
@@ -499,7 +500,8 @@
                     variant="outline-success"
                     @click="downloadTextFile(debugContents, debugFilename)"
                   >
-                    <b-icon icon="download" class="me-2"></b-icon>Download
+                    <div class="me-2"><ReceiveIcon /></div>
+                    Download
                     {{ showDmesg ? "DMESG logs" : "Citadel logs" }}
                   </b-button>
                 </div>
@@ -514,14 +516,14 @@
           </div>
           <div v-show="!isCheckingForUpdate">
             <span v-show="!availableUpdate.version">
-              <b-icon icon="check-circle-fill" variant="success"></b-icon>
+              <b-icon-check-circle-fill variant="success" />
               <small class="ms-1" style="opacity: 0.4"
                 >Your Citadel is on the latest version</small
               >
             </span>
             <div v-show="availableUpdate.version">
               <span class="d-block">
-                <b-icon icon="bell-fill" variant="success"></b-icon>
+                <div class="icon-16px"><BellIcon /></div>
                 <small class="text-muted ms-1"
                   >{{ availableUpdate.name }} is now available to install</small
                 >
@@ -550,11 +552,10 @@
           :disabled="isCheckingForUpdate || isUpdating"
           @click="checkForUpdate"
         >
-          <b-icon
-            icon="arrow-repeat"
+          <RefreshIcon
             class="me-2"
             :animation="isCheckingForUpdate ? 'spin' : ''"
-          ></b-icon>
+          />
           {{ isCheckingForUpdate ? "Checking for update" : "Check for update" }}
         </b-button>
       </card-widget>
@@ -578,8 +579,31 @@ import Seed from "@/components/Seed";
 import InputPassword from "@/components/Utility/InputPassword";
 import InputCopy from "@/components/Utility/InputCopy";
 import QrCode from "@/components/Utility/QrCode.vue";
+import {
+  BellIcon,
+  ReceiveIcon,
+  FlipHorizontalIcon,
+  RefreshIcon,
+} from "@bitcoin-design/bitcoin-icons-vue/filled";
+import { BIconCheckCircleFill }  from "bootstrap-vue/src/index.js";
 
 export default {
+  components: {
+    CardWidget,
+    StorageWidget,
+    RamWidget,
+    TemperatureWidget,
+    ToggleSwitch,
+    InputPassword,
+    InputCopy,
+    Seed,
+    QrCode,
+    ReceiveIcon,
+    FlipHorizontalIcon,
+    BIconCheckCircleFill,
+    BellIcon,
+    RefreshIcon,
+  },
   data() {
     return {
       currentPassword: "",
@@ -898,17 +922,6 @@ export default {
         }
       }
     },
-  },
-  components: {
-    CardWidget,
-    StorageWidget,
-    RamWidget,
-    TemperatureWidget,
-    ToggleSwitch,
-    InputPassword,
-    InputCopy,
-    Seed,
-    QrCode,
   },
 };
 </script>

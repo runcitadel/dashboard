@@ -126,14 +126,14 @@
                     >
                       <span v-if="app.id === 'citadel'"
                         >System
-                        <b-icon
+                        <b-icon-info-circle-fill
                           v-b-tooltip.hover.bottom
                           icon="info-circle-fill"
                           style="opacity: 0.4"
                           variant="dark"
                           class="ms-1"
                           title="Including Bitcoin Core, LND, and Electrum server"
-                        ></b-icon>
+                        />
                       </span>
                       <span v-else>{{ getAppName(app.id) }}</span>
 
@@ -163,12 +163,17 @@
 
 <script>
 import { mapState } from "vuex";
+import { BIconInfoCircleFill }  from "bootstrap-vue/src/index.js";
 
 import { readableSize } from "@/helpers/size";
 
 import CardWidget from "@/components/CardWidget";
 
 export default {
+  components: {
+    CardWidget,
+    BIconInfoCircleFill,
+  },
   props: {},
   data() {
     return {
@@ -235,9 +240,6 @@ export default {
       const index = this.store.findIndex(({ id }) => id === appId);
       return index > -1 ? this.store[index]["name"] : "";
     },
-  },
-  components: {
-    CardWidget,
   },
 };
 </script>

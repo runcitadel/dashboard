@@ -11,14 +11,23 @@
     />
     <b-input-group-append>
       <b-button :disabled="disabled" @click="togglePassword">
-        <b-icon :icon="showPassword ? 'eye-slash-fill' : 'eye-fill'"></b-icon>
+        <HiddenIcon v-if="showPassword" />
+        <VisibleIcon v-else />
       </b-button>
     </b-input-group-append>
   </b-input-group>
 </template>
 
 <script>
+import {
+  HiddenIcon,
+  VisibleIcon,
+} from "@bitcoin-design/bitcoin-icons-vue/filled";
 export default {
+  components: {
+    HiddenIcon,
+    VisibleIcon,
+  },
   props: {
     value: String,
     inputClass: [String, Array],

@@ -135,7 +135,8 @@
                   size="sm"
                   @click="downloadChannelBackup"
                 >
-                  <small> <b-icon icon="download" class="me-1"></b-icon> </small
+                  <small>
+                    <div class="me-1"><ReceiveIcon /></div> </small
                   >Download channel backup
                 </b-button>
               </b-alert>
@@ -158,7 +159,7 @@
             :show="!!availableUpdate.version"
             dismissible
           >
-            <b-icon icon="bell-fill" class="me-2"></b-icon>
+            <div class="icon-16px"><BellIcon /></div>
             <a
               :href="`https://github.com/runcitadel/compose-nonfree/releases/tag/v${availableUpdate.version}`"
               target="_blank"
@@ -187,7 +188,7 @@
             show
             dismissible
           >
-            <b-icon icon="exclamation-circle" class="me-2"></b-icon>
+            <b-icon-exclamation-circle class="me-2" />
             <b>Low RAM:</b> Your Citadel is running low on RAM. Consider
             uninstalling some apps or upgrading your Citadel's hardware.
             <router-link to="/settings#ram" class="alert-link float-right"
@@ -201,7 +202,7 @@
             show
             dismissible
           >
-            <b-icon icon="exclamation-circle" class="me-2"></b-icon>
+            <b-icon-exclamation-circle class="me-2" />
             <b>Low storage:</b> Your Citadel only has
             {{ readableSize(storage.total - storage.used) }} of storage left.
             Consider uninstalling some apps or upgrading to a larger drive.
@@ -216,7 +217,7 @@
             show
             dismissible
           >
-            <b-icon icon="exclamation-circle" class="me-2"></b-icon>
+            <b-icon-exclamation-circle class="me-2" />
             <b>High temperature:</b> Your Raspberry Pi is running hot. Consider
             using a heatsink, fan or a cooling case.
           </b-alert>
@@ -242,10 +243,18 @@ import { mapState } from "vuex";
 import { readableSize } from "@/helpers/size";
 import API from "@/helpers/api";
 import AuthenticatedVerticalNavbar from "@/components/AuthenticatedVerticalNavbar";
+import {
+  ReceiveIcon,
+  BellIcon,
+} from "@bitcoin-design/bitcoin-icons-vue/filled";
+import { BIconExclamationCircle }  from "bootstrap-vue/src/index.js";
 
 export default {
   components: {
     AuthenticatedVerticalNavbar,
+    ReceiveIcon,
+    BellIcon,
+    BIconExclamationCircle,
   },
   data() {
     return {

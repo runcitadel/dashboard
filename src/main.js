@@ -1,10 +1,11 @@
 import { createApp, configureCompat } from "vue";
+import BootstrapVue from "bootstrap-vue/src/index.js";
 
 import App from "./App.vue";
-import router from "./router";
-import store from "./store";
+import router from "./router/index.js";
+import store from "./store/index.js";
 
-import { satsToBtc } from "@/helpers/units";
+import { satsToBtc } from "@/helpers/units.js";
 
 // import "@/global-styles/designsystem.scss";
 // import 'bootstrap/dist/css/bootstrap.css'
@@ -50,13 +51,5 @@ configureCompat({
   INSTANCE_EVENT_EMITTER: true,
 });
 
-async function run() {
-  const { default: BootstrapVue, BootstrapVueIcons } = await import(
-    "bootstrap-vue/src"
-  );
-  app.use(BootstrapVue);
-  app.use(BootstrapVueIcons);
-  app.mount("#app");
-}
-
-run();
+app.use(BootstrapVue);
+app.mount("#app");

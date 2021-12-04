@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   devServer: {
     allowedHosts: ["citadel-dev.local"],
     watchOptions: {
