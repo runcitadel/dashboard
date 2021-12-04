@@ -40,21 +40,22 @@ import { mapState } from "vuex";
 import Channel from "@/components/Channels/Channel";
 
 export default {
-  props: {},
-  computed: {
-    ...mapState({
-      channels: (state) => state.lightning.channels,
-    }),
+  components: {
+    Channel,
   },
+  props: {},
+  emits: ["selectchannel"],
   data() {
     return {
       state: {},
     };
   },
-  methods: {},
-  components: {
-    Channel,
+  computed: {
+    ...mapState({
+      channels: (state) => state.lightning.channels,
+    }),
   },
+  methods: {},
 };
 </script>
 
