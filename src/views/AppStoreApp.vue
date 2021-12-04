@@ -167,7 +167,7 @@
               >
                 <div class="d-flex align-items-center">
                   <img
-                    :src="src"
+                    :src="src(dependency)"
                     style="width: 50px; height: 50px"
                     class="me-2"
                   />
@@ -229,9 +229,6 @@ export default {
       installing: (state) => state.apps.installing,
       uninstalling: (state) => state.apps.uninstalling,
     }),
-    src: () => {
-      return (new URL(`../assets/app-store/dependencies/${dependency}.svg`, import.meta.url)).href;
-    },
     app: function () {
       return this.appStore.find((app) => app.id === this.$route.params.id);
     },
@@ -285,6 +282,9 @@ export default {
         name = "Electrum Server";
       }
       return name;
+    },
+    src: (dependency) => {
+      return (new URL(`../assets/app-store/dependencies/${dependency}.svg`, import.meta.url)).href;
     },
     installApp() {
       this.$store.dispatch("apps/install", this.app.id);

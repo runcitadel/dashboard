@@ -78,7 +78,7 @@
                 <p v-if="subTitle" class="text-muted mb-0">{{ subTitle }}</p>
               </div>
             </div>
-            <img v-if="icon" :alt="header" :src="src" />
+            <img v-if="icon" :alt="header" :src="src(icon)" />
           </div>
         </div>
         <slot></slot>
@@ -88,10 +88,11 @@
   </b-card>
 </template>
 
-<script>
-import Status from "@/components/Utility/Status.vue";
+<script lang="ts">
+import { defineComponent } from "vue";
+import Status from "./Utility/Status.vue";
 
-export default {
+export default defineComponent({
   components: {
     Status,
   },
@@ -106,11 +107,11 @@ export default {
   data() {
     return {};
   },
-  computed: {
-    src: () => {
-      return (new URL(`../assets/${icon}`, import.meta.url)).href;
-    }
+  computed: {},
+  methods: {
+    src: (icon) => {
+      return new URL(`../assets/${icon}`, import.meta.url).href;
+    },
   },
-  methods: {},
-};
+});
 </script>
