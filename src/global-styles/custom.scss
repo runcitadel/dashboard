@@ -112,8 +112,16 @@ body {
       background: #252d41 !important;
     }
 
-    .navbar.nav-horizontal .nav-link {
+    .navbar.nav-horizontal .nav-link, .navbar.nav-horizontal .nav-link * {
       color: white !important;
+    }
+
+    .copy-input {
+      color: white !important;
+    }
+
+    .dropdown-item:hover, .dropdown-item:active {
+      background: #2a3244 !important;
     }
     /* INSERT MORE DARK MODE STUFF HERE */
   }
