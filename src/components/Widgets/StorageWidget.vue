@@ -117,7 +117,7 @@
                   <img
                     v-if="app.id === 'citadel'"
                     class="app-stat-list-item-icon me-2"
-                    :src="require(`@/assets/icon-system.svg`)"
+                    :src="src"
                   />
                   <img
                     v-else
@@ -193,6 +193,9 @@ export default {
       store: (state) => state.apps.store,
       storage: (state) => state.system.storage,
     }),
+    src: () => {
+      return (new URL(`../../assets/icon-system.svg`, import.meta.url)).href;
+    },
     isRunningLowOnStorage() {
       // less than 1GB remaining
       if (this.storage && this.storage.total) {

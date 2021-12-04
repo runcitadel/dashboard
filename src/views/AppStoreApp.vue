@@ -167,9 +167,7 @@
               >
                 <div class="d-flex align-items-center">
                   <img
-                    :src="
-                      require(`@/assets/app-store/dependencies/${dependency}.svg`)
-                    "
+                    :src="src"
                     style="width: 50px; height: 50px"
                     class="me-2"
                   />
@@ -231,6 +229,9 @@ export default {
       installing: (state) => state.apps.installing,
       uninstalling: (state) => state.apps.uninstalling,
     }),
+    src: () => {
+      return (new URL(`../assets/app-store/dependencies/${dependency}.svg`, import.meta.url)).href;
+    },
     app: function () {
       return this.appStore.find((app) => app.id === this.$route.params.id);
     },

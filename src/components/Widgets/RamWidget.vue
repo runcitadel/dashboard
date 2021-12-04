@@ -113,7 +113,7 @@
                   <img
                     v-if="app.id === 'citadel'"
                     class="app-stat-list-item-icon me-2"
-                    :src="require(`@/assets/icon-system.svg`)"
+                    :src="src"
                   />
                   <img
                     v-else
@@ -189,6 +189,9 @@ export default {
       store: (state) => state.apps.store,
       ram: (state) => state.system.ram,
     }),
+    src: () => {
+      return (new URL(`../../assets/icon-system.svg`, import.meta.url)).href;
+    },
     isRunningLowOnRam() {
       if (this.ram && this.ram.total) {
         return this.ram.used / this.ram.total > 0.95;
