@@ -212,10 +212,10 @@
 <script>
 import { mapState } from "vuex";
 
-import delay from "@/helpers/delay";
+import delay from "@/helpers/delay.js";
 
-import CardWidget from "@/components/CardWidget";
-import InputCopy from "@/components/Utility/InputCopy";
+import CardWidget from "@/components/CardWidget.vue";
+import InputCopy from "@/components/Utility/InputCopy.vue";
 
 export default {
   data() {

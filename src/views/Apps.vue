@@ -46,7 +46,7 @@
 <script>
 import { mapState } from "vuex";
 
-import InstalledApp from "@/components/InstalledApp";
+import InstalledApp from "@/components/InstalledApp.vue";
 
 export default {
   data() {

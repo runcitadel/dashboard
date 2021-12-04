@@ -80,7 +80,7 @@
 <script>
 import { mapState } from "vuex";
 import { Citadel } from "@runcitadel/sdk";
-import InputPassword from "@/components/Utility/InputPassword";
+import InputPassword from "@/components/Utility/InputPassword.vue";
 
 export default {
   components: {

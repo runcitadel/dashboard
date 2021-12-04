@@ -1,4 +1,4 @@
-import API from "@/helpers/api";
+import API from "@/helpers/api.js";
 
 // Initial state
 const state = () => ({
@@ -124,7 +124,7 @@ const mutations = {
 const actions = {
   async getVersion({ commit }) {
     const data = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/info`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/info`
     );
     if (data && data.version) {
       let { version } = data;
@@ -146,14 +146,14 @@ const actions = {
     }
   },
   /*async getApi({ commit }) {
-    const api = await API.get(`${process.env.VUE_APP_MIDDLEWARE_API_URL}/ping`);
+    const api = await API.get(`${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/ping`);
     commit("setApi", {
       operational: !!(api && api.version),
       version: api && api.version ? api.version : "",
     });
   },*/
   async getManagerApi({ commit }) {
-    const api = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/ping`);
+    const api = await API.get(`${import.meta.env.VUE_APP_MANAGER_API_URL}/ping`);
     commit("setManagerApi", {
       operational: !!(api && api.version),
       version: api && api.version ? api.version : "",
@@ -161,13 +161,13 @@ const actions = {
   },
   async getOnionAddress({ commit }) {
     const address = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/dashboard-hidden-service`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/dashboard-hidden-service`
     );
     commit("setOnionAddress", address);
   },
   async getAvailableUpdate({ commit }) {
     const update = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/get-update`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/get-update`
     );
     if (update && update.version) {
       commit("setAvailableUpdate", update);
@@ -187,7 +187,7 @@ const actions = {
   },
   async getUpdateStatus({ commit }) {
     const status = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/update-status`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/update-status`
     );
     if (status && status.progress) {
       commit("setUpdateStatus", status);
@@ -195,7 +195,7 @@ const actions = {
   },
   async getBackupStatus({ commit }) {
     const status = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/backup-status`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/backup-status`
     );
     if (status && status.timestamp) {
       commit("setBackupStatus", status);
@@ -203,7 +203,7 @@ const actions = {
   },
   async getDebugResult({ commit }) {
     const result = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/debug-result`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/debug-result`
     );
 
     if (!result) {
@@ -214,7 +214,7 @@ const actions = {
   },
   async debug({ commit }) {
     const result = await API.post(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/debug`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/debug`
     );
 
     if (!result) {
@@ -229,7 +229,7 @@ const actions = {
 
     // Shutting down
     const result = await API.post(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/shutdown`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/shutdown`
     );
     if (!result) {
       throw new Error("Shutdown request failed");
@@ -240,7 +240,7 @@ const actions = {
     // Poll to check if system has shut down
     const pollIfDown = window.setInterval(async () => {
       const { version } = await API.get(
-        `${process.env.VUE_APP_MANAGER_API_URL}/ping`
+        `${import.meta.env.VUE_APP_MANAGER_API_URL}/ping`
       );
       if (!version) {
         // System shut down succesfully
@@ -259,7 +259,7 @@ const actions = {
 
     // Rebooting
     const result = await API.post(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/reboot`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/reboot`
     );
     if (!result) {
       throw new Error("Reboot request failed");
@@ -272,7 +272,7 @@ const actions = {
     // Poll to check if system has shut down
     const pollIfDown = window.setInterval(async () => {
       const { version } = await API.get(
-        `${process.env.VUE_APP_MANAGER_API_URL}/ping`
+        `${import.meta.env.VUE_APP_MANAGER_API_URL}/ping`
       );
       if (!version) {
         // System shut down succesfully
@@ -281,7 +281,7 @@ const actions = {
         // Now we'll poll to check if it's up
         pollIfUp = window.setInterval(async () => {
           const { version } = await API.get(
-            `${process.env.VUE_APP_MANAGER_API_URL}/ping`
+            `${import.meta.env.VUE_APP_MANAGER_API_URL}/ping`
           );
           if (version) {
             // System is online again
@@ -296,7 +296,7 @@ const actions = {
   },
   async getStorage({ commit }) {
     const storage = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/storage`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/storage`
     );
     if (storage && storage.total) {
       storage.breakdown.sort((app1, app2) => app2.used - app1.used);
@@ -305,7 +305,7 @@ const actions = {
   },
   async getRam({ commit }) {
     const ram = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/memory`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/memory`
     );
     if (ram && ram.total) {
       ram.breakdown.sort((app1, app2) => app2.used - app1.used);
@@ -314,13 +314,13 @@ const actions = {
   },
   async getIsCitadelOS({ commit }) {
     const isCitadelOS = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/is-citadel-os`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/is-citadel-os`
     );
     commit("setIsCitadelOS", !!isCitadelOS);
   },
   async getCpuTemperature({ commit }) {
     const cpuTemperature = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/temperature`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/temperature`
     );
     if (cpuTemperature) {
       commit("setCpuTemperature", cpuTemperature);
@@ -345,7 +345,7 @@ const actions = {
   },
   async getUptime({ commit }) {
     const uptime = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/uptime`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/uptime`
     );
     if (uptime) {
       commit("setUptime", uptime);

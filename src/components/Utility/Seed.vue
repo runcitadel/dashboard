@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import ScrambledText from "@/components/Utility/ScrambledText";
+import ScrambledText from "@/components/Utility/ScrambledText.vue";
 
 export default {
   components: {
@@ -76,6 +76,7 @@ export default {
       default: false,
     },
   },
+  emits: { incomplete: null, input: null, complete: null },
   data() {
     return {
       index: 0,

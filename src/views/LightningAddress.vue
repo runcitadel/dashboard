@@ -43,11 +43,16 @@
 
 <script>
 import { mapState } from "vuex";
-import StepList from "@/components/ConnectWallet/StepList";
-import Step from "@/components/ConnectWallet/Step";
-import InputCopy from "@/components/Utility/InputCopy";
+import StepList from "@/components/ConnectWallet/StepList.vue";
+import Step from "@/components/ConnectWallet/Step.vue";
+import InputCopy from "@/components/Utility/InputCopy.vue";
 
 export default {
+  components: {
+    StepList,
+    Step,
+    InputCopy,
+  },
   computed: {
     ...mapState({
       lnAddress: (state) => {
@@ -66,11 +71,6 @@ export default {
   },
   created() {
     this.$store.dispatch("apps/getInstalledApps");
-  },
-  components: {
-    StepList,
-    Step,
-    InputCopy,
   },
 };
 </script>

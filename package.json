@@ -3,13 +3,14 @@
   "version": "0.3.25",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --mode production",
-    "lint": "vue-cli-service lint"
+    "serve": "vite preview",
+    "build": "vite build",
+    "lint": "eslint src/**/*.vue"
   },
   "dependencies": {
     "@bitcoin-design/bitcoin-icons-vue": "^0.1.8",
     "@runcitadel/sdk": "^0.0.1-beta.6",
+    "@vitejs/plugin-vue": "^1.10.1",
     "@vue/compat": "^3.2.23",
     "animate.css": "^4.1.1",
     "axios": "^0.24.0",
@@ -21,6 +22,7 @@
     "countup.js": "^2.0.8",
     "date-fns": "^2.27.0",
     "qrcode.vue": "^3.3.3",
+    "vite": "^2.6.14",
     "vue": "^3.2.23",
     "vue-confetti": "^2.2.2",
     "vue-router": "^4.0.12",
@@ -28,10 +30,6 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-eslint": "^v5.0.0-rc.1",
-    "@vue/cli-plugin-router": "^v5.0.0-rc.1",
-    "@vue/cli-plugin-vuex": "^v5.0.0-rc.1",
-    "@vue/cli-service": "^v5.0.0-rc.1",
     "@vue/eslint-config-prettier": "^6.0.0",
     "eslint": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",

@@ -663,15 +663,15 @@ import {
 import { mapState, mapGetters } from "vuex";
 
 import { satsToBtc, btcToSats } from "@/helpers/units.js";
-import API from "@/helpers/api";
+import API from "@/helpers/api.js";
 
-import CountUp from "@/components/Utility/CountUp";
-import CardWidget from "@/components/CardWidget";
-import InputCopy from "@/components/Utility/InputCopy";
+import CountUp from "@/components/Utility/CountUp.vue";
+import CardWidget from "@/components/CardWidget.vue";
+import InputCopy from "@/components/Utility/InputCopy.vue";
 import QrCode from "@/components/Utility/QrCode.vue";
 import CircularCheckmark from "@/components/Utility/CircularCheckmark.vue";
-import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch";
-import FeeSelector from "@/components/Utility/FeeSelector";
+import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch.vue";
+import FeeSelector from "@/components/Utility/FeeSelector.vue";
 
 export default {
   props: {},
@@ -800,11 +800,11 @@ export default {
     this.$store.dispatch("apps/getInstalledApps");
   },
   methods: {
-    getTimeFromNow(timestamp) {
-      return formatDistance(new Date(timestamp), new Date()); //used in the list of txs, eg "a few seconds ago"
+    async getTimeFromNow(timestamp) {
+      return await formatDistance(new Date(timestamp), new Date()); //used in the list of txs, eg "a few seconds ago"
     },
-    getReadableTime(timestamp) {
-      return format(new Date(timestamp), getDateFormatWithSeconds()); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
+    async getReadableTime(timestamp) {
+      return await format(new Date(timestamp), getDateFormatWithSeconds()); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
     },
     getTxExplorerUrl(txHash) {
       if (this.localExplorerTxUrl) {
@@ -925,7 +925,7 @@ export default {
 
       try {
         const res = await API.post(
-          `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/transaction`,
+          `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/transaction`,
           payload
         );
         const withdrawTx = res.data;

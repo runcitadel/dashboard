@@ -85,11 +85,11 @@
 <script>
 import { mapState } from "vuex";
 
-import API from "@/helpers/api";
+import API from "@/helpers/api.js";
 import { satsToBtc, btcToSats } from "@/helpers/units.js";
 
-import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch";
-import FeeSelector from "@/components/Utility/FeeSelector";
+import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch.vue";
+import FeeSelector from "@/components/Utility/FeeSelector.vue";
 
 export default {
   props: {},
@@ -227,7 +227,7 @@ export default {
 
       try {
         await API.post(
-          `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/channel/open`,
+          `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/channel/open`,
           payload
         );
         this.isOpening = false;
@@ -264,7 +264,7 @@ export default {
 
           try {
             estimates = await API.get(
-              `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/channel/estimateFee?confTarget=0&amt=${this.fundingAmount}&sweep=${this.sweep}`
+              `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/channel/estimateFee?confTarget=0&amt=${this.fundingAmount}&sweep=${this.sweep}`
             );
           } catch (error) {
             if (error.response && error.response.data) {

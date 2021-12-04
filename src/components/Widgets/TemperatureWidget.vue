@@ -92,8 +92,8 @@
 <script>
 import { mapState } from "vuex";
 
-import CountUp from "@/components/Utility/CountUp";
-import CardWidget from "@/components/CardWidget";
+import CountUp from "@/components/Utility/CountUp.vue";
+import CardWidget from "@/components/CardWidget.vue";
 
 export default {
   props: {},

@@ -65,8 +65,8 @@
 </template>
 
 <script>
-import Status from "@/components/Utility/Status";
-import Bar from "@/components/Channels/Bar";
+import Status from "@/components/Utility/Status.vue";
+import Bar from "@/components/Channels/Bar.vue";
 
 export default {
   components: {

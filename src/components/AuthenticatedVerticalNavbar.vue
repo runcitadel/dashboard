@@ -133,8 +133,8 @@
 <script>
 import { mapState } from "vuex";
 import { satsToBtc } from "@/helpers/units.js";
-import CountUp from "@/components/Utility/CountUp";
-import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch";
+import CountUp from "@/components/Utility/CountUp.vue";
+import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch.vue";
 
 import {
   BitcoinIcon,
@@ -147,7 +147,7 @@ import {
   WalletIcon,
   VisibleIcon,
   HiddenIcon,
-} from "@bitcoin-design/bitcoin-icons-vue/filled";
+} from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
 
 export default {
   components: {

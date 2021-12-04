@@ -39,11 +39,16 @@
 </template>
 
 <script>
-import InputPassword from "@/components/Utility/InputPassword";
-import Seed from "@/components/Utility/Seed";
+import InputPassword from "@/components/Utility/InputPassword.vue";
+import Seed from "@/components/Utility/Seed.vue";
 import { mapState } from "vuex";
 
 export default {
+  components: {
+    InputPassword,
+    Seed,
+  },
+  props: { progress: Number },
   data() {
     return {
       password: "",
@@ -56,11 +61,6 @@ export default {
       seed: (state) => state.user.seed,
     }),
   },
-  components: {
-    InputPassword,
-    Seed,
-  },
-  props: { progress: Number },
   created() {},
   methods: {
     showSeed() {

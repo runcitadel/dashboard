@@ -26,7 +26,7 @@
 
 <script>
 import { mapState } from "vuex";
-import CardWidget from "@/components/CardWidget";
+import CardWidget from "@/components/CardWidget.vue";
 
 export default {
   components: {

@@ -1,4 +1,4 @@
-import API from "@/helpers/api";
+import API from "@/helpers/api.js";
 import router from "@/router";
 
 // Initial state
@@ -46,7 +46,7 @@ const mutations = {
 const actions = {
   async login({ commit }, { password, totpToken }) {
     const { data } = await API.post(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/login`,
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/account/login`,
       { password, totpToken }
     );
 
@@ -64,7 +64,7 @@ const actions = {
 
   async refreshJWT({ commit }) {
     const { data } = await API.post(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/refresh`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/account/refresh`
     );
     if (data && data.jwt) {
       commit("setJWT", data.jwt);
@@ -73,14 +73,14 @@ const actions = {
 
   async registered({ commit }) {
     const { registered } = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/registered`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/account/registered`
     );
     commit("setRegistered", !!registered);
   },
 
   async getInfo({ commit }) {
     const { name, installedApps } = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/info`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/account/info`
     );
     commit("setName", name);
     commit("setInstalledApps", installedApps);
@@ -88,14 +88,14 @@ const actions = {
 
   async getTotpKey({ commit }) {
     const totpKey = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/totp/setup`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/account/totp/setup`
     );
     commit("setTotpKey", totpKey.key);
   },
 
   async getTotpEnabledStatus({ commit }) {
     const { totpEnabled } = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/totp/status`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/account/totp/status`
     );
     commit("setTotpEnabled", totpEnabled);
   },
@@ -109,7 +109,7 @@ const actions = {
     //get user's stored seed if already registered
     if (state.registered && plainTextPassword) {
       rawSeed = await API.post(
-        `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/seed`,
+        `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/account/seed`,
         {
           password: plainTextPassword,
         },
@@ -121,7 +121,7 @@ const actions = {
     } else {
       //get a new seed if new user
       rawSeed = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/wallet/seed`
+        `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/wallet/seed`
       );
     }
 
@@ -133,7 +133,7 @@ const actions = {
   async register({ commit, state }, { name, password, seed }) {
     if (!state.registered) {
       const result = await API.post(
-        `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/register`,
+        `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/account/register`,
         {
           name,
           password,

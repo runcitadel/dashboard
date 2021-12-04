@@ -147,12 +147,18 @@
 <script>
 import { mapState } from "vuex";
 
-import CardWidget from "@/components/CardWidget";
-import Blockchain from "@/components/Blockchain";
-import Stat from "@/components/Utility/Stat";
-import BitcoinWallet from "@/components/BitcoinWallet";
+import CardWidget from "@/components/CardWidget.vue";
+import Blockchain from "@/components/Blockchain.vue";
+import Stat from "@/components/Utility/Stat.vue";
+import BitcoinWallet from "@/components/BitcoinWallet.vue";
 
 export default {
+  components: {
+    CardWidget,
+    Blockchain,
+    Stat,
+    BitcoinWallet,
+  },
   data() {
     return {};
   },
@@ -210,12 +216,6 @@ export default {
         this.$store.dispatch("bitcoin/getRpcInfo"),
       ]);
     },
-  },
-  components: {
-    CardWidget,
-    Blockchain,
-    Stat,
-    BitcoinWallet,
   },
 };
 </script>

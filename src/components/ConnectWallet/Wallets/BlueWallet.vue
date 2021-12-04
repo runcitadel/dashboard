@@ -55,10 +55,10 @@
 </template>
 
 <script>
-import ConnectionDetails from "@/components/ConnectWallet/ConnectionDetails";
-import StepList from "@/components/ConnectWallet/StepList";
-import Step from "@/components/ConnectWallet/Step";
-import QrCode from "@/components/Utility/QrCode";
+import ConnectionDetails from "@/components/ConnectWallet/ConnectionDetails.vue";
+import StepList from "@/components/ConnectWallet/StepList.vue";
+import Step from "@/components/ConnectWallet/Step.vue";
+import QrCode from "@/components/Utility/QrCode.vue";
 
 export default {
   components: {

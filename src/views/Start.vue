@@ -152,12 +152,12 @@
 <script>
 import { mapState } from "vuex";
 
-import delay from "@/helpers/delay";
+import delay from "@/helpers/delay.js";
 
-import InputPassword from "@/components/Utility/InputPassword";
-import Seed from "@/components/Utility/Seed";
-import InputCopy from "@/components/Utility/InputCopy";
-import { BIconExclamationCircleFill }  from "bootstrap-vue/src/index.js";
+import InputPassword from "@/components/Utility/InputPassword.vue";
+import Seed from "@/components/Utility/Seed.vue";
+import InputCopy from "@/components/Utility/InputCopy.vue";
+import { BIconExclamationCircleFill } from "bootstrap-vue/src/index.js";
 
 export default {
   components: {

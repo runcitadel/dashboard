@@ -811,14 +811,14 @@ import { addHours } from "date-fns";
 import { mapState } from "vuex";
 
 import { satsToBtc, btcToSats } from "@/helpers/units.js";
-import API from "@/helpers/api";
+import API from "@/helpers/api.js";
 
-import CountUp from "@/components/Utility/CountUp";
-import CardWidget from "@/components/CardWidget";
-import InputCopy from "@/components/Utility/InputCopy";
+import CountUp from "@/components/Utility/CountUp.vue";
+import CardWidget from "@/components/CardWidget.vue";
+import InputCopy from "@/components/Utility/InputCopy.vue";
 import QrCode from "@/components/Utility/QrCode.vue";
 import CircularCheckmark from "@/components/Utility/CircularCheckmark.vue";
-import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch";
+import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch.vue";
 
 export default {
   components: {
@@ -903,7 +903,7 @@ export default {
           }
           this.receive.invoiceStatusPollerInprogress = true;
           const invoices = await API.get(
-            `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/lightning/invoices`
+            `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/lightning/invoices`
           );
           if (invoices && invoices.length) {
             //search for invoice
@@ -947,11 +947,11 @@ export default {
     window.clearInterval(this.receive.invoiceStatusPoller);
   },
   methods: {
-    getTimeFromNow(timestamp) {
-      return formatDistance(new Date(timestamp), new Date()); //used in the list of txs, eg "a few seconds ago"
+    async getTimeFromNow(timestamp) {
+      return awaitformatDistance(new Date(timestamp), new Date()); //used in the list of txs, eg "a few seconds ago"
     },
-    getReadableTime(timestamp) {
-      return format(new Date(timestamp), getDateFormatWithSeconds()); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
+    async getReadableTime(timestamp) {
+      return await format(new Date(timestamp), getDateFormatWithSeconds()); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
     },
     //change between different modes/screens of the wallet from - transactions (default), receive (create invoice), invoice, send, sent
     changeMode(mode) {
@@ -1015,7 +1015,7 @@ export default {
 
       try {
         const res = await API.post(
-          `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/lightning/payInvoice`,
+          `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/lightning/payInvoice`,
           payload
         );
         if (res.data.paymentError) {
@@ -1056,7 +1056,7 @@ export default {
       setTimeout(async () => {
         try {
           const res = await API.post(
-            `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/lightning/addInvoice`,
+            `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/lightning/addInvoice`,
             payload
           );
           this.receive.invoiceQR = this.receive.paymentRequest =
@@ -1099,7 +1099,7 @@ export default {
       this.loading = true;
 
       const fetchedInvoice = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/lightning/invoice?paymentRequest=${this.send.paymentRequest}`
+        `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/lightning/invoice?paymentRequest=${this.send.paymentRequest}`
       );
 
       if (!fetchedInvoice) {

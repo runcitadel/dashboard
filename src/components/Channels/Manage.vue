@@ -170,8 +170,8 @@
 </template>
 
 <script>
-import Bar from "@/components/Channels/Bar";
-import API from "@/helpers/api";
+import Bar from "@/components/Channels/Bar.vue";
+import API from "@/helpers/api.js";
 
 export default {
   components: {
@@ -213,7 +213,7 @@ export default {
           force: !this.channel.active, // Avoids force closing if channel is active
         };
         await API.delete(
-          `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/channel/close`,
+          `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/channel/close`,
           payload
         );
         this.$emit("channelclose");

@@ -566,26 +566,26 @@
 <script>
 import { mapState } from "vuex";
 
-import API from "@/helpers/api";
-import delay from "@/helpers/delay";
+import API from "@/helpers/api.js";
+import delay from "@/helpers/delay.js";
 import { prettifySeconds } from "@/helpers/date.js";
 
-import CardWidget from "@/components/CardWidget";
-import StorageWidget from "@/components/Widgets/StorageWidget";
-import RamWidget from "@/components/Widgets/RamWidget";
-import TemperatureWidget from "@/components/Widgets/TemperatureWidget";
-import ToggleSwitch from "@/components/ToggleSwitch";
-import Seed from "@/components/Seed";
-import InputPassword from "@/components/Utility/InputPassword";
-import InputCopy from "@/components/Utility/InputCopy";
+import CardWidget from "@/components/CardWidget.vue";
+import StorageWidget from "@/components/Widgets/StorageWidget.vue";
+import RamWidget from "@/components/Widgets/RamWidget.vue";
+import TemperatureWidget from "@/components/Widgets/TemperatureWidget.vue";
+import ToggleSwitch from "@/components/ToggleSwitch.vue";
+import Seed from "@/components/Seed.vue";
+import InputPassword from "@/components/Utility/InputPassword.vue";
+import InputCopy from "@/components/Utility/InputCopy.vue";
 import QrCode from "@/components/Utility/QrCode.vue";
 import {
   BellIcon,
   ReceiveIcon,
   FlipHorizontalIcon,
   RefreshIcon,
-} from "@bitcoin-design/bitcoin-icons-vue/filled";
-import { BIconCheckCircleFill }  from "bootstrap-vue/src/index.js";
+} from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
+import { BIconCheckCircleFill } from "bootstrap-vue/src/index.js";
 
 export default {
   components: {
@@ -637,8 +637,8 @@ export default {
           state.user.name + "'Citadel"
         )}?secret=${state.user.totpKey}&period=30"`,
     }),
-    getUptime() {
-      return prettifySeconds(this.uptime);
+    async getUptime() {
+      return await prettifySeconds(this.uptime);
     },
     debugContents() {
       return this.showDmesg ? this.debugResult.dmesg : this.debugResult.debug;
@@ -709,7 +709,7 @@ export default {
 
       try {
         await API.post(
-          `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/totp/enable`,
+          `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/account/totp/enable`,
           payload,
           false
         );
@@ -751,7 +751,7 @@ export default {
 
       try {
         await API.post(
-          `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/totp/disable`,
+          `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/account/totp/disable`,
           payload,
           false
         );
@@ -794,7 +794,9 @@ export default {
 
       try {
         await API.post(
-          `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/change-password`,
+          `${
+            import.meta.env.VUE_APP_MANAGER_API_URL
+          }/v1/account/change-password`,
           payload,
           false
         );

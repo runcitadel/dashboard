@@ -37,7 +37,7 @@
 
 <script>
 import { mapState } from "vuex";
-import Channel from "@/components/Channels/Channel";
+import Channel from "@/components/Channels/Channel.vue";
 
 export default {
   components: {

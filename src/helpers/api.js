@@ -26,7 +26,7 @@ axios.interceptors.response.use(
     // Return the same 401 back if user is trying to login with incorrect password
     if (
       error.config.url ===
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/login`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/account/login`
     ) {
       return Promise.reject(error);
     }
@@ -34,7 +34,7 @@ axios.interceptors.response.use(
     // Logout user if token refresh didn't work
     if (
       error.config.url ===
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/refresh`
+      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/account/refresh`
     ) {
       store.dispatch("user/logout");
       return Promise.reject(error);

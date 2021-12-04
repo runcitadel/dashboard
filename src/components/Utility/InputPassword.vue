@@ -22,7 +22,7 @@
 import {
   HiddenIcon,
   VisibleIcon,
-} from "@bitcoin-design/bitcoin-icons-vue/filled";
+} from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
 export default {
   components: {
     HiddenIcon,

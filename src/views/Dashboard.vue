@@ -104,13 +104,20 @@ import { mapState } from "vuex";
 
 import { satsToBtc } from "@/helpers/units.js";
 
-import CountUp from "@/components/Utility/CountUp";
-import CardWidget from "@/components/CardWidget";
-import Blockchain from "@/components/Blockchain";
-import LightningWallet from "@/components/LightningWallet";
+import CountUp from "@/components/Utility/CountUp.vue";
+import CardWidget from "@/components/CardWidget.vue";
+import Blockchain from "@/components/Blockchain.vue";
+import LightningWallet from "@/components/LightningWallet.vue";
 import StorageWidget from "../components/Widgets/StorageWidget.vue";
 
 export default {
+  components: {
+    CountUp,
+    CardWidget,
+    Blockchain,
+    LightningWallet,
+    StorageWidget,
+  },
   data() {
     return {};
   },
@@ -149,13 +156,6 @@ export default {
     },
   },
   methods: {},
-  components: {
-    CountUp,
-    CardWidget,
-    Blockchain,
-    LightningWallet,
-    StorageWidget,
-  },
 };
 </script>
 

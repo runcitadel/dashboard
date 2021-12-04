@@ -319,19 +319,30 @@
 import { mapState } from "vuex";
 import { format } from "date-fns";
 
-import API from "@/helpers/api";
+import API from "@/helpers/api.js";
 
-import CardWidget from "@/components/CardWidget";
-import Stat from "@/components/Utility/Stat";
-import LightningWallet from "@/components/LightningWallet";
-import QrCode from "@/components/Utility/QrCode";
-import InputCopy from "@/components/Utility/InputCopy";
-import ToggleSwitch from "@/components/ToggleSwitch";
-import ChannelList from "@/components/Channels/List";
-import ChannelOpen from "@/components/Channels/Open";
-import ChannelManage from "@/components/Channels/Manage";
+import CardWidget from "@/components/CardWidget.vue";
+import Stat from "@/components/Utility/Stat.vue";
+import LightningWallet from "@/components/LightningWallet.vue";
+import QrCode from "@/components/Utility/QrCode.vue";
+import InputCopy from "@/components/Utility/InputCopy.vue";
+import ToggleSwitch from "@/components/ToggleSwitch.vue";
+import ChannelList from "@/components/Channels/List.vue";
+import ChannelOpen from "@/components/Channels/Open.vue";
+import ChannelManage from "@/components/Channels/Manage.vue";
 
 export default {
+  components: {
+    LightningWallet,
+    CardWidget,
+    Stat,
+    QrCode,
+    InputCopy,
+    ToggleSwitch,
+    ChannelList,
+    ChannelOpen,
+    ChannelManage,
+  },
   data() {
     return {
       status: "Running",
@@ -374,7 +385,9 @@ export default {
     },
     async downloadChannelBackup() {
       await API.download(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/util/download-channel-backup`,
+        `${
+          import.meta.env.VUE_APP_MIDDLEWARE_API_URL
+        }/v1/lnd/util/download-channel-backup`,
         {},
         true,
         "my-citadel-channels.backup"
@@ -407,17 +420,6 @@ export default {
     fetchPageData() {
       this.$store.dispatch("lightning/getLndPageData");
     },
-  },
-  components: {
-    LightningWallet,
-    CardWidget,
-    Stat,
-    QrCode,
-    InputCopy,
-    ToggleSwitch,
-    ChannelList,
-    ChannelOpen,
-    ChannelManage,
   },
 };
 </script>

@@ -240,14 +240,14 @@
 
 <script>
 import { mapState } from "vuex";
-import { readableSize } from "@/helpers/size";
-import API from "@/helpers/api";
-import AuthenticatedVerticalNavbar from "@/components/AuthenticatedVerticalNavbar";
+import { readableSize } from "@/helpers/size.js";
+import API from "@/helpers/api.js";
+import AuthenticatedVerticalNavbar from "@/components/AuthenticatedVerticalNavbar.vue";
 import {
   ReceiveIcon,
   BellIcon,
-} from "@bitcoin-design/bitcoin-icons-vue/filled";
-import { BIconExclamationCircle }  from "bootstrap-vue/src/index.js";
+} from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
+import { BIconExclamationCircle } from "bootstrap-vue/src/index.js";
 
 export default {
   components: {
@@ -348,7 +348,9 @@ export default {
     },
     async downloadChannelBackup() {
       await API.download(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/util/download-channel-backup`,
+        `${
+          import.meta.env.VUE_APP_MIDDLEWARE_API_URL
+        }/v1/lnd/util/download-channel-backup`,
         {},
         true,
         "my-citadel-channels.backup"
@@ -363,7 +365,7 @@ export default {
     async startUpdate() {
       try {
         await API.post(
-          `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/update`,
+          `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/update`,
           {}
         );
         this.isUpdating = true;

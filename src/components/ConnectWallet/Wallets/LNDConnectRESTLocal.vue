@@ -24,9 +24,9 @@
 </template>
 
 <script>
-import ConnectionDetails from "@/components/ConnectWallet/ConnectionDetails";
-import InputCopy from "@/components/Utility/InputCopy";
-import QrCode from "@/components/Utility/QrCode";
+import ConnectionDetails from "@/components/ConnectWallet/ConnectionDetails.vue";
+import InputCopy from "@/components/Utility/InputCopy.vue";
+import QrCode from "@/components/Utility/QrCode.vue";
 
 export default {
   components: {

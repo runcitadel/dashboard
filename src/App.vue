@@ -54,18 +54,18 @@
   </div>
 </template>
 
-<style lang="scss">
-@import "@/global-styles/design-system.scss";
-</style>
-
 <script>
 import { mapState } from "vuex";
-import delay from "@/helpers/delay";
-import Shutdown from "@/components/Shutdown";
-import Loading from "@/components/Loading";
+import delay from "@/helpers/delay.js";
+import Shutdown from "@/components/Shutdown.vue";
+import Loading from "@/components/Loading.vue";
 
 export default {
   name: "App",
+  components: {
+    Loading,
+    Shutdown,
+  },
   data() {
     return {
       isIframe: window.self !== window.top,
@@ -221,12 +221,12 @@ export default {
       setTimeout(() => (this.loading = false), 300);
     },
   },
-  components: {
-    Loading,
-    Shutdown,
-  },
 };
 </script>
+
+<style lang="scss">
+@import "@/global-styles/design-system.scss";
+</style>
 
 <style lang="scss" scoped>
 // Loading transitions
