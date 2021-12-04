@@ -109,7 +109,7 @@ export default defineComponent({
   },
   computed: {},
   methods: {
-    src: (icon) => {
+    src: (icon: string) => {
       return new URL(`../assets/${icon}`, import.meta.url).href;
     },
   },
