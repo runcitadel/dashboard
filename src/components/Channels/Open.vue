@@ -264,7 +264,11 @@ export default {
 
           try {
             estimates = await API.get(
-              `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/lnd/channel/estimateFee?confTarget=0&amt=${this.fundingAmount}&sweep=${this.sweep}`
+              `${
+                import.meta.env.VITE_APP_MIDDLEWARE_API_URL
+              }/v1/lnd/channel/estimateFee?confTarget=0&amt=${
+                this.fundingAmount
+              }&sweep=${this.sweep}`
             );
           } catch (error) {
             if (error.response && error.response.data) {

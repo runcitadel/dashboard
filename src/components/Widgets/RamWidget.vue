@@ -190,7 +190,7 @@ export default {
       ram: (state) => state.system.ram,
     }),
     src: () => {
-      return (new URL(`../../assets/icon-system.svg`, import.meta.url)).href;
+      return new URL(`../../assets/icon-system.svg`, import.meta.url).href;
     },
     isRunningLowOnRam() {
       if (this.ram && this.ram.total) {

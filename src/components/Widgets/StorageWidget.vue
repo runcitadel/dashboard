@@ -194,7 +194,7 @@ export default {
       storage: (state) => state.system.storage,
     }),
     src: () => {
-      return (new URL(`../../assets/icon-system.svg`, import.meta.url)).href;
+      return new URL(`../../assets/icon-system.svg`, import.meta.url).href;
     },
     isRunningLowOnStorage() {
       // less than 1GB remaining

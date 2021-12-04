@@ -284,7 +284,10 @@ export default {
       return name;
     },
     src: (dependency) => {
-      return (new URL(`../assets/app-store/dependencies/${dependency}.svg`, import.meta.url)).href;
+      return new URL(
+        `../assets/app-store/dependencies/${dependency}.svg`,
+        import.meta.url
+      ).href;
     },
     installApp() {
       this.$store.dispatch("apps/install", this.app.id);

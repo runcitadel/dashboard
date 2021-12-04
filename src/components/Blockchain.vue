@@ -195,7 +195,10 @@ export default {
       }
     },
     async blockReadableTime(timestamp) {
-      return await format(new Date(timestamp * 1000), getDateFormatWithSeconds());
+      return await format(
+        new Date(timestamp * 1000),
+        getDateFormatWithSeconds()
+      );
     },
   },
 
