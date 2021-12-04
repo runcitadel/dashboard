@@ -421,6 +421,7 @@ export default {
   min-height: calc(100vh - 150px);
 }
 
+/*
 .input-search-form {
   form {
     position: relative;
@@ -442,7 +443,7 @@ export default {
     height: 1.25rem;
     width: auto;
   }
-}
+}*/
 
 ::placeholder {
   color: #c3c6d1;
