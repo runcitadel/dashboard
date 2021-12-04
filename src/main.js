@@ -1,4 +1,4 @@
-import { createApp } from "vue";
+import { createApp, configureCompat } from "vue";
 
 import App from "./App.vue";
 import router from "./router";
@@ -45,6 +45,10 @@ app.config.globalProperties.$filters = {
     }
   },
 };
+
+configureCompat({
+  INSTANCE_EVENT_EMITTER: true,
+});
 
 async function run() {
   const { default: BootstrapVue, BootstrapVueIcons } = await import(

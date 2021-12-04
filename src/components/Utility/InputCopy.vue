@@ -87,6 +87,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media (prefers-color-scheme: dark) {
+  .copy-input {
+    color: white !important;
+  }
+}
 .copy-input-container {
   border: dashed 2px #c3c6d1;
   padding: 0.2rem 0.8rem;
