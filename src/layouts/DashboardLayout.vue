@@ -349,7 +349,7 @@ export default {
     async downloadChannelBackup() {
       await API.download(
         `${
-          import.meta.env.VUE_APP_MIDDLEWARE_API_URL
+          import.meta.env.VITE_APP_MIDDLEWARE_API_URL
         }/v1/lnd/util/download-channel-backup`,
         {},
         true,
@@ -365,7 +365,7 @@ export default {
     async startUpdate() {
       try {
         await API.post(
-          `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/update`,
+          `${import.meta.env.VITE_APP_MANAGER_API_URL}/v1/system/update`,
           {}
         );
         this.isUpdating = true;

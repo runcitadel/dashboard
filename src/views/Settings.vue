@@ -709,7 +709,7 @@ export default {
 
       try {
         await API.post(
-          `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/account/totp/enable`,
+          `${import.meta.env.VITE_APP_MANAGER_API_URL}/v1/account/totp/enable`,
           payload,
           false
         );
@@ -751,7 +751,7 @@ export default {
 
       try {
         await API.post(
-          `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/account/totp/disable`,
+          `${import.meta.env.VITE_APP_MANAGER_API_URL}/v1/account/totp/disable`,
           payload,
           false
         );
@@ -795,7 +795,7 @@ export default {
       try {
         await API.post(
           `${
-            import.meta.env.VUE_APP_MANAGER_API_URL
+            import.meta.env.VITE_APP_MANAGER_API_URL
           }/v1/account/change-password`,
           payload,
           false

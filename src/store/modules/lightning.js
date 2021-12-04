@@ -154,7 +154,7 @@ const mutations = {
 const actions = {
   async getStatus({ commit }) {
     const status = await API.get(
-      `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/info/status`
+      `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/lnd/info/status`
     );
     if (status) {
       commit("isOperational", status.operational);
@@ -164,7 +164,7 @@ const actions = {
     // launch unlock modal after 30 sec
     // if (!status.unlocked) {
     //   await sleep(30000);
-    //   const { unlocked } = await API.get(`${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/info/status`);
+    //   const { unlocked } = await API.get(`${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/lnd/info/status`);
     //   commit('isUnlocked', unlocked);
     //   if (!unlocked) {
     //     Events.$emit('unlock-modal-open');
@@ -174,7 +174,7 @@ const actions = {
 
   async getSync({ commit }) {
     const sync = await API.get(
-      `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/info/sync`
+      `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/lnd/info/sync`
     );
     if (sync && sync.percent) {
       commit("setSync", sync);
@@ -184,7 +184,7 @@ const actions = {
   //basically fetches everything
   async getLndPageData({ commit, dispatch }) {
     const data = await API.get(
-      `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/pages/lnd`
+      `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/pages/lnd`
     );
 
     if (data) {
@@ -204,7 +204,7 @@ const actions = {
 
   async getConnectionCode({ commit }) {
     const uris = await API.get(
-      `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/info/uris`
+      `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/lnd/info/uris`
     );
 
     if (uris && uris.length > 0) {
@@ -219,7 +219,7 @@ const actions = {
   // Instead we can calculate our total balance by getting the sum of each channel's localBalance
   async getBalance({ commit }) {
     const balance = await API.get(
-      `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/wallet/lightning`
+      `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/lnd/wallet/lightning`
     );
 
     if (balance) {
@@ -235,7 +235,7 @@ const actions = {
       rawChannels = preFetchedChannels;
     } else {
       rawChannels = await API.get(
-        `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/channel`
+        `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/lnd/channel`
       );
     }
 
@@ -319,10 +319,10 @@ const actions = {
   async getTransactions({ commit, state }) {
     // Get invoices and payments
     const invoices = await API.get(
-      `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/lightning/invoices`
+      `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/lnd/lightning/invoices`
     );
     const payments = await API.get(
-      `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/lightning/payments`
+      `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/lnd/lightning/payments`
     );
 
     if (!invoices || !payments) {
@@ -403,7 +403,7 @@ const actions = {
 
       try {
         const invoiceDetails = await API.get(
-          `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/lightning/invoice?paymentRequest=${tx.paymentRequest}`
+          `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/lnd/lightning/invoice?paymentRequest=${tx.paymentRequest}`
         );
         if (invoiceDetails && invoiceDetails.description) {
           //load state's txs
@@ -433,7 +433,7 @@ const actions = {
 
   async getLndConnectUrls({ commit }) {
     const urls = await API.get(
-      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/lndconnect-urls`
+      `${import.meta.env.VITE_APP_MANAGER_API_URL}/v1/system/lndconnect-urls`
     );
     if (urls) {
       commit("setLndConnectUrls", urls);

@@ -47,7 +47,7 @@ const mutations = {
 const actions = {
   async getInstalledApps({ commit }) {
     const installedApps = await API.get(
-      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/apps?installed=1`
+      `${import.meta.env.VITE_APP_MANAGER_API_URL}/v1/apps?installed=1`
     );
     if (installedApps) {
       commit("setInstalledApps", installedApps);
@@ -56,7 +56,7 @@ const actions = {
   async getAppStore({ commit, dispatch }) {
     dispatch("getInstalledApps");
     const appStore = await API.get(
-      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/apps`
+      `${import.meta.env.VITE_APP_MANAGER_API_URL}/v1/apps`
     );
     if (appStore) {
       commit("setAppStore", appStore);
@@ -66,7 +66,7 @@ const actions = {
     commit("addUninstallingApp", appId);
     try {
       await API.post(
-        `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/apps/${appId}/uninstall`
+        `${import.meta.env.VITE_APP_MANAGER_API_URL}/v1/apps/${appId}/uninstall`
       );
     } catch (error) {
       if (error.response && error.response.data) {
@@ -94,7 +94,7 @@ const actions = {
     commit("addInstallingApp", appId);
     try {
       await API.post(
-        `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/apps/${appId}/install`
+        `${import.meta.env.VITE_APP_MANAGER_API_URL}/v1/apps/${appId}/install`
       );
     } catch (error) {
       if (error.response && error.response.data) {

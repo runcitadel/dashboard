@@ -213,7 +213,7 @@ export default {
           force: !this.channel.active, // Avoids force closing if channel is active
         };
         await API.delete(
-          `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/channel/close`,
+          `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/lnd/channel/close`,
           payload
         );
         this.$emit("channelclose");

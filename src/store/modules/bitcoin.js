@@ -222,7 +222,7 @@ const mutations = {
 const actions = {
   async getStatus({ commit }) {
     const status = await API.get(
-      `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/status`
+      `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/status`
     );
 
     if (status) {
@@ -236,7 +236,7 @@ const actions = {
 
   async getAddresses({ commit }) {
     const addresses = await API.get(
-      `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/addresses`
+      `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/addresses`
     );
 
     // Default onion address to not found.
@@ -255,7 +255,7 @@ const actions = {
 
   async getP2PInfo({ commit }) {
     const p2pInfo = await API.get(
-      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/bitcoin-p2p-connection-details`
+      `${import.meta.env.VITE_APP_MANAGER_API_URL}/v1/system/bitcoin-p2p-connection-details`
     );
 
     if (p2pInfo) {
@@ -265,7 +265,7 @@ const actions = {
 
   async getElectrumInfo({ commit }) {
     const electrumInfo = await API.get(
-      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/electrum-connection-details`
+      `${import.meta.env.VITE_APP_MANAGER_API_URL}/v1/system/electrum-connection-details`
     );
 
     if (electrumInfo) {
@@ -275,7 +275,7 @@ const actions = {
 
   async getRpcInfo({ commit }) {
     const rpcInfo = await API.get(
-      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/system/bitcoin-rpc-connection-details`
+      `${import.meta.env.VITE_APP_MANAGER_API_URL}/v1/system/bitcoin-rpc-connection-details`
     );
 
     if (rpcInfo) {
@@ -285,7 +285,7 @@ const actions = {
 
   async getSync({ commit }) {
     const sync = await API.get(
-      `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/sync`
+      `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/sync`
     );
 
     if (sync) {
@@ -312,7 +312,7 @@ const actions = {
 
     //TODO: Fetch only new blocks
     const latestThreeBlocks = await API.get(
-      `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/blocks?from=${
+      `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/blocks?from=${
         currentBlock - 2
       }&to=${currentBlock}`
     );
@@ -327,7 +327,7 @@ const actions = {
 
   async getVersion({ commit }) {
     const version = await API.get(
-      `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/version`
+      `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/version`
     );
 
     if (version) {
@@ -337,7 +337,7 @@ const actions = {
 
   async getPeers({ commit }) {
     const peers = await API.get(
-      `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/connections`
+      `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/connections`
     );
 
     if (peers) {
@@ -347,7 +347,7 @@ const actions = {
 
   async getStats({ commit }) {
     const stats = await API.get(
-      `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/stats`
+      `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/stats`
     );
 
     if (stats) {
@@ -367,7 +367,7 @@ const actions = {
 
   async getBalance({ commit }) {
     const balance = await API.get(
-      `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/wallet/btc`
+      `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/lnd/wallet/btc`
     );
 
     if (balance) {
@@ -377,14 +377,14 @@ const actions = {
 
   async getTransactions({ commit }) {
     const transactions = await API.get(
-      `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/transaction`
+      `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/lnd/transaction`
     );
     commit("transactions", transactions);
   },
 
   async getPrice({ commit }) {
     const price = await API.get(
-      `${import.meta.env.VUE_APP_MANAGER_API_URL}/v1/external/price`
+      `${import.meta.env.VITE_APP_MANAGER_API_URL}/v1/external/price`
     );
 
     if (price) {
@@ -394,7 +394,7 @@ const actions = {
 
   async getDepositAddress({ commit }) {
     const { address } = await API.get(
-      `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/address`
+      `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/lnd/address`
     );
 
     if (address) {
@@ -404,7 +404,7 @@ const actions = {
 
   async getFees({ commit }, { address, confTarget, amt, sweep }) {
     const fees = await API.get(
-      `${import.meta.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/transaction/estimateFee?address=${address}&confTarget=${confTarget}&amt=${amt}&sweep=${sweep}`
+      `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/lnd/transaction/estimateFee?address=${address}&confTarget=${confTarget}&amt=${amt}&sweep=${sweep}`
     );
 
     if (fees) {
