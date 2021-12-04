@@ -78,7 +78,7 @@
                 <p v-if="subTitle" class="text-muted mb-0">{{ subTitle }}</p>
               </div>
             </div>
-            <img v-if="icon" :alt="header" :src="require(`@/assets/${icon}`)" />
+            <img v-if="icon" :alt="header" :src="(new URL(`assets/${icon}`, import.meta.url)).href" />
           </div>
         </div>
         <slot></slot>
@@ -110,5 +110,3 @@ export default {
   methods: {},
 };
 </script>
-
-<style lang="scss" scoped></style>
