@@ -79,7 +79,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { Citadel } from "@runcitadel/sdk";
+import Citadel from "@runcitadel/sdk";
 import InputPassword from "@/components/Utility/InputPassword.vue";
 
 export default {
@@ -135,6 +135,7 @@ export default {
       } catch (error) {
         console.error(error);
         this.isIncorrectPassword = true;
+        this.isLoggingIn = false;
       }
       try {
         await this.$store.dispatch("user/login", {
