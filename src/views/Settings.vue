@@ -26,46 +26,13 @@
         class="card-app-list"
       >
         <div class="pt-2">
-          <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
-            <div>
-              <span class="d-block">Bitcoin</span>
-              <small class="d-block" style="opacity: 0.4"
-                >Run Bitcoin Core on Tor</small
-              >
-            </div>
-            <toggle-switch
-              class="align-self-center"
-              disabled
-              tooltip="Sorry, Tor cannot be disabled for now"
-            ></toggle-switch>
-          </div>
-          <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
-            <div>
-              <span class="d-block">Lightning</span>
-              <small class="d-block" style="opacity: 0.4"
-                >Run Lightning Network on Tor</small
-              >
-            </div>
-            <toggle-switch
-              class="align-self-center"
-              disabled
-              tooltip="Sorry, Tor cannot be disabled for now"
-            ></toggle-switch>
-          </div>
           <div class="px-3 px-lg-4 mb-4">
             <div class="d-flex justify-content-between w-100 mb-3">
-              <div class="w-75">
-                <span class="d-block">Remote access</span>
-                <small class="d-block" style="opacity: 0.4"
-                  >Remotely access your Citadel from anywhere using a Tor
-                  browser on this URL</small
-                >
-              </div>
-              <toggle-switch
-                class="align-self-center"
-                disabled
-                tooltip="Sorry, Tor cannot be disabled for now"
-              ></toggle-switch>
+              <span class="d-block">Remote access</span>
+              <small class="d-block" style="opacity: 0.4"
+                >Remotely access your Citadel from anywhere using a Tor browser
+                on this URL</small
+              >
             </div>
             <input-copy
               class="w-100"
@@ -574,7 +541,6 @@ import CardWidget from "@/components/CardWidget.vue";
 import StorageWidget from "@/components/Widgets/StorageWidget.vue";
 import RamWidget from "@/components/Widgets/RamWidget.vue";
 import TemperatureWidget from "@/components/Widgets/TemperatureWidget.vue";
-import ToggleSwitch from "@/components/ToggleSwitch.vue";
 import Seed from "@/components/Seed.vue";
 import InputPassword from "@/components/Utility/InputPassword.vue";
 import InputCopy from "@/components/Utility/InputCopy.vue";
@@ -593,7 +559,6 @@ export default {
     StorageWidget,
     RamWidget,
     TemperatureWidget,
-    ToggleSwitch,
     InputPassword,
     InputCopy,
     Seed,
