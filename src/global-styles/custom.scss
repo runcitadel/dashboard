@@ -877,3 +877,7 @@ body {
     height: #{$size}px;
   }
 }
+
+.input-group-append svg {
+    width: 24px;
+}
