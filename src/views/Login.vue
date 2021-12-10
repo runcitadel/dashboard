@@ -131,7 +131,7 @@ export default {
 
       try {
         let citadel = new Citadel(window.location.origin);
-        citadel.login(this.password, this.totpToken);
+        await citadel.login(this.password, this.totpToken);
       } catch (error) {
         console.error(error);
         this.isIncorrectPassword = true;
