@@ -116,6 +116,7 @@ export default {
       default: false,
     },
   },
+  emits: { change: null },
   data() {
     return {
       chosenFee: "normal",
@@ -235,10 +236,6 @@ $labelFontSize: 0.8rem;
   margin-top: 1rem;
 }
 
-.vue-slider-dot {
-  //   transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1) !important;
-}
-
 .vue-slider-dot-handle {
   transition: box-shadow 0.2s, background-color 0.2s ease;
 }
@@ -261,9 +258,6 @@ $labelFontSize: 0.8rem;
 }
 .vue-slider-dot-handle-disabled {
   box-shadow: none;
-}
-.vue-slider-mark-label {
-  //   text-transform: capitalize;
 }
 .vue-slider-ltr {
   .vue-slider-mark:first-child {

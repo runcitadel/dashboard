@@ -35,7 +35,10 @@ export default {
       type: String,
       default: "card-input-group",
     },
-    placeholder: String,
+    placeholder: {
+      type: String,
+      default: "password",
+    },
     disabled: {
       type: Boolean,
       default: false,

@@ -88,11 +88,10 @@
   </b-card>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script>
 import Status from "./Utility/Status.vue";
 
-export default defineComponent({
+export default {
   components: {
     Status,
   },
@@ -109,9 +108,9 @@ export default defineComponent({
   },
   computed: {},
   methods: {
-    src: (icon: string) => {
+    src: (icon) => {
       return new URL(`../assets/${icon}`, import.meta.url).href;
     },
   },
-});
+};
 </script>

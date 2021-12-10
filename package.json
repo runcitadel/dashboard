@@ -9,9 +9,8 @@
   },
   "dependencies": {
     "@bitcoin-design/bitcoin-icons-vue": "^0.1.8",
-    "@runcitadel/sdk": "^0.0.1-beta.6",
-    "@vitejs/plugin-vue": "^1.10.1",
-    "@vue/compat": "^3.2.23",
+    "@runcitadel/sdk": "^0.0.1-beta.15",
+    "@vue/compat": "^3.2.24",
     "axios": "^0.24.0",
     "bignumber.js": "^9.0.1",
     "bootstrap": "^5.1.3",
@@ -21,8 +20,6 @@
     "countup.js": "^2.0.8",
     "date-fns": "^2.27.0",
     "qrcode.vue": "^3.3.3",
-    "typescript": "^4.5.2",
-    "vite": "^2.7.0-beta.10",
     "vue": "^3.2.23",
     "vue-confetti": "^2.2.2",
     "vue-router": "^4.0.12",
@@ -30,12 +27,14 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@vue/eslint-config-prettier": "^6.0.0",
-    "eslint": "^8.4.0",
+    "@vitejs/plugin-vue": "^1.10.2",
+    "eslint": "^8.4.1",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-vue": "^8.1.1",
+    "eslint-plugin-vue": "^8.2.0",
     "prettier": "^2.5.1",
-    "sass": "^1.45.0-rc.2"
+    "sass": "^1.45.0-rc.2",
+    "vite": "^2.7.1"
   },
   "eslintConfig": {
     "root": true,
@@ -44,7 +43,7 @@
     },
     "extends": [
       "plugin:vue/vue3-recommended",
-      "@vue/prettier"
+      "plugin:prettier/recommended"
     ],
     "rules": {
       "no-console": "off",
