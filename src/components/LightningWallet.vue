@@ -800,25 +800,25 @@
   </card-widget>
 </template>
 
-<script>
+<script lang="ts">
 import {
   formatDistance,
   format,
   getDateFormatWithSeconds,
-} from "@/helpers/date.js";
+} from "../helpers/date.js";
 import { addHours } from "date-fns";
 
 import { mapState } from "vuex";
 
-import { satsToBtc, btcToSats } from "@/helpers/units.ts";
-import API from "@/helpers/api.js";
+import { satsToBtc, btcToSats } from "../helpers/units";
 
-import CountUp from "@/components/Utility/CountUp.vue";
-import CardWidget from "@/components/CardWidget.vue";
-import InputCopy from "@/components/Utility/InputCopy.vue";
-import QrCode from "@/components/Utility/QrCode.vue";
-import CircularCheckmark from "@/components/Utility/CircularCheckmark.vue";
-import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch.vue";
+import CountUp from "../components/Utility/CountUp.vue";
+import CardWidget from "../components/CardWidget.vue";
+import InputCopy from "../components/Utility/InputCopy.vue";
+import QrCode from "../components/Utility/QrCode.vue";
+import CircularCheckmark from "../components/Utility/CircularCheckmark.vue";
+import SatsBtcSwitch from "../components/Utility/SatsBtcSwitch.vue";
+import type Citadel from '@runcitadel/sdk/dist/citadel';
 
 export default {
   components: {
@@ -902,11 +902,7 @@ export default {
             return;
           }
           this.receive.invoiceStatusPollerInprogress = true;
-          const invoices = await API.get(
-            `${
-              import.meta.env.VITE_APP_MIDDLEWARE_API_URL
-            }/v1/lnd/lightning/invoices`
-          );
+          const invoices = await (this.$store.state.citadel as Citadel).middleware.lnd.lightning.invoices();
           if (invoices && invoices.length) {
             //search for invoice
             const currentInvoice = invoices.filter((inv) => {
@@ -1010,21 +1006,12 @@ export default {
       this.send.isSending = true;
       this.error = "";
 
-      const payload = {
-        amt: 0, //because payment request already has amount info
-        paymentRequest: this.send.paymentRequest,
-      };
-
       try {
-        const res = await API.post(
-          `${
-            import.meta.env.VITE_APP_MIDDLEWARE_API_URL
-          }/v1/lnd/lightning/payInvoice`,
-          payload
-        );
-        if (res.data.paymentError) {
+        const res = await (this.$store.state.citadel as Citadel).middleware.lnd.lightning.payInvoice(this.send.paymentRequest);
+        // TODO: Fix this
+        /*if (res.data.paymentError) {
           return (this.error = res.data.paymentError);
-        }
+        }*/
         this.mode = "sent";
 
         //refresh
@@ -1051,20 +1038,10 @@ export default {
         this.receive.invoiceQR = `${this.receive.invoiceQR}2345`;
       }, 200);
 
-      const payload = {
-        amt: this.receive.amount,
-        memo: this.receive.description,
-      };
-
       //cool QR animation for a while
       setTimeout(async () => {
         try {
-          const res = await API.post(
-            `${
-              import.meta.env.VITE_APP_MIDDLEWARE_API_URL
-            }/v1/lnd/lightning/addInvoice`,
-            payload
-          );
+          const res = await (this.$store.state.citadel as Citadel).middleware.lnd.lightning.addInvoice(this.receive.amount, this.receive.description);
           this.receive.invoiceQR = this.receive.paymentRequest =
             res.data.paymentRequest;
 
@@ -1104,11 +1081,7 @@ export default {
       this.error = "";
       this.loading = true;
 
-      const fetchedInvoice = await API.get(
-        `${
-          import.meta.env.VITE_APP_MIDDLEWARE_API_URL
-        }/v1/lnd/lightning/invoice?paymentRequest=${this.send.paymentRequest}`
-      );
+      const fetchedInvoice = await (this.$store.state.citadel as Citadel).middleware.lnd.lightning.parsePaymentRequest(this.send.paymentRequest);
 
       if (!fetchedInvoice) {
         this.send.isValidInvoice = false;

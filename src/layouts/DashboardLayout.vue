@@ -122,24 +122,6 @@
               <p v-if="availableUpdate.notes" class="text-newlines">
                 {{ availableUpdate.notes }}
               </p>
-              <b-alert variant="warning" show>
-                <small
-                  >Please download the latest backup of your payment channels
-                  before updating and make sure to note down your 24 secret
-                  words (if you haven't already). You'll need these to recover
-                  your funds in case something goes wrong.</small
-                >
-                <b-button
-                  class="mt-2 mb-1 d-block"
-                  variant="warning"
-                  size="sm"
-                  @click="downloadChannelBackup"
-                >
-                  <small>
-                    <div class="me-1"><ReceiveIcon /></div> </small
-                  >Download channel backup
-                </b-button>
-              </b-alert>
               <b-button
                 block
                 variant="success"
@@ -238,7 +220,8 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import type Citadel from '@runcitadel/sdk';
 import { mapState } from "vuex";
 import { readableSize } from "@/helpers/size.js";
 import API from "@/helpers/api.js";
@@ -346,16 +329,6 @@ export default {
     toggleMobileMenu() {
       this.$store.commit("toggleMobileMenu");
     },
-    async downloadChannelBackup() {
-      await API.download(
-        `${
-          import.meta.env.VITE_APP_MIDDLEWARE_API_URL
-        }/v1/lnd/util/download-channel-backup`,
-        {},
-        true,
-        "my-citadel-channels.backup"
-      );
-    },
     hideUpdateConfirmationModal() {
       this.$store.dispatch("system/hideUpdateConfirmationModal");
     },
@@ -364,10 +337,9 @@ export default {
     },
     async startUpdate() {
       try {
-        await API.post(
-          `${import.meta.env.VITE_APP_MANAGER_API_URL}/v1/system/update`,
-          {}
-        );
+        await (
+          this.$store.state.citadel as Citadel
+        ).manager.system.startUpdate();
         this.isUpdating = true;
         // poll update status every 2s until the update process begins
         // because after it's updated, the loading view will take over

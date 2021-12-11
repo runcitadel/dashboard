@@ -148,7 +148,6 @@
           <template #menu>
             <b-dropdown-item
               href="#"
-              @click.stop.prevent="downloadChannelBackup"
               >Download channel backup file</b-dropdown-item
             >
             <b-dropdown-divider></b-dropdown-divider>
@@ -319,8 +318,6 @@
 import { mapState } from "vuex";
 import { format } from "date-fns";
 
-import API from "@/helpers/api.js";
-
 import CardWidget from "@/components/CardWidget.vue";
 import Stat from "@/components/Utility/Stat.vue";
 import LightningWallet from "@/components/LightningWallet.vue";
@@ -382,16 +379,6 @@ export default {
   methods: {
     getReadableTime(timestamp) {
       return format(new Date(timestamp), "MMM d, h:mm:ss a");
-    },
-    async downloadChannelBackup() {
-      await API.download(
-        `${
-          import.meta.env.VITE_APP_MIDDLEWARE_API_URL
-        }/v1/lnd/util/download-channel-backup`,
-        {},
-        true,
-        "my-citadel-channels.backup"
-      );
     },
     manageChannel(channel) {
       if (channel) {

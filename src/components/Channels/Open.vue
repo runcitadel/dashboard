@@ -82,7 +82,8 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
+import type Citadel from "@runcitadel/sdk";
 import { mapState } from "vuex";
 
 import API from "@/helpers/api.js";
@@ -91,9 +92,48 @@ import { satsToBtc, btcToSats } from "@/helpers/units.ts";
 import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch.vue";
 import FeeSelector from "@/components/Utility/FeeSelector.vue";
 
+type data = {
+  peerConnectionCode: string;
+  fundingAmountInput: string;
+  fundingAmount: number;
+  isOpening: boolean;
+  selectedFee: {
+    type: "custom" | "fast" | "normal" | "slow" | "cheapest";
+    satPerByte: number;
+  };
+  fee: {
+    fast: {
+      total: number;
+      perByte:string;
+      error: string;
+      sweepAmount: number;
+    };
+    normal: {
+      total: number;
+      perByte:string;
+      error: string;
+      sweepAmount: number;
+    };
+    slow: {
+      total: number;
+      perByte:string;
+      error: string;
+      sweepAmount: number;
+    };
+    cheapest: {
+      total: number;
+      perByte:string;
+      error: string;
+      sweepAmount: number;
+    };
+  };
+  error: string;
+  feeTimeout: null;
+  sweep: boolean;
+};
 export default {
   props: {},
-  data() {
+  data(): data {
     return {
       peerConnectionCode: "",
       fundingAmountInput: "",
@@ -132,7 +172,7 @@ export default {
       error: "",
       feeTimeout: null,
       sweep: false,
-    };
+    } as data;
   },
   computed: {
     ...mapState({
@@ -194,13 +234,21 @@ export default {
 
       this.error = "";
 
-      const payload = {
+      const payload: {
+        amt: number;
+        name: string;
+        purpose: string;
+        satPerByte: number;
+        port?: string;
+        pubKey?: string;
+        ip?: string;
+      } = {
         amt: this.sweep
-          ? parseInt(this.fee[this.selectedFee.type].sweepAmount, 10)
-          : parseInt(this.fundingAmount, 10),
+          ? parseInt(this.fee[this.selectedFee.type as "fast" | "normal" | "slow" | "cheapest"].sweepAmount as unknown as string, 10)
+          : parseInt(this.fundingAmount as unknown as string, 10),
         name: "",
         purpose: "",
-        satPerByte: parseInt(this.selectedFee.satPerByte, 10),
+        satPerByte: parseInt(this.selectedFee.satPerByte as unknown as string, 10),
       };
 
       const parsedConnectionCode = this.peerConnectionCode.match(
@@ -226,9 +274,14 @@ export default {
       //to do: connect to onion node if only the user's node is running tor
 
       try {
-        await API.post(
-          `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/lnd/channel/open`,
-          payload
+        await (
+          this.$store.state.citadel as Citadel
+        ).middleware.lnd.channel.openChannel(
+          payload.pubKey as string,
+          payload.ip as string,
+          payload.port as string,
+          payload.amt,
+          payload.satPerByte
         );
         this.isOpening = false;
         this.$emit("channelopen");
@@ -263,12 +316,11 @@ export default {
           let estimates;
 
           try {
-            estimates = await API.get(
-              `${
-                import.meta.env.VITE_APP_MIDDLEWARE_API_URL
-              }/v1/lnd/channel/estimateFee?confTarget=0&amt=${
-                this.fundingAmount
-              }&sweep=${this.sweep}`
+            estimates = await (
+              this.$store.state.citadel as Citadel
+            ).middleware.lnd.channel.estimateFeeAll(
+              this.fundingAmount,
+              this.sweep
             );
           } catch (error) {
             if (error.response && error.response.data) {

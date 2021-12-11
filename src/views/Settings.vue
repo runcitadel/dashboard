@@ -530,10 +530,9 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { mapState } from "vuex";
 
-import API from "@/helpers/api.js";
 import delay from "@/helpers/delay.js";
 import { prettifySeconds } from "@/helpers/date.js";
 
@@ -552,6 +551,7 @@ import {
   RefreshIcon,
 } from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
 import { BIconCheckCircleFill } from "bootstrap-vue/src/index.js";
+import { RootState } from '../store';
 
 export default {
   components: {
@@ -668,20 +668,13 @@ export default {
     async enableTwoFactorAuth() {
       this.isEnablingTwoFactorAuth = true;
 
-      const payload = {
-        authenticatorToken: this.authenticatorToken,
-      };
-
       try {
-        await API.post(
-          `${import.meta.env.VITE_APP_MANAGER_API_URL}/v1/account/totp/enable`,
-          payload,
-          false
-        );
+        const citadel = (this.$store.state as RootState).citadel;
+        await citadel.manager.auth.enableTotp(this.authenticatorToken);
         this.isEnablingTwoFactorAuth = false;
       } catch (error) {
-        if (error.response && error.response.data) {
-          this.$bvToast.toast(error.response.data, {
+        if (error && error.message) {
+          this.$bvToast.toast(error.message, {
             title: "Error",
             autoHideDelay: 3000,
             variant: "danger",
@@ -710,20 +703,13 @@ export default {
     async disableTwoFactorAuth() {
       this.isDisablingTwoFactorAuth = true;
 
-      const payload = {
-        authenticatorToken: this.authenticatorToken,
-      };
-
       try {
-        await API.post(
-          `${import.meta.env.VITE_APP_MANAGER_API_URL}/v1/account/totp/disable`,
-          payload,
-          false
-        );
+        const citadel = (this.$store.state as RootState).citadel;
+        await citadel.manager.auth.disableTotp(this.authenticatorToken);
         this.isDisablingTwoFactorAuth = false;
       } catch (error) {
-        if (error.response && error.response.data) {
-          this.$bvToast.toast(error.response.data, {
+        if (error && (error as Error).message) {
+          this.$bvToast.toast((error as Error).message, {
             title: "Error",
             autoHideDelay: 3000,
             variant: "danger",
@@ -750,31 +736,21 @@ export default {
       this.$bvModal.hide("two-factor-auth-modal");
     },
     async changePassword() {
-      const payload = {
-        password: this.currentPassword,
-        newPassword: this.newPassword,
-      };
-
       this.isChangingPassword = true;
 
       try {
-        await API.post(
-          `${
-            import.meta.env.VITE_APP_MANAGER_API_URL
-          }/v1/account/change-password`,
-          payload,
-          false
-        );
+        const citadel = (this.$store.state as RootState).citadel;
+        await citadel.manager.auth.changePassword(this.currentPassword, this.newPassword);
       } catch (error) {
-        if (error.response && error.response.data) {
-          this.$bvToast.toast(error.response.data, {
+        if (error && error.rmessage) {
+          this.$bvToast.toast(error.message, {
             title: "Error",
             autoHideDelay: 3000,
             variant: "danger",
             solid: true,
             toaster: "b-toaster-bottom-right",
           });
-          if (error.response.data === "Incorrect password") {
+          if (error.message === "Incorrect password") {
             this.isIncorrectPassword = true;
           }
         }

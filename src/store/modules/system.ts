@@ -196,13 +196,6 @@ const systemModule: Module<State, RootState> = {
         commit("setUnit", unit);
       }
     },
-    /*async getApi({ commit, rootState }) {
-    const api = await API.get(`${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/ping`);
-    commit("setApi", {
-      operational: !!(api && api.version),
-      version: api && api.version ? api.version : "",
-    });
-  },*/
     async getManagerApi({ commit, rootState }) {
       const api = await rootState.citadel.manager.ping();
       commit("setManagerApi", {

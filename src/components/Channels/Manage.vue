@@ -169,9 +169,9 @@
   </div>
 </template>
 
-<script>
-import Bar from "@/components/Channels/Bar.vue";
-import API from "@/helpers/api.js";
+<script lang="ts">
+import Bar from "../Channels/Bar.vue";
+import type Citadel from '@runcitadel/sdk';
 
 export default {
   components: {
@@ -212,10 +212,7 @@ export default {
           channelPoint: this.channel.channelPoint,
           force: !this.channel.active, // Avoids force closing if channel is active
         };
-        await API.delete(
-          `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/lnd/channel/close`,
-          payload
-        );
+        await (this.$store.state.citadel as Citadel).middleware.lnd.channel.closeChannel(this.channel.channelPoint, !this.channel.active);
         this.$emit("channelclose");
         setTimeout(() => {
           this.$bvToast.toast(`Channel closed`, {

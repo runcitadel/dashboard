@@ -251,9 +251,9 @@
                 <label class="sr-onlsy" for="input-withdrawal-amount"
                   >Amount</label
                 >
-                <b-form-checkbox v-model="withdraw.sweep" size="sm" switch>
+                <!--<b-form-checkbox v-model="withdraw.sweep" size="sm" switch>
                   <small class="text-muted">Max</small>
-                </b-form-checkbox>
+                </b-form-checkbox>-->
               </div>
               <b-input-group class="neu-input-group">
                 <b-input
@@ -653,25 +653,43 @@
   </card-widget>
 </template>
 
-<script>
+<script lang="ts">
+import type { RootState } from '../store';
+
+type data = {
+      //balance: 162500, //net user's balance in sats
+      mode: "transactions" | "deposit" | "withdraw"| "review-withdraw"| "withdrawn"
+      withdraw: {
+        amountInput: "" | number;
+        amount:"" | number;
+        address: string;
+        sweep: boolean;
+        feesTimeout: null | number;
+        isTyping: boolean;
+        isWithdrawing: boolean;
+        txHash: string;
+        selectedFee: { type: string, satPerByte: number }, //selected withdrawal fee
+      },
+      loading: boolean;
+      error: string;
+    }
 import {
   formatDistance,
   format,
   getDateFormatWithSeconds,
-} from "@/helpers/date.js";
+} from "../helpers/date.js";
 
 import { mapState, mapGetters } from "vuex";
 
-import { satsToBtc, btcToSats } from "@/helpers/units.ts";
-import API from "@/helpers/api.js";
+import { satsToBtc, btcToSats } from "../helpers/units.js";
 
-import CountUp from "@/components/Utility/CountUp.vue";
-import CardWidget from "@/components/CardWidget.vue";
-import InputCopy from "@/components/Utility/InputCopy.vue";
-import QrCode from "@/components/Utility/QrCode.vue";
-import CircularCheckmark from "@/components/Utility/CircularCheckmark.vue";
-import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch.vue";
-import FeeSelector from "@/components/Utility/FeeSelector.vue";
+import CountUp from "../components/Utility/CountUp.vue";
+import CardWidget from "../components/CardWidget.vue";
+import InputCopy from "../components/Utility/InputCopy.vue";
+import QrCode from "../components/Utility/QrCode.vue";
+import CircularCheckmark from "../components/Utility/CircularCheckmark.vue";
+import SatsBtcSwitch from "../components/Utility/SatsBtcSwitch.vue";
+import FeeSelector from "../components/Utility/FeeSelector.vue";
 
 export default {
   props: {},
@@ -692,7 +710,7 @@ export default {
       },
       loading: false, //overall state of the wallet, used to toggle progress bar on top of the card,
       error: "", //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
-    };
+    } as data;
   },
   computed: {
     ...mapState({
@@ -757,7 +775,7 @@ export default {
           (parseInt(this.fees.fast.total, 10) /
             parseInt(this.fees.fast.perByte, 10)) *
             parseInt(this.withdraw.selectedFee.satPerByte, 10);
-        return parseInt(Math.round(remainingBalanceInSats), 10);
+        return Math.round(remainingBalanceInSats);
       }
     },
   },
@@ -800,7 +818,7 @@ export default {
     this.$store.dispatch("apps/getInstalledApps");
   },
   methods: {
-    async getTimeFromNow(timestamp) {
+    async getTimeFromNow(timestamp: number) {
       return await formatDistance(new Date(timestamp), new Date()); //used in the list of txs, eg "a few seconds ago"
     },
     async getReadableTime(timestamp) {
@@ -924,10 +942,8 @@ export default {
       };
 
       try {
-        const res = await API.post(
-          `${import.meta.env.VITE_APP_MIDDLEWARE_API_URL}/v1/lnd/transaction`,
-          payload
-        );
+        const citadel = (this.$store.state as RootState).citadel;
+        const res = citadel.middleware.lnd.transaction.sendCoins(payload.addr, payload.amt, payload.satPerByte);
         const withdrawTx = res.data;
         this.withdraw.txHash = withdrawTx.txid;
         this.changeMode("withdrawn");

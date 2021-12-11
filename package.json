@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@bitcoin-design/bitcoin-icons-vue": "^0.1.8",
-    "@runcitadel/sdk": "^0.0.1-beta.20",
+    "@runcitadel/sdk": "^0.0.1-beta.21",
     "@vue/compat": "^3.2.24",
     "axios": "^0.24.0",
     "bignumber.js": "^9.0.1",
