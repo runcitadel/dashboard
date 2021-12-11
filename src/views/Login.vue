@@ -29,6 +29,7 @@
         <input-password
           ref="password"
           v-model="password"
+          autocomplete="current-password"
           placeholder="Password"
           :input-class="[
             isIncorrectPassword ? 'incorrect-password' : '',
@@ -79,7 +80,6 @@
 
 <script>
 import { mapState } from "vuex";
-import Citadel from "@runcitadel/sdk";
 import InputPassword from "@/components/Utility/InputPassword.vue";
 
 export default {

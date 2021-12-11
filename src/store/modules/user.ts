@@ -46,6 +46,10 @@ const userModule: Module<State, RootState> = {
     setTotpAuthenticated(state, totpAuthenticated) {
       state.totpAuthenticated = totpAuthenticated;
     },
+    setJWT(state, jwt) {
+      window.localStorage.setItem("jwt", jwt);
+      state.jwt = jwt;
+    },
     setSeed(state, seed) {
       state.seed = seed;
     },
@@ -59,12 +63,14 @@ const userModule: Module<State, RootState> = {
         totpToken
       );
       if (jwt) {
+        commit("setJWT", jwt);
         commit("setJWT", jwt, { root: true });
       }
     },
 
     logout({ commit, state }) {
       if (state.jwt) {
+        commit("setJWT", "");
         commit("setJWT", "", { root: true });
         router.push("/");
       }
@@ -73,6 +79,7 @@ const userModule: Module<State, RootState> = {
     async refreshJWT({ commit, rootState }) {
       const jwt = await rootState.citadel.manager.auth.refresh();
       if (jwt) {
+        commit("setJWT", jwt);
         commit("setJWT", jwt, { root: true });
       }
     },
@@ -126,6 +133,7 @@ const userModule: Module<State, RootState> = {
         );
 
         if (jwt) {
+          commit("setJWT", jwt);
           commit("setJWT", jwt, { root: true });
           commit("setRegistered", true);
           commit("setSeed", []); //remove seed from store
