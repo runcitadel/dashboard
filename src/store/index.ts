@@ -1,26 +1,36 @@
-import { createStore } from "vuex";
+import { ActionTree, createStore, GetterTree, MutationTree } from "vuex";
 
 //Modules
 import user from "./modules/user";
-import system from "./modules/system";
+//import system from "./modules/system";
 import bitcoin from "./modules/bitcoin";
 import lightning from "./modules/lightning";
 import apps from "./modules/apps";
+import Citadel from "@runcitadel/sdk";
+
+export interface RootState {
+  isMobileMenuOpen: boolean;
+  citadel: Citadel;
+}
 
 // Initial State
 const state = {
   isMobileMenuOpen: true,
+  citadel: new Citadel(window.location.origin),
 };
 
 // Getters
-const getters = {
+const getters: GetterTree<RootState, RootState> = {
   isMobileMenuOpen(state) {
     return state.isMobileMenuOpen;
+  },
+  citadel(state) {
+    return state.citadel;
   },
 };
 
 // Mutations
-const mutations = {
+const mutations: MutationTree<RootState> = {
   toggleMobileMenu(state) {
     //disable body's scrolling on menu open
     if (!state.isMobileMenuOpen) {
@@ -31,10 +41,13 @@ const mutations = {
       state.isMobileMenuOpen = false;
     }
   },
+  setJwt(state, jwt: string) {
+    state.citadel.jwt = jwt;
+  },
 };
 
 // Actions
-const actions = {
+const actions: ActionTree<RootState, RootState> = {
   toggleMobileMenu(context) {
     context.commit("toggleMobileMenu");
   },
@@ -47,7 +60,7 @@ export default createStore({
   getters,
   modules: {
     user,
-    system,
+    //system,
     bitcoin,
     lightning,
     apps,

@@ -86,7 +86,7 @@
 import { mapState } from "vuex";
 
 import API from "@/helpers/api.js";
-import { satsToBtc, btcToSats } from "@/helpers/units.js";
+import { satsToBtc, btcToSats } from "@/helpers/units.ts";
 
 import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch.vue";
 import FeeSelector from "@/components/Utility/FeeSelector.vue";

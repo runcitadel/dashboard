@@ -130,31 +130,13 @@ export default {
       this.isLoggingIn = true;
 
       try {
-        let citadel = new Citadel(window.location.origin);
-        await citadel.login(this.password, this.totpToken);
-      } catch (error) {
-        console.error(error);
-        this.isIncorrectPassword = true;
-        this.isLoggingIn = false;
-      }
-      try {
         await this.$store.dispatch("user/login", {
           password: this.password,
           totpToken: this.totpToken,
         });
       } catch (error) {
-        if (error.response && error.response.data === "Incorrect password") {
           this.isIncorrectPassword = true;
           this.isLoggingIn = false;
-          return;
-        } else if (
-          error.response &&
-          error.response.data === "Unable to authenticate"
-        ) {
-          this.isIncorrectToken = true;
-          this.isLoggingIn = false;
-          return;
-        }
       }
 
       //redirect to dashboard

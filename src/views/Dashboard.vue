@@ -102,7 +102,7 @@
 <script>
 import { mapState } from "vuex";
 
-import { satsToBtc } from "@/helpers/units.js";
+import { satsToBtc } from "@/helpers/units.ts";
 
 import CountUp from "@/components/Utility/CountUp.vue";
 import CardWidget from "@/components/CardWidget.vue";

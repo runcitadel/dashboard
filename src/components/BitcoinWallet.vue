@@ -662,7 +662,7 @@ import {
 
 import { mapState, mapGetters } from "vuex";
 
-import { satsToBtc, btcToSats } from "@/helpers/units.js";
+import { satsToBtc, btcToSats } from "@/helpers/units.ts";
 import API from "@/helpers/api.js";
 
 import CountUp from "@/components/Utility/CountUp.vue";

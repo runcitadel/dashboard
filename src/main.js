@@ -2,10 +2,10 @@ import { createApp, configureCompat } from "vue";
 import BootstrapVue from "bootstrap-vue/src/index.js";
 
 import App from "./App.vue";
-import router from "./router/index.js";
-import store from "./store/index.js";
+import router from "./router/index.ts";
+import store from "./store/index.ts";
 
-import { satsToBtc } from "@/helpers/units.js";
+import { satsToBtc } from "@/helpers/units.ts";
 
 // import "@/global-styles/designsystem.scss";
 // import 'bootstrap/dist/css/bootstrap.css'

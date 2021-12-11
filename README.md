@@ -8,3 +8,4 @@ We will still maintain this in the future, but new features will get added to ou
 
 Currently, this dashboard is the default on Citadel, but we're working on changing that.
 
+This dashboard contains code from [Casa](https://github.com/Casa/V2-Casa-Node-UI) and [Umbrel](https://github.com/getumbrel/umbrel-dashboard).
