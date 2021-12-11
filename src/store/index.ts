@@ -2,7 +2,7 @@ import { ActionTree, createStore, GetterTree, MutationTree } from "vuex";
 
 //Modules
 import user from "./modules/user";
-//import system from "./modules/system";
+import system from "./modules/system";
 import bitcoin from "./modules/bitcoin";
 import lightning from "./modules/lightning";
 import apps from "./modules/apps";
@@ -60,7 +60,7 @@ export default createStore({
   getters,
   modules: {
     user,
-    //system,
+    system,
     bitcoin,
     lightning,
     apps,
