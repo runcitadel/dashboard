@@ -70,7 +70,7 @@ export interface State {
 
 const bitcoinModule: Module<State, RootState> = {
   // Initial state
-  state: {
+  state: () => ({
     operational: false,
     calibrating: false,
     version: "",
@@ -147,7 +147,7 @@ const bitcoinModule: Module<State, RootState> = {
         error: false,
       },
     },
-  },
+  }),
 
   // Functions to update the state directly
   mutations: {

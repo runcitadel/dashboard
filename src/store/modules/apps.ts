@@ -10,12 +10,12 @@ export interface State {
 }
 const appModule: Module<State, RootState> = {
   // Initial state
-  state: {
+  state: () => ({
     installed: [],
     store: [],
     installing: [],
     uninstalling: [],
-  },
+  }),
 
   // Functions to update the state directly
   mutations: {

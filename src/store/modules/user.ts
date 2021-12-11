@@ -15,7 +15,7 @@ export interface State {
 
 // Initial state
 const userModule: Module<State, RootState> = {
-  state: {
+  state: () => ({
     name: "",
     jwt: window.localStorage.getItem("jwt") || "",
     registered: true,
@@ -24,7 +24,7 @@ const userModule: Module<State, RootState> = {
     totpAuthenticated: false,
     seed: [],
     installedApps: [],
-  },
+  }),
 
   // Functions to update the state directly
   mutations: {

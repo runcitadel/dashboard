@@ -81,7 +81,7 @@ export interface State {
 
 const lightningModule: Module<State, RootState> = {
   // Initial state
-  state: {
+  state: () => ({
     operational: false,
     unlocked: false,
     version: "",
@@ -123,7 +123,7 @@ const lightningModule: Module<State, RootState> = {
     confirmedTransactions: [],
     pendingTransactions: [],
     pendingChannelEdit: {},
-  },
+  }),
   mutations: {
     isOperational(state, operational) {
       state.operational = operational;

@@ -61,7 +61,7 @@ export interface State {
 
 const systemModule: Module<State, RootState> = {
   // Initial state
-  state: {
+  state: () => ({
     version: "",
     availableUpdate: {
       version: "", //update version available to download
@@ -111,7 +111,7 @@ const systemModule: Module<State, RootState> = {
     cpuTemperature: 0, //in celsius
     cpuTemperatureUnit: "celsius",
     uptime: null,
-  },
+  }),
   mutations: {
     setVersion(state, version) {
       state.version = version;
