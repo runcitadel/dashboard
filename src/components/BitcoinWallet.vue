@@ -681,7 +681,7 @@ import {
 
 import { mapState, mapGetters } from "vuex";
 
-import { satsToBtc, btcToSats } from "../helpers/units.js";
+import { satsToBtc, btcToSats } from "../helpers/units";
 
 import CountUp from "../components/Utility/CountUp.vue";
 import CardWidget from "../components/CardWidget.vue";

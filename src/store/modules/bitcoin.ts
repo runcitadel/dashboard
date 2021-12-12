@@ -4,7 +4,7 @@ import type {
   Transaction_extended,
 } from "@runcitadel/sdk/dist/middleware/lnd/transaction";
 import { Module } from "vuex";
-import { toPrecision } from "../../helpers/units.js";
+import { toPrecision } from "../../helpers/units";
 import { RootState } from "../index.js";
 
 export interface State {
