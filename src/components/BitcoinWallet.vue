@@ -818,11 +818,11 @@ export default {
     this.$store.dispatch("apps/getInstalledApps");
   },
   methods: {
-    async getTimeFromNow(timestamp: number) {
-      return await formatDistance(new Date(timestamp), new Date()); //used in the list of txs, eg "a few seconds ago"
+    getTimeFromNow(timestamp: number) {
+      return formatDistance(new Date(timestamp), new Date()); //used in the list of txs, eg "a few seconds ago"
     },
-    async getReadableTime(timestamp) {
-      return await format(new Date(timestamp), getDateFormatWithSeconds()); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
+    getReadableTime(timestamp) {
+      return format(new Date(timestamp), getDateFormatWithSeconds()); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
     },
     getTxExplorerUrl(txHash) {
       if (this.localExplorerTxUrl) {

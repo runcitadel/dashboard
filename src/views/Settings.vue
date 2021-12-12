@@ -602,8 +602,8 @@ export default {
           state.user.name + "'Citadel"
         )}?secret=${state.user.totpKey}&period=30"`,
     }),
-    async getUptime() {
-      return await prettifySeconds(this.uptime);
+    getUptime() {
+      return prettifySeconds(this.uptime);
     },
     debugContents() {
       return this.showDmesg ? this.debugResult.dmesg : this.debugResult.debug;

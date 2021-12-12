@@ -46,7 +46,7 @@ const userModule: Module<State, RootState> = {
     setTotpAuthenticated(state, totpAuthenticated) {
       state.totpAuthenticated = totpAuthenticated;
     },
-    setJWT(state, jwt) {
+    setJwt(state, jwt) {
       window.localStorage.setItem("jwt", jwt);
       state.jwt = jwt;
     },
@@ -63,24 +63,30 @@ const userModule: Module<State, RootState> = {
         totpToken
       );
       if (jwt) {
-        commit("setJWT", jwt);
-        commit("setJWT", jwt, { root: true });
+        commit("setJwt", jwt);
+        commit("setJwt", jwt, { root: true });
       }
     },
 
     logout({ commit, state }) {
       if (state.jwt) {
-        commit("setJWT", "");
-        commit("setJWT", "", { root: true });
+        commit("setJwt", "");
+        commit("setJwt", "", { root: true });
         router.push("/");
       }
     },
 
     async refreshJWT({ commit, rootState }) {
-      const jwt = await rootState.citadel.manager.auth.refresh();
-      if (jwt) {
-        commit("setJWT", jwt);
-        commit("setJWT", jwt, { root: true });
+      try {
+        const jwt = await rootState.citadel.manager.auth.refresh();
+        if (jwt) {
+          commit("setJwt", jwt);
+          commit("setJwt", jwt, { root: true });
+        }
+      } catch {
+        commit("setJwt", "");
+        commit("setJwt", "", { root: true });
+        router.push("/");
       }
     },
 
@@ -133,8 +139,8 @@ const userModule: Module<State, RootState> = {
         );
 
         if (jwt) {
-          commit("setJWT", jwt);
-          commit("setJWT", jwt, { root: true });
+          commit("setJwt", jwt);
+          commit("setJwt", jwt, { root: true });
           commit("setRegistered", true);
           commit("setSeed", []); //remove seed from store
         }

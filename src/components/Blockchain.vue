@@ -185,17 +185,17 @@ export default {
         this.polling = window.setInterval(this.fetchBlocks, 60 * 1000);
       }
     },
-    async blockTime(timestamp) {
+    blockTime(timestamp) {
       const minedAt = timestamp * 1000;
       //sometimes the block can have a timestamp with a few seconds in the future compared to browser's time
       if (new Date(minedAt) < new Date()) {
-        return await formatDistance(new Date(minedAt), new Date());
+        return formatDistance(new Date(minedAt), new Date());
       } else {
         return "just now";
       }
     },
-    async blockReadableTime(timestamp) {
-      return await format(
+    blockReadableTime(timestamp) {
+      return format(
         new Date(timestamp * 1000),
         getDateFormatWithSeconds()
       );

@@ -318,7 +318,7 @@ const bitcoinModule: Module<State, RootState> = {
       }
 
       //TODO: Fetch only new blocks
-      const latestThreeBlocks = rootState.citadel.middleware.bitcoin.blocks(
+      const latestThreeBlocks = await rootState.citadel.middleware.bitcoin.blocks(
         currentBlock - 2,
         currentBlock
       );

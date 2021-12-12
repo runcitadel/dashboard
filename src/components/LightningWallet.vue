@@ -945,11 +945,11 @@ export default {
     window.clearInterval(this.receive.invoiceStatusPoller);
   },
   methods: {
-    async getTimeFromNow(timestamp) {
-      return awaitformatDistance(new Date(timestamp), new Date()); //used in the list of txs, eg "a few seconds ago"
+    getTimeFromNow(timestamp) {
+      return formatDistance(new Date(timestamp), new Date()); //used in the list of txs, eg "a few seconds ago"
     },
-    async getReadableTime(timestamp) {
-      return await format(new Date(timestamp), getDateFormatWithSeconds()); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
+    getReadableTime(timestamp) {
+      return format(new Date(timestamp), getDateFormatWithSeconds()); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
     },
     //change between different modes/screens of the wallet from - transactions (default), receive (create invoice), invoice, send, sent
     changeMode(mode) {

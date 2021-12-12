@@ -16,7 +16,7 @@ export interface RootState {
 // Initial State
 const state = {
   isMobileMenuOpen: true,
-  citadel: new Citadel(window.location.origin),
+  citadel: new Citadel("http://192.168.1.231/"),
 };
 
 // Getters
