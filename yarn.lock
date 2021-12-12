@@ -115,13 +115,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@runcitadel/sdk@npm:^0.0.1-beta.23":
-  version: 0.0.1-beta.23
-  resolution: "@runcitadel/sdk@npm:0.0.1-beta.23"
+"@runcitadel/sdk@npm:0.0.1-beta.24":
+  version: 0.0.1-beta.24
+  resolution: "@runcitadel/sdk@npm:0.0.1-beta.24"
   peerDependencies:
     "@types/react": ^17.0.37
     react: ^17.0.2
-  checksum: 71770a4af3113c8a9b9f06c31f1ecc3d5f3e3041ef598e73976e401ef74fe41bc40277d571f992185f7ff5a4cbc41ab2450738b9915eb447e071f0efba1156f5
+  checksum: aa0d789b4652802d846a67a36520d29502772caa8760f4058adb0feb896e4ef0fcc160a05ced0542fd090c79fd638fdb9e8711e7b18e8fb08bc18d2780b1bba7
   languageName: node
   linkType: hard
 
@@ -578,7 +578,7 @@ __metadata:
   resolution: "citadel-dashboard@workspace:."
   dependencies:
     "@bitcoin-design/bitcoin-icons-vue": ^0.1.8
-    "@runcitadel/sdk": ^0.0.1-beta.23
+    "@runcitadel/sdk": 0.0.1-beta.24
     "@vitejs/plugin-vue": ^1.10.2
     "@vue/compat": ^3.2.24
     axios: ^0.24.0
