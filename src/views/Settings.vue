@@ -12,7 +12,6 @@
       <ram-widget id="ram" class="card-app-list"></ram-widget>
 
       <temperature-widget
-        v-if="isCitadelOS"
         id="temperature"
         class="card-app-list"
       ></temperature-widget>
@@ -27,13 +26,13 @@
       >
         <div class="pt-2">
           <div class="px-3 px-lg-4 mb-4">
-            <div class="d-flex justify-content-between w-100 mb-3">
-              <span class="d-block">Remote access</span>
+            <div class="w-100 mb-3">
+              <span class="d-block pb-1">Remote access</span>
               <small class="d-block" style="opacity: 0.4"
                 >Remotely access your Citadel from anywhere using a Tor browser
                 on this URL</small
               >
-            </div>
+              </div>
             <input-copy
               class="w-100"
               size="sm"
