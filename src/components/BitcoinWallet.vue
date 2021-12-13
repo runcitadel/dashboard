@@ -83,9 +83,9 @@
               <!-- Transaction -->
               <b-list-group-item
                 v-for="tx in transactions"
-                :key="tx.hash"
+                :key="tx.txHash"
                 class="flex-column align-items-start px-3 px-lg-4"
-                :href="getTxExplorerUrl(tx.hash)"
+                :href="getTxExplorerUrl(tx.txHash)"
                 target="_blank"
                 @click="openTxInExplorer"
               >

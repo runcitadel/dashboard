@@ -143,7 +143,7 @@
           >
             <div class="icon-16px"><BellIcon /></div>
             <a
-              :href="`https://github.com/runcitadel/compose-nonfree/releases/tag/v${availableUpdate.version}`"
+              :href="`https://github.com/runcitadel/core/releases/tag/v${availableUpdate.version}`"
               target="_blank"
               class="alert-link"
               >Citadel v{{ availableUpdate.version }}</a

@@ -76,7 +76,7 @@
             app for Citadel.
           </p>
           <b-link
-            href="https://github.com/runcitadel/compose-nonfree/blob/main/apps/README.md
+            href="https://github.com/runcitadel/core/blob/main/apps/README.md
             target="_blank"
             >Learn more</b-link
           >

@@ -183,7 +183,7 @@ const bitcoinModule: Module<State, RootState> = {
     },
 
     setVersion(state, version) {
-      state.version = version.version;
+      state.version = version;
     },
 
     setStats(state, stats) {
