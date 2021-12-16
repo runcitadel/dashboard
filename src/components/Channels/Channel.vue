@@ -102,14 +102,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media (prefers-color-scheme: light) {
+  .channel:hover {
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.08);
+  }
+}
+
 .channel {
   transition: box-shadow 0.3s, background 0.3s ease;
   &:hover {
     cursor: pointer;
-    background: linear-gradient(346.78deg, #f7fcfc 0%, #fafcfa 100%);
-    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.08);
-    // box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    // transform: translateY(-5px);
   }
 }
 </style>
