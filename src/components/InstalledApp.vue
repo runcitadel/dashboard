@@ -93,6 +93,18 @@ export default {
       installedApps: (state) => state.apps.installed,
     }),
     url: function () {
+      if (window.location.origin === "https://node.runcitadel.space") {
+        switch(this.id) {
+          case "ride-the-lightning":
+            return "https://rtl.runcitadel.space";
+          case "lnme":
+            return "https://donate.runcitadel.space";
+          case "nextcloud":
+            return "https://cloud.runcitadel.space";
+          case "btcpay-server":
+            return "https://pay.runcitadel.space";
+        }
+      }
       if (window.location.origin.indexOf(".onion") > 0) {
         return `http://${this.hiddenService}${this.path}`;
       } else {
