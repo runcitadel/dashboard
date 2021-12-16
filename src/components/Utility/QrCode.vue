@@ -20,7 +20,7 @@
       :level="level"
       render-as="svg"
       class="d-flex justify-content-center qr-image"
-      margin="5"
+      :margin="5"
     ></qrcode-vue>
   </div>
 </template>

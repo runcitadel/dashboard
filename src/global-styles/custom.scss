@@ -123,6 +123,10 @@ body {
     .dropdown-item:hover, .dropdown-item:active {
       background: #2a3244 !important;
     }
+
+    .transaction-description-text, .wallet-transactions-container * {
+      color: white !important;
+    }
     /* INSERT MORE DARK MODE STUFF HERE */
   }
 }

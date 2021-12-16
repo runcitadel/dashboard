@@ -45,10 +45,15 @@ app.config.globalProperties.$filters = {
       );
     }
   },
+  localize: n => Number(n).toLocaleString(undefined, { maximumFractionDigits: 8 }),
 };
 
 configureCompat({
   INSTANCE_EVENT_EMITTER: true,
+  CUSTOM_DIR: true,
+  COMPONENT_FUNCTIONAL: true,
+  OPTIONS_DATA_MERGE: true,
+  GLOBAL_EXTEND: true,
 });
 
 app.use(BootstrapVue);

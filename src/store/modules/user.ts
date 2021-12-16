@@ -123,7 +123,7 @@ const userModule: Module<State, RootState> = {
         rawSeed = await rootState.citadel.manager.auth.seed(plainTextPassword);
       } else {
         //get a new seed if new user
-        rawSeed = await rootState.citadel.middleware.lnd.wallet.generatSeed();
+        rawSeed = await rootState.citadel.middleware.lnd.wallet.generateSeed();
       }
 
       if (rawSeed) {

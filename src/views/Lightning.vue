@@ -145,7 +145,7 @@
               >+ Open Channel</b-button
             >
           </template>
-          <template #menu>
+          <!--<template #menu>
             <b-dropdown-item
               href="#"
               >Download channel backup file</b-dropdown-item
@@ -181,7 +181,7 @@
                 </small>
               </div>
             </b-dropdown-group>
-          </template>
+          </template>-->
           <div class>
             <div class="px-3 px-lg-4">
               <b-row>

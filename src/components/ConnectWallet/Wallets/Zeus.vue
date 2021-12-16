@@ -37,13 +37,7 @@
       <step>
         In the <span class="font-weight-bold">"Host"</span>, enter
         <input-copy
-          :value="
-            'https://' +
-            Array.from(
-              urls.lnd.restTor.matchAll(/lndconnect:\/\/(.*):/gm),
-              (m) => m[1]
-            )[0]
-          "
+          :value="'https://' + urls.lnd.restTor.substring(13).split('.onion')[0] + '.onion'"
           auto-width
         ></input-copy>
       </step>
@@ -78,7 +72,8 @@ import StepList from "@/components/ConnectWallet/StepList.vue";
 import Step from "@/components/ConnectWallet/Step.vue";
 import InputCopy from "@/components/Utility/InputCopy.vue";
 import QrCode from "@/components/Utility/QrCode.vue";
-import Buffer from "buffer/index.js";
+import BufferModule from "buffer/index.js";
+const { Buffer } = BufferModule;
 
 export default {
   components: {

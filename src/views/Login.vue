@@ -117,10 +117,10 @@ export default {
 
     //redirect to onboarding if the user is not registered
     await this.$store.dispatch("user/registered");
-    await this.$store.dispatch("user/getTotpEnabledStatus");
-
     if (!this.registered) {
       return this.$router.push("/start");
+    } else {
+      await this.$store.dispatch("user/getTotpEnabledStatus");
     }
 
     this.loading = false;
