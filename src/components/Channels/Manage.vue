@@ -12,7 +12,7 @@
         </h4>
         <h4
           v-b-tooltip.hover.left
-          class="text-success font-weight-bold text-right"
+          class="text-success font-weight-bold text-end"
           :title="$filters.satsToUSD(channel.remoteBalance)"
         >
           {{ $filters.localize($filters.unit(channel.remoteBalance)) }}
@@ -27,7 +27,7 @@
       ></bar>
       <div class="d-flex justify-content-between">
         <b class="text-muted">Max Send</b>
-        <b class="text-muted text-right">Max Receive</b>
+        <b class="text-muted text-end">Max Receive</b>
       </div>
     </div>
 
@@ -51,7 +51,7 @@
 
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Remote Peer Alias</span>
-          <div class="w-75 text-right">
+          <div class="w-75 text-end">
             <span class="font-weight-bold" style="overflow-wrap: break-word">{{
               channel.remoteAlias
             }}</span>
@@ -127,7 +127,7 @@
 
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Remote Pub Key</span>
-          <div class="w-75 text-right">
+          <div class="w-75 text-end">
             <small class="font-weight-bold" style="overflow-wrap: break-word">{{
               channel.remotePubkey
             }}</small>

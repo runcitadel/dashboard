@@ -57,6 +57,7 @@ export interface State {
   cpuTemperature: number;
   cpuTemperatureUnit: "celsius" | "fahrenheit";
   uptime: null;
+  isNvme: boolean;
 }
 
 const systemModule: Module<State, RootState> = {
@@ -111,6 +112,7 @@ const systemModule: Module<State, RootState> = {
     cpuTemperature: 0, //in celsius
     cpuTemperatureUnit: "celsius",
     uptime: null,
+    isNvme: false,
   }),
   mutations: {
     setVersion(state, version) {
@@ -176,6 +178,9 @@ const systemModule: Module<State, RootState> = {
     setUptime(state, uptime) {
       state.uptime = uptime;
     },
+    setNvme(state, nvmeState) {
+      state.isNvme = nvmeState;
+    },
   },
   actions: {
     async getVersion({ commit, rootState }) {
@@ -229,6 +234,12 @@ const systemModule: Module<State, RootState> = {
       const status = await rootState.citadel.manager.system.updateStatus();
       if (status && status.progress) {
         commit("setUpdateStatus", status);
+      }
+    },
+    async getDiskInfo({ commit, rootState }) {
+      const status = await rootState.citadel.manager.system.disk() === "nvme";
+      if (status) {
+        commit("setNvme", status);
       }
     },
     async getBackupStatus({ commit, rootState }) {

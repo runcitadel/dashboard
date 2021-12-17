@@ -67,7 +67,7 @@
               ></b-progress>
               <small
                 v-if="currentBlock < blockHeight - 1"
-                class="text-muted d-block text-right"
+                class="text-muted d-block text-end"
               >
                 {{ currentBlock.toLocaleString() }} of
                 {{ blockHeight.toLocaleString() }} blocks

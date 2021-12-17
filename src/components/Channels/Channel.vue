@@ -42,7 +42,7 @@
             <span
               v-b-tooltip.hover.left
               :title="$filters.satsToUSD(channel.remoteBalance)"
-              class="text-success text-right font-weight-bold"
+              class="text-success text-end font-weight-bold"
               >{{ $filters.localize($filters.unit(channel.remoteBalance)) }}
               {{ $filters.formatUnit(unit) }}</span
             >
@@ -54,7 +54,7 @@
           ></bar>
           <div class="d-flex justify-content-between">
             <small class="text-muted font-weight-bold">Max Send</small>
-            <small class="text-muted font-weight-bold text-right"
+            <small class="text-muted font-weight-bold text-end"
               >Max Receive</small
             >
           </div>

@@ -103,7 +103,7 @@
                     ></span>
                   </div>
 
-                  <div class="w-25 text-right">
+                  <div class="w-25 text-end">
                     <span class="loading-placeholder"></span>
                     <span
                       class="loading-placeholder loading-placeholder-sm"
@@ -219,7 +219,7 @@
                     >
                   </div>
 
-                  <div class="text-right">
+                  <div class="text-end">
                     <span
                       v-b-tooltip.hover.left
                       class="font-weight-bold d-block"
@@ -397,7 +397,7 @@
               </b-input-group-append>
             </b-input-group>
             <small
-              class="text-muted mt-2 d-block text-right mb-0"
+              class="text-muted mt-2 d-block text-end mb-0"
               :style="{ opacity: receive.amount > 0 ? 1 : 0 }"
               >~ {{ $filters.satsToUSD(receive.amount) }}</small
             >

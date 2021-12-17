@@ -60,7 +60,7 @@
         </b-nav-item>
 
         <b-nav-item to="/connect" class="my-1" exact-active-class="active">
-          <WalletIcon class="me-2" style="width: 24px; height: 24px" />
+          <SharedWalletIcon class="me-2" style="width: 24px; height: 24px" />
           Connect Wallet
         </b-nav-item>
 
@@ -72,6 +72,11 @@
         <b-nav-item to="/app-store" class="my-1" active-class="active">
           <CartIcon class="me-2" style="width: 24px; height: 24px" />
           App Store
+        </b-nav-item>
+
+        <b-nav-item to="/donate" class="my-1" active-class="active">
+          <ContactsIcon class="me-2" style="width: 24px; height: 24px" />
+          Donate
         </b-nav-item>
 
         <b-nav-item
@@ -144,9 +149,10 @@ import {
   GridIcon,
   HomeIcon,
   CartIcon,
-  WalletIcon,
+  SharedWalletIcon,
   VisibleIcon,
   HiddenIcon,
+  ContactsIcon,
 } from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
 
 export default {
@@ -160,9 +166,10 @@ export default {
     GridIcon,
     HomeIcon,
     CartIcon,
-    WalletIcon,
+    SharedWalletIcon,
     VisibleIcon,
     HiddenIcon,
+    ContactsIcon, 
   },
   props: {
     isMobileMenu: Boolean,

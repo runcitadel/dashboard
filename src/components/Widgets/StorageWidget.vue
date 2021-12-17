@@ -5,7 +5,7 @@
         <div class="d-flex w-100 justify-content-between mb-4">
           <div>
             <div>
-              <h3 class="mb-1">{{ readableSize(storage.used) }}</h3>
+              <h3 class="mb-1"><b-badge class="bg-success me-1 text-end" v-if="isNvme">NVMe</b-badge> {{ readableSize(storage.used) }}</h3>
               <p class="text-muted mb-0">
                 Used out of {{ readableSize(storage.total) }}
               </p>
@@ -79,7 +79,7 @@
                 : 'success'
             "
           ></b-progress>
-          <div class="text-right">
+          <div class="text-end">
             <small class="text-muted"
               >{{ readableSize(storage.total - storage.used) }} available</small
             >
@@ -192,6 +192,7 @@ export default {
     ...mapState({
       store: (state) => state.apps.store,
       storage: (state) => state.system.storage,
+      isNvme: (state) => state.system.isNvme,
     }),
     src: () => {
       return new URL(`../../assets/icon-system.svg`, import.meta.url).href;
@@ -231,6 +232,7 @@ export default {
   created() {
     // to map app ID's to app names
     this.$store.dispatch("apps/getAppStore");
+    this.$store.dispatch("system/getDiskInfo");
 
     // setTimeout(() => {
     //   this.storage.used = 998000000000;

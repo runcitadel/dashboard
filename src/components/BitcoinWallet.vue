@@ -104,7 +104,7 @@
                     ></span>
                   </div>
 
-                  <div class="w-25 text-right">
+                  <div class="w-25 text-end">
                     <span class="loading-placeholder"></span>
                     <span
                       class="loading-placeholder loading-placeholder-sm"
@@ -196,7 +196,7 @@
                     </small>
                   </div>
 
-                  <div class="text-right">
+                  <div class="text-end">
                     <span
                       v-b-tooltip.hover.left
                       class="font-weight-bold d-block"
@@ -277,7 +277,7 @@
               <div class="w-100 d-flex justify-content-between">
                 <div></div>
                 <small
-                  class="text-muted mt-1 d-block text-right mb-0"
+                  class="text-muted mt-1 d-block text-end mb-0"
                   :style="{ opacity: withdraw.amount > 0 ? 1 : 0 }"
                   >~ {{ $filters.satsToUSD(withdraw.amount) }}</small
                 >
@@ -384,7 +384,7 @@
                   Transaction fee
                 </small>
               </span>
-              <span class="text-right text-muted">
+              <span class="text-end text-muted">
                 <b>{{
                   $filters.localize($filters.unit(projectedBalanceInSats))
                 }}</b>
@@ -412,7 +412,7 @@
                   Transaction fee
                 </small>
               </span>
-              <span class="text-right text-muted">
+              <span class="text-end text-muted">
                 <b>{{
                   $filters.localize($filters.unit(projectedBalanceInSats))
                 }}</b>

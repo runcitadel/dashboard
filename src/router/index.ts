@@ -18,6 +18,7 @@ const AppStoreApp = () => import("../views/AppStoreApp.vue");
 const Settings = () => import("../views/Settings.vue");
 const LightningAddress = () => import("../views/LightningAddress.vue");
 const ConnectWallet = () => import("../views/ConnectWallet.vue");
+const Donate = () => import("../views/Donate.vue");
 
 // Wallet components for wallet connector
 const BitBoxApp = () =>
@@ -125,6 +126,18 @@ const routes = [
             path: "",
             name: "lightning",
             component: Lightning,
+          },
+        ],
+      },
+      {
+        path: "/donate",
+        component: DashboardLayout,
+        meta: { requiresAuth: true },
+        children: [
+          {
+            path: "",
+            name: "donate",
+            component: Donate,
           },
         ],
       },

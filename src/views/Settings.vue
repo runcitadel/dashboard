@@ -337,7 +337,7 @@
                 >Time since last restart</small
               >
             </div>
-            <div class="text-right">
+            <div class="text-end">
               <span class="d-block">{{ getUptime }}</span>
             </div>
           </div>

@@ -75,7 +75,7 @@
               isRunningLowOnRam ? (isRamFull ? 'danger' : 'warning') : 'success'
             "
           ></b-progress>
-          <div class="text-right">
+          <div class="text-end">
             <small class="text-muted"
               >{{ readableSize(ram.total - ram.used) }} available</small
             >

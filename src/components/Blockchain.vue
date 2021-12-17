@@ -57,7 +57,7 @@
               </div>
               <small
                 v-if="block.time"
-                class="text-muted align-self-center text-right blockchain-block-timestamp"
+                class="text-muted align-self-center text-end blockchain-block-timestamp"
                 :title="blockReadableTime(block.time)"
                 >{{ blockTime(block.time) }}</small
               >
@@ -114,7 +114,7 @@
                 </div>
               </div>
               <span
-                class="loading-placeholder loading-placeholder-sm align-self-center text-right"
+                class="loading-placeholder loading-placeholder-sm align-self-center text-end"
                 style="width: 40px"
               ></span>
             </div>
