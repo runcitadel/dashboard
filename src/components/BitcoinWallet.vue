@@ -39,7 +39,6 @@
         <!-- Default Balance/tx screen -->
         <div
           v-if="mode === 'transactions'"
-          key="mode-balance"
           class="wallet-mode mode-balance"
         >
           <!-- List of transactions -->
@@ -220,7 +219,6 @@
         <!-- SCREEN/MODE: Withdraw Screen -->
         <div
           v-else-if="mode === 'withdraw'"
-          key="mode-withdraw"
           class="wallet-mode"
         >
           <div class="px-3 px-lg-4">
@@ -309,7 +307,6 @@
         <!-- SCREEN/MODE: Review Withdrawal -->
         <div
           v-else-if="mode === 'review-withdraw'"
-          key=" ode-review-withdraw"
           class="wallet-mode"
         >
           <div class="px-3 px-lg-4">
@@ -427,7 +424,6 @@
         <!-- SCREEN/MODE: Successfully Withdrawn -->
         <div
           v-else-if="mode === 'withdrawn'"
-          key=" mode-withdrawn"
           class="wallet-mode mode-withdrawn"
         >
           <div class="px-3 px-lg-4">
@@ -475,7 +471,6 @@
         <!-- SCREEN/MODE: Show Deposit Address -->
         <div
           v-else-if="mode === 'deposit'"
-          key="mode-deposit"
           class="wallet-mode mode-deposit"
         >
           <div class="px-3 px-lg-4">

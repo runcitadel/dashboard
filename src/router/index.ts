@@ -51,6 +51,8 @@ const Wasabi = () => import("../components/ConnectWallet/Wallets/Wasabi.vue");
 
 const ZapAndroid = () =>
   import("../components/ConnectWallet/Wallets/ZapAndroid.vue");
+const ZapiOS = () =>
+  import("../components/ConnectWallet/Wallets/ZapiOS.vue");
 const ZapDesktop = () =>
   import("../components/ConnectWallet/Wallets/ZapDesktop.vue");
 const Zeus = () => import("../components/ConnectWallet/Wallets/Zeus.vue");
@@ -321,6 +323,13 @@ const routes = [
                 component: ZapDesktop,
                 meta: {
                   wallet: "zap-desktop",
+                },
+              },
+              {
+                path: "zap-ios",
+                component: ZapiOS,
+                meta: {
+                  wallet: "zap-ios",
                 },
               },
               {

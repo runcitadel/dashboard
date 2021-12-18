@@ -178,16 +178,6 @@ export default {
     CardWidget,
     BIconInfoCircleFill,
   },
-  props: {},
-  data() {
-    return {
-      // storage: {
-      //   total: 1000000000000,
-      //   used: 557000000000,
-      //   breakdown: []
-      // }
-    };
-  },
   computed: {
     ...mapState({
       store: (state) => state.apps.store,
@@ -233,15 +223,6 @@ export default {
     // to map app ID's to app names
     this.$store.dispatch("apps/getAppStore");
     this.$store.dispatch("system/getDiskInfo");
-
-    // setTimeout(() => {
-    //   this.storage.used = 998000000000;
-    //   setInterval(() => {
-    //   if (this.storage.used !== 1000000000000) {
-    //     this.storage.used += 10000000;
-    //   }
-    //  }, 50);
-    // }, 3000);
   },
   methods: {
     readableSize(n) {
@@ -254,5 +235,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped></style>

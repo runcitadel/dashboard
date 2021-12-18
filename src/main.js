@@ -54,6 +54,7 @@ configureCompat({
   COMPONENT_FUNCTIONAL: true,
   OPTIONS_DATA_MERGE: true,
   GLOBAL_EXTEND: true,
+  MODE: 2,
 });
 
 app.use(BootstrapVue);

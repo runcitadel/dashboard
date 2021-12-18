@@ -14,7 +14,6 @@
     </div>
     <div v-if="useCustomFee" class="vue-slider-container">
       <vue-slider
-        key="custom-fee"
         v-model="customFee"
         :marks="false"
         hide-label
@@ -57,7 +56,6 @@
     </div>
     <div v-else class="vue-slider-container">
       <vue-slider
-        key="recommended-fee"
         v-model="chosenFee"
         absorb
         marks

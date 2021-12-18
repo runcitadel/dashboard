@@ -174,16 +174,6 @@ export default {
     CardWidget,
     BIconInfoCircleFill,
   },
-  props: {},
-  data() {
-    return {
-      // ram: {
-      //   total: 4000000000,
-      //   used: 3100000000,
-      //   breakdown: []
-      // }
-    };
-  },
   computed: {
     ...mapState({
       store: (state) => state.apps.store,

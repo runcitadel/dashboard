@@ -61,7 +61,7 @@ export default {
         { value: "wasabi", text: "Wasabi" },
         { value: "zap-android", text: "Zap (Android)" },
         { value: "zap-desktop", text: "Zap (Desktop)" },
-        //{ value: "zap-ios", text: "Zap (iOS)" },
+        { value: "zap-ios", text: "Zap (iOS)" },
         { value: "zeus", text: "Zeus" },
         {
           label: "Other",
