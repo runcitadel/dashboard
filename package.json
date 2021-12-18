@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@bitcoin-design/bitcoin-icons-vue": "^0.1.8",
-    "@runcitadel/sdk": "0.0.4",
+    "@runcitadel/sdk": "0.0.5",
     "@vue/compat": "^3.2.26",
     "bignumber.js": "^9.0.2",
     "bootstrap": "^5.1.3",
@@ -23,7 +23,7 @@
     "vue": "^3.2.23",
     "vue-confetti": "^2.2.2",
     "vue-router": "^4.0.12",
-    "vue-slider-component": "^4.0.0-beta.5",
+    "vue-slider-component": "^3.0.0",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

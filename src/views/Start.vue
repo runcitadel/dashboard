@@ -97,10 +97,6 @@
           </a>
         </div>
 
-        <!-- <p class="text-danger text-left align-self-start mt-1">
-          <small>{{ errorMessage }}</small>
-        </p>-->
-
         <b-button
           variant="success"
           size="lg"
@@ -175,7 +171,7 @@ export default {
       steps: [
         {
           heading: "welcome to citadel",
-          text: "Your journey to become bitcoin starts now.",
+          text: "Your journey to digital freedom starts now.",
         },
         {
           heading: "what is your name?",
@@ -247,12 +243,6 @@ export default {
     },
     isStepValid() {
       if (this.currentStep === 1) {
-        // if (!/^[A-Za-z ]+$/.test(this.name)) {
-        //   return false;
-        // }
-        // if (this.name.length < 3) {
-        //   return false;
-        // }
         return this.name.length;
       }
 

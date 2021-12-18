@@ -946,10 +946,18 @@ export default {
   },
   methods: {
     getTimeFromNow(timestamp) {
-      return formatDistance(new Date(timestamp), new Date()); //used in the list of txs, eg "a few seconds ago"
+      try {
+        return formatDistance(new Date(timestamp), new Date()); //used in the list of txs, eg "a few seconds ago"
+      } catch {
+        return "Unknown time";
+      }
     },
     getReadableTime(timestamp) {
-      return format(new Date(timestamp), getDateFormatWithSeconds()); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
+      try {
+        return format(new Date(timestamp), getDateFormatWithSeconds()); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
+      } catch {
+        return "Unknown time";
+      }
     },
     //change between different modes/screens of the wallet from - transactions (default), receive (create invoice), invoice, send, sent
     changeMode(mode) {
@@ -1007,7 +1015,7 @@ export default {
       this.error = "";
 
       try {
-        const res = await (this.$store.state.citadel as Citadel).middleware.lnd.lightning.payInvoice(this.send.paymentRequest);
+        await (this.$store.state.citadel as Citadel).middleware.lnd.lightning.payInvoice(this.send.paymentRequest);
         // TODO: Fix this
         /*if (res.data.paymentError) {
           return (this.error = res.data.paymentError);
@@ -1043,7 +1051,7 @@ export default {
         try {
           const res = await (this.$store.state.citadel as Citadel).middleware.lnd.lightning.addInvoice(this.receive.amount, this.receive.description);
           this.receive.invoiceQR = this.receive.paymentRequest =
-            res.data.paymentRequest;
+            res.paymentRequest;
 
           //TODO: find a cleaner way to make this dynamic as per backend's expiry setting. for now invoice expiries are 1 hr
           this.receive.expiresOn = addHours(new Date(), 1);

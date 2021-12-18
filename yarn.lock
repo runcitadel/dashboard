@@ -115,13 +115,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@runcitadel/sdk@npm:0.0.4":
-  version: 0.0.4
-  resolution: "@runcitadel/sdk@npm:0.0.4"
+"@runcitadel/sdk@npm:0.0.5":
+  version: 0.0.5
+  resolution: "@runcitadel/sdk@npm:0.0.5"
   peerDependencies:
     "@types/react": ^17.0.37
     react: ^17.0.2
-  checksum: 3bdfe3b444757b3d062780e3befcfa0f14466311f87b3a87f2555c18e5b566bd4a96560d74936b67b6e08d61725c04ccc1a2f7778903e001aff7e283a5eee375
+  checksum: 75cd26f2df43003360308761acb5e03dd214a95b9502f843f2828b3868b469bbe559fc99b6976643a04e9298799540ef13ab8b9d9d0312e4d149b9814b81c33d
   languageName: node
   linkType: hard
 
@@ -570,7 +570,7 @@ __metadata:
   resolution: "citadel-dashboard@workspace:."
   dependencies:
     "@bitcoin-design/bitcoin-icons-vue": ^0.1.8
-    "@runcitadel/sdk": 0.0.4
+    "@runcitadel/sdk": 0.0.5
     "@vitejs/plugin-vue": ^2.0.1
     "@vue/compat": ^3.2.26
     bignumber.js: ^9.0.2
@@ -592,7 +592,7 @@ __metadata:
     vue: ^3.2.23
     vue-confetti: ^2.2.2
     vue-router: ^4.0.12
-    vue-slider-component: ^4.0.0-beta.5
+    vue-slider-component: ^3.0.0
     vuex: ^4.0.2
   languageName: unknown
   linkType: soft
@@ -2375,6 +2375,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vue-class-component@npm:^7.1.0":
+  version: 7.2.6
+  resolution: "vue-class-component@npm:7.2.6"
+  peerDependencies:
+    vue: ^2.0.0
+  checksum: 3b4e1de0328b2af0216cbbf125c4ac3da5701c9585713ee634f887092f4faaa1ff9589130ec9fc0b3240d7709217eb8d03e9c0e27fe80768d2883ffe5faf9a14
+  languageName: node
+  linkType: hard
+
 "vue-confetti@npm:^2.2.2":
   version: 2.2.2
   resolution: "vue-confetti@npm:2.2.2"
@@ -2406,13 +2415,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-property-decorator@npm:^9.0.2":
-  version: 9.1.2
-  resolution: "vue-property-decorator@npm:9.1.2"
+"vue-property-decorator@npm:^8.0.0":
+  version: 8.5.1
+  resolution: "vue-property-decorator@npm:8.5.1"
+  dependencies:
+    vue-class-component: ^7.1.0
   peerDependencies:
     vue: "*"
-    vue-class-component: "*"
-  checksum: 0155127c3e31bde1c6da13116793a215d60f445b5338e5f2717e0090556f698284d555b7c3f3e76c651c82880f1560d6f8d992f183c50a9be09ce7fe6d1f5300
+  checksum: d3da44a927d007f24362260297124d0fcc6a14addb6a4807be5535607cadcc1954d2fe4af0f406e5f83dbffd87bc7558eb2afdf91a0ddbef1f6329c6e50cd0a2
   languageName: node
   linkType: hard
 
@@ -2427,13 +2437,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-slider-component@npm:^4.0.0-beta.5":
-  version: 4.0.0-beta.5
-  resolution: "vue-slider-component@npm:4.0.0-beta.5"
+"vue-slider-component@npm:^3.0.0":
+  version: 3.2.15
+  resolution: "vue-slider-component@npm:3.2.15"
   dependencies:
     core-js: ^3.6.5
-    vue-property-decorator: ^9.0.2
-  checksum: 83d6b7db615e7fabead3430574f74b2e6380c06054512263c9bbf739a4f97085068f7e2c92602f8712222c600420b15965636fadbe52b9ec822c3b81e17269ce
+    vue-property-decorator: ^8.0.0
+  checksum: baecdc81b6eb692d467e6ae93d029844efb2216fb57cd7b1a232218d3bf9f0778baf270cd1e7139a00080a35c72daa3c8559b3dee929a2329be7d72292cea7a6
   languageName: node
   linkType: hard
 
