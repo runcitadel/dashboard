@@ -115,13 +115,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@runcitadel/sdk@npm:0.0.5":
-  version: 0.0.5
-  resolution: "@runcitadel/sdk@npm:0.0.5"
+"@runcitadel/sdk@npm:0.1.0":
+  version: 0.1.0
+  resolution: "@runcitadel/sdk@npm:0.1.0"
   peerDependencies:
     "@types/react": ^17.0.37
     react: ^17.0.2
-  checksum: 75cd26f2df43003360308761acb5e03dd214a95b9502f843f2828b3868b469bbe559fc99b6976643a04e9298799540ef13ab8b9d9d0312e4d149b9814b81c33d
+  checksum: c1d785e4bf5ff14b13ac5ec0d0bfb5c10ff8603f59c8756c9fa19a019e748729ce7edc00bf5fffb067f98291c2da06d00e1e67809c472887a761818e521d862c
   languageName: node
   linkType: hard
 
@@ -570,7 +570,7 @@ __metadata:
   resolution: "citadel-dashboard@workspace:."
   dependencies:
     "@bitcoin-design/bitcoin-icons-vue": ^0.1.8
-    "@runcitadel/sdk": 0.0.5
+    "@runcitadel/sdk": 0.1.0
     "@vitejs/plugin-vue": ^2.0.1
     "@vue/compat": ^3.2.26
     bignumber.js: ^9.0.2
@@ -580,19 +580,19 @@ __metadata:
     buffer: ^6.0.3
     countup.js: ^2.0.8
     date-fns: ^2.27.0
-    eslint: ^8.4.1
+    eslint: ^8.5.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^4.0.0
     eslint-plugin-vue: ^8.2.0
     prettier: ^2.5.1
     qrcode.vue: ^3.3.3
-    sass: ^1.45.0
+    sass: ^1.45.1
     typescript: ^4.5.4
-    vite: ^2.7.3
+    vite: ^2.7.4
     vue: ^3.2.23
     vue-confetti: ^2.2.2
     vue-router: ^4.0.12
-    vue-slider-component: ^3.0.0
+    vue-slider-component: ^3.2.15
     vuex: ^4.0.2
   languageName: unknown
   linkType: soft
@@ -1043,9 +1043,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.4.1":
-  version: 8.4.1
-  resolution: "eslint@npm:8.4.1"
+"eslint@npm:^8.5.0":
+  version: 8.5.0
+  resolution: "eslint@npm:8.5.0"
   dependencies:
     "@eslint/eslintrc": ^1.0.5
     "@humanwhocodes/config-array": ^0.9.2
@@ -1087,7 +1087,7 @@ __metadata:
     v8-compile-cache: ^2.0.3
   bin:
     eslint: bin/eslint.js
-  checksum: d962cd7cd0f68ddc2412f47154b8992ad3af987cf47fa6e60e51a2b7d32a91f934388f7d29e2c45b16b7ac69f0d220d0a483189ec6ba43a8a480110c34f158f9
+  checksum: c1a9e26070520a308cc30b62ba0d37d5b115ed23987a93219819537bdea9398e6ebe57c27d97be36ecc83b5162c72e82ecb0a9e5b44b7992980f9be90eb5c4b3
   languageName: node
   linkType: hard
 
@@ -1892,7 +1892,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.1.10, postcss@npm:^8.3.11":
+"postcss@npm:^8.1.10, postcss@npm:^8.4.5":
   version: 8.4.5
   resolution: "postcss@npm:8.4.5"
   dependencies:
@@ -2068,16 +2068,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.45.0":
-  version: 1.45.0
-  resolution: "sass@npm:1.45.0"
+"sass@npm:^1.45.1":
+  version: 1.45.1
+  resolution: "sass@npm:1.45.1"
   dependencies:
     chokidar: ">=3.0.0 <4.0.0"
     immutable: ^4.0.0
     source-map-js: ">=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: f20d22ddf91e3571926535cdec9e1092780b0bf133ee6a68d25ee21fd3fcb94f4b1df90823fdc60cabf468776d3a6bb693fd89305698e70609eb47bcfb905f10
+  checksum: 5c310b9d6260a304520678442f5814bd54c8068b659f54ae51ccb9156168811abf4e48eae4f857a5feb2958c4c07eacd5812e28018749ab25fdb40200c5bdd65
   languageName: node
   linkType: hard
 
@@ -2346,13 +2346,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^2.7.3":
-  version: 2.7.3
-  resolution: "vite@npm:2.7.3"
+"vite@npm:^2.7.4":
+  version: 2.7.4
+  resolution: "vite@npm:2.7.4"
   dependencies:
     esbuild: ^0.13.12
     fsevents: ~2.3.2
-    postcss: ^8.3.11
+    postcss: ^8.4.5
     resolve: ^1.20.0
     rollup: ^2.59.0
   peerDependencies:
@@ -2371,7 +2371,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 5db8eb9c3ef609524fad429f836f71978d9b93038d665d9a06f879938f8473b20a68a162ad3b522c98da00369310e82793a6d616e9c9bea7820fa51428c2a390
+  checksum: 7e2ee43688a7ee8ef46b9d3a9469a7f3c70f134302e5c71ecc06adc2e88a9e9139c5c3d36c83f355a0fa6038bfc6250d07cb88ddfcfa2af8fc18b9444686cc34
   languageName: node
   linkType: hard
 
@@ -2437,7 +2437,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-slider-component@npm:^3.0.0":
+"vue-slider-component@npm:^3.2.15":
   version: 3.2.15
   resolution: "vue-slider-component@npm:3.2.15"
   dependencies:
