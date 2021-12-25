@@ -13,11 +13,11 @@ __metadata:
   linkType: hard
 
 "@babel/parser@npm:^7.16.4":
-  version: 7.16.4
-  resolution: "@babel/parser@npm:7.16.4"
+  version: 7.16.6
+  resolution: "@babel/parser@npm:7.16.6"
   bin:
     parser: ./bin/babel-parser.js
-  checksum: ce0a8f92f440f2a12bc932f070a7b60c5133bf8a63f461841f9e39af0194f573707959d606c6fad1a2fd496a45148553afd9b74d3b8dd36cdb7861598d1f3e36
+  checksum: 5cbb01a7b2ba5d609945099bfadb01f54e11ef85201e1e0bf47010ee1b35c257eca6ff91606c6ce8adba82a95e180b583183e4dc076f4a70e706152075dd98ca
   languageName: node
   linkType: hard
 
@@ -115,13 +115,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@runcitadel/sdk@npm:0.1.0":
-  version: 0.1.0
-  resolution: "@runcitadel/sdk@npm:0.1.0"
+"@runcitadel/sdk@npm:0.1.2":
+  version: 0.1.2
+  resolution: "@runcitadel/sdk@npm:0.1.2"
   peerDependencies:
     "@types/react": ^17.0.37
     react: ^17.0.2
-  checksum: c1d785e4bf5ff14b13ac5ec0d0bfb5c10ff8603f59c8756c9fa19a019e748729ce7edc00bf5fffb067f98291c2da06d00e1e67809c472887a761818e521d862c
+  checksum: b0945afd0dabcf05c5772ebb254980e0106125663174181f5e0f9498a197638065abe840dd8c92ef173e91b1f0c770264d8d6fdddce33dd424c40c8894a1109a
   languageName: node
   linkType: hard
 
@@ -202,9 +202,9 @@ __metadata:
   linkType: hard
 
 "@vue/devtools-api@npm:^6.0.0-beta.11, @vue/devtools-api@npm:^6.0.0-beta.18":
-  version: 6.0.0-beta.20.1
-  resolution: "@vue/devtools-api@npm:6.0.0-beta.20.1"
-  checksum: e43f75415cfd84fcaf2f7c52752012c400aefe03fe95e0c41cdf31f16a0222d581ca8c575a9d7dc39b554430ecf2ff1a314eebd60c8a9313854fecf820ed59a9
+  version: 6.0.0-beta.21.1
+  resolution: "@vue/devtools-api@npm:6.0.0-beta.21.1"
+  checksum: 0ba256aa6e184455ff0e990e765ebb4d8f7cb5509c97d25898d2e98f213c2d2b3d44492b3f92ff50fae22ee4806f684675f15f324ae81260ada89e9b3e12303c
   languageName: node
   linkType: hard
 
@@ -437,14 +437,14 @@ __metadata:
 
 "bootstrap-vue@https://github.com/xanf/bootstrap-vue.git#vue3-compat-build":
   version: 2.21.2
-  resolution: "bootstrap-vue@https://github.com/xanf/bootstrap-vue.git#commit=5a0ec4c983527486ca2795ccc9f75351ede78787"
+  resolution: "bootstrap-vue@https://github.com/xanf/bootstrap-vue.git#commit=24f4da19cf41c1e1e67d1946ecaed89ced6e78f3"
   dependencies:
     "@nuxt/opencollective": ^0.3.2
     bootstrap: ">=4.5.3 <5.0.0"
     popper.js: ^1.16.1
     portal-vue: ^2.1.7
     vue-functional-data-merge: ^3.1.0
-  checksum: b135b19e9ddc53795592c37d084735412fe7c2a46dd5c06cfa37ed7d032b76726051b915eee8c5dcc562d192bb5b272e5f1650d7fa58b1d8b7feef887cf672fe
+  checksum: 92187d0235849d1b034bbf35e2c94aa44c5118aa9f4895dd12fd4d127780aafd61c338ff204711f8cfbf8253840ac1121cf3d15ab16dfbd47c20a72e0bc47cd5
   languageName: node
   linkType: hard
 
@@ -570,7 +570,7 @@ __metadata:
   resolution: "citadel-dashboard@workspace:."
   dependencies:
     "@bitcoin-design/bitcoin-icons-vue": ^0.1.8
-    "@runcitadel/sdk": 0.1.0
+    "@runcitadel/sdk": 0.1.2
     "@vitejs/plugin-vue": ^2.0.1
     "@vue/compat": ^3.2.26
     bignumber.js: ^9.0.2
@@ -588,7 +588,7 @@ __metadata:
     qrcode.vue: ^3.3.3
     sass: ^1.45.1
     typescript: ^4.5.4
-    vite: ^2.7.4
+    vite: ^2.7.6
     vue: ^3.2.23
     vue-confetti: ^2.2.2
     vue-router: ^4.0.12
@@ -651,9 +651,9 @@ __metadata:
   linkType: hard
 
 "core-js@npm:^3.6.5":
-  version: 3.19.3
-  resolution: "core-js@npm:3.19.3"
-  checksum: eaa7afd87411393a7b1637fd0813957f689e91007219b6a951a1fe1aa08edccfddbbfbb1acb281a76dbe90b42fe7768377289258d81ba46e13c9919527aee95a
+  version: 3.20.1
+  resolution: "core-js@npm:3.20.1"
+  checksum: e45f4f4b5c64d4650d46075b1fa8845c62ea08f5c30ee92ffc14b95147b4a9eb511c8a1184a31d03660061a8570a9610e598e30981afc2d2f8bca460f63dd3cb
   languageName: node
   linkType: hard
 
@@ -2041,8 +2041,8 @@ __metadata:
   linkType: hard
 
 "rollup@npm:^2.59.0":
-  version: 2.61.1
-  resolution: "rollup@npm:2.61.1"
+  version: 2.62.0
+  resolution: "rollup@npm:2.62.0"
   dependencies:
     fsevents: ~2.3.2
   dependenciesMeta:
@@ -2050,7 +2050,7 @@ __metadata:
       optional: true
   bin:
     rollup: dist/bin/rollup
-  checksum: a41bd821c1d9f296e71e867828150080fb05d08cbdff9b6b5c0e3642da4d0723f7a847189f197c2a695a8a353d968ad89ebd54a4228dc3e92765c00e6bbadf87
+  checksum: 9dfa089a232346bc548bf5110e79e0cf5a2dac6fb9bf3f737a645e72795b4b4a1165d1bf86938f90805c4391e8dd571557afb901aaf81dcb82690c57737ab128
   languageName: node
   linkType: hard
 
@@ -2346,9 +2346,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^2.7.4":
-  version: 2.7.4
-  resolution: "vite@npm:2.7.4"
+"vite@npm:^2.7.6":
+  version: 2.7.6
+  resolution: "vite@npm:2.7.6"
   dependencies:
     esbuild: ^0.13.12
     fsevents: ~2.3.2
@@ -2371,7 +2371,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 7e2ee43688a7ee8ef46b9d3a9469a7f3c70f134302e5c71ecc06adc2e88a9e9139c5c3d36c83f355a0fa6038bfc6250d07cb88ddfcfa2af8fc18b9444686cc34
+  checksum: 7aa110a3a5de9f9a29cf8cf461cf5dd2c7000d2a7abacdbe40969a215339492bee93d5eedb51060d13f0b6504511dd0d9e65b1dee4b0cf9ca5c277b046733312
   languageName: node
   linkType: hard
 
