@@ -56,6 +56,8 @@ const ZapiOS = () =>
 const ZapDesktop = () =>
   import("../components/ConnectWallet/Wallets/ZapDesktop.vue");
 const Zeus = () => import("../components/ConnectWallet/Wallets/Zeus.vue");
+const LightningATM = () =>
+  import("../components/ConnectWallet/Wallets/LightningATM.vue");
 
 const LNDConnectGRPCLocal = () =>
   import("../components/ConnectWallet/Wallets/LNDConnectGRPCLocal.vue");
@@ -232,6 +234,13 @@ const routes = [
                 component: ElectrumAndroid,
                 meta: {
                   wallet: "electrum-android",
+                },
+              },
+              {
+                path: "lightning-atm",
+                component: LightningATM,
+                meta: {
+                  wallet: "lightning-atm",
                 },
               },
               {
