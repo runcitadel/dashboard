@@ -103,6 +103,12 @@ export default {
             return "https://cloud.runcitadel.space";
           case "btcpay-server":
             return "https://pay.runcitadel.space";
+          case "mempool":
+            return "https://mempool.runcitadel.space";
+          case "lightning-terminal":
+            return "https://ln-terminal.runcitadel.space";
+          case "btc-rpc-explorer-public-fast":
+            return "https://rpc-explorer.runcitadel.space";
         }
       }
       if (window.location.origin.indexOf(".onion") > 0) {

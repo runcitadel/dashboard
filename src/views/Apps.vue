@@ -78,7 +78,7 @@ export default {
     },
     startUpdate() {
       if (this.isUpdating) return;
-      this.$store.dispatch("apps/update");
+      this.$store.dispatch("apps/updateApps");
       this.isUpdating = true;
       window.setTimeout(() => {
         this.isUpdating = false;
