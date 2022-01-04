@@ -93,6 +93,9 @@ const appModule: Module<State, RootState> = {
         }
       }, 5000);
     },
+    async updateApps({ rootState }) {
+      await rootState.citadel.manager.apps.update();
+    }
   },
   getters: {},
 };

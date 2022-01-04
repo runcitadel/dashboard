@@ -5,6 +5,14 @@
         <div class="d-flex justify-content-between align-items-center">
           <h1>apps</h1>
           <div>
+            <b-button
+              variant="outline-primary"
+              size="sm"
+              @click="startUpdate"
+              >{{
+                isUpdating ? "Update running in the background..." : "Update"
+              }}</b-button
+            >
             <b-button variant="outline-primary" size="sm" @click="toggleEdit">{{
               isEditing ? "Done" : "Edit"
             }}</b-button>
@@ -52,6 +60,7 @@ export default {
   data() {
     return {
       isEditing: false,
+      isUpdating: false,
     };
   },
   computed: {
@@ -66,6 +75,14 @@ export default {
   methods: {
     toggleEdit() {
       this.isEditing = !this.isEditing;
+    },
+    startUpdate() {
+      if (this.isUpdating) return;
+      this.$store.dispatch("apps/update");
+      this.isUpdating = true;
+      window.setTimeout(() => {
+        this.isUpdating = false;
+      }, 2000);
     },
   },
   components: {
