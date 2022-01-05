@@ -10,6 +10,9 @@
     @include media-breakpoint-up(md) {
         column-count: 2;
     }
+    @media (min-width: 1600px) {
+        column-count: 3;
+    }
     column-gap: 30px;
 }
 
