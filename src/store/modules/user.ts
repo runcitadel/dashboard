@@ -131,9 +131,10 @@ const userModule: Module<State, RootState> = {
       }
     },
 
-    async register({ commit, state, rootState }, { password, seed }) {
+    async register({ commit, state, rootState }, { name, password, seed }) {
       if (!state.registered) {
         const jwt = await rootState.citadel.manager.auth.register(
+          name,
           password,
           seed
         );
