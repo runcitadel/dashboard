@@ -30,7 +30,7 @@
           <step>
             DM <a href="https://twitter.com/runcitadel">@runcitadel</a> on
             Twitter with your "long" Lightning address and the name you want to
-            have for your new one.
+            have for your new one. The address you'll get will end with @ln.runcitadel.space.
           </step>
           <step>
             We'll get back to you with a new Lightning address soon.

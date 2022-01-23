@@ -21,8 +21,8 @@
           <!-- header on the right, else it causes spacing issues -->
           <div
             v-if="
-              (!!$slots['header-right'] && !!$slots['header-right'][0]) ||
-              (!!$slots['menu'] && !!$slots['menu'][0])
+              (!!$slots['header-right']) ||
+              (!!$slots['menu'])
             "
           >
             <slot name="header-right"></slot>

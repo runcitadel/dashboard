@@ -59,7 +59,7 @@
         v-model="chosenFee"
         absorb
         marks
-        :data="recommendedFees"
+        :vdata="recommendedFees"
         :dot-size="[22, 22]"
         contained
         :tooltip="isDisabled ? 'none' : 'always'"
@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import VueSlider from "vue-slider-component";
+import VueSlider from "@aarondewes/vue-slider-component"
 import "vue-slider-component/theme/default.css";
 
 export default {
