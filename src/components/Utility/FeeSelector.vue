@@ -93,7 +93,7 @@
 
 <script>
 import VueSlider from "@aarondewes/vue-slider-component"
-import "vue-slider-component/theme/default.css";
+import "@aarondewes/vue-slider-component/theme/default.css";
 
 export default {
   components: {
@@ -220,7 +220,7 @@ $stepBgColor: rgba(0, 0, 0, 0.1) !default;
 $labelFontSize: 0.8rem;
 
 /* import theme style */
-@import "node_modules/vue-slider-component/lib/theme/default.scss";
+@import "node_modules/@aarondewes/vue-slider-component/lib/theme/default.scss";
 
 .vue-slider-container {
   padding-top: 3rem;
