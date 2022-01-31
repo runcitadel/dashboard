@@ -94,7 +94,7 @@ export default {
     }),
     url: function () {
       if (window.location.origin === "https://node.runcitadel.space") {
-        switch(this.id) {
+        switch (this.id) {
           case "ride-the-lightning":
             return "https://rtl.runcitadel.space";
           case "lnme":

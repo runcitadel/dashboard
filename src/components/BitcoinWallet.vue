@@ -37,10 +37,7 @@
       <!-- transition switching between different modes -->
       <transition name="lightning-mode-change" mode="out-in" tag="div">
         <!-- Default Balance/tx screen -->
-        <div
-          v-if="mode === 'transactions'"
-          class="wallet-mode mode-balance"
-        >
+        <div v-if="mode === 'transactions'" class="wallet-mode mode-balance">
           <!-- List of transactions -->
           <!-- No transactions -->
           <div
@@ -217,10 +214,7 @@
         </div>
 
         <!-- SCREEN/MODE: Withdraw Screen -->
-        <div
-          v-else-if="mode === 'withdraw'"
-          class="wallet-mode"
-        >
+        <div v-else-if="mode === 'withdraw'" class="wallet-mode">
           <div class="px-3 px-lg-4">
             <!-- Back Button -->
             <div class="pb-3">
@@ -305,10 +299,7 @@
         </div>
 
         <!-- SCREEN/MODE: Review Withdrawal -->
-        <div
-          v-else-if="mode === 'review-withdraw'"
-          class="wallet-mode"
-        >
+        <div v-else-if="mode === 'review-withdraw'" class="wallet-mode">
           <div class="px-3 px-lg-4">
             <!-- Back Button -->
             <div class="pt-2 pb-3">
@@ -469,10 +460,7 @@
         </div>
 
         <!-- SCREEN/MODE: Show Deposit Address -->
-        <div
-          v-else-if="mode === 'deposit'"
-          class="wallet-mode mode-deposit"
-        >
+        <div v-else-if="mode === 'deposit'" class="wallet-mode mode-deposit">
           <div class="px-3 px-lg-4">
             <!-- Back Button -->
             <div class="pt-2 pb-3">
@@ -649,25 +637,30 @@
 </template>
 
 <script lang="ts">
-import type { RootState } from '../store';
+import type { RootState } from "../store";
 
 type data = {
-      //balance: 162500, //net user's balance in sats
-      mode: "transactions" | "deposit" | "withdraw"| "review-withdraw"| "withdrawn"
-      withdraw: {
-        amountInput: "" | number;
-        amount:"" | number;
-        address: string;
-        sweep: boolean;
-        feesTimeout: null | number;
-        isTyping: boolean;
-        isWithdrawing: boolean;
-        txHash: string;
-        selectedFee: { type: string, satPerByte: number }, //selected withdrawal fee
-      },
-      loading: boolean;
-      error: string;
-    }
+  //balance: 162500, //net user's balance in sats
+  mode:
+    | "transactions"
+    | "deposit"
+    | "withdraw"
+    | "review-withdraw"
+    | "withdrawn";
+  withdraw: {
+    amountInput: "" | number;
+    amount: "" | number;
+    address: string;
+    sweep: boolean;
+    feesTimeout: null | number;
+    isTyping: boolean;
+    isWithdrawing: boolean;
+    txHash: string;
+    selectedFee: { type: string; satPerByte: number }; //selected withdrawal fee
+  };
+  loading: boolean;
+  error: string;
+};
 import {
   formatDistance,
   format,
@@ -938,7 +931,11 @@ export default {
 
       try {
         const citadel = (this.$store.state as RootState).citadel;
-        const res = citadel.middleware.lnd.transaction.sendCoins(payload.addr, payload.amt, payload.satPerByte);
+        const res = citadel.middleware.lnd.transaction.sendCoins(
+          payload.addr,
+          payload.amt,
+          payload.satPerByte
+        );
         const withdrawTx = res.data;
         this.withdraw.txHash = withdrawTx.txid;
         this.changeMode("withdrawn");

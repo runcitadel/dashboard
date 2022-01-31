@@ -818,7 +818,7 @@ import InputCopy from "../components/Utility/InputCopy.vue";
 import QrCode from "../components/Utility/QrCode.vue";
 import CircularCheckmark from "../components/Utility/CircularCheckmark.vue";
 import SatsBtcSwitch from "../components/Utility/SatsBtcSwitch.vue";
-import type Citadel from '@runcitadel/sdk/dist/citadel';
+import type Citadel from "@runcitadel/sdk/dist/citadel";
 
 export default {
   components: {
@@ -902,7 +902,9 @@ export default {
             return;
           }
           this.receive.invoiceStatusPollerInprogress = true;
-          const invoices = await (this.$store.state.citadel as Citadel).middleware.lnd.lightning.invoices();
+          const invoices = await (
+            this.$store.state.citadel as Citadel
+          ).middleware.lnd.lightning.invoices();
           if (invoices && invoices.length) {
             //search for invoice
             const currentInvoice = invoices.filter((inv) => {
@@ -1015,7 +1017,9 @@ export default {
       this.error = "";
 
       try {
-        await (this.$store.state.citadel as Citadel).middleware.lnd.lightning.payInvoice(this.send.paymentRequest);
+        await (
+          this.$store.state.citadel as Citadel
+        ).middleware.lnd.lightning.payInvoice(this.send.paymentRequest);
         // TODO: Fix this
         /*if (res.data.paymentError) {
           return (this.error = res.data.paymentError);
@@ -1049,7 +1053,12 @@ export default {
       //cool QR animation for a while
       setTimeout(async () => {
         try {
-          const res = await (this.$store.state.citadel as Citadel).middleware.lnd.lightning.addInvoice(this.receive.amount, this.receive.description);
+          const res = await (
+            this.$store.state.citadel as Citadel
+          ).middleware.lnd.lightning.addInvoice(
+            this.receive.amount,
+            this.receive.description
+          );
           this.receive.invoiceQR = this.receive.paymentRequest =
             res.paymentRequest;
 
@@ -1089,7 +1098,9 @@ export default {
       this.error = "";
       this.loading = true;
 
-      const fetchedInvoice = await (this.$store.state.citadel as Citadel).middleware.lnd.lightning.parsePaymentRequest(this.send.paymentRequest);
+      const fetchedInvoice = await (
+        this.$store.state.citadel as Citadel
+      ).middleware.lnd.lightning.parsePaymentRequest(this.send.paymentRequest);
 
       if (!fetchedInvoice) {
         this.send.isValidInvoice = false;

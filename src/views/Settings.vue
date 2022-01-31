@@ -32,7 +32,7 @@
                 >Remotely access your Citadel from anywhere using a Tor browser
                 on this URL</small
               >
-              </div>
+            </div>
             <input-copy
               class="w-100"
               size="sm"
@@ -550,7 +550,7 @@ import {
   RefreshIcon,
 } from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
 import { BIconCheckCircleFill } from "bootstrap-vue/src/index.js";
-import { RootState } from '../store';
+import { RootState } from "../store";
 
 export default {
   components: {
@@ -739,7 +739,10 @@ export default {
 
       try {
         const citadel = (this.$store.state as RootState).citadel;
-        await citadel.manager.auth.changePassword(this.currentPassword, this.newPassword);
+        await citadel.manager.auth.changePassword(
+          this.currentPassword,
+          this.newPassword
+        );
       } catch (error) {
         if (error && error.rmessage) {
           this.$bvToast.toast(error.message, {

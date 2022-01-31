@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import VueSlider from "@aarondewes/vue-slider-component"
+import VueSlider from "@aarondewes/vue-slider-component";
 import "@aarondewes/vue-slider-component/theme/default.css";
 
 export default {

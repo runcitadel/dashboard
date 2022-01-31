@@ -19,12 +19,7 @@
           >
           <!-- Only render this div if either there's a menu or a  -->
           <!-- header on the right, else it causes spacing issues -->
-          <div
-            v-if="
-              (!!$slots['header-right']) ||
-              (!!$slots['menu'])
-            "
-          >
+          <div v-if="!!$slots['header-right'] || !!$slots['menu']">
             <slot name="header-right"></slot>
             <b-dropdown
               variant="link"

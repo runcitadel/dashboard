@@ -40,7 +40,9 @@
           <div class>
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4">
               <p class="mb-1">Connected Peers</p>
-              <p>{{ coreStats.peers }}</p>
+              <p>
+                {{ coreStats.peers }}
+              </p>
             </div>
             <blockchain></blockchain>
             <div class="px-3 px-lg-4 py-3">
@@ -156,10 +158,15 @@ export default {
       return greetingMessage;
     },
   },
+  created() {
+    this.interval = window.setInterval(() => {
+      this.$store.dispatch("bitcoin/getStats");
+    }, 30000);
+  },
+  beforeUnmount() {
+    window.clearInterval(this.interval);
+  },
   methods: {},
-  created(): {
-    this.interval = window.setInterval(() => { this.$store.dispatch("bitcoin/getStats") }, 30000);
-  }
 };
 </script>
 

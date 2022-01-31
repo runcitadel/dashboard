@@ -5,7 +5,12 @@
         <div class="d-flex w-100 justify-content-between mb-4">
           <div>
             <div>
-              <h3 class="mb-1"><b-badge class="bg-success me-1 text-end" v-if="isNvme">NVMe</b-badge> {{ readableSize(storage.used) }}</h3>
+              <h3 class="mb-1">
+                <b-badge v-if="isNvme" class="bg-success me-1 text-end"
+                  >NVMe</b-badge
+                >
+                {{ readableSize(storage.used) }}
+              </h3>
               <p class="text-muted mb-0">
                 Used out of {{ readableSize(storage.total) }}
               </p>

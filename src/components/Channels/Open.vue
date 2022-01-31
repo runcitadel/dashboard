@@ -104,25 +104,25 @@ type data = {
   fee: {
     fast: {
       total: number;
-      perByte:string;
+      perByte: string;
       error: string;
       sweepAmount: number;
     };
     normal: {
       total: number;
-      perByte:string;
+      perByte: string;
       error: string;
       sweepAmount: number;
     };
     slow: {
       total: number;
-      perByte:string;
+      perByte: string;
       error: string;
       sweepAmount: number;
     };
     cheapest: {
       total: number;
-      perByte:string;
+      perByte: string;
       error: string;
       sweepAmount: number;
     };
@@ -244,11 +244,19 @@ export default {
         ip?: string;
       } = {
         amt: this.sweep
-          ? parseInt(this.fee[this.selectedFee.type as "fast" | "normal" | "slow" | "cheapest"].sweepAmount as unknown as string, 10)
+          ? parseInt(
+              this.fee[
+                this.selectedFee.type as "fast" | "normal" | "slow" | "cheapest"
+              ].sweepAmount as unknown as string,
+              10
+            )
           : parseInt(this.fundingAmount as unknown as string, 10),
         name: "",
         purpose: "",
-        satPerByte: parseInt(this.selectedFee.satPerByte as unknown as string, 10),
+        satPerByte: parseInt(
+          this.selectedFee.satPerByte as unknown as string,
+          10
+        ),
       };
 
       const parsedConnectionCode = this.peerConnectionCode.match(

@@ -37,7 +37,11 @@
       <step>
         In the <span class="font-weight-bold">"Host"</span>, enter
         <input-copy
-          :value="'https://' + urls.lnd.restTor.substring(13).split('.onion')[0] + '.onion'"
+          :value="
+            'https://' +
+            urls.lnd.restTor.substring(13).split('.onion')[0] +
+            '.onion'
+          "
           auto-width
         ></input-copy>
       </step>

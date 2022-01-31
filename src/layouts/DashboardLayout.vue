@@ -221,21 +221,17 @@
 </template>
 
 <script lang="ts">
-import type Citadel from '@runcitadel/sdk';
+import type Citadel from "@runcitadel/sdk";
 import { mapState } from "vuex";
 import { readableSize } from "@/helpers/size.js";
 import API from "@/helpers/api.js";
 import AuthenticatedVerticalNavbar from "@/components/AuthenticatedVerticalNavbar.vue";
-import {
-  ReceiveIcon,
-  BellIcon,
-} from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
+import { BellIcon } from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
 import { BIconExclamationCircle } from "bootstrap-vue/src/index.js";
 
 export default {
   components: {
     AuthenticatedVerticalNavbar,
-    ReceiveIcon,
     BellIcon,
     BIconExclamationCircle,
   },

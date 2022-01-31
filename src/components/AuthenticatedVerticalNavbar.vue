@@ -169,7 +169,7 @@ export default {
     SharedWalletIcon,
     VisibleIcon,
     HiddenIcon,
-    ContactsIcon, 
+    ContactsIcon,
   },
   props: {
     isMobileMenu: Boolean,

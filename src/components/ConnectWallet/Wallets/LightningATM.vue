@@ -27,8 +27,8 @@
       <step>
         It will now scan your credentials, evaluate its content and safe it to
         the configuration file of the ATM. If you've been successful, your
-        screen will say "Success!!" and your LND node is successfully linked with
-        your ATM.
+        screen will say "Success!!" and your LND node is successfully linked
+        with your ATM.
       </step>
     </step-list>
   </connection-details>

@@ -171,7 +171,7 @@
 
 <script lang="ts">
 import Bar from "../Channels/Bar.vue";
-import type Citadel from '@runcitadel/sdk';
+import type Citadel from "@runcitadel/sdk";
 
 export default {
   components: {
@@ -212,7 +212,12 @@ export default {
           channelPoint: this.channel.channelPoint,
           force: !this.channel.active, // Avoids force closing if channel is active
         };
-        await (this.$store.state.citadel as Citadel).middleware.lnd.channel.closeChannel(this.channel.channelPoint, !this.channel.active);
+        await (
+          this.$store.state.citadel as Citadel
+        ).middleware.lnd.channel.closeChannel(
+          this.channel.channelPoint,
+          !this.channel.active
+        );
         this.$emit("channelclose");
         setTimeout(() => {
           this.$bvToast.toast(`Channel closed`, {

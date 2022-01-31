@@ -195,10 +195,7 @@ export default {
       }
     },
     blockReadableTime(timestamp) {
-      return format(
-        new Date(timestamp * 1000),
-        getDateFormatWithSeconds()
-      );
+      return format(new Date(timestamp * 1000), getDateFormatWithSeconds());
     },
   },
 

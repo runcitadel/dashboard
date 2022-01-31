@@ -135,8 +135,8 @@ export default {
           totpToken: this.totpToken,
         });
       } catch (error) {
-          this.isIncorrectPassword = true;
-          this.isLoggingIn = false;
+        this.isIncorrectPassword = true;
+        this.isLoggingIn = false;
       }
 
       //redirect to dashboard

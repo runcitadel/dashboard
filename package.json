@@ -27,6 +27,8 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/parser": "^5.10.1",
     "@vitejs/plugin-vue": "^2.1.0",
     "eslint": "^8.7.0",
     "eslint-config-prettier": "^8.3.0",
@@ -37,7 +39,10 @@
     "vite": "^2.7.13"
   },
   "eslintConfig": {
-    "parser": "@typescript-eslint/parser",
+    "parser": "vue-eslint-parser",
+    "parserOptions": {
+      "parser": "@typescript-eslint/parser"
+    },
     "plugins": [
       "@typescript-eslint"
     ],
