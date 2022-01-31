@@ -40,7 +40,7 @@
           <div class>
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4">
               <p class="mb-1">Connected Peers</p>
-              <p>8</p>
+              <p>{{ coreStats.peers }}</p>
             </div>
             <blockchain></blockchain>
             <div class="px-3 px-lg-4 py-3">
@@ -139,6 +139,7 @@ export default {
       },
       btcBalanceInSats: (state) => state.bitcoin.balance.total,
       unit: (state) => state.system.unit,
+      stats: (state) => state.bitcoin.stats,
     }),
     greeting: () => {
       const currentHour = new Date().getHours();
@@ -156,6 +157,9 @@ export default {
     },
   },
   methods: {},
+  created(): {
+    this.interval = window.setInterval(() => { this.$store.dispatch("bitcoin/getStats") }, 30000);
+  }
 };
 </script>
 
