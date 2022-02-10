@@ -133,15 +133,15 @@ const userModule: Module<State, RootState> = {
 
     async register({ commit, state, rootState }, { name, password, seed }) {
       if (!state.registered) {
-        const jwt = await rootState.citadel.manager.auth.register(
+        const { jwt } = await rootState.citadel.manager.auth.register(
           name,
           password,
           seed
         );
 
-        if (jwt.jwt) {
-          commit("setJwt", jwt.jwt);
-          commit("setJwt", jwt.jwt, { root: true });
+        if (jwt) {
+          commit("setJwt", jwt);
+          commit("setJwt", jwt, { root: true });
           commit("setRegistered", true);
           commit("setSeed", []); //remove seed from store
         }
