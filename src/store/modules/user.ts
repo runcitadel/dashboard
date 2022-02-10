@@ -139,9 +139,9 @@ const userModule: Module<State, RootState> = {
           seed
         );
 
-        if (jwt) {
-          commit("setJwt", jwt);
-          commit("setJwt", jwt, { root: true });
+        if (jwt.jwt) {
+          commit("setJwt", jwt.jwt);
+          commit("setJwt", jwt.jwt, { root: true });
           commit("setRegistered", true);
           commit("setSeed", []); //remove seed from store
         }
