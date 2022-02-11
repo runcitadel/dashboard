@@ -141,7 +141,7 @@ export default {
       },
       btcBalanceInSats: (state) => state.bitcoin.balance.total,
       unit: (state) => state.system.unit,
-      stats: (state) => state.bitcoin.stats,
+      coreStats: (state) => state.bitcoin.stats,
     }),
     greeting: () => {
       const currentHour = new Date().getHours();
