@@ -1,6 +1,6 @@
 // Converts number of bytes to human readable size
 
-export function readableSize(n) {
+export function readableSize(n: number) {
   if (n === 0) return "0 MB";
   if (n < 1e3) return `${Number(n.toFixed(1))} Bytes`;
   if (n >= 1e3 && n < 1e6) return `${Number((n / 1e3).toFixed(1))} KB`;

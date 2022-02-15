@@ -223,13 +223,13 @@
 <script lang="ts">
 import type Citadel from "@runcitadel/sdk";
 import { mapState } from "vuex";
-import { readableSize } from "@/helpers/size.js";
-import API from "@/helpers/api.js";
-import AuthenticatedVerticalNavbar from "@/components/AuthenticatedVerticalNavbar.vue";
+import { readableSize } from "../helpers/size.js";
+import AuthenticatedVerticalNavbar from "../components/AuthenticatedVerticalNavbar.vue";
 import { BellIcon } from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
 import { BIconExclamationCircle } from "bootstrap-vue/src/index.js";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   components: {
     AuthenticatedVerticalNavbar,
     BellIcon,
@@ -282,6 +282,7 @@ export default {
   created() {
     //load this data once:
     this.$store.dispatch("user/getInfo");
+    this.$store.dispatch("system/getIsCitadelOS");
     if (
       window.localStorage &&
       window.localStorage.getItem("lightmode") === "true"
@@ -292,9 +293,16 @@ export default {
     //refresh this data every 20s:
     this.fetchData();
     this.interval = window.setInterval(this.fetchData, 20000);
+    // This data is't changing as much and fetching it every 5 minutes is enough
+    this.fetchLessChangingData();
+    this.otherInterval = window.setInterval(
+      this.fetchLessChangingData,
+      60 * 5 * 1000
+    );
   },
   beforeUnmount() {
     window.clearInterval(this.interval);
+    window.clearInterval(this.otherInterval);
     if (this.pollUpdateStatus) {
       window.clearInterval(this.pollUpdateStatus);
     }
@@ -314,9 +322,10 @@ export default {
       this.$store.dispatch("bitcoin/getTransactions");
       this.$store.dispatch("lightning/getSync");
       this.$store.dispatch("lightning/getTransactions");
+    },
+    fetchLessChangingData() {
       this.$store.dispatch("lightning/getChannels");
       this.$store.dispatch("bitcoin/getPrice");
-      this.$store.dispatch("system/getIsCitadelOS");
       this.$store.dispatch("system/getAvailableUpdate");
       this.$store.dispatch("system/getRam");
       this.$store.dispatch("system/getStorage");
@@ -359,7 +368,7 @@ export default {
       return readableSize(n);
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
