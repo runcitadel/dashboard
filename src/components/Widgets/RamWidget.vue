@@ -165,7 +165,7 @@
 import { mapState } from "vuex";
 import { BIconInfoCircleFill } from "bootstrap-vue/src/index.js";
 
-import { readableSize } from "@/helpers/size.js";
+import { readableSize } from "@/helpers/size";
 
 import CardWidget from "@/components/CardWidget.vue";
 
