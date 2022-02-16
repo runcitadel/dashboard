@@ -7,5 +7,15 @@ export default defineConfig({
     target: "esnext",
   },
   resolve: { alias: { "@": "/src", vue: "@vue/compat" } },
-  plugins: [vue()],
+  plugins: [
+    vue({
+      template: {
+        compilerOptions: {
+          compatConfig: {
+            MODE: 3,
+          },
+        },
+      },
+    }),
+  ],
 });
