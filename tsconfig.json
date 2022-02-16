@@ -6,5 +6,6 @@
         "jsx": "preserve",
         "moduleResolution": "node",
         "experimentalDecorators": true,
+        "allowJs": true
     }
 }

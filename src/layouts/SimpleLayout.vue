@@ -9,5 +9,3 @@ export default {
   name: "SimpleLayout",
 };
 </script>
-
-<style lang="scss" scoped></style>

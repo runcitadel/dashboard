@@ -14,7 +14,6 @@ export default {
 
 <style lang="scss" scoped>
 // Page changing transitions
-
 .change-page-enter-active,
 .change-page-leave-active {
   transition: transform 0.4s, opacity 0.4s ease;

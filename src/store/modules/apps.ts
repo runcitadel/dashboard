@@ -1,6 +1,45 @@
-import type { app } from "@runcitadel/sdk/dist/common/types";
 import { Module } from "vuex";
 import { RootState } from "..";
+
+/** A dependency an app could have */
+type Dependency = "bitcoind" | "electrum" | "lnd";
+
+type app = {
+  /** The id of the app, the name as a simple string without spaces */
+  id: string;
+  /** A category for the app, used for grouping apps on the dashboard */
+  category: string;
+  /** The name of the app */
+  name: string;
+  /** The version of the app */
+  version: string;
+  /** A One line description of the app (max 50 characters) */
+  tagline: string;
+  /** A longer description of the app (50 to 200 words) */
+  description: string;
+  /** The person(s) who created the app */
+  developer: string;
+  /** The url to the app's website */
+  website: string;
+  /** The dependencies of the app */
+  dependencies: Dependency[];
+  /** The url to the app's Git repository */
+  repo: string;
+  /** The url to the app's support website/chat */
+  support: string;
+  /** The port the app's web UI uses */
+  port: number;
+  /** A list of links to app promotional images, if no domain is provided, https://runcitadel.github.io/old-apps-gallery/${app.id}/ will be put in front of the path */
+  gallery: string[];
+  /** The path of the app the open button should open */
+  path: string;
+  /** The app's default password */
+  defaultPassword: string;
+  /** Automatically added */
+  hiddenService?: string;
+  /** Automatically added */
+  installed?: boolean;
+};
 
 export interface State {
   installed: app[];
@@ -95,12 +134,12 @@ const appModule: Module<State, RootState> = {
     },
     async updateApps({ rootState }) {
       await rootState.citadel.manager.apps.update();
-    }
+    },
   },
   getters: {},
 };
 
 export default {
   namespaced: true,
-  ...appModule
+  ...appModule,
 };

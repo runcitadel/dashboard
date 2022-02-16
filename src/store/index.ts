@@ -1,16 +1,21 @@
 import { ActionTree, createStore, GetterTree, MutationTree } from "vuex";
 
 //Modules
-import user from "./modules/user";
-import system from "./modules/system";
-import bitcoin from "./modules/bitcoin";
-import lightning from "./modules/lightning";
-import apps from "./modules/apps";
+import user, { type State as UserState } from "./modules/user";
+import system, { type State as SystemState } from "./modules/system";
+import bitcoin, { type State as BitcoinState } from "./modules/bitcoin";
+import lightning, { type State as LightningState } from "./modules/lightning";
+import apps, { type State as AppsState } from "./modules/apps";
 import Citadel from "@runcitadel/sdk";
 
 export interface RootState {
   isMobileMenuOpen: boolean;
   citadel: Citadel;
+  apps: AppsState;
+  bitcoin: BitcoinState;
+  lightning: LightningState;
+  system: SystemState;
+  user: UserState;
 }
 
 // Initial State
@@ -55,7 +60,7 @@ const actions: ActionTree<RootState, RootState> = {
 };
 
 export default createStore({
-  state,
+  state: state as RootState,
   mutations,
   actions,
   getters,

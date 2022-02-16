@@ -228,6 +228,7 @@ import AuthenticatedVerticalNavbar from "../components/AuthenticatedVerticalNavb
 import { BellIcon } from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
 import { BIconExclamationCircle } from "bootstrap-vue/src/index.js";
 import { defineComponent } from "vue";
+import type { RootState } from "../store/index";
 
 export default defineComponent({
   components: {
@@ -241,17 +242,17 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapState({
-      name: (state) => state.user.name,
-      chain: (state) => state.bitcoin.chain,
-      availableUpdate: (state) => state.system.availableUpdate,
-      updateStatus: (state) => state.system.updateStatus,
-      showUpdateConfirmationModal: (state) =>
+    ...mapState<RootState>({
+      name: (state: RootState) => state.user.name,
+      chain: (state: RootState) => state.bitcoin.chain,
+      availableUpdate: (state: RootState) => state.system.availableUpdate,
+      updateStatus: (state: RootState) => state.system.updateStatus,
+      showUpdateConfirmationModal: (state: RootState) =>
         state.system.showUpdateConfirmationModal,
-      ram: (state) => state.system.ram,
-      storage: (state) => state.system.storage,
-      isCitadelOS: (state) => state.system.isCitadelOS,
-      cpuTemperature: (state) => state.system.cpuTemperature,
+      ram: (state: RootState) => state.system.ram,
+      storage: (state: RootState) => state.system.storage,
+      isCitadelOS: (state: RootState) => state.system.isCitadelOS,
+      cpuTemperature: (state: RootState) => state.system.cpuTemperature,
     }),
     isRunningLowOnRam() {
       // over 95% RAM used
@@ -287,7 +288,7 @@ export default defineComponent({
       window.localStorage &&
       window.localStorage.getItem("lightmode") === "true"
     ) {
-      document.querySelector(":root").classList.add("prefer-light-mode");
+      document.querySelector(":root")?.classList?.add("prefer-light-mode");
     }
 
     //refresh this data every 20s:

@@ -20,9 +20,10 @@
             </svg>
             <small class="ms-1 text-success">Running</small>
             <h3 class="d-block font-weight-bold mb-1">Bitcoin Core</h3>
-            <span class="d-block text-muted">{{
-              version ? `v${version}` : "Loading..."
-            }}</span>
+            <span class="d-block text-muted"
+              >Bitcoin Knots {{ knotsVersion }} (Based on Bitcoin Core
+              {{ coreVersion }})</span
+            >
           </div>
         </div>
       </div>
@@ -144,15 +145,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { mapState } from "vuex";
 
-import CardWidget from "@/components/CardWidget.vue";
-import Blockchain from "@/components/Blockchain.vue";
-import Stat from "@/components/Utility/Stat.vue";
-import BitcoinWallet from "@/components/BitcoinWallet.vue";
+import CardWidget from "../components/CardWidget.vue";
+import Blockchain from "../components/Blockchain.vue";
+import Stat from "../components/Utility/Stat.vue";
+import BitcoinWallet from "../components/BitcoinWallet.vue";
+import { defineComponent } from "vue";
+import type { RootState } from "../store/index.js";
 
-export default {
+export default defineComponent({
   components: {
     CardWidget,
     Blockchain,
@@ -163,16 +166,18 @@ export default {
     return {};
   },
   computed: {
-    ...mapState({
-      syncPercent: (state) => state.bitcoin.percent,
-      blocks: (state) => state.bitcoin.blocks,
-      version: (state) => state.bitcoin.version,
-      currentBlock: (state) => state.bitcoin.currentBlock,
-      blockHeight: (state) => state.bitcoin.blockHeight,
-      stats: (state) => state.bitcoin.stats,
-      onionAddress: (state) => state.bitcoin.onionAddress,
-      electrumAddress: (state) => state.bitcoin.electrumAddress,
-      rpc: (state) => state.bitcoin.rpc,
+    ...mapState<RootState>({
+      syncPercent: (state: RootState) => state.bitcoin.percent,
+      blocks: (state: RootState) => state.bitcoin.blocks,
+      coreVersion: (state: RootState) =>
+        state.bitcoin.version.split("/")[1].split(":")[1],
+      knotsVersion: (state: RootState) =>
+        state.bitcoin.version.split("/")[2].split(":")[1],
+      currentBlock: (state: RootState) => state.bitcoin.currentBlock,
+      blockHeight: (state: RootState) => state.bitcoin.blockHeight,
+      stats: (state: RootState) => state.bitcoin.stats,
+      onionAddress: (state: RootState) => state.bitcoin.onionAddress,
+      rpc: (state: RootState) => state.bitcoin.rpc,
     }),
   },
   created() {
@@ -185,10 +190,10 @@ export default {
     window.clearInterval(this.interval);
   },
   methods: {
-    random(min, max) {
+    random(min: number, max: number) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
-    abbreviateHashRate(n) {
+    abbreviateHashRate(n: number): [number, string] {
       if (n < 1e3) return [Number(n.toFixed(1)), "H/s"];
       if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), "kH/s"];
       if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), "MH/s"];
@@ -197,14 +202,18 @@ export default {
       if (n >= 1e15 && n < 1e18) return [Number((n / 1e15).toFixed(1)), "PH/s"];
       if (n >= 1e18 && n < 1e21) return [Number((n / 1e18).toFixed(1)), "EH/s"];
       if (n >= 1e21) return [Number(+(n / 1e21).toFixed(1)), "ZH/s"];
+      // Just a fallback to prevent TS errors
+      return [Number(n.toFixed(1)), "H/s"];
     },
-    abbreviateSize(n) {
+    abbreviateSize(n: number): [number, string] {
       if (n < 1e3) return [Number(n.toFixed(1)), "Bytes"];
       if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), "KB"];
       if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), "MB"];
       if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), "GB"];
       if (n >= 1e12 && n < 1e15) return [Number((n / 1e12).toFixed(1)), "TB"];
       if (n >= 1e15) return [Number(+(n / 1e15).toFixed(1)), "PB"];
+      // Just a fallback to prevent TS errors
+      return [Number(n.toFixed(1)), "Bytes"];
     },
     fetchStats() {
       this.$store.dispatch("bitcoin/getStats");
@@ -217,7 +226,5 @@ export default {
       ]);
     },
   },
-};
+});
 </script>
-
-<style lang="scss" scoped></style>
