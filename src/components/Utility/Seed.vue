@@ -126,7 +126,6 @@ export default {
       this.$emit("input", this.inputWords);
     },
   },
-  mounted() {},
   methods: {
     previous() {
       if (this.index !== 0) {

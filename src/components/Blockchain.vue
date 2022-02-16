@@ -134,6 +134,13 @@ import {
 import { mapState } from "vuex";
 
 export default {
+  components: {},
+  props: {
+    numBlocks: {
+      type: Number,
+      default: 3,
+    },
+  },
   data() {
     return {
       polling: null,
@@ -196,14 +203,6 @@ export default {
     },
     blockReadableTime(timestamp) {
       return format(new Date(timestamp * 1000), getDateFormatWithSeconds());
-    },
-  },
-
-  components: {},
-  props: {
-    numBlocks: {
-      type: Number,
-      default: 3,
     },
   },
 };

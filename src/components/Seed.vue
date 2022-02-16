@@ -61,7 +61,6 @@ export default {
       seed: (state) => state.user.seed,
     }),
   },
-  created() {},
   methods: {
     showSeed() {
       this.$refs["seed-modal"].show();

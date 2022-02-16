@@ -180,6 +180,7 @@ export default {
   props: {
     channel: Object,
   },
+emits: ['channelclose'],
   data() {
     return {
       isReviewingChannelClose: false,

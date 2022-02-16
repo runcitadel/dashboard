@@ -48,7 +48,6 @@ export default {
     ConnectionDetails,
     StepList,
     Step,
-    InputCopy,
     QrCode,
   },
   props: {
