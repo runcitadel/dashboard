@@ -8,10 +8,12 @@ WORKDIR /app
 
 
 # copy project files and folders to the current working directory (i.e. 'app' folder)
-COPY . .
+COPY .yarn package.json yarn.lock .
 
 # install dependencies
 RUN yarn
+
+COPY . .
 
 # build app for production
 RUN yarn build
