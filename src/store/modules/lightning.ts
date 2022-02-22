@@ -1,6 +1,6 @@
 import type { Channel } from "@runcitadel/sdk";
 type Channel_extended = Channel & {
-    type?: string;
+  type?: string;
 };
 import { Module } from "vuex";
 import { RootState } from "..";
@@ -78,6 +78,21 @@ export interface State {
   pendingTransactions: [];
   pendingChannelEdit: {};
 }
+export type ParsedChannel = Channel & {
+  type?: string | undefined;
+} & {
+  status:
+    | "Online"
+    | "Offline"
+    | "Opening"
+    | "Closing"
+    | "Unknown"
+    | "WAITING_CLOSING_CHANNEL"
+    | "FORCE_CLOSING_CHANNEL"
+    | "PENDING_OPEN_CHANNEL";
+  name: string;
+  purpose: string;
+};
 
 const lightningModule: Module<State, RootState> = {
   // Initial state
@@ -290,22 +305,7 @@ const lightningModule: Module<State, RootState> = {
         rawChannels = await rootState.citadel.middleware.lnd.channel.list();
       }
 
-      const channels: (Channel & {
-        type?: string | undefined;
-      } & {
-        status?:
-          | "Online"
-          | "Offline"
-          | "Opening"
-          | "Closing"
-          | "Unknown"
-          | "WAITING_CLOSING_CHANNEL"
-          | "FORCE_CLOSING_CHANNEL"
-          | "PENDING_OPEN_CHANNEL"
-          | undefined;
-        name?: string | undefined;
-        purpose?: string | undefined;
-      })[] = [];
+      const channels: ParsedChannel[] = [];
       let confirmedBalance = 0;
       let pendingBalance = 0;
       let maxReceive = 0;

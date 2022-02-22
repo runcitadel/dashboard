@@ -38,7 +38,6 @@
 import ConnectionDetails from "@/components/ConnectWallet/ConnectionDetails.vue";
 import StepList from "@/components/ConnectWallet/StepList.vue";
 import Step from "@/components/ConnectWallet/Step.vue";
-import InputCopy from "@/components/Utility/InputCopy.vue";
 import QrCode from "@/components/Utility/QrCode.vue";
 import BufferModule from "buffer/index.js";
 const { Buffer } = BufferModule;

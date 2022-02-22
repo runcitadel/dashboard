@@ -62,21 +62,18 @@ export default {
     },
   },
   mounted() {
-    const that = this;
-    that.create();
+    this.create();
   },
   beforeUnmount() {
-    const that = this;
-    that.destroy();
+    this.destroy();
   },
   methods: {
     create() {
-      const that = this;
-      if (that.instance) {
+      if (this.instance) {
         return;
       }
-      const dom = that.$refs.number;
-      const options = that.options || {};
+      const dom = this.$refs.number;
+      const options = this.options || {};
 
       if (this.firstLoad) {
         if (this.countOnLoad) {
@@ -89,53 +86,47 @@ export default {
 
       options.startVal = this.startVal;
 
-      const instance = new CountUp(dom, that.value.endVal, options);
+      const instance = new CountUp(dom, this.value.endVal, options);
       if (instance.error) {
         // error
         return;
       }
-      that.instance = instance;
-      if (that.delay < 0) {
-        that.$emit("ready", instance, CountUp);
+      this.instance = instance;
+      if (this.delay < 0) {
+        this.$emit("ready", instance, CountUp);
         return;
       }
       setTimeout(() => {
-        instance.start(() => that.$emit("ready", instance, CountUp));
+        instance.start(() => this.$emit("ready", instance, CountUp));
         this.firstLoad = false;
-      }, that.delay);
+      }, this.delay);
     },
     destroy() {
-      const that = this;
-      that.instance = null;
+      this.instance = null;
     },
     printValue(value) {
-      const that = this;
-      if (that.instance && isFunction(that.instance.printValue)) {
-        return that.instance.printValue(value);
+      if (this.instance && isFunction(this.instance.printValue)) {
+        return this.instance.printValue(value);
       }
     },
     start(callback) {
-      const that = this;
-      if (that.instance && isFunction(that.instance.start)) {
-        return that.instance.start(callback);
+      if (this.instance && isFunction(this.instance.start)) {
+        return this.instance.start(callback);
       }
     },
     pauseResume() {
-      const that = this;
-      if (that.instance && isFunction(that.instance.pauseResume)) {
-        return that.instance.pauseResume();
+      if (this.instance && isFunction(this.instance.pauseResume)) {
+        return this.instance.pauseResume();
       }
     },
     reset() {
-      const that = this;
-      if (that.instance && isFunction(that.instance.reset)) {
-        return that.instance.reset();
+      if (this.instance && isFunction(this.instance.reset)) {
+        return this.instance.reset();
       }
     },
     update(newEndVal) {
-      const that = this;
-      if (that.instance && isFunction(that.instance.update)) {
-        return that.instance.update(newEndVal);
+      if (this.instance && isFunction(this.instance.update)) {
+        return this.instance.update(newEndVal);
       }
     },
   },

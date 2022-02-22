@@ -92,6 +92,9 @@ import { mapState } from "vuex";
 import CardWidget from "@/components/CardWidget.vue";
 
 export default {
+  components: {
+    CardWidget,
+  },
   data() {
     return {};
   },
@@ -109,9 +112,6 @@ export default {
   },
   created() {
     this.$store.dispatch("apps/getAppStore");
-  },
-  components: {
-    CardWidget,
   },
 };
 </script>

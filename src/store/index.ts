@@ -21,7 +21,11 @@ export interface RootState {
 // Initial State
 const state = {
   isMobileMenuOpen: true,
-  citadel: new Citadel(window.location.origin),
+  citadel: new Citadel(
+    process.env.NODE_ENV === "development"
+      ? "http://citadel-dev.local"
+      : window.location.origin
+  ),
   //citadel: new Citadel("https://node.runcitadel.space"),
 };
 
