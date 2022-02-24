@@ -1,6 +1,6 @@
 import type { Channel } from "@runcitadel/sdk";
 type Channel_extended = Channel & {
-    type?: string;
+  type?: string;
 };
 import { Module } from "vuex";
 import { RootState } from "..";
@@ -44,6 +44,7 @@ export interface State {
   operational: boolean;
   unlocked: boolean;
   version: string;
+  implementation: string;
   currentBlock: number;
   blockHeight: number;
   percent: number;
@@ -76,7 +77,6 @@ export interface State {
   transactions: (CustomTransactionType | { type: "loading" })[];
   confirmedTransactions: [];
   pendingTransactions: [];
-  pendingChannelEdit: {};
 }
 
 const lightningModule: Module<State, RootState> = {
@@ -85,6 +85,7 @@ const lightningModule: Module<State, RootState> = {
     operational: false,
     unlocked: false,
     version: "",
+    implementation: "lnd",
     currentBlock: 0,
     blockHeight: 0,
     percent: -1, //for loading state
@@ -122,7 +123,6 @@ const lightningModule: Module<State, RootState> = {
     ],
     confirmedTransactions: [],
     pendingTransactions: [],
-    pendingChannelEdit: {},
   }),
   mutations: {
     isOperational(state, operational) {
@@ -143,6 +143,10 @@ const lightningModule: Module<State, RootState> = {
       state.version = version;
     },
 
+    setImplementation(state, implementation) {
+      state.implementation = implementation || "lnd";
+    },
+
     setConnectionCode(state, code) {
       state.connectionCode = code;
     },
@@ -157,10 +161,6 @@ const lightningModule: Module<State, RootState> = {
 
     setChannels(state, channels) {
       state.channels = channels;
-    },
-
-    setChannelFocus(state, channel) {
-      state.pendingChannelEdit = channel;
     },
 
     setBalance(state, balance) {
@@ -230,6 +230,7 @@ const lightningModule: Module<State, RootState> = {
     //basically fetches everything
     async getLndPageData({ commit, dispatch, rootState }) {
       const data = await rootState.citadel.middleware.pages.lightning();
+      const versionInfo = await rootState.citadel.middleware.lnd.info.version();
 
       if (data) {
         const channels = data.channels || [];
@@ -243,6 +244,11 @@ const lightningModule: Module<State, RootState> = {
         commit("setVersion", lightningInfo.version);
         commit("setNumPeers", lightningInfo.numPeers);
         commit("setNumActiveChannels", lightningInfo.numActiveChannels);
+      }
+
+      if (versionInfo) {
+        commit("setVersion", versionInfo.version);
+        commit("setImplementation", versionInfo.implementation);
       }
     },
 
@@ -428,7 +434,9 @@ const lightningModule: Module<State, RootState> = {
             paymentRequest: tx.paymentRequest,
             paymentPreImage: tx.paymentPreimage,
             fee: Number(tx.feeSat),
-            description: /*preFetchedTx ? preFetchedTx.description :*/ "",
+            description: preFetchedTx
+              ? (preFetchedTx as { description: string }).description
+              : "",
           };
         });
 
@@ -436,8 +444,9 @@ const lightningModule: Module<State, RootState> = {
       }
 
       //Sort by recent to oldest
-      // @ts-ignore
-      transactions.sort((tx1, tx2) => tx2.timestamp - tx1.timestamp);
+      transactions.sort((tx1, tx2) => {
+        return Number(tx2.timestamp) - Number(tx1.timestamp);
+      });
 
       //filter out new outgoing payments
       const newOutgoingTransactions = outgoingTransactions.filter(
@@ -451,7 +460,7 @@ const lightningModule: Module<State, RootState> = {
       commit("setTransactions", transactions);
 
       // Fetch descriptions of all new outgoing transactions
-      for (let tx of newOutgoingTransactions) {
+      for (const tx of newOutgoingTransactions) {
         if (!tx.paymentRequest) {
           //example - in case of a keysend tx there is no payment request
           continue;
@@ -473,7 +482,7 @@ const lightningModule: Module<State, RootState> = {
             );
 
             if (txIndex !== -1) {
-              const outgoingTx = updatedTransactions[txIndex];
+              //const outgoingTx = updatedTransactions[txIndex];
               //update tx description and state
               //outgoingTx.description = invoiceDetails.description;
               commit("setTransactions", transactions);
@@ -483,10 +492,6 @@ const lightningModule: Module<State, RootState> = {
           console.log(error);
         }
       }
-    },
-
-    selectChannel({ commit }, channel) {
-      commit("setChannelFocus", channel);
     },
 
     async getLndConnectUrls({ commit, rootState }) {

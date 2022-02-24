@@ -4,9 +4,20 @@
       <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex justify-content-start align-items-center">
           <img
-            style="height: auto; width: 12vw; max-width: 100px"
+            style="
+              height: auto;
+              width: 12vw;
+              max-width: 100px;
+              border-radius: 12px !important;
+            "
             class="me-2 me-sm-3"
-            src="@/assets/icon-app-lnd.svg"
+            :src="
+              src(
+                lightningImplementation === 'lnd'
+                  ? 'icon-app-lnd.svg'
+                  : 'icon-app-c-lightning.svg'
+              )
+            "
           />
           <div>
             <svg
@@ -348,7 +359,15 @@ export default {
   },
   computed: {
     ...mapState({
-      lndVersion: (state) => state.lightning.version,
+      lndVersion: (state) => {
+        if (
+          state.lightning.version &&
+          state.lightning.version.charAt(0) === "v"
+        ) {
+          return state.lightning.version.substring(1);
+        }
+      },
+      lightningImplementation: (state) => state.lightning.implementation,
       numActiveChannels: (state) => state.lightning.numActiveChannels,
       maxReceive: (state) => state.lightning.maxReceive,
       maxSend: (state) => state.lightning.maxSend,
@@ -406,6 +425,9 @@ export default {
     },
     fetchPageData() {
       this.$store.dispatch("lightning/getLndPageData");
+    },
+    src: (icon) => {
+      return new URL(`../assets/${icon}`, import.meta.url).href;
     },
   },
 };
