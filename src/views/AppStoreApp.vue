@@ -288,15 +288,16 @@ export default {
   },
   methods: {
     formatDependency(dependency) {
-      let name;
-      if (dependency === "bitcoind") {
-        name = "Bitcoin Core";
-      } else if (dependency === "lnd") {
-        name = "LND";
-      } else if (dependency === "electrum") {
-        name = "Electrum Server";
+      switch (dependency) {
+        case "bitcoind":
+          return "Bitcoin Core";
+        case "lnd":
+          return "LND";
+        case "electrum":
+          return "Electrum Server";
+        default:
+          return dependency;
       }
-      return name;
     },
     src: (dependency) => {
       return new URL(
