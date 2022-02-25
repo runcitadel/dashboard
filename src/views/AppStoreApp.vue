@@ -179,7 +179,7 @@
                 <div class="d-flex align-items-center">
                   <img
                     :src="src(dependency)"
-                    style="width: 50px; height: 50px"
+                    style="width: 50px; height: 50px; border-radius: 12px"
                     class="me-2"
                   />
                   <span class="text-muted my-0">{{
