@@ -203,12 +203,11 @@
                 </div>
                 <div v-else>
                   <svg
-                    width="30"
-                    height="30"
+                    width="16"
+                    height="16"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
-                    fill="currentColor"
-                    data-v-4fa90e7f=""
+                    fill="#cc3444"
                   >
                     <path
                       fill-rule="evenodd"
@@ -286,14 +285,6 @@ export default {
       );
       return index !== -1;
     },
-    isDependencyInstalled: (dependency) => {
-      const allInstalled = [
-        "bitcoind",
-        "electrum",
-        this.lightningImplementation,
-      ];
-      return allInstalled.includes(dependency);
-    },
     url: function () {
       if (window.location.origin.indexOf(".onion") > 0) {
         const installedApp = this.installedApps.find(
@@ -331,7 +322,15 @@ export default {
           return dependency;
       }
     },
-    src: (dependency) => {
+    isDependencyInstalled(dependency) {
+      const allInstalled = [
+        "bitcoind",
+        "electrum",
+        this.lightningImplementation,
+      ];
+      return allInstalled.includes(dependency);
+    },
+    src(dependency) {
       return new URL(
         `../assets/app-store/dependencies/${dependency}.svg`,
         import.meta.url
