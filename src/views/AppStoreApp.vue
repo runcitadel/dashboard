@@ -91,6 +91,14 @@
             >Uninstalling...</b-button
           >
           <b-button
+            v-else-if="!app.compatible"
+            variant="danger"
+            size="lg"
+            class="px-4"
+            disabled
+            >Incompatible</b-button
+          >
+          <b-button
             v-else
             variant="success"
             size="lg"
@@ -154,10 +162,13 @@
               <a :href="app.website" target="_blank">{{ app.developer }}</a>
             </div>
             <!-- We don't need to show this until there are incompatible apps -->
-            <!--<div class="d-flex justify-content-between mb-3">
+            <div class="d-flex justify-content-between mb-3">
               <span>Compatibility</span>
-              <span>Compatible</span>
-            </div>-->
+              <span v-if="!app.compatible" class="text-danger"
+                >Not compatible</span
+              >
+              <span v-else class="text-success">Compatible</span>
+            </div>
             <div v-if="app.dependencies.length" class="mb-4">
               <span class="d-block mb-3">Requires</span>
               <div
@@ -216,6 +227,10 @@ import CardWidget from "@/components/CardWidget.vue";
 import InputCopy from "@/components/Utility/InputCopy.vue";
 
 export default {
+  components: {
+    CardWidget,
+    InputCopy,
+  },
   data() {
     return {
       isOffline: false,
@@ -290,6 +305,7 @@ export default {
       ).href;
     },
     installApp() {
+      if (!this.app.compatible) return;
       this.$store.dispatch("apps/install", this.app.id);
       this.isOffline = true;
       this.pollOfflineApp();
@@ -317,10 +333,6 @@ export default {
         await delay(1000);
       }
     },
-  },
-  components: {
-    CardWidget,
-    InputCopy,
   },
 };
 </script>
