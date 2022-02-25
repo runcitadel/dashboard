@@ -186,7 +186,7 @@
                     formatDependency(dependency)
                   }}</span>
                 </div>
-                <div>
+                <div v-if="isDependencyInstalled(dependency)">
                   <svg
                     width="30"
                     height="30"
@@ -200,6 +200,28 @@
                     />
                   </svg>
                   <small class="text-success">Installed</small>
+                </div>
+                <div v-else>
+                  <svg
+                    width="30"
+                    height="30"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    data-v-4fa90e7f=""
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.47 5.47a.75.75 0 011.06 0l12 12a.75.75 0 11-1.06 1.06l-12-12a.75.75 0 010-1.06z"
+                      clip-rule="evenodd"
+                    ></path>
+                    <path
+                      fill-rule="evenodd"
+                      d="M18.53 5.47a.75.75 0 010 1.06l-12 12a.75.75 0 01-1.06-1.06l12-12a.75.75 0 011.06 0z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  <small class="text-danger">Not installed</small>
                 </div>
               </div>
             </div>
@@ -243,6 +265,7 @@ export default {
       appStore: (state) => state.apps.store,
       installing: (state) => state.apps.installing,
       uninstalling: (state) => state.apps.uninstalling,
+      lightningImplementation: (state) => state.lightning.implementation,
     }),
     app: function () {
       return this.appStore.find((app) => app.id === this.$route.params.id);
@@ -263,6 +286,14 @@ export default {
       );
       return index !== -1;
     },
+    isDependencyInstalled: (dependency) => {
+      const allInstalled = [
+        "bitcoind",
+        "electrum",
+        this.lightningImplementation,
+      ];
+      return allInstalled.includes(dependency);
+    },
     url: function () {
       if (window.location.origin.indexOf(".onion") > 0) {
         const installedApp = this.installedApps.find(
@@ -282,6 +313,7 @@ export default {
     if (this.isInstalled) {
       this.pollOfflineApp();
     }
+    await this.$store.dispatch("lightning/getVersionInfo");
   },
   beforeUnmount() {
     this.checkIfAppIsOffline = false;

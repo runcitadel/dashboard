@@ -284,6 +284,12 @@ export default defineComponent({
     //load this data once:
     this.$store.dispatch("user/getInfo");
     this.$store.dispatch("system/getIsCitadelOS");
+    // Preload this so when the user switches to th Lightning page, it can be displayed immediately
+    try {
+      await this.$store.dispatch("lightning/getVersionInfo");
+    } catch (e) {
+      console.error(e);
+    }
     if (
       window.localStorage &&
       window.localStorage.getItem("lightmode") === "true"

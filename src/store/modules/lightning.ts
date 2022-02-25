@@ -252,6 +252,16 @@ const lightningModule: Module<State, RootState> = {
       }
     },
 
+    //basically fetches everything
+    async getVersionInfo({ commit, rootState }) {
+      const versionInfo = await rootState.citadel.middleware.lnd.info.version();
+
+      if (versionInfo) {
+        commit("setVersion", versionInfo.version);
+        commit("setImplementation", versionInfo.implementation);
+      }
+    },
+
     async getConnectionCode({ commit, rootState }) {
       const uris = await rootState.citadel.middleware.lnd.info.publicUris();
 
