@@ -186,7 +186,7 @@ const systemModule: Module<State, RootState> = {
     async getVersion({ commit, rootState }) {
       const data = await rootState.citadel.manager.system.info();
       if (data && data.version) {
-        let { version } = data;
+        const { version } = data;
         commit("setVersion", version);
       }
     },
@@ -209,7 +209,8 @@ const systemModule: Module<State, RootState> = {
       });
     },
     async getOnionAddress({ commit, rootState }) {
-      const address = await rootState.citadel.manager.system.getHiddenServiceUrl();
+      const address =
+        await rootState.citadel.manager.system.getHiddenServiceUrl();
       commit("setOnionAddress", address);
     },
     async getAvailableUpdate({ commit, rootState }) {
@@ -237,7 +238,7 @@ const systemModule: Module<State, RootState> = {
       }
     },
     async getDiskInfo({ commit, rootState }) {
-      const status = await rootState.citadel.manager.system.disk() === "nvme";
+      const status = (await rootState.citadel.manager.system.disk()) === "nvme";
       if (status) {
         commit("setNvme", status);
       }
@@ -259,7 +260,7 @@ const systemModule: Module<State, RootState> = {
     async debug({ commit, rootState }) {
       await rootState.citadel.manager.system.debug();
 
-      commit("setDebugResult", 'Debug requested');
+      commit("setDebugResult", "Debug requested");
     },
     async shutdown({ commit, rootState }) {
       // Reset any cached hasShutdown value from previous shutdown
@@ -275,7 +276,7 @@ const systemModule: Module<State, RootState> = {
         try {
           const { version } = await rootState.citadel.manager.ping();
           if (!version) {
-            // System shut down succesfully
+            // System shut down successfully
             window.clearInterval(pollIfDown);
             // Optimistically give another 30s to the system to shut down
             return window.setTimeout(() => {
@@ -284,7 +285,7 @@ const systemModule: Module<State, RootState> = {
             }, 30 * 1000);
           }
         } catch {
-          // System shut down succesfully
+          // System shut down successfully
           window.clearInterval(pollIfDown);
           // Optimistically give another 30s to the system to shut down
           return window.setTimeout(() => {
@@ -305,7 +306,7 @@ const systemModule: Module<State, RootState> = {
 
       let pollIfUp: number;
 
-      const pollIfUpFuntion = async () => {
+      const pollIfUpFunction = async () => {
         const { version } = await rootState.citadel.manager.ping();
         if (version) {
           // System is online again
@@ -319,15 +320,15 @@ const systemModule: Module<State, RootState> = {
         try {
           const { version } = await rootState.citadel.manager.ping();
           if (!version) {
-            // System shut down succesfully
+            // System shut down successfully
             window.clearInterval(pollIfDown);
 
             // Now we'll poll to check if it's up
-            pollIfUp = window.setInterval(pollIfUpFuntion, 2000);
+            pollIfUp = window.setInterval(pollIfUpFunction, 2000);
             return;
           }
         } catch {
-          pollIfUp = window.setInterval(pollIfUpFuntion, 2000);
+          pollIfUp = window.setInterval(pollIfUpFunction, 2000);
         }
       }, 2000);
     },
@@ -350,7 +351,8 @@ const systemModule: Module<State, RootState> = {
       commit("setIsCitadelOS", isCitadelOS);
     },
     async getCpuTemperature({ commit, rootState }) {
-      const cpuTemperature = await rootState.citadel.manager.system.temperature();
+      const cpuTemperature =
+        await rootState.citadel.manager.system.temperature();
       if (cpuTemperature) {
         commit("setCpuTemperature", cpuTemperature);
       }
@@ -373,7 +375,7 @@ const systemModule: Module<State, RootState> = {
       }
     },
     async getUptime({ commit, rootState }) {
-      const uptime = await rootState.citadel.manager.system.uptime()
+      const uptime = await rootState.citadel.manager.system.uptime();
       if (uptime) {
         commit("setUptime", uptime);
       }
@@ -384,5 +386,5 @@ const systemModule: Module<State, RootState> = {
 
 export default {
   namespaced: true,
-  ...systemModule
+  ...systemModule,
 };
