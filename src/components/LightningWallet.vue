@@ -805,7 +805,7 @@ import {
   formatDistance,
   format,
   getDateFormatWithSeconds,
-} from "../helpers/date.js";
+} from "../helpers/date";
 import { addHours } from "date-fns";
 
 import { mapState } from "vuex";

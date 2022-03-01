@@ -42,7 +42,7 @@
 import { mapState } from "vuex";
 import { TrashIcon } from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
 
-import delay from "@/helpers/delay.js";
+import delay from "@/helpers/delay.ts";
 
 export default {
   components: {

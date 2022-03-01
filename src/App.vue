@@ -56,7 +56,7 @@
 
 <script>
 import { mapState } from "vuex";
-import delay from "@/helpers/delay.js";
+import delay from "@/helpers/delay.ts";
 import Shutdown from "@/components/Shutdown.vue";
 import Loading from "@/components/Loading.vue";
 

@@ -6,43 +6,43 @@ import {
 } from "date-fns";
 import * as locales from "date-fns/locale";
 
-export function format(date, formatStr) {
+export function format(date: number | Date, formatStr: string) {
   const language = navigator.language;
   // Now, check if locales[language] exists, but for the check, remove the - from the language code
-  if (locales[language.replace("-", "")])
+  if (locales[language.replace("-", "") as keyof typeof locales])
     return dateFnsFormat(date, formatStr, {
-      locale: locales[language.replace("-", "")],
+      locale: locales[language.replace("-", "") as keyof typeof locales],
     });
   // Otherwise, check if just the language code exists
-  else if (locales[language.split("-")[0]])
+  else if (locales[language.split("-")[0] as keyof typeof locales])
     return dateFnsFormat(date, formatStr, {
-      locale: locales[language.split("-")[0]],
+      locale: locales[language.split("-")[0] as keyof typeof locales],
     });
   // Otherwise, return the default date format
   else return dateFnsFormat(date, formatStr, { locale: locales.enUS });
 }
 
-export function formatDistance(Date, baseDate) {
+export function formatDistance(date: number | Date, baseDate: number | Date) {
   const language = navigator.language;
   // Now, check if locales[language] exists, but for the check, remove the - from the language code
-  if (locales[language.replace("-", "")])
-    return dateFnsFormatDistance(Date, baseDate, {
-      locale: locales[language.replace("-", "")],
+  if (locales[language.replace("-", "") as keyof typeof locales])
+    return dateFnsFormatDistance(date, baseDate, {
+      locale: locales[language.replace("-", "") as keyof typeof locales],
     });
   // Otherwise, check if just the language code exists
-  else if (locales[language.split("-")[0]])
-    return dateFnsFormatDistance(Date, baseDate, {
-      locale: locales[language.split("-")[0]],
+  else if (locales[language.split("-")[0] as keyof typeof locales])
+    return dateFnsFormatDistance(date, baseDate, {
+      locale: locales[language.split("-")[0] as keyof typeof locales],
     });
   // Otherwise, return the default date format
-  else return dateFnsFormatDistance(Date, baseDate, { locale: locales.enUS });
+  else return dateFnsFormatDistance(date, baseDate, { locale: locales.enUS });
 }
 
-const dateFormats = {
+const dateFormats: Record<string, string> = {
   en: "MMM d, yyyy h:mm a",
   de: "i. MMM yyyy HH:mm",
 };
-const dateFormatsWithSeconds = {
+const dateFormatsWithSeconds: Record<string, string> = {
   en: "MMMM d, yyyy h:mm:ss a",
   de: "i. MMMM yyyy HH:mm:ss",
 };
@@ -73,7 +73,7 @@ export function getDateFormatWithSeconds() {
   else return dateFormatsWithSeconds.en;
 }
 
-export function prettifySeconds(seconds) {
+export function prettifySeconds(seconds: number) {
   const duration = intervalToDuration({ start: 0, end: seconds * 1000 });
   return formatDuration(duration);
 }

@@ -665,7 +665,7 @@ import {
   formatDistance,
   format,
   getDateFormatWithSeconds,
-} from "../helpers/date.js";
+} from "../helpers/date";
 
 import { mapState, mapGetters } from "vuex";
 

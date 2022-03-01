@@ -130,7 +130,7 @@ import {
   formatDistance,
   format,
   getDateFormatWithSeconds,
-} from "@/helpers/date.js";
+} from "@/helpers/date";
 import { mapState } from "vuex";
 
 export default {

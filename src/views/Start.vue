@@ -148,7 +148,7 @@
 <script>
 import { mapState } from "vuex";
 
-import delay from "@/helpers/delay.js";
+import delay from "@/helpers/delay.ts";
 
 import InputPassword from "@/components/Utility/InputPassword.vue";
 import Seed from "@/components/Utility/Seed.vue";

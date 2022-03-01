@@ -242,7 +242,7 @@
 <script>
 import { mapState } from "vuex";
 
-import delay from "@/helpers/delay.js";
+import delay from "@/helpers/delay.ts";
 
 import CardWidget from "@/components/CardWidget.vue";
 import InputCopy from "@/components/Utility/InputCopy.vue";

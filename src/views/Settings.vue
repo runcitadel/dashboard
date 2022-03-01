@@ -532,17 +532,17 @@
 <script lang="ts">
 import { mapState } from "vuex";
 
-import delay from "@/helpers/delay.js";
-import { prettifySeconds } from "@/helpers/date.js";
+import delay from "../helpers/delay";
+import { prettifySeconds } from "../helpers/date";
 
-import CardWidget from "@/components/CardWidget.vue";
-import StorageWidget from "@/components/Widgets/StorageWidget.vue";
-import RamWidget from "@/components/Widgets/RamWidget.vue";
-import TemperatureWidget from "@/components/Widgets/TemperatureWidget.vue";
-import Seed from "@/components/Seed.vue";
-import InputPassword from "@/components/Utility/InputPassword.vue";
-import InputCopy from "@/components/Utility/InputCopy.vue";
-import QrCode from "@/components/Utility/QrCode.vue";
+import CardWidget from "../components/CardWidget.vue";
+import StorageWidget from "../components/Widgets/StorageWidget.vue";
+import RamWidget from "../components/Widgets/RamWidget.vue";
+import TemperatureWidget from "../components/Widgets/TemperatureWidget.vue";
+import Seed from "../components/Seed.vue";
+import InputPassword from "../components/Utility/InputPassword.vue";
+import InputCopy from "../components/Utility/InputCopy.vue";
+import QrCode from "../components/Utility/QrCode.vue";
 import {
   BellIcon,
   ReceiveIcon,
@@ -551,8 +551,9 @@ import {
 } from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
 import { BIconCheckCircleFill } from "bootstrap-vue/src/index.js";
 import { RootState } from "../store";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   components: {
     CardWidget,
     StorageWidget,
@@ -587,16 +588,16 @@ export default {
   },
   computed: {
     ...mapState({
-      version: (state) => state.system.version,
-      onionAddress: (state) => state.system.onionAddress,
-      availableUpdate: (state) => state.system.availableUpdate,
-      updateStatus: (state) => state.system.updateStatus,
-      debugResult: (state) => state.system.debugResult,
-      isCitadelOS: (state) => state.system.isCitadelOS,
-      uptime: (state) => state.system.uptime,
-      totpEnabled: (state) => state.user.totpEnabled,
-      authenticatorSecret: (state) => state.user.totpKey,
-      authenticatorSecretUri: (state) =>
+      version: (state: RootState) => state.system.version,
+      onionAddress: (state: RootState) => state.system.onionAddress,
+      availableUpdate: (state: RootState) => state.system.availableUpdate,
+      updateStatus: (state: RootState) => state.system.updateStatus,
+      debugResult: (state: RootState) => state.system.debugResult,
+      isCitadelOS: (state: RootState) => state.system.isCitadelOS,
+      uptime: (state: RootState) => state.system.uptime,
+      totpEnabled: (state: RootState) => state.user.totpEnabled,
+      authenticatorSecret: (state: RootState) => state.user.totpKey,
+      authenticatorSecretUri: (state: RootState) =>
         `otpauth://totp/${encodeURIComponent(
           state.user.name + "'Citadel"
         )}?secret=${state.user.totpKey}&period=30"`,
@@ -608,7 +609,7 @@ export default {
       return this.showDmesg ? this.debugResult.dmesg : this.debugResult.debug;
     },
     debugFilename() {
-      const type = this.showDmesg ? "dmesg" : "debug";
+      const type: string = this.showDmesg ? "dmesg" : "debug";
       return `citadel-${Date.now()}-${type}.log`;
     },
     isAllowedToEnableTwoFactorAuth() {
@@ -743,8 +744,8 @@ export default {
           this.currentPassword,
           this.newPassword
         );
-      } catch (error) {
-        if (error && error.rmessage) {
+      } catch (error: any) {
+        if (error && error.message) {
           this.$bvToast.toast(error.message, {
             title: "Error",
             autoHideDelay: 3000,
@@ -868,7 +869,5 @@ export default {
       }
     },
   },
-};
+});
 </script>
-
-<style lang="scss" scoped></style>
