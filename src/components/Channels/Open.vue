@@ -86,7 +86,6 @@
 import type Citadel from "@runcitadel/sdk";
 import { mapState } from "vuex";
 
-import API from "@/helpers/api.js";
 import { satsToBtc, btcToSats } from "@/helpers/units.ts";
 
 import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch.vue";
@@ -132,7 +131,12 @@ type data = {
   sweep: boolean;
 };
 export default {
+  components: {
+    SatsBtcSwitch,
+    FeeSelector,
+  },
   props: {},
+  emits: ["channelopen"],
   data(): data {
     return {
       peerConnectionCode: "",
@@ -366,10 +370,6 @@ export default {
         }
       }, 500);
     },
-  },
-  components: {
-    SatsBtcSwitch,
-    FeeSelector,
   },
 };
 </script>

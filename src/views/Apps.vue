@@ -57,6 +57,9 @@ import { mapState } from "vuex";
 import InstalledApp from "@/components/InstalledApp.vue";
 
 export default {
+  components: {
+    InstalledApp,
+  },
   data() {
     return {
       isEditing: false,
@@ -84,9 +87,6 @@ export default {
         this.isUpdating = false;
       }, 2000);
     },
-  },
-  components: {
-    InstalledApp,
   },
 };
 </script>

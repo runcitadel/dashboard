@@ -680,6 +680,15 @@ import SatsBtcSwitch from "../components/Utility/SatsBtcSwitch.vue";
 import FeeSelector from "../components/Utility/FeeSelector.vue";
 
 export default {
+  components: {
+    CardWidget,
+    QrCode,
+    CountUp,
+    InputCopy,
+    CircularCheckmark,
+    SatsBtcSwitch,
+    FeeSelector,
+  },
   props: {},
   data() {
     return {
@@ -949,15 +958,6 @@ export default {
       this.loading = false;
       this.withdraw.isWithdrawing = false;
     },
-  },
-  components: {
-    CardWidget,
-    QrCode,
-    CountUp,
-    InputCopy,
-    CircularCheckmark,
-    SatsBtcSwitch,
-    FeeSelector,
   },
 };
 </script>

@@ -96,6 +96,10 @@ import CountUp from "@/components/Utility/CountUp.vue";
 import CardWidget from "@/components/CardWidget.vue";
 
 export default {
+  components: {
+    CardWidget,
+    CountUp,
+  },
   props: {},
   data() {
     return {
@@ -206,10 +210,6 @@ export default {
         this.$store.dispatch("system/changeCpuTemperatureUnit", "celsius");
       }
     },
-  },
-  components: {
-    CardWidget,
-    CountUp,
   },
 };
 </script>
