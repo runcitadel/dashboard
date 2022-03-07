@@ -1,9 +1,6 @@
 name: Build on push
 
-on:
-    push:
-        branches:
-            - main
+on: push
 
 permissions:
   packages: write
