@@ -7,9 +7,11 @@
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent } from "vue";
+
+export default defineComponent({
   name: "SimpleLayout",
-};
+});
 </script>
 
 <style lang="scss" scoped>

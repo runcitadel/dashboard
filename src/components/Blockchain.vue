@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="blockchain-container">
-      <div v-if="blocks.length">
+      <div v-if="bitcoinStore.blocks.length">
         <!-- transitions for blocks -->
         <transition-group
           name="blockchain"
@@ -10,7 +10,7 @@
           :duration="5000"
         >
           <li
-            v-for="block in blocks"
+            v-for="block in bitcoinStore.blocks"
             :key="block.height"
             href="#"
             class="flex-column align-items-start px-3 px-lg-4 blockchain-block"
@@ -125,15 +125,16 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import useBitcoinStore from "../store/bitcoin";
 import {
   formatDistance,
   format,
   getDateFormatWithSeconds,
-} from "@/helpers/date";
-import { mapState } from "vuex";
+} from "../helpers/date";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   components: {},
   props: {
     numBlocks: {
@@ -141,17 +142,20 @@ export default {
       default: 3,
     },
   },
+  setup() {
+    const bitcoinStore = useBitcoinStore();
+    return {
+      bitcoinStore,
+    };
+  },
   data() {
     return {
       polling: null,
       pollInProgress: false,
+    } as {
+      polling: null | number;
+      pollInProgress: boolean;
     };
-  },
-  computed: {
-    ...mapState({
-      syncPercent: (state) => state.bitcoin.percent,
-      blocks: (state) => state.bitcoin.blocks,
-    }),
   },
   watch: {
     syncPercent(newPercent) {
@@ -164,10 +168,10 @@ export default {
     this.fetchBlocks();
 
     //then start polling
-    this.poller(this.syncPercent);
+    this.poller(this.bitcoinStore.percent);
   },
   beforeUnmount() {
-    window.clearInterval(this.polling);
+    window.clearInterval(this.polling as number);
   },
   methods: {
     async fetchBlocks() {
@@ -178,12 +182,12 @@ export default {
       this.pollInProgress = true;
       //TODO: remove this timeout added so bitcoin can get fetch status first
       setTimeout(async () => {
-        await this.$store.dispatch("bitcoin/getBlocks");
+        await this.bitcoinStore.getBlocks();
         this.pollInProgress = false;
       }, 1000);
     },
-    poller(syncPercent) {
-      window.clearInterval(this.polling);
+    poller(syncPercent: string | number) {
+      window.clearInterval(this.polling as number);
       //if syncing, fetch blocks every second
       if (Number(syncPercent) !== 100) {
         this.polling = window.setInterval(this.fetchBlocks, 1000);
@@ -192,7 +196,7 @@ export default {
         this.polling = window.setInterval(this.fetchBlocks, 60 * 1000);
       }
     },
-    blockTime(timestamp) {
+    blockTime(timestamp: number) {
       const minedAt = timestamp * 1000;
       //sometimes the block can have a timestamp with a few seconds in the future compared to browser's time
       if (new Date(minedAt) < new Date()) {
@@ -201,11 +205,11 @@ export default {
         return "just now";
       }
     },
-    blockReadableTime(timestamp) {
+    blockReadableTime(timestamp: number) {
       return format(new Date(timestamp * 1000), getDateFormatWithSeconds());
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

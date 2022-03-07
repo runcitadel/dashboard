@@ -1,6 +1,6 @@
 <template>
   <div class="p-sm-2">
-    <div v-if="installedApps.length">
+    <div v-if="appsStore.installed.length">
       <div class="my-3 pb-3">
         <div class="d-flex justify-content-between align-items-center">
           <h1>apps</h1>
@@ -21,16 +21,16 @@
       </div>
       <div class="d-flex flex-wrap justify-content-start apps-container">
         <installed-app
-          v-for="app in installedApps"
+          v-for="app in appsStore.installed"
           :id="app.id"
           :key="app.id"
           :name="app.name"
           :port="app.port"
           :path="app.path"
-          :hidden-service="app.hiddenService"
+          :hidden-service="(app.hiddenService as string)"
           :tor-only="app.torOnly"
           :show-uninstall-button="isEditing"
-          :is-uninstalling="uninstallingApps.includes(app.id)"
+          :is-uninstalling="appsStore.uninstalling.includes(app.id)"
         >
         </installed-app>
       </div>
@@ -51,14 +51,19 @@
   </div>
 </template>
 
-<script>
-import { mapState } from "vuex";
+<script lang="ts">
+import { defineComponent } from "vue";
 
-import InstalledApp from "@/components/InstalledApp.vue";
+import InstalledApp from "../components/InstalledApp.vue";
+import useAppsStore from "../store/apps";
 
-export default {
+export default defineComponent({
   components: {
     InstalledApp,
+  },
+  setup() {
+    const appsStore = useAppsStore();
+    return { appsStore };
   },
   data() {
     return {
@@ -66,14 +71,8 @@ export default {
       isUpdating: false,
     };
   },
-  computed: {
-    ...mapState({
-      installedApps: (state) => state.apps.installed,
-      uninstallingApps: (state) => state.apps.uninstalling,
-    }),
-  },
   created() {
-    this.$store.dispatch("apps/getInstalledApps");
+    this.appsStore.getInstalledApps();
   },
   methods: {
     toggleEdit() {
@@ -81,14 +80,14 @@ export default {
     },
     startUpdate() {
       if (this.isUpdating) return;
-      this.$store.dispatch("apps/updateApps");
+      this.appsStore.updateApps();
       this.isUpdating = true;
       window.setTimeout(() => {
         this.isUpdating = false;
       }, 2000);
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

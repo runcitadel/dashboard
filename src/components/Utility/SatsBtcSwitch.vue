@@ -19,30 +19,33 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+import useSystemStore from "../../store/system";
+
+export default defineComponent({
   props: {
     size: {
       type: String, //sm, md, lg
       default: "md",
     },
   },
+  setup() {
+    const systemStore = useSystemStore();
+    return { systemStore };
+  },
   data() {
     return {};
   },
   computed: {
     unit() {
-      return this.$store.state.system.unit;
+      return this.systemStore.unit;
     },
   },
   methods: {
     toggleUnit() {
-      if (this.unit === "sats") {
-        this.$store.dispatch("system/changeUnit", "btc");
-      } else if (this.unit === "btc") {
-        this.$store.dispatch("system/changeUnit", "sats");
-      }
+      this.systemStore.changeUnit(this.unit === "sats" ? "btc" : "sats");
     },
   },
-};
+});
 </script>

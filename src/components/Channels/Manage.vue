@@ -5,17 +5,21 @@
         <h4
           v-b-tooltip.hover.right
           class="text-primary font-weight-bold"
-          :title="$filters.satsToUSD(channel.localBalance)"
+          :title="
+            $filters.satsToUSD(channel.localBalance, bitcoinStore).toString()
+          "
         >
-          {{ $filters.localize($filters.unit(channel.localBalance)) }}
+          {{ $filters.localize($filters.unit(channel.localBalance, systemStore) as number) }}
           {{ $filters.formatUnit(unit) }}
         </h4>
         <h4
           v-b-tooltip.hover.left
           class="text-success font-weight-bold text-end"
-          :title="$filters.satsToUSD(channel.remoteBalance)"
+          :title="
+            $filters.satsToUSD(channel.remoteBalance, bitcoinStore).toString()
+          "
         >
-          {{ $filters.localize($filters.unit(channel.remoteBalance)) }}
+          {{ $filters.localize($filters.unit(channel.remoteBalance, systemStore) as number) }}
           {{ $filters.formatUnit(unit) }}
         </h4>
       </div>
@@ -72,10 +76,12 @@
           <span class="text-muted">Local Balance</span>
           <span
             v-b-tooltip.hover.left
-            :title="$filters.satsToUSD(channel.localBalance)"
+            :title="
+              $filters.satsToUSD(channel.localBalance, bitcoinStore).toString()
+            "
             class="text-capitalize font-weight-bold"
           >
-            {{ $filters.localize($filters.unit(channel.localBalance)) }}
+            {{ $filters.localize($filters.unit(channel.localBalance, systemStore) as number) }}
             {{ $filters.formatUnit(unit) }}
           </span>
         </div>
@@ -84,10 +90,12 @@
           <span class="text-muted">Remote Balance</span>
           <span
             v-b-tooltip.hover.left
-            :title="$filters.satsToUSD(channel.remoteBalance)"
+            :title="
+              $filters.satsToUSD(channel.remoteBalance, bitcoinStore).toString()
+            "
             class="text-capitalize font-weight-bold"
           >
-            {{ $filters.localize($filters.unit(channel.remoteBalance)) }}
+            {{ $filters.localize($filters.unit(channel.remoteBalance, systemStore) as number) }}
             {{ $filters.formatUnit(unit) }}
           </span>
         </div>
@@ -96,10 +104,14 @@
           <span class="text-muted">Channel Capacity</span>
           <span
             v-b-tooltip.hover.left
-            :title="$filters.satsToUSD(channel.capacity)"
+            :title="
+              $filters.satsToUSD(channel.capacity, bitcoinStore).toString()
+            "
             class="text-capitalize font-weight-bold"
           >
-            {{ $filters.localize($filters.unit(channel.capacity)) }}
+            {{
+              $filters.localize($filters.unit(channel.capacity, systemStore) as number)
+            }}
             {{ $filters.formatUnit(unit) }}
           </span>
         </div>
@@ -120,7 +132,7 @@
         >
           <span class="text-muted">Commit Fee</span>
           <span class="text-capitalize font-weight-bold">
-            {{ $filters.localize($filters.unit(channel.commitFee)) }}
+            {{ $filters.localize($filters.unit(channel.commitFee, systemStore) as number) }}
             {{ $filters.formatUnit(unit) }}
           </span>
         </div>
@@ -170,16 +182,30 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
+import useBitcoinStore from "../../store/bitcoin";
+import useSdkStore from "../../store/sdk";
+import useSystemStore from "../../store/system";
+
 import Bar from "../Channels/Bar.vue";
 
-export default {
+export default defineComponent({
   components: {
     Bar,
   },
   props: {
-    channel: Object,
+    channel: {
+      type: Object,
+      required: true,
+    },
   },
   emits: ["channelclose"],
+  setup() {
+    const bitcoinStore = useBitcoinStore();
+    const sdkStore = useSdkStore();
+    const systemStore = useSystemStore();
+    return { bitcoinStore, sdkStore, systemStore };
+  },
   data() {
     return {
       isReviewingChannelClose: false,
@@ -188,7 +214,7 @@ export default {
   },
   computed: {
     unit() {
-      return this.$store.state.system.unit;
+      return this.systemStore.unit;
     },
     canCloseChannel() {
       if (
@@ -208,7 +234,7 @@ export default {
       this.isClosing = true;
 
       try {
-        await this.$store.state.citadel.middleware.lnd.channel.closeChannel(
+        await this.sdkStore.citadel.middleware.lnd.channel.closeChannel(
           this.channel.channelPoint,
           !this.channel.active // Avoids force closing if channel is active
         );
@@ -222,22 +248,19 @@ export default {
             toaster: "b-toaster-bottom-right",
           });
         }, 200);
-      } catch (err: any) {
-        this.$bvToast.toast(
-          err.response && err.response.data ? err.response.data : err,
-          {
-            title: "Error",
-            autoHideDelay: 3000,
-            variant: "danger",
-            solid: true,
-            toaster: "b-toaster-bottom-right",
-          }
-        );
+      } catch (err: unknown) {
+        this.$bvToast.toast(JSON.stringify(err), {
+          title: "Error",
+          autoHideDelay: 3000,
+          variant: "danger",
+          solid: true,
+          toaster: "b-toaster-bottom-right",
+        });
       }
       this.isClosing = false;
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

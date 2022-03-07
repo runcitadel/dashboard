@@ -31,17 +31,23 @@
   </small>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, type PropType } from "vue";
+
+export default defineComponent({
   props: {
-    variant: String, //"success", "primary", "muted", "danger"
-    text: String,
+    variant: {
+      type: String as PropType<
+        "success" | "primary" | "muted" | "danger" | "warning" | "default"
+      >,
+      default: "success",
+    },
     blink: {
       type: Boolean,
       default: false,
     },
     size: {
-      type: String,
+      type: String as PropType<"sm" | "md">,
       default: "md", //sm or md
     },
   },
@@ -52,7 +58,7 @@ export default {
   },
   computed: {},
   methods: {},
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -7,7 +7,7 @@
       :type="showPassword ? 'text' : 'password'"
       :value="value"
       :disabled="disabled"
-      @input="$emit('input', $event.target.value)"
+      @input="$emit('input', ($event as any).target.value)"
     />
     <b-input-group-append>
       <b-button :disabled="disabled" @click="togglePassword">
@@ -18,19 +18,28 @@
   </b-input-group>
 </template>
 
-<script>
+<script lang="ts">
 import {
   HiddenIcon,
   VisibleIcon,
+  // @ts-expect-error No type definitions for this yet
 } from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
-export default {
+import { defineComponent, type PropType } from "vue";
+
+export default defineComponent({
   components: {
     HiddenIcon,
     VisibleIcon,
   },
   props: {
-    value: String,
-    inputClass: [String, Array],
+    value: {
+      type: String,
+      default: "",
+    },
+    inputClass: {
+      type: [String, Array] as PropType<string | string[]>,
+      default: "",
+    },
     inputGroupClass: {
       type: String,
       default: "card-input-group",
@@ -62,7 +71,5 @@ export default {
       return (this.state.showPassword = !this.state.showPassword);
     },
   },
-};
+});
 </script>
-
-<style lang="scss" scoped></style>

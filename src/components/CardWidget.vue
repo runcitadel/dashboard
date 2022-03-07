@@ -12,7 +12,7 @@
         <div class="d-flex w-100 justify-content-between align-items-center">
           <h6 class="mb-0 font-weight-normal text-muted">{{ header }}</h6>
           <status
-            v-if="!!status"
+            v-if="status"
             :variant="status.variant"
             :blink="!!status.blink"
             >{{ status.text }}</status
@@ -83,19 +83,45 @@
   </b-card>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, type PropType } from "vue";
 import Status from "./Utility/Status.vue";
 
-export default {
+export default defineComponent({
   components: {
     Status,
   },
   props: {
-    header: String,
-    status: Object, // {text, variant, blink}
-    title: String,
-    subTitle: String,
-    icon: String,
+    header: {
+      type: String,
+      default: "",
+    },
+    status: {
+      type: Object as PropType<
+        | {
+            text: string;
+            variant: "success" | "primary" | "muted" | "danger" | "warning";
+            blink: boolean;
+          }
+        | Record<string, never>
+      >, // {text, variant, blink}
+      required: false,
+      default: () => {
+        return undefined;
+      },
+    },
+    title: {
+      type: String,
+      default: "",
+    },
+    subTitle: {
+      type: String,
+      default: "",
+    },
+    icon: {
+      type: String,
+      default: "",
+    },
     loading: Boolean,
   },
   data() {
@@ -103,9 +129,9 @@ export default {
   },
   computed: {},
   methods: {
-    src: (icon) => {
+    src: (icon: string) => {
       return new URL(`../assets/${icon}`, import.meta.url).href;
     },
   },
-};
+});
 </script>

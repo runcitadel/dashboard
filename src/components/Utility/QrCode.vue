@@ -25,10 +25,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, type PropType } from "vue";
 import QrcodeVue from "qrcode.vue";
 
-export default {
+export default defineComponent({
   components: {
     QrcodeVue,
   },
@@ -38,7 +39,7 @@ export default {
       default: 200,
     },
     level: {
-      type: String,
+      type: String as PropType<"L" | "M" | "Q" | "H">,
       default: "H",
     },
     value: {
@@ -54,9 +55,7 @@ export default {
   data() {
     return {};
   },
-  computed: {},
-  methods: {},
-};
+});
 </script>
 
 <style lang="scss" scoped>

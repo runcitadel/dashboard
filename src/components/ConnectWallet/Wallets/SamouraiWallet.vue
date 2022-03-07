@@ -14,12 +14,14 @@
   </connection-details>
 </template>
 
-<script>
-import ConnectionDetails from "@/components/ConnectWallet/ConnectionDetails.vue";
-import StepList from "@/components/ConnectWallet/StepList.vue";
-import Step from "@/components/ConnectWallet/Step.vue";
+<script lang="ts">
+import { defineComponent } from "vue";
 
-export default {
+import ConnectionDetails from "../ConnectionDetails.vue";
+import StepList from "../StepList.vue";
+import Step from "../Step.vue";
+
+export default defineComponent({
   components: {
     ConnectionDetails,
     StepList,
@@ -32,5 +34,5 @@ export default {
     },
   },
   emits: ["showQrModal"],
-};
+});
 </script>

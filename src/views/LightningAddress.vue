@@ -23,7 +23,8 @@
           <step>
             The following steps are optional, but if this Lightning address is
             too long for you (and .onion addresses don't work everywhere), you
-            can get a free @ln.runcitadel.space address if you're on Twitter.
+            can get a free @ln.runcitadel.space address and tipping page if
+            you're on Twitter.
           </step>
           <step> First, you need a Twitter account. </step>
           <step> Add a 🏰 emoji to your Twitter name.</step>
@@ -42,36 +43,41 @@
   </div>
 </template>
 
-<script>
-import { mapState } from "vuex";
-import StepList from "@/components/ConnectWallet/StepList.vue";
-import Step from "@/components/ConnectWallet/Step.vue";
-import InputCopy from "@/components/Utility/InputCopy.vue";
+<script lang="ts">
+import StepList from "../components/ConnectWallet/StepList.vue";
+import Step from "../components/ConnectWallet/Step.vue";
+import InputCopy from "../components/Utility/InputCopy.vue";
+import useAppsStore from "../store/apps";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   components: {
     StepList,
     Step,
     InputCopy,
   },
+  setup() {
+    const appsStore = useAppsStore();
+    return {
+      appsStore,
+    };
+  },
   computed: {
-    ...mapState({
-      lnAddress: (state) => {
-        try {
-          // Get the app from state.apps.installed where the ID is lnme
-          return (
-            "tips@" +
-              state.apps.installed.find((app) => app.id === "lnme")
-                .hiddenService || "None yet, please install LnMe first."
-          );
-        } catch {
-          return "None yet, please install LnMe first.";
-        }
-      },
-    }),
+    lnAddress(): string {
+      try {
+        // Get the app from state.apps.installed where the ID is lnme
+        return (
+          "tips@" +
+            this.appsStore.installed.find((app) => app.id === "lnme")
+              ?.hiddenService || "None yet, please install LnMe first."
+        );
+      } catch {
+        return "None yet, please install LnMe first.";
+      }
+    },
   },
   created() {
-    this.$store.dispatch("apps/getInstalledApps");
+    this.appsStore.getInstalledApps();
   },
-};
+});
 </script>

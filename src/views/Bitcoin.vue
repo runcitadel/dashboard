@@ -36,7 +36,9 @@
       <b-col col cols="12" md="6" xl="4">
         <card-widget
           header="Blockchain"
-          :loading="syncPercent !== 100 || blocks.length === 0"
+          :loading="
+            bitcoinStore.percent !== 100 || bitcoinStore.blocks.length === 0
+          "
         >
           <!-- <template v-slot:menu>
             <b-dropdown-item variant="danger" href="#" disabled>Resync Blockchain</b-dropdown-item>
@@ -46,8 +48,10 @@
               <div class="w-100 d-flex justify-content-between mb-2">
                 <span class="align-self-end">Synchronized</span>
                 <h3 class="font-weight-normal mb-0">
-                  <span v-if="syncPercent !== -1">
-                    {{ syncPercent >= 99.99 ? 100 : syncPercent }}
+                  <span v-if="bitcoinStore.percent !== -1">
+                    {{
+                      bitcoinStore.percent >= 99.99 ? 100 : bitcoinStore.percent
+                    }}
                     <small class>%</small>
                   </span>
 
@@ -59,7 +63,7 @@
                 </h3>
               </div>
               <b-progress
-                :value="Math.round(syncPercent)"
+                :value="Math.round(bitcoinStore.percent)"
                 class="mb-1"
                 variant="success"
                 :style="{ height: '4px' }"
@@ -67,11 +71,11 @@
                 striped
               ></b-progress>
               <small
-                v-if="currentBlock < blockHeight - 1"
+                v-if="bitcoinStore.currentBlock < bitcoinStore.blockHeight - 1"
                 class="text-muted d-block text-end"
               >
-                {{ currentBlock.toLocaleString() }} of
-                {{ blockHeight.toLocaleString() }} blocks
+                {{ bitcoinStore.currentBlock.toLocaleString() }} of
+                {{ bitcoinStore.blockHeight.toLocaleString() }} blocks
               </small>
             </div>
             <!-- low storage mode  -->
@@ -107,7 +111,7 @@
                 <b-col col cols="6" md="3" xl="6">
                   <stat
                     title="Connections"
-                    :value="stats.peers"
+                    :value="bitcoinStore.stats.peers"
                     suffix="Peers"
                     show-numeric-change
                   ></stat>
@@ -115,24 +119,28 @@
                 <b-col col cols="6" md="3" xl="6">
                   <stat
                     title="Mempool"
-                    :value="abbreviateSize(stats.mempool)[0]"
-                    :suffix="abbreviateSize(stats.mempool)[1]"
+                    :value="abbreviateSize(bitcoinStore.stats.mempool)[0]"
+                    :suffix="abbreviateSize(bitcoinStore.stats.mempool)[1]"
                     show-percent-change
                   ></stat>
                 </b-col>
                 <b-col col cols="6" md="3" xl="6">
                   <stat
                     title="Hashrate"
-                    :value="abbreviateHashRate(stats.hashrate)[0]"
-                    :suffix="abbreviateHashRate(stats.hashrate)[1]"
+                    :value="abbreviateHashRate(bitcoinStore.stats.hashrate)[0]"
+                    :suffix="abbreviateHashRate(bitcoinStore.stats.hashrate)[1]"
                     show-percent-change
                   ></stat>
                 </b-col>
                 <b-col col cols="6" md="3" xl="6">
                   <stat
                     title="Blockchain Size"
-                    :value="abbreviateSize(stats.blockchainSize)[0]"
-                    :suffix="abbreviateSize(stats.blockchainSize)[1]"
+                    :value="
+                      abbreviateSize(bitcoinStore.stats.blockchainSize)[0]
+                    "
+                    :suffix="
+                      abbreviateSize(bitcoinStore.stats.blockchainSize)[1]
+                    "
                     show-percent-change
                   ></stat>
                 </b-col>
@@ -146,14 +154,13 @@
 </template>
 
 <script lang="ts">
-import { mapState } from "vuex";
-
 import CardWidget from "../components/CardWidget.vue";
 import Blockchain from "../components/Blockchain.vue";
 import Stat from "../components/Utility/Stat.vue";
 import BitcoinWallet from "../components/BitcoinWallet.vue";
+import useBitcoinStore from "../store/bitcoin";
+
 import { defineComponent } from "vue";
-import type { RootState } from "../store/index.js";
 
 export default defineComponent({
   components: {
@@ -162,10 +169,16 @@ export default defineComponent({
     Stat,
     BitcoinWallet,
   },
-  data() {
-    return {};
+  setup() {
+    const bitcoinStore = useBitcoinStore();
+    return { bitcoinStore };
   },
-  computed: {
+  data() {
+    return {} as {
+      interval?: number;
+    };
+  },
+  /*computed: {
     ...mapState<RootState>({
       syncPercent: (state: RootState) => state.bitcoin.percent,
       blocks: (state: RootState) => state.bitcoin.blocks,
@@ -179,11 +192,18 @@ export default defineComponent({
       onionAddress: (state: RootState) => state.bitcoin.onionAddress,
       rpc: (state: RootState) => state.bitcoin.rpc,
     }),
+  },*/
+  computed: {
+    coreVersion(): string {
+      return this.bitcoinStore.version.split("/")[1].split(":")[1];
+    },
+    knotsVersion(): string {
+      return this.bitcoinStore.version.split("/")[2].split(":")[1];
+    },
   },
   created() {
-    this.$store.dispatch("bitcoin/getVersion");
+    this.bitcoinStore.getVersion();
     this.fetchStats();
-    this.fetchConnectionDetails();
     this.interval = window.setInterval(this.fetchStats, 5000);
   },
   beforeUnmount() {
@@ -216,14 +236,7 @@ export default defineComponent({
       return [Number(n.toFixed(1)), "Bytes"];
     },
     fetchStats() {
-      this.$store.dispatch("bitcoin/getStats");
-    },
-    fetchConnectionDetails() {
-      return Promise.all([
-        this.$store.dispatch("bitcoin/getP2PInfo"),
-        this.$store.dispatch("bitcoin/getElectrumInfo"),
-        this.$store.dispatch("bitcoin/getRpcInfo"),
-      ]);
+      this.bitcoinStore.getStats();
     },
   },
 });

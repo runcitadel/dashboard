@@ -2,7 +2,9 @@
   <form @submit.prevent="openChannel">
     <b-row>
       <b-col col cols="12" sm="6">
-        <label class="sr-onlsy" for="peer-connection">Lightning address</label>
+        <label class="visually-hidden" for="peer-connection"
+          >Lightning address</label
+        >
         <b-input
           id="peer-connection"
           v-model="peerConnectionCode"
@@ -15,7 +17,7 @@
         ></b-input>
       </b-col>
       <b-col col cols="12" sm="6">
-        <label class="sr-onlsy" for="funding-amount">Amount</label>
+        <label class="visually-hidden" for="funding-amount">Amount</label>
         <div class="mb-3">
           <div>
             <b-input-group class="neu-input-group">
@@ -45,7 +47,7 @@
             <small
               class="text-muted d-block mb-0"
               :style="{ opacity: fundingAmount > 0 ? 1 : 0 }"
-              >~ {{ $filters.satsToUSD(fundingAmount) }}</small
+              >~ {{ $filters.satsToUSD(fundingAmount, bitcoinStore) }}</small
             >
           </div>
         </div>
@@ -83,13 +85,16 @@
 </template>
 
 <script lang="ts">
-import type Citadel from "@runcitadel/sdk";
-import { mapState } from "vuex";
+import { defineComponent } from "vue";
 
-import { satsToBtc, btcToSats } from "@/helpers/units.ts";
+import { satsToBtc, btcToSats } from "../../helpers/units";
 
-import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch.vue";
-import FeeSelector from "@/components/Utility/FeeSelector.vue";
+import SatsBtcSwitch from "../Utility/SatsBtcSwitch.vue";
+import FeeSelector from "../Utility/FeeSelector.vue";
+
+import useBitcoinStore from "../../store/bitcoin";
+import useSdkStore from "../../store/sdk";
+import useSystemStore from "../../store/system";
 
 type data = {
   peerConnectionCode: string;
@@ -104,39 +109,44 @@ type data = {
     fast: {
       total: number;
       perByte: string;
-      error: string;
+      error: false | string;
       sweepAmount: number;
     };
     normal: {
       total: number;
       perByte: string;
-      error: string;
+      error: false | string;
       sweepAmount: number;
     };
     slow: {
       total: number;
       perByte: string;
-      error: string;
+      error: false | string;
       sweepAmount: number;
     };
     cheapest: {
       total: number;
       perByte: string;
-      error: string;
+      error: false | string;
       sweepAmount: number;
     };
   };
   error: string;
-  feeTimeout: null;
+  feeTimeout: null | number;
   sweep: boolean;
 };
-export default {
+export default defineComponent({
   components: {
     SatsBtcSwitch,
     FeeSelector,
   },
-  props: {},
   emits: ["channelopen"],
+  setup() {
+    const bitcoinStore = useBitcoinStore();
+    const sdkStore = useSdkStore();
+    const systemStore = useSystemStore();
+    return { bitcoinStore, sdkStore, systemStore };
+  },
   data(): data {
     return {
       peerConnectionCode: "",
@@ -178,42 +188,41 @@ export default {
       sweep: false,
     } as data;
   },
-  computed: {
-    ...mapState({
-      unit: (state) => state.system.unit,
-      confirmedBtcBalance: (state) => state.bitcoin.balance.confirmed,
-    }),
-  },
   watch: {
     unit: function (val) {
       if (val === "sats") {
         this.fundingAmount = Number(this.fundingAmountInput);
       } else if (val === "btc") {
-        this.fundingAmount = btcToSats(this.fundingAmountInput);
+        this.fundingAmount = btcToSats(parseFloat(this.fundingAmountInput));
       }
       this.fetchFees();
     },
     sweep: function (val) {
       if (val) {
-        if (this.unit === "btc") {
-          this.fundingAmountInput = String(satsToBtc(this.confirmedBtcBalance));
-        } else if (this.unit === "sats") {
-          this.fundingAmountInput = String(this.confirmedBtcBalance);
+        if (this.systemStore.unit === "btc") {
+          this.fundingAmountInput = String(
+            satsToBtc(this.bitcoinStore.balance.confirmed)
+          );
+        } else if (this.systemStore.unit === "sats") {
+          this.fundingAmountInput = String(this.bitcoinStore.balance.confirmed);
         }
       }
       this.fetchFees();
     },
     fundingAmountInput: function (val) {
-      if (this.unit === "sats") {
+      if (this.systemStore.unit === "sats") {
         this.fundingAmount = Number(val);
-      } else if (this.unit === "btc") {
+      } else if (this.systemStore.unit === "btc") {
         this.fundingAmount = btcToSats(val);
       }
       this.fetchFees();
     },
   },
   methods: {
-    selectFee(fee) {
+    selectFee(fee: {
+      type: "normal" | "fast" | "slow" | "cheapest" | "custom";
+      satPerByte: number;
+    }) {
       // Remove any error shown due to fee
       this.error = "";
       this.selectedFee = fee;
@@ -232,7 +241,7 @@ export default {
         this.fee[this.selectedFee.type].error
       ) {
         this.isOpening = false;
-        this.error = this.fee[this.selectedFee.type].error;
+        this.error = this.fee[this.selectedFee.type].error as string;
         return;
       }
 
@@ -286,9 +295,7 @@ export default {
       //to do: connect to onion node if only the user's node is running tor
 
       try {
-        await (
-          this.$store.state.citadel as Citadel
-        ).middleware.lnd.channel.openChannel(
+        await this.sdkStore.citadel.middleware.lnd.channel.openChannel(
           payload.pubKey as string,
           payload.ip as string,
           payload.port as string,
@@ -311,9 +318,10 @@ export default {
           );
         }, 200);
       } catch (error) {
-        if (error.response && error.response.data) {
+        if (error) {
           this.isOpening = false;
-          this.error = error.response.data;
+          this.error = JSON.stringify(error);
+          console.error(error);
         }
       }
     },
@@ -322,56 +330,53 @@ export default {
       if (this.feeTimeout) {
         clearTimeout(this.feeTimeout);
       }
-      this.feeTimeout = setTimeout(async () => {
+      this.feeTimeout = window.setTimeout(async () => {
         this.error = "";
         if (this.fundingAmount) {
           let estimates;
 
           try {
-            estimates = await (
-              this.$store.state.citadel as Citadel
-            ).middleware.lnd.channel.estimateFeeAll(
-              this.fundingAmount,
-              this.sweep
-            );
+            estimates =
+              await this.sdkStore.citadel.middleware.lnd.channel.estimateFeeAll(
+                this.fundingAmount,
+                this.sweep
+              );
           } catch (error) {
-            if (error.response && error.response.data) {
-              this.error = error.response.data;
+            if (error) {
+              this.error = JSON.stringify(error);
+              console.error(error);
             }
           }
 
           if (estimates) {
             for (const [speed, estimate] of Object.entries(estimates)) {
               // If the API returned an error message
-              if (estimate.text) {
-                this.fee[speed].total = 0;
-                this.fee[speed].perByte = "N/A";
-                this.fee[speed].error = estimate.text;
-                this.fee[speed].sweepAmount = 0;
+              if ((estimate as { text?: string }).text) {
+                this.fee[speed as keyof typeof this.fee].total = 0;
+                this.fee[speed as keyof typeof this.fee].perByte = "N/A";
+                this.fee[speed as keyof typeof this.fee].error = (
+                  estimate as unknown as { text: string }
+                ).text;
+                this.fee[speed as keyof typeof this.fee].sweepAmount = 0;
               } else {
-                this.fee[speed].total = estimate.feeSat;
-                this.fee[speed].perByte = estimate.feerateSatPerByte;
-                this.fee[speed].sweepAmount = estimate.sweepAmount;
-                this.fee[speed].error = false;
+                this.fee[speed as keyof typeof this.fee].total = parseFloat(
+                  estimate.feeSat.toString()
+                );
+                this.fee[speed as keyof typeof this.fee].perByte =
+                  estimate.satPerVbyte.toString();
+                this.fee[speed as keyof typeof this.fee].sweepAmount =
+                  parseFloat(
+                    estimate.sweepAmount?.toString() as string
+                  ) as number;
+                this.fee[speed as keyof typeof this.fee].error = false;
               }
-            }
-
-            // All 4 fee result in error on incorrect peer address, funding amount etc.
-            // but we can't reliably pick the error on any of the those and show it
-            // since there's an edge case where if the error is due to low fee, it only
-            // is a part of the lower fee(s) keys. so we can reliably pick the highest fee's
-            // error text and show it
-            // https://github.com/runcitadel/dashboard/issues/198
-
-            if (estimates.fast && estimates.fast.text) {
-              this.error = estimates.fast.text;
             }
           }
         }
       }, 500);
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped></style>

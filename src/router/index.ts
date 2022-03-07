@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-
-import store from "../store";
+import useUserStore from "../store/user";
 
 const TransitionWrapperLayout = () =>
   import("../layouts/TransitionWrapperLayout.vue");
@@ -51,8 +50,7 @@ const Wasabi = () => import("../components/ConnectWallet/Wallets/Wasabi.vue");
 
 const ZapAndroid = () =>
   import("../components/ConnectWallet/Wallets/ZapAndroid.vue");
-const ZapiOS = () =>
-  import("../components/ConnectWallet/Wallets/ZapiOS.vue");
+const ZapiOS = () => import("../components/ConnectWallet/Wallets/ZapiOS.vue");
 const ZapDesktop = () =>
   import("../components/ConnectWallet/Wallets/ZapDesktop.vue");
 const Zeus = () => import("../components/ConnectWallet/Wallets/Zeus.vue");
@@ -412,15 +410,13 @@ const router = createRouter({
   },
 });
 
-//Fake for now
-const isLoggedIn = () => !!store.state.user.jwt;
-
 //Authentication Check
 router.beforeEach((to, from, next) => {
+  const userStore = useUserStore();
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    if (!isLoggedIn()) {
+    if (!userStore.jwt) {
       next({
         path: "/",
         query: { redirect: to.fullPath },
@@ -430,13 +426,6 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     next(); // always call next()!
-  }
-});
-
-//Close Mobile Menu after route change
-router.afterEach(() => {
-  if (store.getters.isMobileMenuOpen) {
-    store.commit("toggleMobileMenu");
   }
 });
 

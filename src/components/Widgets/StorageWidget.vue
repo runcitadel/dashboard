@@ -6,7 +6,9 @@
           <div>
             <div>
               <h3 class="mb-1">
-                <b-badge v-if="isNvme" class="bg-success me-1 text-end"
+                <b-badge
+                  v-if="systemStore.isNvme"
+                  class="bg-success me-1 text-end"
                   >NVMe</b-badge
                 >
                 {{ readableSize(storage.used) }}
@@ -170,43 +172,58 @@
   </card-widget>
 </template>
 
-<script>
-import { mapState } from "vuex";
+<script lang="ts">
+import { defineComponent } from "vue";
+
 import { BIconInfoCircleFill } from "bootstrap-vue/src/index.js";
 
-import { readableSize } from "@/helpers/size";
+import { readableSize } from "../../helpers/size";
+import CardWidget from "../CardWidget.vue";
+import useAppsStore from "../../store/apps";
+import useSystemStore from "../../store/system";
 
-import CardWidget from "@/components/CardWidget.vue";
-
-export default {
+export default defineComponent({
   components: {
     CardWidget,
     BIconInfoCircleFill,
   },
+  setup() {
+    const systemStore = useSystemStore();
+    const appsStore = useAppsStore();
+    return { appsStore, systemStore };
+  },
   computed: {
-    ...mapState({
-      store: (state) => state.apps.store,
-      storage: (state) => state.system.storage,
-      isNvme: (state) => state.system.isNvme,
-    }),
-    src: () => {
+    storage(): {
+      total: number;
+      used: number;
+      breakdown: { id: string; used: number }[];
+    } {
+      return this.systemStore.storage;
+    },
+    src(): string {
       return new URL(`../../assets/icon-system.svg`, import.meta.url).href;
     },
-    isRunningLowOnStorage() {
+    isRunningLowOnStorage(): boolean {
       // less than 1GB remaining
       if (this.storage && this.storage.total) {
         return this.storage.total - this.storage.used < 1000000000;
       }
       return false;
     },
-    isStorageFull() {
+    isStorageFull(): boolean {
       // less than 100MB remaining
       if (this.storage && this.storage.total) {
         return this.storage.total - this.storage.used < 100000000;
       }
       return false;
     },
-    cardStatus() {
+    cardStatus():
+      | {
+          text: string;
+          variant: "success" | "primary" | "muted" | "danger" | "warning";
+          blink: boolean;
+        }
+      | undefined {
       if (this.isStorageFull) {
         return {
           text: "No space left",
@@ -221,22 +238,23 @@ export default {
           blink: true,
         };
       }
-      return {};
+      return undefined;
     },
   },
   created() {
     // to map app ID's to app names
-    this.$store.dispatch("apps/getAppStore");
-    this.$store.dispatch("system/getDiskInfo");
+    this.appsStore.getAppStore();
+    this.systemStore.getDiskInfo();
+    this.systemStore.getStorage();
   },
   methods: {
-    readableSize(n) {
+    readableSize(n: number) {
       return readableSize(n);
     },
-    getAppName(appId) {
-      const index = this.store.findIndex(({ id }) => id === appId);
-      return index > -1 ? this.store[index]["name"] : "";
+    getAppName(appId: string) {
+      const appStore = this.appsStore.store;
+      return appStore.find(({ id }) => id === appId)?.name || appId;
     },
   },
-};
+});
 </script>

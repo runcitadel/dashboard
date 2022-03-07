@@ -33,8 +33,10 @@
   </transition>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
   components: {},
   props: {
     success: {
@@ -51,7 +53,7 @@ export default {
   },
   computed: {},
   methods: {},
-};
+});
 </script>
 
 <style lang="scss" scoped>

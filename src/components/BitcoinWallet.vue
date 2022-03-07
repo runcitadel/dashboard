@@ -2,28 +2,33 @@
   <card-widget
     header="Bitcoin Wallet"
     :status="{
-      text: lightningSyncPercent < 100 ? 'Synchronizing' : 'Active',
+      text: bitcoinStore.percent < 100 ? 'Synchronizing' : 'Active',
       variant: 'success',
       blink: false,
     }"
-    :sub-title="$filters.formatUnit(unit)"
+    :sub-title="$filters.formatUnit(systemStore.unit)"
     icon="icon-app-bitcoin.svg"
     :loading="
       loading ||
-      (transactions.length > 0 && transactions[0]['type'] === 'loading') ||
-      lightningSyncPercent < 100
+      (bitcoinStore.transactions.length > 0 &&
+        bitcoinStore.transactions[0]['type'] === 'loading') ||
+      bitcoinStore.percent < 100
     "
   >
     <template #title>
       <div
-        v-if="walletBalance !== -1"
+        v-if="bitcoinStore.balance.total !== -1"
         v-b-tooltip.hover.right
-        :title="$filters.satsToUSD(walletBalanceInSats)"
+        :title="
+          $filters
+            .satsToUSD(bitcoinStore.balance.total, bitcoinStore)
+            .toString()
+        "
       >
         <CountUp
           :value="{
-            endVal: walletBalance,
-            decimalPlaces: unit === 'sats' ? 0 : 5,
+            endVal: bitcoinStore.balance.total,
+            decimalPlaces: systemStore.unit === 'sats' ? 0 : 5,
           }"
         />
       </div>
@@ -41,7 +46,7 @@
           <!-- List of transactions -->
           <!-- No transactions -->
           <div
-            v-if="transactions.length === 0"
+            v-if="bitcoinStore.transactions.length === 0"
             class="d-flex flex-column justify-content-center px-3 px-lg-4 zero-wallet-transactions-container"
           >
             <svg
@@ -78,10 +83,10 @@
             >
               <!-- Transaction -->
               <b-list-group-item
-                v-for="tx in transactions"
-                :key="tx.hash"
+                v-for="tx in bitcoinStore.transactions"
+                :key="(tx as { hash: string }).hash"
                 class="flex-column align-items-start px-3 px-lg-4"
-                :href="getTxExplorerUrl(tx.hash)"
+                :href="getTxExplorerUrl((tx as { hash: string }).hash)"
                 target="_blank"
                 @click="openTxInExplorer"
               >
@@ -196,15 +201,19 @@
                     <span
                       v-b-tooltip.hover.left
                       class="font-weight-bold d-block"
-                      :title="$filters.satsToUSD(tx.amount)"
+                      :title="
+                        $filters.satsToUSD(tx.amount, bitcoinStore).toString()
+                      "
                     >
                       <!-- Positive or negative prefix with amount -->
                       <span v-if="tx.type === 'incoming'">+</span>
                       <span v-else-if="tx.type === 'outgoing'">-</span>
-                      {{ $filters.localize($filters.unit(tx.amount)) }}
+                      {{
+                        $filters.localize($filters.unit(tx.amount, systemStore)?.toString() as string)
+                      }}
                     </span>
                     <small class="text-muted">{{
-                      $filters.formatUnit(unit)
+                      $filters.formatUnit(systemStore.unit)
                     }}</small>
                   </div>
                 </div>
@@ -240,7 +249,7 @@
             </div>
             <div class="mb-0">
               <div class="w-100 d-flex justify-content-between">
-                <label class="sr-onlsy" for="input-withdrawal-amount"
+                <label class="visually-hidden" for="input-withdrawal-amount"
                   >Amount</label
                 >
                 <!--<b-form-checkbox v-model="withdraw.sweep" size="sm" switch>
@@ -271,12 +280,15 @@
                 <small
                   class="text-muted mt-1 d-block text-end mb-0"
                   :style="{ opacity: withdraw.amount > 0 ? 1 : 0 }"
-                  >~ {{ $filters.satsToUSD(withdraw.amount) }}</small
+                  >~
+                  {{
+                    $filters.satsToUSD(withdraw.amount, bitcoinStore).toString()
+                  }}</small
                 >
               </div>
             </div>
 
-            <label class="sr-onlsy" for="input-withdrawal-address"
+            <label class="visually-hidden" for="input-withdrawal-address"
               >Address</label
             >
             <b-input
@@ -291,7 +303,7 @@
           </div>
           <div v-show="!error" class="px-3 px-lg-4 mt-1">
             <fee-selector
-              :fee="fees"
+              :fee="bitcoinStore.fees"
               :disabled="!withdraw.amount || !withdraw.address"
               @change="selectWithdrawalFee"
             ></fee-selector>
@@ -325,13 +337,16 @@
             </div>
             <div class="text-center pb-4">
               <h3 class="mb-0">
-                {{ $filters.localize($filters.unit(withdraw.amount)) }}
+                {{
+                  $filters.localize($filters.unit(withdraw.amount, systemStore)?.toString() as string)
+                }}
               </h3>
               <span class="d-block mb-1 text-muted">
-                {{ $filters.formatUnit(unit) }}
+                {{ $filters.formatUnit(systemStore.unit) }}
               </span>
               <small class="text-muted d-block mb-3"
-                >~ {{ $filters.satsToUSD(withdraw.amount) }}</small
+                >~
+                {{ $filters.satsToUSD(withdraw.amount, bitcoinStore) }}</small
               >
 
               <svg
@@ -364,9 +379,16 @@
                   ~
                   {{
                     $filters.satsToUSD(
-                      (parseInt(fees.fast.total, 10) /
-                        parseInt(fees.fast.perByte, 10)) *
-                        parseInt(withdraw.selectedFee.satPerByte, 10)
+                      (parseInt(bitcoinStore.fees.fast.total.toString(), 10) /
+                        parseInt(
+                          bitcoinStore.fees.fast.perByte.toString(),
+                          10
+                        )) *
+                        parseInt(
+                          withdraw.selectedFee.satPerByte.toString(),
+                          10
+                        ),
+                      bitcoinStore
                     )
                   }}
                   Transaction fee
@@ -374,9 +396,11 @@
               </span>
               <span class="text-end text-muted">
                 <b>{{
-                  $filters.localize($filters.unit(projectedBalanceInSats))
+                  $filters.localize(
+                    $filters.unit(projectedBalanceInSats, systemStore)?.toString() as string
+                  )
                 }}</b>
-                <small>&nbsp;{{ $filters.formatUnit(unit) }}</small>
+                <small>&nbsp;{{ $filters.formatUnit(systemStore.unit) }}</small>
                 <br />
                 <small>Remaining balance</small>
               </span>
@@ -386,25 +410,35 @@
                 <b>
                   {{
                     $filters.localize(
-                      $filters.unit(fees[withdraw.selectedFee.type]["total"])
+                      $filters.unit(
+                        bitcoinStore.fees[withdraw.selectedFee.type][
+                          "total"
+                        ],
+                        systemStore
+                      )?.toString() as string
                     )
                   }}
                 </b>
-                <small>&nbsp;{{ $filters.formatUnit(unit) }}</small>
+                <small>&nbsp;{{ $filters.formatUnit(systemStore.unit) }}</small>
                 <br />
                 <small>
                   ~
                   {{
-                    $filters.satsToUSD(fees[withdraw.selectedFee.type]["total"])
+                    $filters.satsToUSD(
+                      bitcoinStore.fees[withdraw.selectedFee.type]["total"],
+                      bitcoinStore
+                    )
                   }}
                   Transaction fee
                 </small>
               </span>
               <span class="text-end text-muted">
                 <b>{{
-                  $filters.localize($filters.unit(projectedBalanceInSats))
+                  $filters.localize(
+                    $filters.unit(projectedBalanceInSats, systemStore)?.toString() as string
+                  )
                 }}</b>
-                <small>&nbsp;{{ $filters.formatUnit(unit) }}</small>
+                <small>&nbsp;{{ $filters.formatUnit(systemStore.unit) }}</small>
                 <br />
                 <small>Remaining balance</small>
               </span>
@@ -448,8 +482,12 @@
               <span class="d-block mb-2">
                 Successfully withdrawn
                 <b>
-                  {{ $filters.localize($filters.unit(withdraw.amount)) }}
-                  {{ $filters.formatUnit(unit) }}
+                  {{
+                    $filters.localize(
+                      $filters.unit(withdraw.amount, systemStore)?.toString() as string
+                    )
+                  }}
+                  {{ $filters.formatUnit(systemStore.unit) }}
                 </b>
               </span>
               <small class="text-muted d-block">Transaction ID</small>
@@ -494,7 +532,7 @@
             <!-- Deposit Address QR Code -->
             <qr-code
               class="mb-3 mx-auto"
-              :value="depositAddress"
+              :value="bitcoinStore.depositAddress"
               :size="190"
               show-logo
             ></qr-code>
@@ -502,7 +540,7 @@
             <!-- Copy Address Input Field -->
             <input-copy
               size="sm"
-              :value="depositAddress"
+              :value="bitcoinStore.depositAddress"
               class="mb-4 mt-1"
             ></input-copy>
           </div>
@@ -637,8 +675,6 @@
 </template>
 
 <script lang="ts">
-import type { RootState } from "../store";
-
 type data = {
   //balance: 162500, //net user's balance in sats
   mode:
@@ -648,7 +684,7 @@ type data = {
     | "review-withdraw"
     | "withdrawn";
   withdraw: {
-    amountInput: "" | number;
+    amountInput: string;
     amount: "" | number;
     address: string;
     sweep: boolean;
@@ -667,8 +703,6 @@ import {
   getDateFormatWithSeconds,
 } from "../helpers/date";
 
-import { mapState, mapGetters } from "vuex";
-
 import { satsToBtc, btcToSats } from "../helpers/units";
 
 import CountUp from "../components/Utility/CountUp.vue";
@@ -678,8 +712,14 @@ import QrCode from "../components/Utility/QrCode.vue";
 import CircularCheckmark from "../components/Utility/CircularCheckmark.vue";
 import SatsBtcSwitch from "../components/Utility/SatsBtcSwitch.vue";
 import FeeSelector from "../components/Utility/FeeSelector.vue";
+import { defineComponent } from "vue";
+import useSystemStore from "../store/system";
+import useUserStore from "../store/user";
+import useBitcoinStore from "../store/bitcoin";
+import useAppsStore from "../store/apps";
+import useSdkStore from "../store/sdk";
 
-export default {
+export default defineComponent({
   components: {
     CardWidget,
     QrCode,
@@ -689,7 +729,20 @@ export default {
     SatsBtcSwitch,
     FeeSelector,
   },
-  props: {},
+  setup() {
+    const systemStore = useSystemStore();
+    const userStore = useUserStore();
+    const bitcoinStore = useBitcoinStore();
+    const appsStore = useAppsStore();
+    const sdkStore = useSdkStore();
+    return {
+      appsStore,
+      userStore,
+      systemStore,
+      bitcoinStore,
+      sdkStore,
+    };
+  },
   data() {
     return {
       //balance: 162500, //net user's balance in sats
@@ -710,88 +763,74 @@ export default {
     } as data;
   },
   computed: {
-    ...mapState({
-      lightningSyncPercent: (state) => state.lightning.percent,
-      walletBalance: (state) => {
-        //skip if still loading
-        if (state.bitcoin.balance.total === -1) {
-          return -1;
-        }
-        if (state.system.unit === "btc") {
-          return satsToBtc(state.bitcoin.balance.total);
-        }
-        return state.bitcoin.balance.total;
-      },
-      walletBalanceInSats: (state) => state.bitcoin.balance.total,
-      confirmedBtcBalance: (state) => state.bitcoin.balance.confirmed,
-      depositAddress: (state) => state.bitcoin.depositAddress,
-      fees: (state) => state.bitcoin.fees,
-      unit: (state) => state.system.unit,
-      chain: (state) => state.bitcoin.chain,
-      localExplorerTxUrl: (state) => {
-        // Check for mempool app
-        const mempool = state.apps.installed.find(({ id }) => id === "mempool");
-        if (mempool) {
-          return window.location.origin.indexOf(".onion") > 0
-            ? `http://${mempool.hiddenService}${mempool.path}/tx/`
-            : `http://${window.location.hostname}:${mempool.port}${mempool.path}/tx/`;
-        }
-
-        // Check for btc-rpc-explorer app
-        const btcRpcExplorer = state.apps.installed.find(
-          ({ id }) => id === "btc-rpc-explorer"
-        );
-        if (btcRpcExplorer) {
-          return window.location.origin.indexOf(".onion") > 0
-            ? `http://${btcRpcExplorer.hiddenService}${btcRpcExplorer.path}/tx/`
-            : `http://${window.location.hostname}:${btcRpcExplorer.port}${btcRpcExplorer.path}/tx/`;
-        }
-
-        // Else return empty string
-        return "";
-      },
-    }),
-    ...mapGetters({
-      transactions: "bitcoin/transactions",
-    }),
-    projectedBalanceInSats() {
+    projectedBalanceInSats(): number {
       if (this.withdraw.sweep) {
         return 0;
       }
 
       if (this.withdraw.selectedFee.type !== "custom") {
         const remainingBalanceInSats =
-          this.$store.state.bitcoin.balance.total -
-          this.withdraw.amount -
-          this.fees[this.withdraw.selectedFee.type].total;
-        return parseInt(remainingBalanceInSats, 10);
+          this.bitcoinStore.balance.total -
+          parseInt(this.withdraw.amount.toString()) -
+          parseInt(
+            this.bitcoinStore.fees[
+              this.withdraw.selectedFee.type
+            ].total.toString()
+          );
+        return parseInt(remainingBalanceInSats.toString(), 10);
       } else {
         const remainingBalanceInSats =
-          this.$store.state.bitcoin.balance.total -
-          this.withdraw.amount -
-          (parseInt(this.fees.fast.total, 10) /
-            parseInt(this.fees.fast.perByte, 10)) *
-            parseInt(this.withdraw.selectedFee.satPerByte, 10);
+          this.bitcoinStore.balance.total -
+          parseInt(this.withdraw.amount.toString()) -
+          (parseInt(this.bitcoinStore.fees.fast.total.toString(), 10) /
+            parseInt(this.bitcoinStore.fees.fast.perByte.toString(), 10)) *
+            parseInt(this.withdraw.selectedFee.satPerByte.toString(), 10);
         return Math.round(remainingBalanceInSats);
       }
+    },
+    localExplorerTxUrl(): string {
+      // Check for mempool app
+      const mempool = this.appsStore.installed.find(
+        ({ id }) => id === "mempool"
+      );
+      if (mempool) {
+        return window.location.origin.indexOf(".onion") > 0
+          ? `http://${mempool.hiddenService}${mempool.path}/tx/`
+          : `http://${window.location.hostname}:${mempool.port}${mempool.path}/tx/`;
+      }
+
+      // Check for btc-rpc-explorer app
+      const btcRpcExplorer = this.appsStore.installed.find(
+        ({ id }) => id === "btc-rpc-explorer"
+      );
+      if (btcRpcExplorer) {
+        return window.location.origin.indexOf(".onion") > 0
+          ? `http://${btcRpcExplorer.hiddenService}${btcRpcExplorer.path}/tx/`
+          : `http://${window.location.hostname}:${btcRpcExplorer.port}${btcRpcExplorer.path}/tx/`;
+      }
+
+      // Else return empty string
+      return "";
     },
   },
   watch: {
     "withdraw.amountInput": function (val) {
-      if (this.unit === "sats") {
+      if (this.systemStore.unit === "sats") {
         this.withdraw.amount = Number(val);
-      } else if (this.unit === "btc") {
+      } else if (this.systemStore.unit === "btc") {
         this.withdraw.amount = btcToSats(val);
       }
       this.fetchWithdrawalFees();
     },
     "withdraw.sweep": async function (val) {
       if (val) {
-        if (this.unit === "sats") {
-          this.withdraw.amountInput = String(this.confirmedBtcBalance);
-        } else if (this.unit === "btc") {
+        if (this.systemStore.unit === "sats") {
           this.withdraw.amountInput = String(
-            satsToBtc(this.confirmedBtcBalance)
+            this.bitcoinStore.balance.confirmed
+          );
+        } else if (this.systemStore.unit === "btc") {
+          this.withdraw.amountInput = String(
+            satsToBtc(this.bitcoinStore.balance.confirmed)
           );
         }
       } else {
@@ -802,40 +841,42 @@ export default {
       if (val === "sats") {
         this.withdraw.amount = Number(this.withdraw.amountInput);
       } else if (val === "btc") {
-        this.withdraw.amount = btcToSats(this.withdraw.amountInput);
+        this.withdraw.amount = btcToSats(
+          parseInt(this.withdraw.amountInput as string)
+        );
       }
       this.fetchWithdrawalFees();
     },
   },
   async created() {
-    this.$store.dispatch("bitcoin/getStatus");
+    await this.bitcoinStore.getStatus();
 
     // to fetch any installed explorers
     // and their hidden services
-    this.$store.dispatch("apps/getInstalledApps");
+    await this.appsStore.getInstalledApps();
   },
   methods: {
-    getTimeFromNow(timestamp: number) {
+    getTimeFromNow(timestamp: number | Date) {
       return formatDistance(new Date(timestamp), new Date()); //used in the list of txs, eg "a few seconds ago"
     },
-    getReadableTime(timestamp) {
+    getReadableTime(timestamp: number | Date) {
       return format(new Date(timestamp), getDateFormatWithSeconds()); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
     },
-    getTxExplorerUrl(txHash) {
+    getTxExplorerUrl(txHash: string) {
       if (this.localExplorerTxUrl) {
         return `${this.localExplorerTxUrl}${txHash}`;
       } else {
         if (window.location.origin.indexOf(".onion") > 0) {
-          return this.chain === "test"
+          return this.bitcoinStore.chain === "test"
             ? `http://mempoolhqx4isw62xs7abwphsq7ldayuidyx2v2oethdhhj6mlo2r6ad.onion/testnet/tx/${txHash}`
             : `http://mempoolhqx4isw62xs7abwphsq7ldayuidyx2v2oethdhhj6mlo2r6ad.onion/tx/${txHash}`;
         }
-        return this.chain === "test"
+        return this.bitcoinStore.chain === "test"
           ? `https://mempool.space/testnet/tx/${txHash}`
           : `https://mempool.space/tx/${txHash}`;
       }
     },
-    openTxInExplorer(event) {
+    openTxInExplorer(event: Event) {
       if (
         !this.localExplorerTxUrl &&
         !window.confirm(
@@ -845,15 +886,22 @@ export default {
         event.preventDefault();
       }
     },
-    async changeMode(mode) {
+    async changeMode(
+      mode:
+        | "transactions"
+        | "deposit"
+        | "withdraw"
+        | "review-withdraw"
+        | "withdrawn"
+    ) {
       //change between different modes/screens of the wallet from - transactions (default), withdraw, withdrawan, depsoit
 
       //on deposit mode, get new btc address
       if (mode === "deposit") {
-        await this.$store.dispatch("bitcoin/getDepositAddress");
+        await this.bitcoinStore.getDepositAddress();
       }
 
-      return (this.mode = mode);
+      this.mode = mode;
     },
     reset() {
       //reset to default mode, clear any inputs/generated invoice, pasted invoice, etc - used by "Back" button
@@ -870,6 +918,7 @@ export default {
 
       //reset state
       this.withdraw = {
+        amountInput: "",
         amount: "",
         address: "",
         sweep: false,
@@ -890,12 +939,15 @@ export default {
       }
       this.withdraw.isTyping = true;
 
-      this.withdraw.feesTimeout = setTimeout(async () => {
+      this.withdraw.feesTimeout = window.setTimeout(async () => {
         this.loading = true;
         if (this.withdraw.amount && this.withdraw.address) {
-          const params = {
+          const params: {
+            address: string;
+            amt?: number;
+            sweep: boolean;
+          } = {
             address: this.withdraw.address,
-            confTarget: 0,
             sweep: this.withdraw.sweep,
           };
 
@@ -903,15 +955,23 @@ export default {
             params.amt = this.withdraw.amount;
           }
 
-          await this.$store.dispatch("bitcoin/getFees", params);
+          await this.bitcoinStore.getFees(
+            params as {
+              address: string;
+              amt: number;
+              sweep: boolean;
+            }
+          );
 
-          if (this.fees) {
+          if (this.bitcoinStore.fees) {
             //show error if any
             if (
-              this.fees[this.withdraw.selectedFee.type] &&
-              this.fees[this.withdraw.selectedFee.type].error.code
+              this.bitcoinStore.fees[this.withdraw.selectedFee.type] &&
+              this.bitcoinStore.fees[this.withdraw.selectedFee.type].error
             ) {
-              this.error = this.fees[this.withdraw.selectedFee.type].error.text;
+              this.error = JSON.stringify(
+                this.bitcoinStore.fees[this.withdraw.selectedFee.type].error
+              );
             } else {
               this.error = "";
             }
@@ -924,7 +984,7 @@ export default {
         this.withdraw.isTyping = false;
       }, 500);
     },
-    selectWithdrawalFee(fee) {
+    selectWithdrawalFee(fee: { type: string; satPerByte: number }) {
       this.withdraw.selectedFee = fee;
     },
     async withdrawBtc() {
@@ -934,32 +994,36 @@ export default {
       const payload = {
         addr: this.withdraw.address,
         amt: this.withdraw.amount,
-        satPerByte: parseInt(this.withdraw.selectedFee.satPerByte, 10),
+        satPerByte: parseInt(
+          this.withdraw.selectedFee.satPerByte.toString(),
+          10
+        ),
         sendAll: this.withdraw.sweep,
       };
 
       try {
-        const citadel = (this.$store.state as RootState).citadel;
-        const res = citadel.middleware.lnd.transaction.sendCoins(
-          payload.addr,
-          payload.amt,
-          payload.satPerByte
-        );
-        const withdrawTx = res.data;
+        const res =
+          await this.sdkStore.citadel.middleware.lnd.transaction.sendCoins(
+            payload.addr,
+            payload.amt as number,
+            payload.satPerByte
+          );
+        const withdrawTx = res;
         this.withdraw.txHash = withdrawTx.txid;
         this.changeMode("withdrawn");
 
         //update
-        this.$store.dispatch("bitcoin/getBalance");
-        this.$store.dispatch("bitcoin/getTransactions");
+        await this.bitcoinStore.getBalance();
+        await this.bitcoinStore.getTransactions();
       } catch (error) {
-        this.error = error.response.data || "Error sending BTC";
+        console.error(error);
+        this.error = "Error sending BTC";
       }
       this.loading = false;
       this.withdraw.isWithdrawing = false;
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

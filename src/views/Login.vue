@@ -38,7 +38,7 @@
           :disabled="isLoggingIn"
         />
         <input-password
-          v-if="totpEnabled"
+          v-if="userStore.totpEnabled"
           ref="totpToken"
           v-model="totpToken"
           placeholder="2FA token"
@@ -46,7 +46,7 @@
             isIncorrectToken ? 'incorrect-token' : '',
             'card-input w-100',
           ]"
-          :input-group-class="['mt-2 card-input-group']"
+          :input-group-class="(['mt-2 card-input-group'] as unknown as string)"
           :disabled="isLoggingIn"
         />
         <div class="login-button-container">
@@ -78,13 +78,18 @@
   </div>
 </template>
 
-<script>
-import { mapState } from "vuex";
-import InputPassword from "@/components/Utility/InputPassword.vue";
+<script lang="ts">
+import { defineComponent } from "vue";
+import useUserStore from "../store/user";
+import InputPassword from "../components/Utility/InputPassword.vue";
 
-export default {
+export default defineComponent({
   components: {
     InputPassword,
+  },
+  setup() {
+    const userStore = useUserStore();
+    return { userStore };
   },
   data() {
     return {
@@ -96,13 +101,6 @@ export default {
       isLoggingIn: false,
     };
   },
-  computed: {
-    ...mapState({
-      jwt: (state) => state.user.jwt,
-      registered: (state) => state.user.registered,
-      totpEnabled: (state) => state.user.totpEnabled,
-    }),
-  },
   watch: {
     password: function () {
       //bring up log in button after user retries new password after failed attempt
@@ -111,16 +109,16 @@ export default {
   },
   async created() {
     //redirect to dashboard if already logged in
-    if (this.jwt) {
+    if (this.userStore.jwt) {
       this.$router.push("/dashboard");
     }
 
     //redirect to onboarding if the user is not registered
-    await this.$store.dispatch("user/registered");
-    if (!this.registered) {
+    await this.userStore.getRegistered();
+    if (!this.userStore.registered) {
       return this.$router.push("/start");
     } else {
-      await this.$store.dispatch("user/getTotpEnabledStatus");
+      await this.userStore.getTotpEnabledStatus();
     }
 
     this.loading = false;
@@ -130,7 +128,7 @@ export default {
       this.isLoggingIn = true;
 
       try {
-        await this.$store.dispatch("user/login", {
+        await this.userStore.login({
           password: this.password,
           totpToken: this.totpToken,
         });
@@ -141,11 +139,13 @@ export default {
 
       //redirect to dashboard
       return this.$router.push(
-        new URL(window.location).searchParams.get("redirect") || "/dashboard"
+        new URL(window.location as unknown as URL).searchParams.get(
+          "redirect"
+        ) || "/dashboard"
       );
     },
   },
-};
+});
 </script>
 
 <style lang="scss">

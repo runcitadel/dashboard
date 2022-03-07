@@ -152,15 +152,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@runcitadel/sdk@npm:^0.3.2":
-  version: 0.3.2
-  resolution: "@runcitadel/sdk@npm:0.3.2"
+"@runcitadel/sdk@npm:^0.3.3":
+  version: 0.3.3
+  resolution: "@runcitadel/sdk@npm:0.3.3"
   dependencies:
     undici: ^4.14.1
   peerDependencies:
     "@types/react": ^17.0.39
     react: ^17.0.2
-  checksum: a25171e8613d4f7742f853300dccfb98e88572b3d3bfbc6ca9745c6d45bae24dcff2a4ec763e73bf841a9dd65e11de13e64a9a01406c52c01bc810231bc9961b
+  checksum: 3fbddb297c84a66db19a99c4cad1964dea31cd39814f89c5f95d531ff7100f592553675f4df375008d4064e96f0d905ab1479c1f544b510c6040ef11c2b3bff4
   languageName: node
   linkType: hard
 
@@ -371,10 +371,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/devtools-api@npm:^6.0.0-beta.11, @vue/devtools-api@npm:^6.0.0-beta.18":
-  version: 6.0.0-beta.21.1
-  resolution: "@vue/devtools-api@npm:6.0.0-beta.21.1"
-  checksum: 0ba256aa6e184455ff0e990e765ebb4d8f7cb5509c97d25898d2e98f213c2d2b3d44492b3f92ff50fae22ee4806f684675f15f324ae81260ada89e9b3e12303c
+"@vue/devtools-api@npm:^6.0.0-beta.18, @vue/devtools-api@npm:^6.0.0-beta.21":
+  version: 6.0.12
+  resolution: "@vue/devtools-api@npm:6.0.12"
+  checksum: 5eb4601a6f6601c4481eab54c7f05f8e373ac3f2b5ab6973847a47e7ddbec7a9d2cd80dc692905da9e8615ac64a208702c54f7dfac47f7aa2168a5b7dd176545
   languageName: node
   linkType: hard
 
@@ -741,7 +741,7 @@ __metadata:
   dependencies:
     "@aarondewes/vue-slider-component": ^3.2.16
     "@bitcoin-design/bitcoin-icons-vue": ^0.1.8
-    "@runcitadel/sdk": ^0.3.2
+    "@runcitadel/sdk": ^0.3.3
     "@types/node": ^17.0.19
     "@typescript-eslint/eslint-plugin": ^5.12.0
     "@typescript-eslint/parser": ^5.12.0
@@ -758,6 +758,7 @@ __metadata:
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^4.0.0
     eslint-plugin-vue: ^8.4.1
+    pinia: ^2.0.11
     prettier: ^2.5.1
     qrcode.vue: ^3.3.3
     sass: ^1.49.7
@@ -766,7 +767,6 @@ __metadata:
     vue: ^3.2.31
     vue-confetti: ^2.3.0
     vue-router: ^4.0.12
-    vuex: ^4.0.2
   languageName: unknown
   linkType: soft
 
@@ -2145,6 +2145,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pinia@npm:^2.0.11":
+  version: 2.0.11
+  resolution: "pinia@npm:2.0.11"
+  dependencies:
+    "@vue/devtools-api": ^6.0.0-beta.21
+    vue-demi: "*"
+  peerDependencies:
+    "@vue/composition-api": ^1.4.0
+    typescript: ">=4.4.4"
+    vue: ^2.6.14 || ^3.2.0
+  peerDependenciesMeta:
+    "@vue/composition-api":
+      optional: true
+    typescript:
+      optional: true
+  checksum: 8cce95b07baae4558d60d51b59e34635c95bb333f7898462aee4d0c7b92b2b40f8c666f24dc4c2572739b5813f6dd148b1e48cf02fb0f6a047dae4b803fd731f
+  languageName: node
+  linkType: hard
+
 "popper.js@npm:^1.16.1":
   version: 1.16.1
   resolution: "popper.js@npm:1.16.1"
@@ -2712,6 +2731,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vue-demi@npm:*":
+  version: 0.12.1
+  resolution: "vue-demi@npm:0.12.1"
+  peerDependencies:
+    "@vue/composition-api": ^1.0.0-rc.1
+    vue: ^3.0.0-0 || ^2.6.0
+  peerDependenciesMeta:
+    "@vue/composition-api":
+      optional: true
+  bin:
+    vue-demi-fix: bin/vue-demi-fix.js
+    vue-demi-switch: bin/vue-demi-switch.js
+  checksum: d39a43e765e5bc34cf5b378ccff53a521e824f8c55aae6a9163c294364e8af593c5331b3b3b1b679b28096a3142abed5aed07e2dfb581c96f2eba88a176666f2
+  languageName: node
+  linkType: hard
+
 "vue-eslint-parser@npm:^8.0.1":
   version: 8.1.0
   resolution: "vue-eslint-parser@npm:8.1.0"
@@ -2767,17 +2802,6 @@ __metadata:
     "@vue/server-renderer": 3.2.31
     "@vue/shared": 3.2.31
   checksum: 2d66b563e60ce01ff4872f425b1acaf9a9f9d36f48eb986c89962d9b324c6bf566868503811462317052273b53056bbc58be3ceb06ea39dff174bb0fa62db3a2
-  languageName: node
-  linkType: hard
-
-"vuex@npm:^4.0.2":
-  version: 4.0.2
-  resolution: "vuex@npm:4.0.2"
-  dependencies:
-    "@vue/devtools-api": ^6.0.0-beta.11
-  peerDependencies:
-    vue: ^3.0.2
-  checksum: d7c03f0afcbad045ef58921a4baa9ec23bc12c71dbaf1317f1df94e7d8740ce839b9fac48ec775955ce7a8893dceb7217bc05e45421fc6bacc559ed3541e6052
   languageName: node
   linkType: hard
 

@@ -13,7 +13,7 @@
             class="me-2 me-sm-3"
             :src="
               src(
-                lightningImplementation === 'lnd'
+                lightningStore.implementation === 'lnd'
                   ? 'icon-app-lnd.svg'
                   : 'icon-app-c-lightning.svg'
               )
@@ -32,7 +32,11 @@
             <small class="ms-1 text-success">{{ status }}</small>
             <h3 class="d-block font-weight-bold mb-1">Lightning Network</h3>
             <span class="d-block text-muted">
-              {{ lndVersion ? `v${lndVersion.split(" commit")[0]}` : "..." }}
+              {{
+                lightningStore.version
+                  ? `v${lightningStore.version.split(" commit")[0]}`
+                  : "..."
+              }}
             </span>
           </div>
         </div>
@@ -111,7 +115,11 @@
               <div class="d-flex align-items-center">
                 <!-- Pubkey QR Code -->
                 <qr-code
-                  :value="uris.length ? uris[0] : pubkey"
+                  :value="
+                    lightningStore.uris.length
+                      ? lightningStore.uris[0]
+                      : lightningStore.pubkey
+                  "
                   :size="180"
                   class="qr-image mx-auto"
                   show-logo
@@ -121,9 +129,9 @@
                     Other Lightning nodes can open payment channels to your node
                     on the following address
                   </p>
-                  <div v-if="uris.length">
+                  <div v-if="lightningStore.uris.length">
                     <input-copy
-                      v-for="uri in uris"
+                      v-for="uri in lightningStore.uris"
                       :key="uri"
                       class="mb-2"
                       size="sm"
@@ -182,13 +190,16 @@
                   ></toggle-switch>
                 </div>
                 <small
-                  v-if="backupStatus.status"
+                  v-if="systemStore.backupStatus.status"
                   class="d-block mt-2"
                   style="opacity: 0.4"
                 >
                   Last backup
-                  <span v-if="backupStatus.status === 'failed'">failed</span>
-                  at {{ getReadableTime(backupStatus.timestamp) }}
+                  <span v-if="systemStore.backupStatus.status === 'failed'"
+                    >failed</span
+                  >
+                  at
+                  {{ getReadableTime(systemStore.backupStatus.timestamp as number) }}
                 </small>
               </div>
             </b-dropdown-group>
@@ -199,7 +210,7 @@
                 <b-col col cols="6" xl="3">
                   <stat
                     title="Connections"
-                    :value="numPeers"
+                    :value="lightningStore.numPeers"
                     suffix="Peers"
                     show-numeric-change
                   ></stat>
@@ -207,7 +218,7 @@
                 <b-col col cols="6" xl="3">
                   <stat
                     title="Active Channels"
-                    :value="numActiveChannels"
+                    :value="lightningStore.numActiveChannels"
                     suffix="Channels"
                     show-numeric-change
                   ></stat>
@@ -215,18 +226,20 @@
                 <b-col col cols="6" xl="3">
                   <stat
                     title="Max Send"
-                    :value="$filters.unit(maxSend)"
-                    :suffix="$filters.formatUnit(unit)"
-                    :has-decimals="unit === 'btc'"
+                    :value="($filters.unit(lightningStore.maxSend, systemStore) as number)"
+                    :suffix="$filters.formatUnit(systemStore.unit)"
+                    :has-decimals="systemStore.unit === 'btc'"
                     abbreviate-value
                   ></stat>
                 </b-col>
                 <b-col col cols="6" xl="3">
                   <stat
                     title="Max Receive"
-                    :value="$filters.unit(maxReceive)"
-                    :suffix="$filters.formatUnit(unit)"
-                    :has-decimals="unit === 'btc'"
+                    :value="
+                      $filters.unit(lightningStore.maxReceive, systemStore) as number
+                    "
+                    :suffix="$filters.formatUnit(systemStore.unit)"
+                    :has-decimals="systemStore.unit === 'btc'"
                     abbreviate-value
                   ></stat>
                 </b-col>
@@ -316,8 +329,7 @@
                 ></channel-manage>
               </div>
             </b-modal>
-
-            <channel-list @selectchannel="manageChannel"></channel-list>
+            <channel-list @selectchannel="manageChannel" />
           </div>
         </card-widget>
       </b-col>
@@ -325,21 +337,25 @@
   </div>
 </template>
 
-<script>
-import { mapState } from "vuex";
+<script lang="ts">
+import { defineComponent } from "vue";
 import { format } from "date-fns";
 
-import CardWidget from "@/components/CardWidget.vue";
-import Stat from "@/components/Utility/Stat.vue";
-import LightningWallet from "@/components/LightningWallet.vue";
-import QrCode from "@/components/Utility/QrCode.vue";
-import InputCopy from "@/components/Utility/InputCopy.vue";
-import ToggleSwitch from "@/components/ToggleSwitch.vue";
-import ChannelList from "@/components/Channels/List.vue";
-import ChannelOpen from "@/components/Channels/Open.vue";
-import ChannelManage from "@/components/Channels/Manage.vue";
+import CardWidget from "../components/CardWidget.vue";
+import Stat from "../components/Utility/Stat.vue";
+import LightningWallet from "../components/LightningWallet.vue";
+import QrCode from "../components/Utility/QrCode.vue";
+import InputCopy from "../components/Utility/InputCopy.vue";
+import ToggleSwitch from "../components/ToggleSwitch.vue";
+import ChannelList from "../components/Channels/List.vue";
+import ChannelOpen from "../components/Channels/Open.vue";
+import ChannelManage from "../components/Channels/Manage.vue";
 
-export default {
+import useBitcoinStore from "../store/bitcoin";
+import useLightningStore, { type ParsedChannel } from "../store/lightning";
+import useSystemStore from "../store/system";
+
+export default defineComponent({
   components: {
     LightningWallet,
     CardWidget,
@@ -351,86 +367,65 @@ export default {
     ChannelOpen,
     ChannelManage,
   },
+  setup() {
+    const bitcoinStore = useBitcoinStore();
+    const lightningStore = useLightningStore();
+    const systemStore = useSystemStore();
+    return { bitcoinStore, lightningStore, systemStore };
+  },
   data() {
     return {
       status: "Running",
       selectedChannel: {},
+    } as {
+      status: string;
+      selectedChannel: ParsedChannel;
+      interval?: number;
     };
-  },
-  computed: {
-    ...mapState({
-      lndVersion: (state) => {
-        if (
-          state.lightning.version &&
-          state.lightning.version.charAt(0) === "v"
-        ) {
-          return state.lightning.version.substring(1);
-        }
-      },
-      lightningImplementation: (state) => state.lightning.implementation,
-      numActiveChannels: (state) => state.lightning.numActiveChannels,
-      maxReceive: (state) => state.lightning.maxReceive,
-      maxSend: (state) => state.lightning.maxSend,
-      numPeers: (state) => state.lightning.numPeers,
-      alias: (state) => state.lightning.alias,
-      pubkey: (state) => state.lightning.pubkey,
-      uris: (state) => state.lightning.uris,
-      lndConnectUrls: (state) => state.lightning.lndConnectUrls,
-      channels: (state) => state.lightning.channels,
-      unit: (state) => state.system.unit,
-      backupStatus: (state) => state.system.backupStatus,
-    }),
-  },
-  watch: {
-    password: function () {
-      this.isIncorrectPassword = false;
-    },
   },
   created() {
     this.fetchPageData();
-    this.$store.dispatch("lightning/getLndConnectUrls");
-    this.$store.dispatch("system/getBackupStatus");
+    this.lightningStore.getLndConnectUrls();
+    this.systemStore.getBackupStatus();
     this.interval = window.setInterval(this.fetchPageData, 10000);
   },
   beforeUnmount() {
     window.clearInterval(this.interval);
   },
   methods: {
-    getReadableTime(timestamp) {
+    getReadableTime(timestamp: number | Date) {
       return format(new Date(timestamp), "MMM d, h:mm:ss a");
     },
-    manageChannel(channel) {
+    manageChannel(channel: ParsedChannel) {
       if (channel) {
         this.selectedChannel = channel;
-        this.$refs["manage-channel-modal"].show();
+        (this.$refs["manage-channel-modal"] as { show: () => unknown }).show();
       }
     },
     onChannelOpen() {
       //refresh channels, balance and txs
       this.fetchPageData();
-      this.$refs["open-channel-modal"].hide();
+      (this.$refs["open-channel-modal"] as { hide: () => unknown }).hide();
 
       //refresh bitcoin balance and txs
-      this.$store.dispatch("bitcoin/getBalance");
-      this.$store.dispatch("bitcoin/getTransactions");
+      this.bitcoinStore.getBalance();
+      this.bitcoinStore.getTransactions();
     },
     onChannelClose() {
       //refresh channels, balance and txs
       this.fetchPageData();
-      this.$refs["manage-channel-modal"].hide();
+      (this.$refs["manage-channel-modal"] as { hide: () => unknown }).hide();
 
       //refresh bitcoin balance and txs
-      this.$store.dispatch("bitcoin/getBalance");
-      this.$store.dispatch("bitcoin/getTransactions");
+      this.bitcoinStore.getBalance();
+      this.bitcoinStore.getTransactions();
     },
     fetchPageData() {
-      this.$store.dispatch("lightning/getLndPageData");
+      this.lightningStore.getLndPageData();
     },
-    src: (icon) => {
+    src(icon: string) {
       return new URL(`../assets/${icon}`, import.meta.url).href;
     },
   },
-};
+});
 </script>
-
-<style lang="scss" scoped></style>

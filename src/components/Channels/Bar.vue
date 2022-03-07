@@ -2,14 +2,22 @@
   <div class="channel-bar" :style="style"></div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, type PropType } from "vue";
+
+export default defineComponent({
   components: {},
   props: {
-    local: Number,
-    remote: Number,
+    local: {
+      type: Number,
+      required: true,
+    },
+    remote: {
+      type: Number,
+      required: true,
+    },
     size: {
-      type: String, //sm, lg
+      type: String as PropType<"sm" | "lg">, //sm, lg
       default: "sm",
     },
   },
@@ -51,7 +59,7 @@ export default {
     },
   },
   methods: {
-    getChannelBarGradient(leftValue, rightValue) {
+    getChannelBarGradient(leftValue: number, rightValue: number) {
       const leftPercent = Math.round(
         (leftValue * 100) / (leftValue + rightValue)
       );
@@ -66,7 +74,7 @@ export default {
       }%, #00CD98 ${leftPercent + 7}%, #00CD98 100%)`;
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

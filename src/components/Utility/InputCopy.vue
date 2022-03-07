@@ -42,8 +42,10 @@
   </b-input-group>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
   props: {
     size: {
       type: String,
@@ -71,19 +73,19 @@ export default {
   methods: {
     copyText() {
       //copy generated invoice's text to clipboard
-      const copyText = this.$refs["copy-input-field"];
+      const copyText = this.$refs["copy-input-field"] as HTMLInputElement;
       copyText.select();
       copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-      document.execCommand("copy");
+      navigator.clipboard.writeText(this.value);
       window.setTimeout(() => {
         copyText.blur();
-        window.getSelection().removeAllRanges();
+        window.getSelection()?.removeAllRanges();
         this.isCopied = false;
       }, 1000);
       return (this.isCopied = true);
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -89,35 +89,44 @@
   </card-widget>
 </template>
 
-<script>
-import { mapState } from "vuex";
+<script lang="ts">
+import { defineComponent } from "vue";
 
-import CountUp from "@/components/Utility/CountUp.vue";
-import CardWidget from "@/components/CardWidget.vue";
+import CountUp from "../Utility/CountUp.vue";
+import CardWidget from "../CardWidget.vue";
+import useSystemStore from "../../store/system";
 
-export default {
+type CardStatus =
+  | {
+      text: string;
+      variant: "success" | "primary" | "muted" | "danger" | "warning";
+      blink: boolean;
+    }
+  | Record<string, never>;
+
+export default defineComponent({
   components: {
     CardWidget,
     CountUp,
   },
-  props: {},
-  data() {
-    return {
-      // cpuTemperature: 21
-    };
+  setup() {
+    const systemStore = useSystemStore();
+    return { systemStore };
   },
   computed: {
-    ...mapState({
-      cpuTemperature: (state) => state.system.cpuTemperature, // in celsius
-      cpuTemperatureUnit: (state) => state.system.cpuTemperatureUnit,
-    }),
-    cpuTemperatureInUnit() {
+    cpuTemperature(): number {
+      return this.systemStore.cpuTemperature;
+    },
+    cpuTemperatureUnit(): "fahrenheit" | "celsius" {
+      return this.systemStore.cpuTemperatureUnit;
+    },
+    cpuTemperatureInUnit(): number {
       if (this.cpuTemperatureUnit === "fahrenheit") {
         return Math.round(this.cpuTemperature * 1.8 + 32);
       }
       return this.cpuTemperature;
     },
-    cardStatus() {
+    cardStatus(): CardStatus {
       if (this.cpuTemperature > 85) {
         return {
           text: "Too hot",
@@ -138,7 +147,7 @@ export default {
         blink: false,
       };
     },
-    thermometerHeight() {
+    thermometerHeight(): number {
       if (this.cpuTemperature < 25) {
         return 40.375;
       }
@@ -147,7 +156,7 @@ export default {
       }
       return 40.375 - (this.cpuTemperature - 25) / 2.75;
     },
-    thermometerBgColor() {
+    thermometerBgColor(): string {
       const temp = this.cpuTemperature;
       if (temp > 85) {
         return "#F45252";
@@ -192,26 +201,17 @@ export default {
     },
   },
   created() {
-    // setTimeout(() => {
-    //   setInterval(() => {
-    //   if (this.cpuTemperature !== 100) {
-    //     // this.cpuTemperature = Number((this.cpuTemperature + 0.1).toFixed(1));
-    //     this.cpuTemperature++;
-    //   }
-    //  }, 250);
-    // }, 2000);
-    this.$store.dispatch("system/getCpuTemperatureUnit");
+    this.systemStore.getCpuTemperature();
+    this.systemStore.getCpuTemperatureUnit();
   },
   methods: {
     toggleUnit() {
-      if (this.cpuTemperatureUnit === "celsius") {
-        this.$store.dispatch("system/changeCpuTemperatureUnit", "fahrenheit");
-      } else if (this.cpuTemperatureUnit === "fahrenheit") {
-        this.$store.dispatch("system/changeCpuTemperatureUnit", "celsius");
-      }
+      this.systemStore.changeCpuTemperatureUnit(
+        this.cpuTemperatureUnit === "celsius" ? "fahrenheit" : "celsius"
+      );
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

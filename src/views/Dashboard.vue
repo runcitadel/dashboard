@@ -2,7 +2,8 @@
   <div class="p-sm-2">
     <div class="my-3 pb-2">
       <h1 class="text-lowercase">
-        {{ greeting }}{{ name ? `, ${name.split(" ")[0]}` : "" }}
+        {{ greeting
+        }}{{ userStore.name ? `, ${userStore.name.split(" ")[0]}` : "" }}
       </h1>
       <p class="text-muted">Here's an overview of your Citadel</p>
     </div>
@@ -14,20 +15,23 @@
         <card-widget
           header="Bitcoin Core"
           :status="{
-            text: syncPercent < 100 ? 'Synchronizing' : 'Running',
+            text: bitcoinStore.percent < 100 ? 'Synchronizing' : 'Running',
             variant: 'success',
             blink: false,
           }"
           sub-title="Synchronized"
           icon="icon-app-bitcoin.svg"
-          :loading="syncPercent < 100 || blocks.length === 0"
+          :loading="
+            lightningStore.percent < 100 || bitcoinStore.blocks.length === 0
+          "
         >
           <template #title>
             <CountUp
-              v-if="syncPercent !== -1"
+              v-if="bitcoinStore.percent !== -1"
               :value="{
-                endVal: syncPercent >= 99.99 ? 100 : syncPercent,
-                decimalPlaces: syncPercent >= 99.99 ? 0 : 2,
+                endVal:
+                  bitcoinStore.percent >= 99.99 ? 100 : bitcoinStore.percent,
+                decimalPlaces: bitcoinStore.percent >= 99.99 ? 0 : 2,
               }"
               suffix="%"
             />
@@ -41,7 +45,7 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4">
               <p class="mb-1">Connected Peers</p>
               <p>
-                {{ coreStats.peers }}
+                {{ bitcoinStore.stats.peers }}
               </p>
             </div>
             <blockchain></blockchain>
@@ -57,24 +61,28 @@
             <card-widget
               header="Bitcoin Wallet"
               :status="{
-                text: lightningSyncPercent < 100 ? 'Synchronizing' : 'Active',
+                text: lightningStore.percent < 100 ? 'Synchronizing' : 'Active',
                 variant: 'success',
                 blink: false,
               }"
-              :sub-title="$filters.formatUnit(unit)"
+              :sub-title="$filters.formatUnit(systemStore.unit)"
               icon="icon-app-bitcoin.svg"
-              :loading="lightningSyncPercent < 100"
+              :loading="lightningStore.percent < 100"
             >
               <template #title>
                 <div
                   v-if="btcBalance !== -1"
                   v-b-tooltip.hover.right
-                  :title="$filters.satsToUSD(btcBalanceInSats)"
+                  :title="
+                    $filters
+                      .satsToUSD(bitcoinStore.balance.total, bitcoinStore)
+                      .toString()
+                  "
                 >
                   <CountUp
                     :value="{
                       endVal: btcBalance,
-                      decimalPlaces: unit === 'sats' ? 0 : 5,
+                      decimalPlaces: systemStore.unit === 'sats' ? 0 : 5,
                     }"
                   />
                 </div>
@@ -101,18 +109,22 @@
   </div>
 </template>
 
-<script>
-import { mapState } from "vuex";
+<script lang="ts">
+import useSystemStore from "../store/system";
+import useUserStore from "../store/user";
+import useBitcoinStore from "../store/bitcoin";
+import useLightningStore from "../store/lightning";
 
-import { satsToBtc } from "@/helpers/units.ts";
+import { defineComponent } from "vue";
+import { satsToBtc } from "../helpers/units";
 
-import CountUp from "@/components/Utility/CountUp.vue";
-import CardWidget from "@/components/CardWidget.vue";
-import Blockchain from "@/components/Blockchain.vue";
-import LightningWallet from "@/components/LightningWallet.vue";
+import CountUp from "../components/Utility/CountUp.vue";
+import CardWidget from "../components/CardWidget.vue";
+import Blockchain from "../components/Blockchain.vue";
+import LightningWallet from "../components/LightningWallet.vue";
 import StorageWidget from "../components/Widgets/StorageWidget.vue";
 
-export default {
+export default defineComponent({
   components: {
     CountUp,
     CardWidget,
@@ -120,29 +132,36 @@ export default {
     LightningWallet,
     StorageWidget,
   },
+  setup() {
+    const systemStore = useSystemStore();
+    const userStore = useUserStore();
+    const bitcoinStore = useBitcoinStore();
+    const lightningStore = useLightningStore();
+    return {
+      userStore,
+      systemStore,
+      bitcoinStore,
+      lightningStore,
+    };
+  },
   data() {
-    return {};
+    return {
+      interval: null,
+    } as {
+      interval: null | number;
+    };
   },
   computed: {
-    ...mapState({
-      name: (state) => state.user.name,
-      lightningSyncPercent: (state) => state.lightning.percent,
-      syncPercent: (state) => state.bitcoin.percent,
-      blocks: (state) => state.bitcoin.blocks,
-      btcBalance: (state) => {
-        //skip if still loading
-        if (state.bitcoin.balance.total === -1) {
-          return -1;
-        }
-        if (state.system.unit === "btc") {
-          return satsToBtc(state.bitcoin.balance.total);
-        }
-        return state.bitcoin.balance.total;
-      },
-      btcBalanceInSats: (state) => state.bitcoin.balance.total,
-      unit: (state) => state.system.unit,
-      coreStats: (state) => state.bitcoin.stats,
-    }),
+    btcBalance() {
+      //skip if still loading
+      if (this.bitcoinStore.balance.total === -1) {
+        return -1;
+      }
+      if (this.systemStore.unit === "btc") {
+        return satsToBtc(this.bitcoinStore.balance.total);
+      }
+      return this.bitcoinStore.balance.total;
+    },
     greeting: () => {
       const currentHour = new Date().getHours();
 
@@ -160,14 +179,12 @@ export default {
   },
   created() {
     this.interval = window.setInterval(() => {
-      this.$store.dispatch("bitcoin/getStats");
+      this.bitcoinStore.getStats();
     }, 30000);
   },
   beforeUnmount() {
-    window.clearInterval(this.interval);
+    window.clearInterval(this.interval as number);
   },
   methods: {},
-};
+});
 </script>
-
-<style lang="scss" scoped></style>

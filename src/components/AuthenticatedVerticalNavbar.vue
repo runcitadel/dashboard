@@ -23,12 +23,15 @@
               <CountUp
                 :value="{
                   endVal: walletBalance,
-                  decimalPlaces: unit === 'sats' ? 0 : 5,
+                  decimalPlaces: systemStore.unit === 'sats' ? 0 : 5,
                 }"
               />
             </h3>
             <small class="text-muted"
-              >~ {{ $filters.satsToUSD(btcBalance + lightningBalance) }}</small
+              >~
+              {{
+                $filters.satsToUSD(btcBalance + lightningBalance, bitcoinStore)
+              }}</small
             >
           </div>
           <span
@@ -126,7 +129,7 @@
     <!-- Preload all app icons to cache them locally  -->
     <div class="d-none">
       <img
-        v-for="app in appStore"
+        v-for="app in appsStore.store"
         :key="app.id"
         :src="`https://runcitadel.github.io/old-apps-gallery/${app.id}/icon.svg`"
         class="d-none"
@@ -135,11 +138,16 @@
   </div>
 </template>
 
-<script>
-import { mapState } from "vuex";
-import { satsToBtc } from "@/helpers/units.ts";
-import CountUp from "@/components/Utility/CountUp.vue";
-import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch.vue";
+<script lang="ts">
+import { satsToBtc } from "../helpers/units";
+import CountUp from "./Utility/CountUp.vue";
+import SatsBtcSwitch from "./Utility/SatsBtcSwitch.vue";
+import useSystemStore from "../store/system";
+import useUserStore from "../store/user";
+import useBitcoinStore from "../store/bitcoin";
+import useLightningStore from "../store/lightning";
+import useAppsStore from "../store/apps";
+import { defineComponent } from "vue";
 
 import {
   BitcoinIcon,
@@ -153,9 +161,10 @@ import {
   VisibleIcon,
   HiddenIcon,
   ContactsIcon,
+  // @ts-expect-error No type definitions for this yet
 } from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
 
-export default {
+export default defineComponent({
   components: {
     CountUp,
     SatsBtcSwitch,
@@ -174,6 +183,14 @@ export default {
   props: {
     isMobileMenu: Boolean,
   },
+  setup() {
+    const systemStore = useSystemStore();
+    const userStore = useUserStore();
+    const bitcoinStore = useBitcoinStore();
+    const lightningStore = useLightningStore();
+    const appsStore = useAppsStore();
+    return { appsStore, userStore, systemStore, bitcoinStore, lightningStore };
+  },
   data() {
     return {
       state: {
@@ -182,14 +199,14 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      btcBalance: (state) => state.bitcoin.balance.total,
-      lightningBalance: (state) => state.lightning.balance.total,
-      unit: (state) => state.system.unit,
-      appStore: (state) => state.apps.store,
-    }),
+    btcBalance() {
+      return this.bitcoinStore.balance.total;
+    },
+    lightningBalance() {
+      return this.lightningStore.balance.total;
+    },
     walletBalance() {
-      return this.unit === "sats"
+      return this.systemStore.unit === "sats"
         ? this.btcBalance + this.lightningBalance
         : satsToBtc(this.btcBalance + this.lightningBalance);
     },
@@ -198,16 +215,16 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("apps/getInstalledApps");
-    this.$store.dispatch("apps/getAppStore");
+    this.appsStore.getInstalledApps();
+    this.appsStore.getAppStore();
   },
   methods: {
     logout() {
-      this.$store.dispatch("user/logout");
+      this.userStore.logout();
     },
     toggleBalance() {
       return (this.state.showBalance = !this.state.showBalance);
     },
   },
-};
+});
 </script>
