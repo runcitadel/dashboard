@@ -1,5 +1,5 @@
 {
-  "name": "citadel-dashboard",
+  "name": "@runcitadel/dashboard",
   "version": "0.3.25",
   "private": true,
   "scripts": {
