@@ -6,6 +6,7 @@
       'toggle-off': !isOn,
       'toggle-on': isOn,
       'toggle-disabled': disabled,
+      'toggle-loading': loading,
     }"
     :title="tooltip"
     @click="toggle"
@@ -21,9 +22,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, defineEmits, onMounted } from "vue";
 
 const isOn = ref(false);
+const emit = defineEmits(["toggleOn", "toggleOff"]);
 
 const props = defineProps({
   disabled: {
@@ -34,6 +36,14 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
+  isOnInitially: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 function toggle() {
@@ -41,7 +51,12 @@ function toggle() {
     return;
   }
   isOn.value = !isOn.value;
+  emit(isOn.value ? "toggleOn" : "toggleOff");
 }
+
+onMounted(() => {
+  isOn.value = props.isOnInitially;
+});
 </script>
 
 <style scoped lang="scss">
@@ -62,6 +77,10 @@ function toggle() {
   }
   &.toggle-disabled {
     cursor: not-allowed;
+  }
+
+  &.toggle-loading {
+    cursor: wait;
   }
 }
 .toggle-switch {
