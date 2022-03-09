@@ -8,8 +8,8 @@ WORKDIR /app
 
 
 # copy project files and folders to the current working directory (i.e. 'app' folder)
-COPY .yarnrc.yml package.json yarn.lock .
-COPY .yarn/releases/yarn-3.1.1.cjs /app/.yarn/releases/yarn-3.1.1.cjs
+COPY .yarnrc.yml package.json yarn.lock ./
+COPY .yarn/releases/yarn-3.2.0.cjs /app/.yarn/releases/yarn-3.2.0.cjs
 # install dependencies
 RUN yarn
 
