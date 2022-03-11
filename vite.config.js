@@ -8,6 +8,7 @@ export default defineConfig(() => {
     host: true,
     port: process.env.PORT,
     hmr: {
+      // change this if you are not on the default host
       host: process.env.DEVICE_HOSTNAME,
       port: 80,
     },

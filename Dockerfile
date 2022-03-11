@@ -36,9 +36,10 @@ RUN yarn build
 
 # PRODUCTION
 FROM node-runner AS production
-COPY --from=builder /app/dist/ /dist
 RUN npm -g i serve
-ENV PORT=3004
+COPY --from=builder --chown=node:node /app/dist/ /dist
+ENV NODE_ENV prodution
+ENV PORT 3004
 EXPOSE 3004
-
+USER node
 CMD [ "serve", "--single", "/dist" ]
