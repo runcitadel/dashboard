@@ -55,7 +55,6 @@ export default defineComponent({
       firstLoad: boolean;
     };
   },
-  computed: {},
   watch: {
     value: {
       handler(newVal, oldVal) {

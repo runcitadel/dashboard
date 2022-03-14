@@ -51,13 +51,6 @@ export default defineComponent({
       default: "md", //sm or md
     },
   },
-  data() {
-    return {
-      state: {},
-    };
-  },
-  computed: {},
-  methods: {},
 });
 </script>
 

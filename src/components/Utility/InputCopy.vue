@@ -9,7 +9,7 @@
     :size="size ? size : 'sm'"
   >
     <b-form-input
-      ref="copy-input-field"
+      ref="copyInputField"
       type="text"
       class="copy-input"
       readonly
@@ -42,50 +42,42 @@
   </b-input-group>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { ref } from "vue";
 
-export default defineComponent({
-  props: {
-    size: {
-      type: String,
-      default: "sm",
-    },
-    value: {
-      type: String,
-      required: true,
-    },
-    autoWidth: {
-      type: Boolean,
-      default: false,
-    },
+const props = defineProps({
+  size: {
+    type: String,
+    default: "sm",
   },
-  data() {
-    return {
-      isCopied: false,
-    };
+  value: {
+    type: String,
+    required: true,
   },
-  watch: {
-    value: function () {
-      this.isCopied = false;
-    },
-  },
-  methods: {
-    copyText() {
-      //copy generated invoice's text to clipboard
-      const copyText = this.$refs["copy-input-field"] as HTMLInputElement;
-      copyText.select();
-      copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-      navigator.clipboard.writeText(this.value);
-      window.setTimeout(() => {
-        copyText.blur();
-        window.getSelection()?.removeAllRanges();
-        this.isCopied = false;
-      }, 1000);
-      return (this.isCopied = true);
-    },
+  autoWidth: {
+    type: Boolean,
+    default: false,
   },
 });
+
+const copyInputField = ref(null);
+const isCopied = ref(false);
+
+function copyText() {
+  //copy generated invoice's text to clipboard
+  const copyText = copyInputField.value as unknown as HTMLInputElement;
+  // There is no need to select the text with the clipboard API, but we'll leave it
+  // As visual feedback
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /* For mobile devices */
+  navigator.clipboard.writeText(props.value);
+  window.setTimeout(() => {
+    copyText.blur();
+    window.getSelection()?.removeAllRanges();
+    isCopied.value = false;
+  }, 1000);
+  isCopied.value = true;
+}
 </script>
 
 <style lang="scss" scoped>
