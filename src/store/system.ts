@@ -68,6 +68,8 @@ export interface State {
   uptime: null | number;
   isNvme: boolean;
   sdkStore: ReturnType<typeof useSdkStore>;
+  // It doesn't belong here, but I didn't want to create a new store just for that
+  isMobileMenuOpen: boolean;
 }
 
 export default defineStore("system", {
@@ -125,6 +127,7 @@ export default defineStore("system", {
     uptime: null,
     isNvme: false,
     sdkStore: useSdkStore(),
+    isMobileMenuOpen: false,
   }),
   actions: {
     async getVersion() {

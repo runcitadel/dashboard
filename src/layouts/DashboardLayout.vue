@@ -38,7 +38,7 @@
 
           <div
             class="nav-hamburger-icon d-lg-none d-xl-none ms-1"
-            :class="{ active: isMobileMenuOpen }"
+            :class="{ active: systemStore.isMobileMenuOpen }"
             @click="toggleMobileMenu"
           >
             <div></div>
@@ -61,7 +61,7 @@
     <!-- Mobile menu -->
     <transition name="mobile-vertical-menu">
       <div
-        v-if="isMobileMenuOpen"
+        v-if="systemStore.isMobileMenuOpen"
         class="mobile-vertical-menu d-lg-none d-xl-none"
       >
         <authenticated-vertical-navbar :is-mobile-menu="true" />
@@ -70,7 +70,7 @@
 
     <transition name="mobile-vertical-menu-fader">
       <div
-        v-if="isMobileMenuOpen"
+        v-if="systemStore.isMobileMenuOpen"
         class="mobile-vertical-menu-fader d-lg-none d-xl-none"
         @click="toggleMobileMenu"
       ></div>
@@ -264,13 +264,11 @@ export default defineComponent({
   data() {
     return {
       isUpdating: false,
-      isMobileMenuOpen: false,
       interval: undefined,
       otherInterval: undefined,
       pollUpdateStatus: undefined,
     } as {
       isUpdating: boolean;
-      isMobileMenuOpen: boolean;
       interval: number | undefined;
       otherInterval: number | undefined;
       pollUpdateStatus: number | undefined;
@@ -335,7 +333,7 @@ export default defineComponent({
   methods: {
     logout() {
       //close mobile menu
-      if (this.isMobileMenuOpen) {
+      if (this.systemStore.isMobileMenuOpen) {
         this.toggleMobileMenu();
       }
       this.userStore.logout();
@@ -357,7 +355,7 @@ export default defineComponent({
       this.systemStore.getCpuTemperature();
     },
     toggleMobileMenu() {
-      this.isMobileMenuOpen = !this.isMobileMenuOpen;
+      this.systemStore.isMobileMenuOpen = !this.systemStore.isMobileMenuOpen;
     },
     hideUpdateConfirmationModal() {
       this.systemStore.hideUpdateConfirmationModal();
