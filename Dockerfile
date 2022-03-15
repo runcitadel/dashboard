@@ -7,7 +7,19 @@ FROM amd64/node:${NODE_VERSION}-alpine@sha256:425c81a04546a543da824e67c91d4a603a
 FROM node:${NODE_VERSION}-alpine@sha256:2c6c59cf4d34d4f937ddfcf33bab9d8bbad8658d1b9de7b97622566a52167f2b as node-runner
 
 
-# DEPENDENCIES
+# DEVELOPMENT
+FROM node-builder AS development
+# Create app directory
+WORKDIR /app
+# NOTE: Using project files from mounted volumes
+ENV NODE_ENV development
+ENV PORT 3004
+EXPOSE 3004
+USER node
+CMD yarn install && yarn dev
+
+
+# DEPENDENCIES (production)
 FROM node-builder AS dependencies
 # Create app directory
 WORKDIR /app
@@ -17,14 +29,6 @@ COPY .yarnrc.yml package.json yarn.lock ./
 COPY .yarn/releases/yarn-3.2.0.cjs /app/.yarn/releases/yarn-3.2.0.cjs
 # Install dependencies
 RUN yarn install
-
-
-# DEVELOPMENT
-FROM dependencies AS development
-# NOTE: Using project files from mounted volumes
-ENV PORT=3004
-EXPOSE 3004
-CMD [ "yarn", "dev" ]
 
 
 # BUILD (production)
