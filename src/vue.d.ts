@@ -1,9 +1,24 @@
-import { Store } from "vuex";
-import type { RootState } from "./store/index";
+import { BvModal, BvToast } from "bootstrap-vue";
+import type useBitcoinStore from "./store/bitcoin";
+import type useSystemStore from "./store/system";
 
 declare module "@vue/runtime-core" {
-  // provide typings for `this.$store`
   interface ComponentCustomProperties {
-    $store: Store<RootState>;
+    readonly $bvModal: BvModal;
+    readonly $bvToast: BvToast;
+    readonly $filters: {
+      unit: (
+        value: number | string,
+        store: ReturnType<typeof useSystemStore>
+      ) => number | undefined;
+      sats: (value: number | string) => number;
+      btc: (value: number | string) => number;
+      formatUnit: (unit: "sats" | "btc") => "Sats" | "BTC" | undefined;
+      satsToUSD: (
+        value: string | number,
+        store: ReturnType<typeof useBitcoinStore>
+      ) => string | number;
+      localize: (n: number | string) => string;
+    };
   }
 }

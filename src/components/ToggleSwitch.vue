@@ -3,9 +3,10 @@
     v-b-tooltip.hover.left
     class="toggle"
     :class="{
-      'toggle-off': !state.isOn,
-      'toggle-on': state.isOn,
+      'toggle-off': !isOn,
+      'toggle-on': isOn,
       'toggle-disabled': disabled,
+      'toggle-loading': loading,
     }"
     :title="tooltip"
     @click="toggle"
@@ -13,42 +14,49 @@
     <div
       class="toggle-switch justify-content-center"
       :class="{
-        'toggle-switch-off': !state.isOn,
-        'toggle-switch-on': state.isOn,
+        'toggle-switch-off': !isOn,
+        'toggle-switch-on': isOn,
       }"
     ></div>
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    tooltip: {
-      type: String,
-      default: "",
-    },
+<script setup lang="ts">
+import { ref, defineEmits, onMounted } from "vue";
+
+const isOn = ref(false);
+const emit = defineEmits(["toggleOn", "toggleOff"]);
+
+const props = defineProps({
+  disabled: {
+    type: Boolean,
+    default: false,
   },
-  data() {
-    return {
-      state: {
-        isOn: true,
-      },
-    };
+  tooltip: {
+    type: String,
+    default: "",
   },
-  computed: {},
-  methods: {
-    toggle() {
-      if (this.disabled) {
-        return;
-      }
-      this.state.isOn = !this.state.isOn;
-    },
+  loading: {
+    type: Boolean,
+    default: false,
   },
-};
+  isOnInitially: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+function toggle() {
+  if (props.disabled) {
+    return;
+  }
+  isOn.value = !isOn.value;
+  emit(isOn.value ? "toggleOn" : "toggleOff");
+}
+
+onMounted(() => {
+  isOn.value = props.isOnInitially;
+});
 </script>
 
 <style scoped lang="scss">
@@ -69,6 +77,10 @@ export default {
   }
   &.toggle-disabled {
     cursor: not-allowed;
+  }
+
+  &.toggle-loading {
+    cursor: wait;
   }
 }
 .toggle-switch {

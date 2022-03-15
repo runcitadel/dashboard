@@ -34,15 +34,18 @@
   </connection-details>
 </template>
 
-<script>
-import ConnectionDetails from "@/components/ConnectWallet/ConnectionDetails.vue";
-import StepList from "@/components/ConnectWallet/StepList.vue";
-import Step from "@/components/ConnectWallet/Step.vue";
-import QrCode from "@/components/Utility/QrCode.vue";
+<script lang="ts">
+import { defineComponent } from "vue";
+
+import ConnectionDetails from "../ConnectionDetails.vue";
+import StepList from "../StepList.vue";
+import Step from "../Step.vue";
+import QrCode from "../../Utility/QrCode.vue";
+// @ts-expect-error TypeScript and Vite understand this module differently
 import BufferModule from "buffer/index.js";
 const { Buffer } = BufferModule;
 
-export default {
+export default defineComponent({
   components: {
     ConnectionDetails,
     StepList,
@@ -61,11 +64,11 @@ export default {
       return Buffer.from(
         Array.from(
           this.urls.lnd.restLocal.matchAll(/macaroon=(.*)/gm),
-          (m) => m[1]
+          (m: string[]) => m[1]
         )[0],
         "base64"
       ).toString("hex");
     },
   },
-};
+});
 </script>

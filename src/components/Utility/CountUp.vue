@@ -6,12 +6,15 @@
   </span>
 </template>
 
-<script>
-import { CountUp } from "countup.js";
-const typeOf = (type) => (object) =>
+<script lang="ts">
+import { CountUp, type CountUpOptions } from "countup.js";
+import { defineComponent, type PropType } from "vue";
+
+const typeOf = (type: string) => (object: unknown) =>
   Object.prototype.toString.call(object) === `[object ${type}]`;
 const isFunction = typeOf("Function");
-export default {
+
+export default defineComponent({
   components: {},
   props: {
     delay: {
@@ -24,8 +27,11 @@ export default {
       required: true,
     },
     options: {
-      type: Object,
+      type: Object as PropType<CountUpOptions>,
       required: false,
+      default: () => {
+        return {};
+      },
     },
     suffix: {
       type: String,
@@ -37,14 +43,18 @@ export default {
       default: false,
     },
   },
+  emits: ["ready"],
   data() {
     return {
       startVal: 0,
       instance: null,
       firstLoad: true, //used to decide if animate/count on the first mount
+    } as {
+      startVal: number;
+      instance: null | CountUp;
+      firstLoad: boolean;
     };
   },
-  computed: {},
   watch: {
     value: {
       handler(newVal, oldVal) {
@@ -72,7 +82,7 @@ export default {
       if (this.instance) {
         return;
       }
-      const dom = this.$refs.number;
+      const dom = this.$refs.number as HTMLElement;
       const options = this.options || {};
 
       if (this.firstLoad) {
@@ -104,12 +114,12 @@ export default {
     destroy() {
       this.instance = null;
     },
-    printValue(value) {
+    printValue(value: number) {
       if (this.instance && isFunction(this.instance.printValue)) {
         return this.instance.printValue(value);
       }
     },
-    start(callback) {
+    start(callback?: (...args: unknown[]) => unknown) {
       if (this.instance && isFunction(this.instance.start)) {
         return this.instance.start(callback);
       }
@@ -124,13 +134,13 @@ export default {
         return this.instance.reset();
       }
     },
-    update(newEndVal) {
+    update(newEndVal: number) {
       if (this.instance && isFunction(this.instance.update)) {
         return this.instance.update(newEndVal);
       }
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -1,6 +1,5 @@
 <template>
   <div class="px-2 px-sm-3 pb-2 pb-sm-3">
-    <!-- <span>Enter your password to view your 24-word seed phrase</span> -->
     <div v-if="!seed.length">
       <input-password
         ref="password"
@@ -38,17 +37,28 @@
   </div>
 </template>
 
-<script>
-import InputPassword from "@/components/Utility/InputPassword.vue";
-import Seed from "@/components/Utility/Seed.vue";
-import { mapState } from "vuex";
+<script lang="ts">
+import InputPassword from "./Utility/InputPassword.vue";
+import Seed from "./Utility/Seed.vue";
+import useUserStore from "../store/user";
 
-export default {
+import { defineComponent } from "vue";
+
+export default defineComponent({
   components: {
     InputPassword,
     Seed,
   },
-  props: { progress: Number },
+  props: {
+    progress: {
+      type: Number,
+      default: 0,
+    },
+  },
+  setup() {
+    const userStore = useUserStore();
+    return { userStore };
+  },
   data() {
     return {
       password: "",
@@ -57,31 +67,23 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      seed: (state) => state.user.seed,
-    }),
+    seed(): string[] {
+      return this.userStore.seed;
+    },
   },
   methods: {
     showSeed() {
-      this.$refs["seed-modal"].show();
+      (this.$refs["seed-modal"] as { show: () => void }).show();
     },
     async fetchSeed() {
       this.isLoadingSeed = true;
       try {
-        await this.$store.dispatch("user/getSeed", this.password);
+        await this.userStore.getSeed(this.password);
       } catch (error) {
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data === "Incorrect password"
-        ) {
-          this.isIncorrectPassword = true;
-        }
+        this.isIncorrectPassword = true;
       }
       this.isLoadingSeed = false;
     },
   },
-};
+});
 </script>
-
-<style lang="scss"></style>

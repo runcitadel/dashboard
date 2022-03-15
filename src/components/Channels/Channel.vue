@@ -35,15 +35,31 @@
             <span
               v-b-tooltip.hover.right
               class="text-primary font-weight-bold"
-              :title="$filters.satsToUSD(channel.localBalance)"
-              >{{ $filters.localize($filters.unit(channel.localBalance)) }}
+              :title="
+                $filters
+                  .satsToUSD(channel.localBalance, bitcoinStore)
+                  .toString()
+              "
+              >{{
+                $filters.localize(
+                  $filters.unit(channel.localBalance, systemStore) as number
+                )
+              }}
               {{ $filters.formatUnit(unit) }}</span
             >
             <span
               v-b-tooltip.hover.left
-              :title="$filters.satsToUSD(channel.remoteBalance)"
+              :title="
+                $filters
+                  .satsToUSD(channel.remoteBalance, bitcoinStore)
+                  .toString()
+              "
               class="text-success text-end font-weight-bold"
-              >{{ $filters.localize($filters.unit(channel.remoteBalance)) }}
+              >{{
+                $filters.localize(
+                  $filters.unit(channel.remoteBalance, systemStore) as number
+                )
+              }}
               {{ $filters.formatUnit(unit) }}</span
             >
           </div>
@@ -64,24 +80,33 @@
   </div>
 </template>
 
-<script>
-import Status from "@/components/Utility/Status.vue";
-import Bar from "@/components/Channels/Bar.vue";
+<script lang="ts">
+import { defineComponent } from "vue";
 
-export default {
+import Status from "../Utility/Status.vue";
+import Bar from "./Bar.vue";
+import useSystemStore from "../../store/system";
+import useBitcoinStore from "../../store/bitcoin";
+
+export default defineComponent({
   components: {
     Status,
     Bar,
   },
   props: {
-    channel: Object,
+    channel: {
+      type: Object,
+      required: true,
+    },
   },
-  data() {
-    return {};
+  setup() {
+    const systemStore = useSystemStore();
+    const bitcoinStore = useBitcoinStore();
+    return { systemStore, bitcoinStore };
   },
   computed: {
     unit() {
-      return this.$store.state.system.unit;
+      return this.systemStore.unit;
     },
     statusVariant() {
       switch (this.channel.status) {
@@ -98,7 +123,7 @@ export default {
       }
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

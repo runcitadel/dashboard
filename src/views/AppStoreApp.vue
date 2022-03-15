@@ -27,7 +27,7 @@
             <img
               class="app-icon app-icon-lg me-2 me-sm-3 align-self-top"
               :src="
-                app.imageUrl ||
+                app.icon ||
                 `https://runcitadel.github.io/old-apps-gallery/${app.id}/icon.svg`
               "
             />
@@ -239,18 +239,26 @@
   </div>
 </template>
 
-<script>
-import { mapState } from "vuex";
+<script lang="ts">
+import { defineComponent } from "vue";
 
-import delay from "@/helpers/delay.ts";
+import delay from "../helpers/delay";
 
-import CardWidget from "@/components/CardWidget.vue";
-import InputCopy from "@/components/Utility/InputCopy.vue";
+import useAppsStore, { type app } from "../store/apps";
+import useLightningStore from "../store/lightning";
 
-export default {
+import CardWidget from "../components/CardWidget.vue";
+import InputCopy from "../components/Utility/InputCopy.vue";
+
+export default defineComponent({
   components: {
     CardWidget,
     InputCopy,
+  },
+  setup() {
+    const appsStore = useAppsStore();
+    const lightningStore = useLightningStore();
+    return { appsStore, lightningStore };
   },
   data() {
     return {
@@ -259,38 +267,42 @@ export default {
     };
   },
   computed: {
-    ...mapState({
+    /*...mapState({
       installedApps: (state) => state.apps.installed,
       appStore: (state) => state.apps.store,
       installing: (state) => state.apps.installing,
       uninstalling: (state) => state.apps.uninstalling,
       lightningImplementation: (state) => state.lightning.implementation,
-    }),
-    app: function () {
-      return this.appStore.find((app) => app.id === this.$route.params.id);
+    }),*/
+    app(): app {
+      return this.appsStore.store.find(
+        (app) => app.id === this.$route.params.id
+      ) as app;
     },
-    isInstalled: function () {
-      const installedAppIndex = this.installedApps.findIndex(
+    isInstalled(): boolean {
+      const installedAppIndex = this.appsStore.installed.findIndex(
         (app) => app.id === this.app.id
       );
       return installedAppIndex !== -1;
     },
-    isInstalling: function () {
-      const index = this.installing.findIndex((appId) => appId === this.app.id);
-      return index !== -1;
-    },
-    isUninstalling: function () {
-      const index = this.uninstalling.findIndex(
+    isInstalling(): boolean {
+      const index = this.appsStore.installing.findIndex(
         (appId) => appId === this.app.id
       );
       return index !== -1;
     },
-    url: function () {
+    isUninstalling(): boolean {
+      const index = this.appsStore.uninstalling.findIndex(
+        (appId) => appId === this.app.id
+      );
+      return index !== -1;
+    },
+    url(): string {
       if (window.location.origin.indexOf(".onion") > 0) {
-        const installedApp = this.installedApps.find(
+        const installedApp = this.appsStore.installed.find(
           (app) => app.id === this.app.id
         );
-        return `http://${installedApp.hiddenService}${this.app.path}`;
+        return `http://${installedApp?.hiddenService || ""}${this.app.path}`;
       } else {
         if (this.app.torOnly) {
           return "#";
@@ -300,17 +312,17 @@ export default {
     },
   },
   async created() {
-    await this.$store.dispatch("apps/getAppStore");
+    this.appsStore.getAppStore();
     if (this.isInstalled) {
       this.pollOfflineApp();
     }
-    await this.$store.dispatch("lightning/getVersionInfo");
+    await this.lightningStore.getVersionInfo();
   },
   beforeUnmount() {
     this.checkIfAppIsOffline = false;
   },
   methods: {
-    formatDependency(dependency) {
+    formatDependency(dependency: string) {
       switch (dependency) {
         case "bitcoind":
           return "Bitcoin Core";
@@ -322,15 +334,15 @@ export default {
           return dependency;
       }
     },
-    isDependencyInstalled(dependency) {
+    isDependencyInstalled(dependency: string) {
       const allInstalled = [
         "bitcoind",
         "electrum",
-        this.lightningImplementation,
+        this.lightningStore.implementation,
       ];
       return allInstalled.includes(dependency);
     },
-    src(dependency) {
+    src(dependency: string) {
       return new URL(
         `../assets/app-store/dependencies/${dependency}.svg`,
         import.meta.url
@@ -338,11 +350,11 @@ export default {
     },
     installApp() {
       if (!this.app.compatible) return;
-      this.$store.dispatch("apps/install", this.app.id);
+      this.appsStore.install(this.app.id);
       this.isOffline = true;
       this.pollOfflineApp();
     },
-    openApp(event) {
+    openApp(event: Event) {
       if (this.app.id === "bluewallet") this.checkIfAppIsOffline = false;
       if (this.app.torOnly && window.location.origin.indexOf(".onion") < 0) {
         event.preventDefault();
@@ -366,7 +378,7 @@ export default {
       }
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped></style>

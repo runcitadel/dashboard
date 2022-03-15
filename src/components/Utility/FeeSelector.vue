@@ -42,7 +42,8 @@
                 $filters.satsToUSD(
                   (parseInt(fee.fast.total, 10) /
                     parseInt(fee.fast.perByte, 10)) *
-                    value
+                    value,
+                  bitcoinStore
                 )
               }}</small
             >
@@ -82,7 +83,7 @@
               >{{ fee[value].perByte }} sat/vB
             </span>
             <small class="text-muted"
-              >≈ {{ $filters.satsToUSD(fee[value].total) }}</small
+              >≈ {{ $filters.satsToUSD(fee[value].total, bitcoinStore) }}</small
             >
           </div>
         </template>
@@ -91,16 +92,21 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import VueSlider from "@aarondewes/vue-slider-component";
 import "@aarondewes/vue-slider-component/theme/default.css";
+import { defineComponent } from "vue";
+import useBitcoinStore from "../../store/bitcoin";
 
-export default {
+export default defineComponent({
   components: {
     VueSlider,
   },
   props: {
-    fee: Object,
+    fee: {
+      type: Object,
+      required: true,
+    },
     customMinFee: {
       type: Number,
       default: 1,
@@ -114,7 +120,11 @@ export default {
       default: false,
     },
   },
-  emits: { change: null },
+  emits: ["change"],
+  setup() {
+    const bitcoinStore = useBitcoinStore();
+    return { bitcoinStore };
+  },
   data() {
     return {
       chosenFee: "normal",
@@ -164,7 +174,7 @@ export default {
       if (this.useCustomFee) {
         const fee = {
           type: "custom",
-          satPerByte: parseInt(this.customFee, 10),
+          satPerByte: parseInt(this.customFee.toString(), 10),
         };
         this.$emit("change", fee);
       } else {
@@ -175,22 +185,22 @@ export default {
         this.$emit("change", fee);
       }
     },
-    timeToConfirm(fee) {
-      if (fee === "fast") {
-        return "10 min";
-      }
-      if (fee === "normal") {
-        return "60 min";
-      }
-      if (fee === "slow") {
-        return "4 hrs";
-      }
-      if (fee === "cheapest") {
-        return "24 hrs";
+    timeToConfirm(fee: "fast" | "normal" | "slow" | "cheapest") {
+      switch (fee) {
+        case "fast":
+          return "10 min";
+        case "normal":
+          return "60 min";
+        case "slow":
+          return "4 hrs";
+        case "cheapest":
+          return "24 hrs";
+        default:
+          return "unknown";
       }
     },
   },
-};
+});
 </script>
 
 <style lang="scss">

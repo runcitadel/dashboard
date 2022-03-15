@@ -42,21 +42,23 @@
 
         <div v-show="currentStep === 5">
           <seed
-            v-show="seed.length && !isRegistering"
-            :words="seed"
+            v-show="userStore.seed.length && !isRegistering"
+            :words="userStore.seed"
             :recover="recover"
             @complete="finishedSeed"
             @incomplete="incompleteRecoverySeed"
             @input="inputRecoverySeed"
           ></seed>
-          <b-spinner v-show="!seed.length || isRegistering"></b-spinner>
+          <b-spinner
+            v-show="!userStore.seed.length || isRegistering"
+          ></b-spinner>
         </div>
 
         <input-copy
           v-if="currentStep === 6"
           class="w-100"
           size="sm"
-          :value="onionAddress"
+          :value="systemStore.onionAddress"
         ></input-copy>
 
         <div v-show="currentStep === 7">
@@ -100,15 +102,20 @@
         <b-button
           variant="success"
           size="lg"
-          :disabled="!isStepValid || isRegistering || !isLndOperational"
+          :disabled="
+            !isStepValid || isRegistering || !lightningStore.operational
+          "
           class="mt-3 mx-auto d-block px-4"
           :class="{
             'loading-fade-blink':
-              !isLndOperational || (currentStep === 8 && !unlocked),
+              !lightningStore.operational ||
+              (currentStep === 8 && !lightningStore.unlocked),
             invisible: currentStep === 5 && recover && !isStepValid,
           }"
           @click="nextStep"
-          >{{ !isLndOperational ? "Loading" : nextButtonText }}</b-button
+          >{{
+            !lightningStore.operational ? "Loading" : nextButtonText
+          }}</b-button
         >
         <b-button
           v-if="currentStep === 4 || (currentStep === 5 && !recover)"
@@ -145,94 +152,134 @@
   </div>
 </template>
 
-<script>
-import { mapState } from "vuex";
+<script lang="ts">
+/* eslint-disable */
+import { DefineComponent, defineComponent } from "vue";
+import useSystemStore from "../store/system";
+import useUserStore from "../store/user";
+import useBitcoinStore from "../store/bitcoin";
+import useLightningStore from "../store/lightning";
+import useAppsStore from "../store/apps";
+import useSdkStore from "../store/sdk";
 
-import delay from "@/helpers/delay.ts";
+import delay from "../helpers/delay";
 
-import InputPassword from "@/components/Utility/InputPassword.vue";
-import Seed from "@/components/Utility/Seed.vue";
-import InputCopy from "@/components/Utility/InputCopy.vue";
+import InputPassword from "../components/Utility/InputPassword.vue";
+import Seed from "../components/Utility/Seed.vue";
+import InputCopy from "../components/Utility/InputCopy.vue";
 import { BIconExclamationCircleFill } from "bootstrap-vue/src/index.js";
 
-export default {
+type Step = {
+  heading: string;
+  text: string;
+};
+
+const steps: Step[] = [
+  {
+    heading: "welcome to citadel",
+    text: "Your journey to digital freedom starts now.",
+  },
+  {
+    heading: "what is your name?",
+    text: "Your name stays on your Citadel and is never shared with us or a 3rd party.",
+  },
+  {
+    heading: "set your password",
+    text: "You'll need this password to login to your Citadel.",
+  },
+  {
+    heading: "confirm your password",
+    text: "You'll need this password to login to your Citadel.",
+  },
+  {
+    heading: "note down your secret words",
+    text: "On the next screen you will be shown 24 words. It's recommended that you write them down on a piece of paper and store it in a safe place.",
+  },
+  {
+    heading: "note down your secret words",
+    text: 'Remember, there is no "forgot password" button. You will need these 24 words to recover your Citadel.',
+  },
+  {
+    heading: "access from anywhere",
+    text: "Even when you're not on your home network, you can access your Citadel using Tor Browser on the following URL",
+  },
+  {
+    heading: "one last thing",
+    text: "Don't be too #reckless.",
+  },
+  {
+    heading: "🎉 that's it!",
+    text: "Congratulations! Your Citadel is now set up and synchronizing the Bitcoin blockchain.",
+  },
+];
+
+export default defineComponent({
   components: {
     InputPassword,
     Seed,
     InputCopy,
-    BIconExclamationCircleFill,
+    BIconExclamationCircleFill: BIconExclamationCircleFill as DefineComponent,
   },
-  data() {
+  setup() {
+    const systemStore = useSystemStore();
+    const userStore = useUserStore();
+    const bitcoinStore = useBitcoinStore();
+    const lightningStore = useLightningStore();
+    const appsStore = useAppsStore();
+    const sdkStore = useSdkStore();
+    return {
+      sdkStore,
+      appsStore,
+      userStore,
+      systemStore,
+      bitcoinStore,
+      lightningStore,
+    };
+  },
+  data(): {
+    name: string;
+    password: string;
+    confirmPassword: string;
+    currentStep: number;
+    notedSeed: boolean;
+    isRegistering: boolean;
+    recover: boolean;
+    recoverySeed: string[];
+    lndUnlockInterval: undefined | number;
+  } {
     return {
       name: "",
       password: "",
       confirmPassword: "",
       currentStep: 0,
-      steps: [
-        {
-          heading: "welcome to citadel",
-          text: "Your journey to digital freedom starts now.",
-        },
-        {
-          heading: "what is your name?",
-          text: "Your name stays on your Citadel and is never shared with us or a 3rd party.",
-        },
-        {
-          heading: "set your password",
-          text: "You'll need this password to login to your Citadel.",
-        },
-        {
-          heading: "confirm your password",
-          text: "You'll need this password to login to your Citadel.",
-        },
-        {
-          heading: "note down your secret words",
-          text: "On the next screen you will be shown 24 words. It's recommended that you write them down on a piece of paper and store it in a safe place.",
-        },
-        {
-          heading: "note down your secret words",
-          text: 'Remember, there is no "forgot password" button. You will need these 24 words to recover your Citadel.',
-        },
-        {
-          heading: "access from anywhere",
-          text: "Even when you're not on your home network, you can access your Citadel using Tor Browser on the following URL",
-        },
-        {
-          heading: "one last thing",
-          text: "Don't be too #reckless.",
-        },
-        {
-          heading: "🎉 that's it!",
-          text: "Congratulations! Your Citadel is now set up and synchronizing the Bitcoin blockchain.",
-        },
-      ],
       notedSeed: false,
       isRegistering: false,
       recover: false,
       recoverySeed: [],
+      lndUnlockInterval: undefined,
     };
   },
   computed: {
-    ...mapState({
+    /*...mapState({
       isLndOperational: (state) => state.lightning.operational,
       registered: (state) => state.user.registered,
       seed: (state) => state.user.seed,
       unlocked: (state) => state.lightning.unlocked,
       onionAddress: (state) => state.system.onionAddress,
-    }),
-    heading() {
+    }),*/
+    heading(): string {
       if (this.currentStep === 5 && this.recover) {
         return "recover your citadel";
       }
-      return this.steps[this.currentStep]["heading"];
+      return steps[this.currentStep]["heading"];
     },
-    text() {
+    text(): string {
       if (this.currentStep === 5 && this.recover) {
         return "Enter your 24 secret words in the exact order to recover your Citadel.";
       }
-      return this.steps[this.currentStep]["text"];
+      return steps[this.currentStep]["text"];
     },
-    nextButtonText() {
+    nextButtonText(): string {
       if (this.currentStep === 0) {
         return "Start";
       }
@@ -241,9 +288,9 @@ export default {
       }
       return "Next";
     },
-    isStepValid() {
+    isStepValid(): boolean {
       if (this.currentStep === 1) {
-        return this.name.length;
+        return this.name.length > 0;
       }
 
       if (this.currentStep === 2) {
@@ -261,47 +308,47 @@ export default {
       }
 
       if (this.currentStep === 8) {
-        return this.unlocked;
+        return this.lightningStore.unlocked;
       }
 
       return true;
     },
-    progress() {
+    progress(): number {
       return this.currentStep === 0
         ? 0
-        : Math.round((this.currentStep * 100) / (this.steps.length - 1));
+        : Math.round((this.currentStep * 100) / (steps.length - 1));
     },
   },
   async created() {
     //redirect to home if the user is already registered
-    if (this.registered) {
+    if (this.userStore.registered) {
       return this.$router.push("/");
     }
 
     // Wait for LND
-    while (!this.isLndOperational) {
-      await this.$store.dispatch("lightning/getStatus");
+    while (!this.lightningStore.operational) {
+      await this.lightningStore.getStatus();
       await delay(1000);
     }
 
     //generate a new seed on load
-    this.$store.dispatch("user/getSeed");
+    this.userStore.getSeed();
   },
   beforeUnmount() {
     window.clearInterval(this.lndUnlockInterval);
   },
   methods: {
-    skipSeed() {
+    skipSeed(): void {
       if (this.currentStep === 4) {
         this.currentStep = 5;
       }
-      return this.nextStep();
+      this.nextStep();
     },
     recoverFromSeed() {
       this.recover = true;
       this.currentStep++;
     },
-    inputRecoverySeed(seed) {
+    inputRecoverySeed(seed: string[]) {
       this.recoverySeed = seed;
     },
     async nextStep() {
@@ -312,17 +359,17 @@ export default {
       //Register user and initialize wallet at the end
       if (this.currentStep === 5) {
         this.isRegistering = true;
-        const seed = this.recover ? this.recoverySeed : this.seed;
+        const seed = this.recover ? this.recoverySeed : this.userStore.seed;
         try {
-          await this.$store.dispatch("user/register", {
+          await this.userStore.register({
             name: this.name,
             password: this.password,
             seed,
           });
         } catch (error) {
           this.isRegistering = false;
-          if (error.response && error.response.data) {
-            this.$bvToast.toast(`${error.response.data}`, {
+          if (error) {
+            this.$bvToast.toast(`${JSON.stringify(error)}`, {
               title: "Error",
               autoHideDelay: 3000,
               variant: "danger",
@@ -336,7 +383,7 @@ export default {
         this.isRegistering = false;
 
         // fetch onion address for the next step
-        this.$store.dispatch("system/getOnionAddress");
+        this.systemStore.getOnionAddress();
       }
 
       if (this.currentStep === 7) {
@@ -349,9 +396,9 @@ export default {
           ],
         });*/
 
-        this.lndUnlockInterval = window.setInterval(async () => {
-          await this.$store.dispatch("lightning/getStatus");
-          if (this.unlocked) {
+       this.lndUnlockInterval = window.setInterval(async () => {
+         this.lightningStore.getStatus();
+          if (this.lightningStore.unlocked) {
             return window.clearInterval(this.lndUnlockInterval);
           }
         }, 1000);
@@ -359,7 +406,7 @@ export default {
         // TODO: Find the root problem and fix it
         // Refresh page after 60s if LND still hasn't unlocked
         window.setTimeout(() => {
-          if (!this.unlocked) {
+          if (!this.lightningStore.unlocked) {
             window.location.reload();
           }
         }, 60 * 1000);
@@ -390,7 +437,7 @@ export default {
       this.notedSeed = false;
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

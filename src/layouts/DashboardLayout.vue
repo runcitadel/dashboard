@@ -27,16 +27,18 @@
         <b-navbar-nav class="ms-auto">
           <!-- Chain badge -->
           <b-badge
-            v-if="chain !== 'main'"
+            v-if="bitcoinStore.chain !== 'main'"
             variant="success"
             class="align-self-center me-2 text-capitalize"
             pill
-            >{{ chain === "test" ? "testnet" : chain }}</b-badge
+            >{{
+              bitcoinStore.chain === "test" ? "testnet" : bitcoinStore.chain
+            }}</b-badge
           >
 
           <div
             class="nav-hamburger-icon d-lg-none d-xl-none ms-1"
-            :class="{ active: isMobileMenuOpen }"
+            :class="{ active: systemStore.isMobileMenuOpen }"
             @click="toggleMobileMenu"
           >
             <div></div>
@@ -47,7 +49,9 @@
             no-caret
           >
             <!-- Using 'button-content' slot -->
-            <template #button-content>{{ name.split(" ")[0] }}</template>
+            <template #button-content>{{
+              userStore.name.split(" ")[0]
+            }}</template>
             <b-dropdown-item @click="logout">Log out</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
@@ -57,7 +61,7 @@
     <!-- Mobile menu -->
     <transition name="mobile-vertical-menu">
       <div
-        v-if="isMobileMenuOpen"
+        v-if="systemStore.isMobileMenuOpen"
         class="mobile-vertical-menu d-lg-none d-xl-none"
       >
         <authenticated-vertical-navbar :is-mobile-menu="true" />
@@ -66,7 +70,7 @@
 
     <transition name="mobile-vertical-menu-fader">
       <div
-        v-if="isMobileMenuOpen"
+        v-if="systemStore.isMobileMenuOpen"
         class="mobile-vertical-menu-fader d-lg-none d-xl-none"
         @click="toggleMobileMenu"
       ></div>
@@ -84,16 +88,16 @@
 
       <b-col col lg="9" xl="10">
         <b-modal
-          v-if="availableUpdate.version"
+          v-if="systemStore.availableUpdate.version"
           id="confirm-update-modal"
-          v-model="showUpdateConfirmationModal"
+          v-model="systemStore.showUpdateConfirmationModal"
           size="lg"
           centered
           hide-footer
         >
           <template #modal-header>
             <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
-              <h3>Citadel v{{ availableUpdate.version }}</h3>
+              <h3>{{ systemStore.availableUpdate.name }}</h3>
               <!-- Emulate built in modal header close button action -->
               <a
                 href="#"
@@ -119,8 +123,8 @@
           </template>
           <div class="px-2 px-sm-3 pb-2 pb-sm-3">
             <div class>
-              <p v-if="availableUpdate.notes" class="text-newlines">
-                {{ availableUpdate.notes }}
+              <p v-if="systemStore.availableUpdate.notes" class="text-newlines">
+                {{ systemStore.availableUpdate.notes }}
               </p>
               <b-button
                 block
@@ -138,15 +142,15 @@
           <b-alert
             class="mt-4 mb-0"
             variant="success"
-            :show="!!availableUpdate.version"
+            :show="!!systemStore.availableUpdate.version"
             dismissible
           >
             <div class="icon-16px"><BellIcon /></div>
             <a
-              :href="`https://github.com/runcitadel/core/releases/tag/v${availableUpdate.version}`"
+              :href="`https://github.com/runcitadel/core/releases/tag/v${systemStore.availableUpdate.version}`"
               target="_blank"
               class="alert-link"
-              >Citadel v{{ availableUpdate.version }}</a
+              >{{ systemStore.availableUpdate.name }}</a
             >
             &nbsp;is now available to install
             <a
@@ -186,14 +190,17 @@
           >
             <b-icon-exclamation-circle class="me-2" />
             <b>Low storage:</b> Your Citadel only has
-            {{ readableSize(storage.total - storage.used) }} of storage left.
-            Consider uninstalling some apps or upgrading to a larger drive.
+            {{
+              readableSize(systemStore.storage.total - systemStore.storage.used)
+            }}
+            of storage left. Consider uninstalling some apps or upgrading to a
+            larger drive.
             <router-link to="/settings#storage" class="alert-link float-right"
               >View usage</router-link
             >
           </b-alert>
           <b-alert
-            v-if="isCitadelOS && isRunningHot"
+            v-if="systemStore.isCitadelOS && isRunningHot"
             class="mt-4 mb-0"
             variant="warning"
             show
@@ -221,14 +228,18 @@
 </template>
 
 <script lang="ts">
-import type Citadel from "@runcitadel/sdk";
-import { mapState } from "vuex";
+import useSystemStore from "../store/system";
+import useUserStore from "../store/user";
+import useBitcoinStore from "../store/bitcoin";
+import useLightningStore from "../store/lightning";
+import useAppsStore from "../store/apps";
+
 import { readableSize } from "../helpers/size";
 import AuthenticatedVerticalNavbar from "../components/AuthenticatedVerticalNavbar.vue";
+// @ts-expect-error No type definitions for this yet
 import { BellIcon } from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
 import { BIconExclamationCircle } from "bootstrap-vue/src/index.js";
 import { defineComponent } from "vue";
-import type { RootState } from "../store/index";
 
 export default defineComponent({
   components: {
@@ -236,58 +247,65 @@ export default defineComponent({
     BellIcon,
     BIconExclamationCircle,
   },
+  setup() {
+    const systemStore = useSystemStore();
+    const userStore = useUserStore();
+    const bitcoinStore = useBitcoinStore();
+    const lightningStore = useLightningStore();
+    const appsStore = useAppsStore();
+    return {
+      appsStore,
+      userStore,
+      systemStore,
+      bitcoinStore,
+      lightningStore,
+    };
+  },
   data() {
     return {
       isUpdating: false,
+      interval: undefined,
+      otherInterval: undefined,
+      pollUpdateStatus: undefined,
+    } as {
+      isUpdating: boolean;
+      interval: number | undefined;
+      otherInterval: number | undefined;
+      pollUpdateStatus: number | undefined;
     };
   },
   computed: {
-    ...mapState<RootState>({
-      name: (state: RootState) => state.user.name,
-      chain: (state: RootState) => state.bitcoin.chain,
-      availableUpdate: (state: RootState) => state.system.availableUpdate,
-      updateStatus: (state: RootState) => state.system.updateStatus,
-      showUpdateConfirmationModal: (state: RootState) =>
-        state.system.showUpdateConfirmationModal,
-      ram: (state: RootState) => state.system.ram,
-      storage: (state: RootState) => state.system.storage,
-      isCitadelOS: (state: RootState) => state.system.isCitadelOS,
-      cpuTemperature: (state: RootState) => state.system.cpuTemperature,
-    }),
-    isRunningLowOnRam() {
+    isRunningLowOnRam(): boolean {
       // over 95% RAM used
-      if (this.ram && this.ram.total) {
-        return this.ram.used / this.ram.total > 0.95;
+      if (this.systemStore.ram && this.systemStore.ram.total) {
+        return this.systemStore.ram.used / this.systemStore.ram.total > 0.95;
       }
       return false;
     },
-    isRunningLowOnStorage() {
+    isRunningLowOnStorage(): boolean {
       // less than 1GB remaining
-      if (this.storage && this.storage.total) {
-        return this.storage.total - this.storage.used < 1000000000;
+      if (this.systemStore.storage && this.systemStore.storage.total) {
+        return (
+          this.systemStore.storage.total - this.systemStore.storage.used <
+          1000000000
+        );
       }
       return false;
     },
-    isRunningHot() {
+    isRunningHot(): boolean {
       // over 80'C
-      if (this.cpuTemperature) {
-        return this.cpuTemperature > 80;
+      if (this.systemStore.cpuTemperature) {
+        return this.systemStore.cpuTemperature > 80;
       }
       return false;
-    },
-    isMobileMenuOpen() {
-      return this.$store.getters.isMobileMenuOpen;
     },
   },
-  watch: {},
   created() {
     //load this data once:
-    this.$store.dispatch("user/getInfo");
-    this.$store.dispatch("system/getIsCitadelOS");
+    this.userStore.getInfo();
+    this.systemStore.getIsCitadelOS();
     // Preload this so when the user switches to th Lightning page, it can be displayed immediately
-    this.$store
-      .dispatch("lightning/getVersionInfo")
-      .catch((err) => console.error(err));
+    this.lightningStore.getVersionInfo();
     if (
       window.localStorage &&
       window.localStorage.getItem("lightmode") === "true"
@@ -315,47 +333,45 @@ export default defineComponent({
   methods: {
     logout() {
       //close mobile menu
-      if (this.isMobileMenuOpen) {
+      if (this.systemStore.isMobileMenuOpen) {
         this.toggleMobileMenu();
       }
-      this.$store.dispatch("user/logout");
+      this.userStore.logout();
     },
     fetchData() {
-      this.$store.dispatch("system/getUnit");
-      this.$store.dispatch("bitcoin/getSync");
-      this.$store.dispatch("bitcoin/getBalance");
-      this.$store.dispatch("bitcoin/getTransactions");
-      this.$store.dispatch("lightning/getSync");
-      this.$store.dispatch("lightning/getTransactions");
+      this.systemStore.getUnit();
+      this.bitcoinStore.getSync();
+      this.bitcoinStore.getBalance();
+      this.bitcoinStore.getTransactions();
+      this.lightningStore.getSync();
+      this.lightningStore.getTransactions();
     },
     fetchLessChangingData() {
-      this.$store.dispatch("lightning/getChannels");
-      this.$store.dispatch("bitcoin/getPrice");
-      this.$store.dispatch("system/getAvailableUpdate");
-      this.$store.dispatch("system/getRam");
-      this.$store.dispatch("system/getStorage");
-      this.$store.dispatch("system/getCpuTemperature");
+      this.lightningStore.getChannels();
+      this.bitcoinStore.getPrice();
+      this.systemStore.getAvailableUpdate();
+      this.systemStore.getRam();
+      this.systemStore.getStorage();
+      this.systemStore.getCpuTemperature();
     },
     toggleMobileMenu() {
-      this.$store.commit("toggleMobileMenu");
+      this.systemStore.isMobileMenuOpen = !this.systemStore.isMobileMenuOpen;
     },
     hideUpdateConfirmationModal() {
-      this.$store.dispatch("system/hideUpdateConfirmationModal");
+      this.systemStore.hideUpdateConfirmationModal();
     },
     confirmUpdate() {
-      this.$store.dispatch("system/confirmUpdate");
+      this.systemStore.confirmUpdate();
     },
     async startUpdate() {
       try {
-        await (
-          this.$store.state.citadel as Citadel
-        ).manager.system.startUpdate();
+        await this.systemStore.startUpdate();
         this.isUpdating = true;
         // poll update status every 2s until the update process begins
         // because after it's updated, the loading view will take over
         this.pollUpdateStatus = window.setInterval(async () => {
-          await this.$store.dispatch("system/getUpdateStatus");
-          if (this.updateStatus.state === "installing") {
+          await this.systemStore.getUpdateStatus();
+          if (this.systemStore.updateStatus.state === "installing") {
             window.clearInterval(this.pollUpdateStatus);
           }
         }, 2 * 1000);
@@ -369,7 +385,7 @@ export default defineComponent({
         });
       }
     },
-    readableSize(n) {
+    readableSize(n: number) {
       return readableSize(n);
     },
   },

@@ -86,34 +86,36 @@
   </div>
 </template>
 
-<script>
-import { mapState } from "vuex";
+<script lang="ts">
+import { defineComponent } from "vue";
+import useAppsStore, { type app } from "../store/apps";
 
-import CardWidget from "@/components/CardWidget.vue";
+import CardWidget from "../components/CardWidget.vue";
 
-export default {
+export default defineComponent({
   components: {
     CardWidget,
   },
-  data() {
-    return {};
+  setup() {
+    const appsStore = useAppsStore();
+    return { appsStore };
   },
   computed: {
-    ...mapState({
-      store: (state) => state.apps.store,
-    }),
-    categorizedAppStore: function () {
-      let group = this.store.reduce((r, a) => {
-        r[a.category] = [...(r[a.category] || []), a];
-        return r;
-      }, {});
+    categorizedAppStore(): Record<string, app[]> {
+      let group = this.appsStore.store.reduce(
+        (r: Record<string, app[]>, app) => {
+          r[app.category] = [...(r[app.category] || []), app];
+          return r;
+        },
+        {}
+      );
       return group;
     },
   },
   created() {
-    this.$store.dispatch("apps/getAppStore");
+    this.appsStore.getAppStore();
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

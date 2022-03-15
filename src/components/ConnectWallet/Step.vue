@@ -4,16 +4,8 @@
   </li>
 </template>
 
-<script>
-export default {
-  components: {},
-  props: {},
-  data() {
-    return {};
-  },
-  computed: {},
-  methods: {},
-};
-</script>
+<script lang="ts">
+import { defineComponent } from "vue";
 
-<style lang="scss" scoped></style>
+export default defineComponent({});
+</script>

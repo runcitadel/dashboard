@@ -1,6 +1,9 @@
 <template>
   <b-alert
-    v-if="percent < 99 && (requires === 'electrum' || requires === 'bitcoind')"
+    v-if="
+      bitcoinStore.percent < 99 &&
+      (requires === 'electrum' || requires === 'bitcoind')
+    "
     variant="warning"
     show
   >
@@ -24,11 +27,12 @@
   </card-widget>
 </template>
 
-<script>
-import { mapState } from "vuex";
-import CardWidget from "@/components/CardWidget.vue";
+<script lang="ts">
+import { defineComponent } from "vue";
+import useBitcoinStore from "../../store/bitcoin";
+import CardWidget from "../CardWidget.vue";
 
-export default {
+export default defineComponent({
   components: {
     CardWidget,
   },
@@ -42,16 +46,15 @@ export default {
       default: "", //electrum, bitcoin-core, lnd, or empty if no specific protocol required
     },
   },
+  setup() {
+    const bitcoinStore = useBitcoinStore();
+    return { bitcoinStore };
+  },
   data() {
     return {};
   },
-  computed: {
-    ...mapState({
-      percent: (state) => state.bitcoin.percent,
-    }),
-  },
   methods: {},
-};
+});
 </script>
 
 <style lang="scss" scoped></style>

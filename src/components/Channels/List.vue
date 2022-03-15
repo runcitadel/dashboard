@@ -2,7 +2,7 @@
   <div class="channel-list-container">
     <div class="channel-list">
       <div
-        v-if="channels.length === 0"
+        v-if="lightningStore.channels.length === 0"
         class="d-flex align-items-center justify-content-center flex-column"
         style="height: 100%"
       >
@@ -15,7 +15,7 @@
       </div>
 
       <div
-        v-else-if="channels[0]['type'] === 'loading'"
+        v-else-if="lightningStore.channels[0]['type'] === 'loading'"
         class="d-flex align-items-center justify-content-center"
         style="height: 100%"
       >
@@ -24,8 +24,8 @@
 
       <transition-group v-else name="list" appear>
         <div
-          v-for="channel in channels"
-          :key="channel.channelPoint"
+          v-for="channel in lightningStore.channels"
+          :key="(channel as {channelPoint: string}).channelPoint"
           @click="$emit('selectchannel', channel)"
         >
           <channel :channel="channel"></channel>
@@ -35,28 +35,29 @@
   </div>
 </template>
 
-<script>
-import { mapState } from "vuex";
-import Channel from "@/components/Channels/Channel.vue";
+<script lang="ts">
+import { defineComponent } from "vue";
 
-export default {
+import useLightningStore from "../../store/lightning";
+import Channel from "./Channel.vue";
+
+export default defineComponent({
   components: {
     Channel,
   },
   props: {},
   emits: ["selectchannel"],
+  setup() {
+    const lightningStore = useLightningStore();
+    return { lightningStore };
+  },
   data() {
     return {
       state: {},
     };
   },
-  computed: {
-    ...mapState({
-      channels: (state) => state.lightning.channels,
-    }),
-  },
   methods: {},
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -19,7 +19,7 @@
         </b-col>
       </b-row>
 
-      <router-view :urls="urls" @showQrModal="showQrModal"></router-view>
+      <router-view :urls="urls" @show-qr-modal="showQrModal"></router-view>
     </div>
 
     <b-modal id="qr-modal" ref="qr-modal" hide-footer size="lg">
@@ -35,13 +35,21 @@
   </div>
 </template>
 
-<script>
-import { mapState } from "vuex";
-import QrCode from "@/components/Utility/QrCode.vue";
+<script lang="ts">
+import { defineComponent } from "vue";
 
-export default {
+import useBitcoinStore from "../store/bitcoin";
+import useLightningStore from "../store/lightning";
+import QrCode from "../components/Utility/QrCode.vue";
+
+export default defineComponent({
   components: {
     QrCode,
+  },
+  setup() {
+    const bitcoinStore = useBitcoinStore();
+    const lightningStore = useLightningStore();
+    return { bitcoinStore, lightningStore };
   },
   data() {
     return {
@@ -84,18 +92,28 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      urls: (state) => {
-        return {
-          bitcoin: {
-            p2p: state.bitcoin.p2p,
-            electrum: state.bitcoin.electrum,
-            rpc: state.bitcoin.rpc,
-          },
-          lnd: state.lightning.lndConnectUrls,
-        };
-      },
-    }),
+    urls(): {
+      bitcoin: {
+        p2p: { address: string; port: string; connectionString: string };
+        electrum: { address: string; port: string; connectionString: string };
+        rpc: { address: string; port: string; connectionString: string };
+      };
+      lnd: {
+        restTor: string;
+        restLocal: string;
+        grpcTor: string;
+        grpcLocal: string;
+      };
+    } {
+      return {
+        bitcoin: {
+          p2p: this.bitcoinStore.p2p,
+          electrum: this.bitcoinStore.electrum,
+          rpc: this.bitcoinStore.rpc,
+        },
+        lnd: this.lightningStore.lndConnectUrls,
+      };
+    },
     wallet() {
       return this.$route.meta.wallet || null;
     },
@@ -106,21 +124,21 @@ export default {
   methods: {
     fetchConnectionDetails() {
       return Promise.all([
-        this.$store.dispatch("lightning/getLndConnectUrls"),
-        this.$store.dispatch("bitcoin/getP2PInfo"),
-        this.$store.dispatch("bitcoin/getElectrumInfo"),
-        this.$store.dispatch("bitcoin/getRpcInfo"),
+        this.lightningStore.getLndConnectUrls(),
+        this.bitcoinStore.getP2PInfo(),
+        this.bitcoinStore.getElectrumInfo(),
+        this.bitcoinStore.getRpcInfo(),
       ]);
     },
-    selectWallet(wallet) {
+    selectWallet(wallet: string) {
       this.$router.push(`/connect/${wallet}`);
     },
-    showQrModal(value) {
+    showQrModal(value: string) {
       this.qrModalData.value = value;
-      this.$refs["qr-modal"].show();
+      (this.$refs["qr-modal"] as { show: () => void }).show();
     },
   },
-};
+});
 </script>
 
 <style lang="scss">

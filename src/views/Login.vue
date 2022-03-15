@@ -18,11 +18,16 @@
         class="mb-2 logo"
       />
       <h1 class="text-center mb-2">welcome back</h1>
-      <p class="text-muted w-75 text-center">
+      <p v-if="!showOtpInput" class="text-muted w-75 text-center">
         Enter the password to login to your Citadel
       </p>
 
+      <p v-else class="text-muted w-75 text-center">
+        Enter your two-factor authentication code
+      </p>
+
       <form
+        v-if="!showOtpInput"
         class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center"
         @submit.prevent="authenticateUser"
       >
@@ -37,27 +42,10 @@
           ]"
           :disabled="isLoggingIn"
         />
-        <input-password
-          v-if="totpEnabled"
-          ref="totpToken"
-          v-model="totpToken"
-          placeholder="2FA token"
-          :input-class="[
-            isIncorrectToken ? 'incorrect-token' : '',
-            'card-input w-100',
-          ]"
-          :input-group-class="['mt-2 card-input-group']"
-          :disabled="isLoggingIn"
-        />
         <div class="login-button-container">
           <transition name="fade">
             <small v-show="isIncorrectPassword" class="mt-2 text-danger error"
               >Incorrect password</small
-            >
-          </transition>
-          <transition name="fade">
-            <small v-show="isIncorrectToken" class="mt-2 text-danger error">
-              Incorrect token</small
             >
           </transition>
           <transition name="slide-up">
@@ -74,34 +62,59 @@
           </transition>
         </div>
       </form>
+      <form
+        v-else
+        class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center"
+        @submit.prevent
+      >
+        <input-otp-token
+          autofocus
+          :disabled="isLoggingIn"
+          :success="isCorrectOtp"
+          :error="isIncorrectOtp"
+          @otp-token="authenticateUserWithOtp"
+          @keyup="hideOtpError"
+        />
+        <div class="login-button-container">
+          <transition name="fade">
+            <small v-show="isIncorrectOtp" class="mt-2 text-danger error"
+              >Incorrect code</small
+            >
+          </transition>
+        </div>
+      </form>
     </div>
   </div>
 </template>
 
-<script>
-import { mapState } from "vuex";
-import InputPassword from "@/components/Utility/InputPassword.vue";
+<script lang="ts">
+import { defineComponent } from "vue";
+import useUserStore from "../store/user";
+import InputPassword from "../components/Utility/InputPassword.vue";
+import InputOtpToken from "../components/Utility/InputOtpToken.vue";
+import delay from "../helpers/delay";
 
-export default {
+export default defineComponent({
   components: {
     InputPassword,
+    InputOtpToken,
+  },
+  setup() {
+    const userStore = useUserStore();
+    return { userStore };
   },
   data() {
     return {
       loading: true,
       password: "",
-      totpToken: "",
       isIncorrectPassword: false,
       isIncorrectToken: false,
       isLoggingIn: false,
+      otpToken: "",
+      showOtpInput: false,
+      isCorrectOtp: false,
+      isIncorrectOtp: false,
     };
-  },
-  computed: {
-    ...mapState({
-      jwt: (state) => state.user.jwt,
-      registered: (state) => state.user.registered,
-      totpEnabled: (state) => state.user.totpEnabled,
-    }),
   },
   watch: {
     password: function () {
@@ -111,16 +124,16 @@ export default {
   },
   async created() {
     //redirect to dashboard if already logged in
-    if (this.jwt) {
+    if (this.userStore.jwt) {
       this.$router.push("/dashboard");
     }
 
     //redirect to onboarding if the user is not registered
-    await this.$store.dispatch("user/registered");
-    if (!this.registered) {
+    await this.userStore.getRegistered();
+    if (!this.userStore.registered) {
       return this.$router.push("/start");
     } else {
-      await this.$store.dispatch("user/getTotpEnabledStatus");
+      await this.userStore.getTotpEnabledStatus();
     }
 
     this.loading = false;
@@ -129,23 +142,42 @@ export default {
     async authenticateUser() {
       this.isLoggingIn = true;
 
+      if (this.userStore.totpEnabled) {
+        this.showOtpInput = true;
+      }
       try {
-        await this.$store.dispatch("user/login", {
+        await this.userStore.login({
           password: this.password,
-          totpToken: this.totpToken,
+          totpToken: this.otpToken,
         });
       } catch (error) {
         this.isIncorrectPassword = true;
         this.isLoggingIn = false;
       }
 
+      if (this.otpToken) {
+        // show ripple animation
+        this.isCorrectOtp = true;
+        await delay(1000);
+      }
+
       //redirect to dashboard
       return this.$router.push(
-        new URL(window.location).searchParams.get("redirect") || "/dashboard"
+        new URL(window.location as unknown as URL).searchParams.get(
+          "redirect"
+        ) || "/dashboard"
       );
     },
+
+    authenticateUserWithOtp(otpToken: string) {
+      this.otpToken = otpToken;
+      this.authenticateUser();
+    },
+    hideOtpError() {
+      this.isIncorrectOtp = false;
+    },
   },
-};
+});
 </script>
 
 <style lang="scss">

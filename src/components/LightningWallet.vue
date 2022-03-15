@@ -2,28 +2,33 @@
   <card-widget
     header="Lightning Wallet"
     :status="{
-      text: lightningSyncPercent < 100 ? 'Synchronizing' : 'Active',
+      text: lightningStore.percent < 100 ? 'Synchronizing' : 'Active',
       variant: 'success',
       blink: false,
     }"
-    :sub-title="$filters.formatUnit(unit)"
+    :sub-title="$filters.formatUnit(systemStore.unit)"
     icon="icon-app-lightning.svg"
     :loading="
       loading ||
-      (transactions.length > 0 && transactions[0]['type'] === 'loading') ||
-      lightningSyncPercent < 100
+      (lightningStore.transactions.length > 0 &&
+        lightningStore.transactions[0]['type'] === 'loading') ||
+      lightningStore.percent < 100
     "
   >
     <template #title>
       <div
         v-if="walletBalance !== -1"
         v-b-tooltip.hover.right
-        :title="$filters.satsToUSD(walletBalanceInSats)"
+        :title="
+          $filters
+            .satsToUSD(lightningStore.balance.total, bitcoinStore)
+            .toString()
+        "
       >
         <CountUp
           :value="{
             endVal: walletBalance,
-            decimalPlaces: unit === 'sats' ? 0 : 5,
+            decimalPlaces: systemStore.unit === 'sats' ? 0 : 5,
           }"
         />
       </div>
@@ -45,7 +50,7 @@
 
           <!-- No transactions -->
           <div
-            v-if="transactions.length === 0"
+            v-if="lightningStore.transactions.length === 0"
             class="d-flex flex-column justify-content-center px-3 px-lg-4 zero-wallet-transactions-container"
           >
             <!-- Piggy bank icon -->
@@ -82,7 +87,15 @@
               class="list-group pb-2 transactions"
             >
               <b-list-group-item
-                v-for="tx in transactions"
+                v-for="tx in (lightningStore.transactions as {
+                  type: string;
+                  amount: number;
+                  timestamp: Date;
+                  description: string;
+                  expiresOn?: Date;
+                  paymentRequest: string;
+                  paymentPreImage?: string;
+                }[])"
                 :key="tx.paymentRequest || tx.paymentPreImage"
                 class="flex-column align-items-start px-3 px-lg-4"
                 href="#"
@@ -204,7 +217,7 @@
                       class="text-muted mt-0 tx-timestamp"
                       style="margin-left: 21px"
                       :title="`Invoice expires on ${getReadableTime(
-                        tx.expiresOn
+                        tx.expiresOn as Date
                       )}`"
                       >Unpaid invoice</small
                     >
@@ -214,8 +227,9 @@
                       v-else-if="tx.type === 'expired'"
                       class="text-muted mt-0 tx-timestamp"
                       style="margin-left: 25px"
-                      :title="getReadableTime(tx.expiresOn)"
-                      >Invoice expired {{ getTimeFromNow(tx.expiresOn) }}</small
+                      :title="getReadableTime(tx.expiresOn as Date)"
+                      >Invoice expired
+                      {{ getTimeFromNow(tx.expiresOn as Date) }}</small
                     >
                   </div>
 
@@ -223,15 +237,21 @@
                     <span
                       v-b-tooltip.hover.left
                       class="font-weight-bold d-block"
-                      :title="$filters.satsToUSD(tx.amount)"
+                      :title="
+                        $filters.satsToUSD(tx.amount, bitcoinStore).toString()
+                      "
                     >
                       <!-- Positive or negative prefix with amount -->
                       <span v-if="tx.type === 'incoming'">+</span>
                       <span v-else-if="tx.type === 'outgoing'">-</span>
-                      {{ $filters.localize($filters.unit(tx.amount)) }}
+                      {{
+                        $filters.localize(
+                          $filters.unit(tx.amount, systemStore)?.toString() as string
+                        )
+                      }}
                     </span>
                     <small class="text-muted">{{
-                      $filters.formatUnit(unit)
+                      $filters.formatUnit(systemStore.unit)
                     }}</small>
                   </div>
                 </div>
@@ -268,7 +288,7 @@
             </a>
           </div>
 
-          <label class="sr-onlsy" for="input-sats">Paste Invoice</label>
+          <label class="visually-hidden" for="input-sats">Paste Invoice</label>
           <b-input
             id="input-sats"
             v-model="send.paymentRequest"
@@ -287,14 +307,16 @@
               <div>
                 <small class="d-block text-muted mb-1">Paying</small>
                 <h4 class="d-block mb-0">
-                  {{ $filters.localize($filters.unit(send.amount)) }}
+                  {{
+                    $filters.localize($filters.unit(send.amount, systemStore) as number)
+                  }}
                 </h4>
                 <small class="d-block text-muted">
-                  {{ $filters.formatUnit(unit) }}
+                  {{ $filters.formatUnit(systemStore.unit) }}
                 </small>
               </div>
               <small class="d-block text-muted"
-                >~ {{ $filters.satsToUSD(send.amount) }}</small
+                >~ {{ $filters.satsToUSD(send.amount, bitcoinStore) }}</small
               >
             </div>
 
@@ -339,8 +361,10 @@
           <!-- Invoice amount + description -->
           <p class="text-center mb-4 pb-1">
             Paid
-            <b>{{ $filters.localize($filters.unit(send.amount)) }}</b>
-            {{ $filters.formatUnit(unit) }}
+            <b
+              >{{ $filters.localize($filters.unit(send.amount?.toString() as string, systemStore) as number) }}</b
+            >
+            {{ $filters.formatUnit(systemStore.unit) }}
             <span v-if="send.description">
               for
               <b>{{ send.description }}</b>
@@ -376,7 +400,7 @@
             </a>
           </div>
 
-          <label class="sr-onlsy" for="input-sats">Amount</label>
+          <label class="visually-hidden" for="input-sats">Amount</label>
           <div class="mb-2">
             <b-input-group class="neu-input-group">
               <b-input
@@ -398,12 +422,13 @@
             </b-input-group>
             <small
               class="text-muted mt-2 d-block text-end mb-0"
-              :style="{ opacity: receive.amount > 0 ? 1 : 0 }"
-              >~ {{ $filters.satsToUSD(receive.amount) }}</small
+              :style="{ opacity: (receive.amount || 0) > 0 ? 1 : 0 }"
+              >~
+              {{ $filters.satsToUSD(receive.amount?.toString() as string, bitcoinStore) }}</small
             >
           </div>
 
-          <label class="sr-onlsy" for="input-description">
+          <label class="visually-hidden" for="input-description">
             Description
             <small class="text-muted">(optional)</small>
           </label>
@@ -455,8 +480,10 @@
               Invoice of
               <!-- {{ $filters.localize($filters.unit(receive.amount)) }} -->
               <b>
-                {{ $filters.localize($filters.unit(receive.amount)) }}
-                {{ $filters.formatUnit(unit) }}
+                {{
+                  $filters.localize($filters.unit(receive.amount as number, systemStore) as number)
+                }}
+                {{ $filters.formatUnit(systemStore.unit) }}
               </b>
               {{ receive.description ? "for" : null }}
               <b>{{ receive.description }}</b>
@@ -480,7 +507,7 @@
               ></input-copy>
               <small class="text-center d-block text-muted">
                 This invoice will expire
-                {{ getTimeFromNow(receive.expiresOn) }}
+                {{ getTimeFromNow(receive.expiresOn as Date) }}
               </small>
             </div>
           </transition>
@@ -521,8 +548,10 @@
           <p class="text-center mb-4 pb-1">
             Received
             <b
-              >{{ $filters.localize($filters.unit(receive.amount)) }}
-              {{ $filters.formatUnit(unit) }}</b
+              >{{
+                $filters.localize($filters.unit(receive.amount as number, systemStore) as number)
+              }}
+              {{ $filters.formatUnit(systemStore.unit) }}</b
             >
             <span v-if="receive.description">
               for
@@ -530,7 +559,7 @@
             </span>
             <br />
             <small class="text-muted">{{
-              getReadableTime(receive.timestamp)
+              getReadableTime(receive.timestamp as number | Date)
             }}</small>
           </p>
         </div>
@@ -569,8 +598,8 @@
           <p class="text-center mb-2">
             Paid
             <b>
-              {{ $filters.localize($filters.unit(paymentInfo.amount)) }}
-              {{ $filters.formatUnit(unit) }}
+              {{ $filters.localize($filters.unit(paymentInfo.amount as number, systemStore) as number) }}
+              {{ $filters.formatUnit(systemStore.unit) }}
             </b>
             <span v-if="paymentInfo.description">
               for
@@ -580,12 +609,14 @@
           <div class="pt-2 mb-3">
             <div class="d-flex justify-content-between">
               <small class="text-muted">{{
-                getReadableTime(paymentInfo.timestamp)
+                getReadableTime(paymentInfo.timestamp as number | Date)
               }}</small>
               <small class="text-muted">
                 Fee:
-                {{ $filters.localize($filters.unit(paymentInfo.fee)) }}
-                {{ $filters.formatUnit(unit) }}
+                {{
+                  $filters.localize($filters.unit(paymentInfo.fee as number, systemStore) as number)
+                }}
+                {{ $filters.formatUnit(systemStore.unit) }}
               </small>
             </div>
             <div class="pt-3 d-block pb-2">
@@ -635,7 +666,8 @@
             This invoice was not paid
             <br />
             <small class="text-muted"
-              >Expired on {{ getReadableTime(expiredInvoice.expiresOn) }}</small
+              >Expired on
+              {{ getReadableTime(expiredInvoice.expiresOn as number | Date) }}</small
             >
           </p>
         </div>
@@ -676,8 +708,9 @@
             <path
               d="M7.06802 4.71946C6.76099 4.71224 6.50825 4.96178 6.50627 5.27413C6.50435 5.57592 6.7539 5.82865 7.05534 5.83022L12.7162 5.86616L4.81508 13.3568C4.59632 13.5735 4.59981 14.1376 4.81615 14.3568C5.03249 14.5759 5.59723 14.572 5.81634 14.3556L13.4988 6.6587L13.4576 12.3143C13.4609 12.6214 13.7108 12.8745 14.0122 12.876C14.3246 12.878 14.5777 12.6281 14.574 12.3214L14.6184 5.32036C14.6257 5.01333 14.3761 4.76059 14.0694 4.76427L7.06802 4.71946Z"
               fill="#FFFFFF"
-            /></svg
-          >Send
+            />
+          </svg>
+          Send
         </b-button>
         <b-button
           class="w-50"
@@ -701,8 +734,9 @@
             <path
               d="M13.5944 6.04611C13.6001 5.73904 13.3493 5.48755 13.0369 5.48712C12.7351 5.4867 12.4836 5.7375 12.4836 6.03895L12.4758 11.6999L4.94598 3.83615C4.72819 3.61848 4.16402 3.62477 3.94599 3.8422C3.72796 4.05963 3.73466 4.62433 3.95209 4.84236L11.6871 12.4864L6.03143 12.4733C5.72435 12.4782 5.47251 12.7293 5.47244 13.0308C5.47201 13.3431 5.72317 13.595 6.0299 13.5898L13.031 13.5994C13.3381 13.6051 13.5896 13.3543 13.5844 13.0476L13.5944 6.04611Z"
               fill="#FFFFFF"
-            /></svg
-          >Receive
+            />
+          </svg>
+          Receive
         </b-button>
       </b-button-group>
 
@@ -730,8 +764,9 @@
           <path
             d="M13.5944 6.04611C13.6001 5.73904 13.3493 5.48755 13.0369 5.48712C12.7351 5.4867 12.4836 5.7375 12.4836 6.03895L12.4758 11.6999L4.94598 3.83615C4.72819 3.61848 4.16402 3.62477 3.94599 3.8422C3.72796 4.05963 3.73466 4.62433 3.95209 4.84236L11.6871 12.4864L6.03143 12.4733C5.72435 12.4782 5.47251 12.7293 5.47244 13.0308C5.47201 13.3431 5.72317 13.595 6.0299 13.5898L13.031 13.5994C13.3381 13.6051 13.5896 13.3543 13.5844 13.0476L13.5944 6.04611Z"
             fill="#FFFFFF"
-          /></svg
-        >Receive
+          />
+        </svg>
+        Receive
       </b-button>
 
       <!-- Button: Send (paste invoice send) -->
@@ -801,14 +836,21 @@
 </template>
 
 <script lang="ts">
+import useSystemStore from "../store/system";
+import useUserStore from "../store/user";
+import useBitcoinStore from "../store/bitcoin";
+import useLightningStore, {
+  type CustomTransactionType,
+} from "../store/lightning";
+import useAppsStore from "../store/apps";
+import useSdkStore from "../store/sdk";
+
 import {
   formatDistance,
   format,
   getDateFormatWithSeconds,
 } from "../helpers/date";
 import { addHours } from "date-fns";
-
-import { mapState } from "vuex";
 
 import { satsToBtc, btcToSats } from "../helpers/units";
 
@@ -818,9 +860,59 @@ import InputCopy from "../components/Utility/InputCopy.vue";
 import QrCode from "../components/Utility/QrCode.vue";
 import CircularCheckmark from "../components/Utility/CircularCheckmark.vue";
 import SatsBtcSwitch from "../components/Utility/SatsBtcSwitch.vue";
-import type Citadel from "@runcitadel/sdk/dist/citadel";
+import { defineComponent } from "vue";
 
-export default {
+type mode =
+  | "invoice"
+  | "sent"
+  | "transactions"
+  | "receive"
+  | "send"
+  | "invoice-expired"
+  | "payment-success"
+  | "received";
+type data = {
+  mode: mode; //transactions (default mode), receive (create invoice), invoice, send, sent, payment-success, invoice-info
+  receive: {
+    //receive info
+    amount: null | number; //invoice amount
+    amountInput?: number;
+    description: string; //invoice description
+    paymentRequest: string; //Bolt 11 invoice
+    invoiceQR: string; //used for "generating" animation, is ultimately equal to paymentRequest after animation
+    isGeneratingInvoice: boolean; //used for transitions, animations, etc
+    expiresOn: null | Date; //invoice expiry date
+    invoiceStatusPoller: null | number; // = setInterval used to fetch invoice settlement status
+    invoiceStatusPollerInprogress: boolean; //to lock to 1 poll at a time
+    timestamp?: number | Date;
+  };
+  send: {
+    //send info
+    paymentRequest: string; //Bolt 11 payment request/invoice entered by the user
+    description: string; //invoice description
+    amount: null | number; //invoice amount
+    isValidInvoice: boolean; //check if invoice entered by user is a valid Bolt 11 invoice
+    isSending: boolean; //used for transition while tx is being broadcasted,
+    paymentPreImage: string; //proof of payment
+  };
+  paymentInfo: {
+    //outgoing payment info
+    amount: null | number; // payment amount
+    description: string; //payment memo or description
+    timestamp: null | Date | number; //time of settlement
+    fee: null | number; //routing fee of payment
+    paymentRequest: string; //original payment request
+    paymentPreImage: string; //proof of payment
+  };
+  expiredInvoice: {
+    //expired invoice info
+    expiresOn: null | Date; // expiry date of the unpaid/expired invoice
+  };
+  loading: boolean; //overall state of the wallet. eg. used to toggle progress bar on top of the card,
+  error: string; //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
+  QRAnimation?: number;
+};
+export default defineComponent({
   components: {
     CardWidget,
     CountUp,
@@ -829,7 +921,23 @@ export default {
     CircularCheckmark,
     SatsBtcSwitch,
   },
-  data() {
+  setup() {
+    const systemStore = useSystemStore();
+    const userStore = useUserStore();
+    const bitcoinStore = useBitcoinStore();
+    const lightningStore = useLightningStore();
+    const appsStore = useAppsStore();
+    const sdkStore = useSdkStore();
+    return {
+      sdkStore,
+      appsStore,
+      userStore,
+      systemStore,
+      bitcoinStore,
+      lightningStore,
+    };
+  },
+  data(): data {
     return {
       mode: "transactions", //transactions (default mode), receive (create invoice), invoice, send, sent, payment-success, invoice-info
       receive: {
@@ -870,29 +978,23 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      lightningSyncPercent: (state) => state.lightning.percent,
-      transactions: (state) => state.lightning.transactions,
-      walletBalance: (state) => {
-        //skip if still loading
-        if (state.lightning.balance.total === -1) {
-          return -1;
-        }
-        if (state.system.unit === "btc") {
-          return satsToBtc(state.lightning.balance.total);
-        }
-        return state.lightning.balance.total;
-      },
-      walletBalanceInSats: (state) => state.lightning.balance.total,
-      unit: (state) => state.system.unit,
-    }),
+    walletBalance(): number {
+      //skip if still loading
+      if (this.lightningStore.balance.total === -1) {
+        return -1;
+      }
+      if (this.systemStore.unit === "btc") {
+        return satsToBtc(this.lightningStore.balance.total);
+      }
+      return this.lightningStore.balance.total;
+    },
     isLightningPage() {
-      return this.$router.currentRoute.path === "/lightning";
+      return this.$router.currentRoute.value.path === "/lightning";
     },
   },
   watch: {
     "receive.paymentRequest": function (paymentRequest) {
-      window.clearInterval(this.receive.invoiceStatusPoller);
+      window.clearInterval(this.receive.invoiceStatusPoller as number);
 
       //if payment request is generated, fetch invoices to check settlement status as long as the user is on the generated invoice mode
       if (paymentRequest) {
@@ -902,22 +1004,21 @@ export default {
             return;
           }
           this.receive.invoiceStatusPollerInprogress = true;
-          const invoices = await (
-            this.$store.state.citadel as Citadel
-          ).middleware.lnd.lightning.invoices();
+          const invoices =
+            await this.sdkStore.citadel.middleware.lnd.lightning.invoices();
           if (invoices && invoices.length) {
             //search for invoice
             const currentInvoice = invoices.filter((inv) => {
               return inv.paymentRequest === this.receive.paymentRequest;
             })[0];
 
-            if (currentInvoice && currentInvoice.settled) {
+            if (currentInvoice && currentInvoice.state === 1) {
               this.changeMode("received");
-              window.clearInterval(this.receive.invoiceStatusPoller);
+              window.clearInterval(this.receive.invoiceStatusPoller as number);
 
               //refresh
-              this.$store.dispatch("lightning/getChannels");
-              this.$store.dispatch("lightning/getTransactions");
+              this.lightningStore.getChannels();
+              this.lightningStore.getTransactions();
             }
           }
           this.receive.invoiceStatusPollerInprogress = false;
@@ -925,36 +1026,36 @@ export default {
       }
     },
     "receive.amountInput": function (val) {
-      if (this.unit === "sats") {
+      if (this.systemStore.unit === "sats") {
         this.receive.amount = Number(val);
-      } else if (this.unit === "btc") {
+      } else if (this.systemStore.unit === "btc") {
         this.receive.amount = btcToSats(val);
       }
     },
-    unit: function (val) {
+    unit(val: "sats" | "btc") {
       if (val === "sats") {
         this.receive.amount = Number(this.receive.amountInput);
       } else if (val === "btc") {
-        this.receive.amount = btcToSats(this.receive.amountInput);
+        this.receive.amount = btcToSats(this.receive.amountInput as number);
       }
     },
   },
   async created() {
-    await this.$store.dispatch("lightning/getStatus");
+    await this.lightningStore.getStatus();
   },
   beforeUnmount() {
     window.clearInterval(this.QRAnimation);
-    window.clearInterval(this.receive.invoiceStatusPoller);
+    window.clearInterval(this.receive.invoiceStatusPoller as number);
   },
   methods: {
-    getTimeFromNow(timestamp) {
+    getTimeFromNow(timestamp: number | Date) {
       try {
         return formatDistance(new Date(timestamp), new Date()); //used in the list of txs, eg "a few seconds ago"
       } catch {
         return "Unknown time";
       }
     },
-    getReadableTime(timestamp) {
+    getReadableTime(timestamp: number | Date) {
       try {
         return format(new Date(timestamp), getDateFormatWithSeconds()); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
       } catch {
@@ -962,23 +1063,22 @@ export default {
       }
     },
     //change between different modes/screens of the wallet from - transactions (default), receive (create invoice), invoice, send, sent
-    changeMode(mode) {
-      return (this.mode = mode);
+    changeMode(mode: mode) {
+      this.mode = mode;
     },
     reset() {
       //reset to default mode, clear any inputs/generated invoice, pasted invoice, etc - used by "Back" button
 
       //refresh data
-      this.$store.dispatch("lightning/getTransactions");
-      this.$store.dispatch("lightning/getChannels");
+      this.lightningStore.getTransactions();
+      this.lightningStore.getChannels();
 
       //clear any intervals
-      window.clearInterval(this.receive.invoiceStatusPoller);
+      window.clearInterval(this.receive.invoiceStatusPoller as number);
 
       //reset state
       this.receive = {
         amount: null,
-        amountInput: "",
         description: "",
         paymentRequest: "",
         invoiceQR: "1",
@@ -993,6 +1093,7 @@ export default {
         amount: null,
         isValidInvoice: false,
         isSending: false,
+        paymentPreImage: "",
       };
       this.paymentInfo = {
         amount: null,
@@ -1000,6 +1101,7 @@ export default {
         timestamp: null,
         fee: null,
         paymentRequest: "",
+        paymentPreImage: "",
       };
       this.expiredInvoice = {
         expiresOn: null,
@@ -1017,9 +1119,9 @@ export default {
       this.error = "";
 
       try {
-        await (
-          this.$store.state.citadel as Citadel
-        ).middleware.lnd.lightning.payInvoice(this.send.paymentRequest);
+        await this.sdkStore.citadel.middleware.lnd.lightning.payInvoice(
+          this.send.paymentRequest
+        );
         // TODO: Fix this
         /*if (res.data.paymentError) {
           return (this.error = res.data.paymentError);
@@ -1027,12 +1129,10 @@ export default {
         this.mode = "sent";
 
         //refresh
-        this.$store.dispatch("lightning/getTransactions");
-        this.$store.dispatch("lightning/getChannels");
+        this.lightningStore.getTransactions();
+        this.lightningStore.getChannels();
       } catch (error) {
-        this.error = JSON.stringify(error.response)
-          ? error.response.data
-          : "Error sending payment";
+        this.error = JSON.stringify(error) || "Error sending payment";
       }
 
       this.loading = false;
@@ -1053,25 +1153,22 @@ export default {
       //cool QR animation for a while
       setTimeout(async () => {
         try {
-          const res = await (
-            this.$store.state.citadel as Citadel
-          ).middleware.lnd.lightning.addInvoice(
-            this.receive.amount,
-            this.receive.description
-          );
+          const res =
+            await this.sdkStore.citadel.middleware.lnd.lightning.addInvoice(
+              (this.receive.amount as number).toString(),
+              this.receive.description
+            );
           this.receive.invoiceQR = this.receive.paymentRequest =
             res.paymentRequest;
 
-          //TODO: find a cleaner way to make this dynamic as per backend's expiry setting. for now invoice expiries are 1 hr
-          this.receive.expiresOn = addHours(new Date(), 1);
+          //TODO: find a cleaner way to make this dynamic as per backend's expiry setting. for now invoice expiries are 24 hr
+          this.receive.expiresOn = addHours(new Date(), 24);
 
           //refresh txs
-          this.$store.dispatch("lightning/getTransactions");
+          this.lightningStore.getTransactions();
         } catch (error) {
           this.mode = "receive";
-          this.error = JSON.stringify(error.response)
-            ? error.response.data
-            : "Error creating invoice";
+          this.error = JSON.stringify(error) || "Error creating invoice";
         }
         this.loading = false;
         this.receive.isGeneratingInvoice = false;
@@ -1098,9 +1195,10 @@ export default {
       this.error = "";
       this.loading = true;
 
-      const fetchedInvoice = await (
-        this.$store.state.citadel as Citadel
-      ).middleware.lnd.lightning.parsePaymentRequest(this.send.paymentRequest);
+      const fetchedInvoice =
+        await this.sdkStore.citadel.middleware.lnd.lightning.parsePaymentRequest(
+          this.send.paymentRequest
+        );
 
       if (!fetchedInvoice) {
         this.send.isValidInvoice = false;
@@ -1130,7 +1228,7 @@ export default {
 
       this.loading = false;
     },
-    showTransactionInfo(tx) {
+    showTransactionInfo(tx: CustomTransactionType | { type: "loading" }) {
       if (!tx || tx.type === "loading") return; //eg. when tx is loading
 
       //if outgoing payment, show success
@@ -1139,9 +1237,10 @@ export default {
           amount: tx.amount,
           description: tx.description,
           timestamp: tx.timestamp,
+          // @ts-expect-error TODO: Check this
           fee: tx.fee,
           paymentRequest: tx.paymentRequest,
-          paymentPreImage: tx.paymentPreImage,
+          paymentPreImage: tx.paymentPreImage as string,
         };
         return this.changeMode("payment-success");
       }
@@ -1153,7 +1252,7 @@ export default {
         this.receive.paymentRequest = tx.paymentRequest;
         this.receive.invoiceQR = tx.paymentRequest;
         this.receive.isGeneratingInvoice = false;
-        this.receive.expiresOn = tx.expiresOn;
+        this.receive.expiresOn = tx.expiresOn as Date;
         return this.changeMode("invoice");
       }
 
@@ -1165,12 +1264,12 @@ export default {
       }
 
       if (tx.type === "expired") {
-        this.expiredInvoice.expiresOn = tx.expiresOn;
+        this.expiredInvoice.expiresOn = tx.expiresOn as Date;
         this.changeMode("invoice-expired");
       }
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

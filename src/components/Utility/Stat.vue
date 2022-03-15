@@ -7,7 +7,6 @@
         <span
           v-if="numberValue === -1"
           class="loading-placeholder loading-placeholder-lg w-50 mt-2"
-          style
         ></span>
         <div v-else class="d-flex align-items-baseline">
           <h3 class="font-weight-normal mb-0">
@@ -68,26 +67,38 @@
   </div>
 </template>
 
-<script>
-import CountUp from "@/components/Utility/CountUp.vue";
+<script lang="ts">
+import { defineComponent } from "vue";
+import CountUp from "./CountUp.vue";
 
-const abbreviate = (n) => {
+const abbreviate = (n: number): [number, string] => {
   if (n < 1e2) return [Number(n), ""];
   if (n >= 1e2 && n < 1e3) return [Number(n.toFixed(1)), ""];
   if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), "K"];
   if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), "M"];
   if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), "B"];
   if (n >= 1e12) return [Number(+(n / 1e12).toFixed(1)), "T"];
+  // This is just for TypeScript, we'll never actually get here
+  return [0, "Error"];
 };
 
-export default {
+export default defineComponent({
   components: {
     CountUp,
   },
   props: {
-    title: String,
-    value: Number,
-    suffix: String,
+    title: {
+      type: String,
+      required: true,
+    },
+    value: {
+      type: Number,
+      required: true,
+    },
+    suffix: {
+      type: String,
+      default: "",
+    },
     abbreviateValue: {
       type: Boolean,
       default: false,
@@ -173,8 +184,7 @@ export default {
       }
     },
   },
-  methods: {},
-};
+});
 </script>
 
 <style lang="scss" scoped>

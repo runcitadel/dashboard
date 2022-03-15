@@ -9,7 +9,7 @@
     :size="size ? size : 'sm'"
   >
     <b-form-input
-      ref="copy-input-field"
+      ref="copyInputField"
       type="text"
       class="copy-input"
       readonly
@@ -42,48 +42,42 @@
   </b-input-group>
 </template>
 
-<script>
-export default {
-  props: {
-    size: {
-      type: String,
-      default: "sm",
-    },
-    value: {
-      type: String,
-      required: true,
-    },
-    autoWidth: {
-      type: Boolean,
-      default: false,
-    },
+<script setup lang="ts">
+import { ref } from "vue";
+
+const props = defineProps({
+  size: {
+    type: String,
+    default: "sm",
   },
-  data() {
-    return {
-      isCopied: false,
-    };
+  value: {
+    type: String,
+    required: true,
   },
-  watch: {
-    value: function () {
-      this.isCopied = false;
-    },
+  autoWidth: {
+    type: Boolean,
+    default: false,
   },
-  methods: {
-    copyText() {
-      //copy generated invoice's text to clipboard
-      const copyText = this.$refs["copy-input-field"];
-      copyText.select();
-      copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-      document.execCommand("copy");
-      window.setTimeout(() => {
-        copyText.blur();
-        window.getSelection().removeAllRanges();
-        this.isCopied = false;
-      }, 1000);
-      return (this.isCopied = true);
-    },
-  },
-};
+});
+
+const copyInputField = ref(null);
+const isCopied = ref(false);
+
+function copyText() {
+  //copy generated invoice's text to clipboard
+  const copyText = copyInputField.value as unknown as HTMLInputElement;
+  // There is no need to select the text with the clipboard API, but we'll leave it
+  // As visual feedback
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /* For mobile devices */
+  navigator.clipboard.writeText(props.value);
+  window.setTimeout(() => {
+    copyText.blur();
+    window.getSelection()?.removeAllRanges();
+    isCopied.value = false;
+  }, 1000);
+  isCopied.value = true;
+}
 </script>
 
 <style lang="scss" scoped>

@@ -161,40 +161,56 @@
   </card-widget>
 </template>
 
-<script>
-import { mapState } from "vuex";
+<script lang="ts">
+import { defineComponent } from "vue";
+
 import { BIconInfoCircleFill } from "bootstrap-vue/src/index.js";
 
-import { readableSize } from "@/helpers/size";
+import { readableSize } from "../../helpers/size";
+import CardWidget from "../CardWidget.vue";
+import useAppsStore from "../../store/apps";
+import useSystemStore from "../../store/system";
 
-import CardWidget from "@/components/CardWidget.vue";
-
-export default {
+export default defineComponent({
   components: {
     CardWidget,
     BIconInfoCircleFill,
   },
+  setup() {
+    const systemStore = useSystemStore();
+    const appsStore = useAppsStore();
+    return { appsStore, systemStore };
+  },
   computed: {
-    ...mapState({
-      store: (state) => state.apps.store,
-      ram: (state) => state.system.ram,
-    }),
+    ram(): {
+      total: number;
+      used: number;
+      breakdown: { id: string; used: number }[];
+    } {
+      return this.systemStore.ram;
+    },
     src: () => {
       return new URL(`../../assets/icon-system.svg`, import.meta.url).href;
     },
-    isRunningLowOnRam() {
+    isRunningLowOnRam(): boolean {
       if (this.ram && this.ram.total) {
         return this.ram.used / this.ram.total > 0.95;
       }
       return false;
     },
-    isRamFull() {
+    isRamFull(): boolean {
       if (this.ram && this.ram.total) {
         return this.ram.used / this.ram.total > 0.99;
       }
       return false;
     },
-    cardStatus() {
+    cardStatus():
+      | {
+          text: string;
+          variant: "success" | "primary" | "muted" | "danger" | "warning";
+          blink: boolean;
+        }
+      | undefined {
       if (this.isRamFull) {
         return {
           text: "RAM full",
@@ -209,32 +225,22 @@ export default {
           blink: true,
         };
       }
-      return {};
+      return undefined;
     },
   },
   created() {
     // to map app ID's to app names
-    this.$store.dispatch("apps/getAppStore");
-
-    // setTimeout(() => {
-    //   this.ram.used = 3750000000;
-    //   setInterval(() => {
-    //   if (this.ram.used !== 4000000000) {
-    //     this.ram.used += 5000000;
-    //   }
-    //  }, 250);
-    // }, 3000);
+    this.appsStore.getAppStore();
+    this.systemStore.getRam();
   },
   methods: {
-    readableSize(n) {
+    readableSize(n: number) {
       return readableSize(n);
     },
-    getAppName(appId) {
-      const index = this.store.findIndex(({ id }) => id === appId);
-      return index > -1 ? this.store[index]["name"] : "";
+    getAppName(appId: string) {
+      const appStore = this.appsStore.store;
+      return appStore.find(({ id }) => id === appId)?.name || appId;
     },
   },
-};
+});
 </script>
-
-<style lang="scss" scoped></style>

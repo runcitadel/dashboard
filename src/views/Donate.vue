@@ -25,13 +25,13 @@
   </div>
 </template>
 
-<script>
-import CardWidget from "@/components/CardWidget.vue";
+<script lang="ts">
+import { defineComponent } from "vue";
+import CardWidget from "../components/CardWidget.vue";
 
-export default {
+export default defineComponent({
   components: {
     CardWidget,
   },
-  computed: {},
-};
+});
 </script>

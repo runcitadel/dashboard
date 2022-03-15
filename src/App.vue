@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <transition name="loading" mode>
+    <transition name="loading" mode="default">
       <div v-if="isIframe">
         <div
           class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
@@ -19,10 +19,13 @@
           </span>
         </div>
       </div>
-      <loading v-else-if="updating" :progress="updateStatus.progress">
+      <loading
+        v-else-if="systemStore.updateStatus.state === 'installing'"
+        :progress="systemStore.updateStatus.progress"
+      >
         <div class="text-center">
           <small class="text-muted d-block">{{
-            `${updateStatus.description}...`
+            `${systemStore.updateStatus.description}...`
           }}</small>
           <b-alert class="system-alert" variant="warning" show>
             <small
@@ -33,16 +36,26 @@
         </div>
       </loading>
       <shutdown
-        v-else-if="hasShutdown || shuttingDown || rebooting"
-        :has-shutdown="hasShutdown"
-        :shutting-down="shuttingDown"
-        :rebooting="rebooting"
+        v-else-if="
+          systemStore.hasShutdown ||
+          systemStore.shuttingDown ||
+          systemStore.rebooting
+        "
+        :has-shutdown="systemStore.hasShutdown"
+        :shutting-down="systemStore.shuttingDown"
+        :rebooting="systemStore.rebooting"
       >
-        <div v-if="shuttingDown || rebooting" class="text-center">
+        <div
+          v-if="systemStore.shuttingDown || systemStore.rebooting"
+          class="text-center"
+        >
           <b-alert class="system-alert" variant="warning" show>
             <small
               >Please do not refresh this page or turn off your Citadel while it
-              is {{ shuttingDown ? "shutting down" : "rebooting" }}</small
+              is
+              {{
+                systemStore.shuttingDown ? "shutting down" : "rebooting"
+              }}</small
             >
           </b-alert>
         </div>
@@ -54,17 +67,24 @@
   </div>
 </template>
 
-<script>
-import { mapState } from "vuex";
-import delay from "@/helpers/delay.ts";
-import Shutdown from "@/components/Shutdown.vue";
-import Loading from "@/components/Loading.vue";
+<script lang="ts">
+import useSystemStore from "./store/system";
+import useUserStore from "./store/user";
+import delay from "./helpers/delay";
+import Shutdown from "./components/Shutdown.vue";
+import Loading from "./components/Loading.vue";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "App",
   components: {
     Loading,
     Shutdown,
+  },
+  setup() {
+    const systemStore = useSystemStore();
+    const userStore = useUserStore();
+    return { userStore, systemStore };
   },
   data() {
     return {
@@ -72,21 +92,16 @@ export default {
       loading: true,
       loadingProgress: 0,
       loadingPollInProgress: false,
+      loadingInterval: undefined,
+      updateStatusInterval: undefined,
+    } as unknown as {
+      isIframe: boolean;
+      loading: boolean;
+      loadingProgress: number;
+      loadingPollInProgress: boolean;
+      loadingInterval: number;
+      updateStatusInterval: number;
     };
-  },
-  computed: {
-    ...mapState({
-      hasShutdown: (state) => state.system.hasShutdown,
-      shuttingDown: (state) => state.system.shuttingDown,
-      rebooting: (state) => state.system.rebooting,
-      isManagerApiOperational: (state) => state.system.managerApi.operational,
-      isApiOperational: (state) => state.system.api.operational,
-      jwt: (state) => state.user.jwt,
-      updateStatus: (state) => state.system.updateStatus,
-    }),
-    updating() {
-      return this.updateStatus.state === "installing";
-    },
   },
   watch: {
     loading: {
@@ -114,12 +129,12 @@ export default {
         // if updating, check loading status every two seconds
         if (isUpdating) {
           this.updateStatusInterval = window.setInterval(() => {
-            this.$store.dispatch("system/getUpdateStatus");
+            this.systemStore.getUpdateStatus();
           }, 2 * 1000);
         } else {
           //else check every minute
           this.updateStatusInterval = window.setInterval(() => {
-            this.$store.dispatch("system/getUpdateStatus");
+            this.systemStore.getUpdateStatus();
           }, 60 * 1000);
 
           // if it just finished updating, then show success/failure toast
@@ -132,17 +147,21 @@ export default {
               toaster: "b-toaster-bottom-right",
             };
 
-            if (this.updateStatus.state === "failed") {
+            if (this.systemStore.updateStatus.state === "failed") {
               toastOptions.title = "Update failed";
               toastOptions.variant = "danger";
             } else {
-              this.$store.dispatch("system/getAvailableUpdate");
+              this.systemStore.getAvailableUpdate();
             }
 
-            this.$bvToast.toast(this.updateStatus.description, toastOptions);
+            this.$bvToast.toast(
+              this.systemStore.updateStatus.description,
+              toastOptions
+            );
 
             //refresh window to fetch latest code of dashboard
             delay(2000).then(() => {
+              // @ts-expect-error The parameter to reload is non-standard, but supported in some browsers
               window.location.reload(true);
             });
           }
@@ -153,7 +172,7 @@ export default {
   },
   created() {
     //check if system is updating
-    this.$store.dispatch("system/getUpdateStatus");
+    this.systemStore.getUpdateStatus();
 
     //for 100vh consistency
     this.updateViewPortHeightCSS();
@@ -174,7 +193,10 @@ export default {
     },
     async getLoadingStatus() {
       // Skip if previous poll in progress or if system is updating
-      if (this.loadingPollInProgress || this.updating) {
+      if (
+        this.loadingPollInProgress ||
+        this.systemStore.updateStatus.state === "installing"
+      ) {
         return;
       }
 
@@ -183,8 +205,8 @@ export default {
       // First check if manager api is up
       if (this.loadingProgress <= 50) {
         this.loadingProgress = 50;
-        await this.$store.dispatch("system/getManagerApi");
-        if (!this.isManagerApiOperational) {
+        await this.systemStore.getManagerApi();
+        if (!this.systemStore.managerApi.operational) {
           this.loading = true;
           this.loadingPollInProgress = false;
           return;
@@ -203,10 +225,10 @@ export default {
       }*/
 
       // Then trigger auth check
-      if (this.loadingProgress <= 95 && this.jwt) {
+      if (this.loadingProgress <= 95 && this.userStore.jwt) {
         this.loadingProgress = 95;
         try {
-          await this.$store.dispatch("user/refreshJWT");
+          await this.userStore.refreshJWT();
         } catch (error) {
           // it will error if jwt has expired and automatically redirect the user to login page
           null;
@@ -221,7 +243,7 @@ export default {
       setTimeout(() => (this.loading = false), 300);
     },
   },
-};
+});
 </script>
 
 <style lang="scss">

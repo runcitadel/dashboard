@@ -56,10 +56,11 @@
   </div>
 </template>
 
-<script>
-import InputCopy from "@/components/Utility/InputCopy.vue";
+<script lang="ts">
+import { defineComponent } from "vue";
+import InputCopy from "../Utility/InputCopy.vue";
 
-export default {
+export default defineComponent({
   components: {
     InputCopy,
   },
@@ -68,9 +69,5 @@ export default {
       selectedOS: null,
     };
   },
-  computed: {},
-  methods: {},
-};
+});
 </script>
-
-<style lang="scss" scoped></style>

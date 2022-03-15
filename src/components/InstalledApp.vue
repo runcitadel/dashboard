@@ -38,13 +38,15 @@
   </div>
 </template>
 
-<script>
-import { mapState } from "vuex";
+<script lang="ts">
+import { defineComponent } from "vue";
+import useAppsStore from "../store/apps";
+// @ts-expect-error No type definitions for this yet
 import { TrashIcon } from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
 
-import delay from "@/helpers/delay.ts";
+import delay from "../helpers/delay";
 
-export default {
+export default defineComponent({
   components: {
     TrashIcon,
   },
@@ -82,6 +84,12 @@ export default {
       default: false,
     },
   },
+  setup() {
+    const appsStore = useAppsStore();
+    return {
+      appsStore,
+    };
+  },
   data() {
     return {
       isOffline: false,
@@ -89,9 +97,6 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      installedApps: (state) => state.apps.installed,
-    }),
     url: function () {
       if (window.location.origin === "https://node.runcitadel.space") {
         switch (this.id) {
@@ -127,7 +132,7 @@ export default {
     this.checkIfAppIsOffline = false;
   },
   methods: {
-    uninstall(name, appId) {
+    uninstall(name: string, appId: string) {
       if (
         !window.confirm(
           `Are you sure you want to uninstall ${name}? This is will also delete all of its data.`
@@ -135,9 +140,9 @@ export default {
       ) {
         return;
       }
-      this.$store.dispatch("apps/uninstall", appId);
+      this.appsStore.uninstall(appId);
     },
-    openApp(event) {
+    openApp(event: Event) {
       if (this.torOnly && window.location.origin.indexOf(".onion") < 0) {
         event.preventDefault();
         alert(
@@ -166,7 +171,7 @@ export default {
       }
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

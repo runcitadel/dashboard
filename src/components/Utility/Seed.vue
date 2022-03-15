@@ -62,15 +62,19 @@
   </div>
 </template>
 
-<script>
-import ScrambledText from "@/components/Utility/ScrambledText.vue";
+<script lang="ts">
+import { defineComponent, type PropType } from "vue";
+import ScrambledText from "./ScrambledText.vue";
 
-export default {
+export default defineComponent({
   components: {
     ScrambledText,
   },
   props: {
-    words: Array,
+    words: {
+      type: Array as PropType<string[]>,
+      required: true,
+    },
     recover: {
       type: Boolean,
       default: false,
@@ -111,11 +115,11 @@ export default {
   },
   computed: {},
   watch: {
-    inputWords: function () {
+    inputWords() {
       // Emit "complete" if user has entered all recovery words
       if (
         this.inputWords.length === 24 &&
-        !this.inputWords.includes(undefined) &&
+        !this.inputWords.includes(undefined as unknown as string) &&
         !this.inputWords.includes("")
       ) {
         this.$emit("complete");
@@ -132,7 +136,7 @@ export default {
         this.index -= 1;
         // Autofocus input field if user is recovering
         if (this.recover) {
-          this.$refs["input-words-input"].focus();
+          (this.$refs["input-words-input"] as HTMLInputElement).focus();
         }
       }
     },
@@ -141,7 +145,7 @@ export default {
         this.index += 1;
         // Autofocus input field if user is recovering
         if (this.recover) {
-          this.$refs["input-words-input"].focus();
+          (this.$refs["input-words-input"] as HTMLInputElement).focus();
         }
         // Emit "complete" on reaching the last word
         else if (this.index === this.words.length - 1) {
@@ -150,7 +154,7 @@ export default {
       }
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

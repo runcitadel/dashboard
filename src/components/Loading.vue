@@ -4,7 +4,6 @@
   >
     <img alt="Citadel" src="@/assets/logo.svg" height="200" class="mb-5 logo" />
 
-    <!-- <b-spinner class="my-4" variant="primary"></b-spinner> -->
     <b-progress
       :value="progress"
       class="mb-2 w-25"
@@ -17,15 +16,12 @@
   </div>
 </template>
 
-<script>
-export default {
-  components: {},
-  props: { progress: Number },
-  data() {
-    return {};
-  },
-  methods: {},
-};
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  props: { progress: { type: Number, default: 0 } },
+});
 </script>
 
 <style lang="scss">

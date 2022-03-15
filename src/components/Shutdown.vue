@@ -25,19 +25,16 @@
   </div>
 </template>
 
-<script>
-export default {
-  components: {},
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
   props: {
     hasShutdown: Boolean,
     shuttingDown: Boolean,
     rebooting: Boolean,
   },
-  data() {
-    return {};
-  },
-  methods: {},
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -2,9 +2,9 @@ import type { Channel } from "@runcitadel/sdk";
 type Channel_extended = Channel & {
   type?: string;
 };
-import { Module } from "vuex";
-import { RootState } from "..";
-import { toPrecision } from "../../helpers/units";
+import { defineStore } from "pinia";
+import { toPrecision } from "../helpers/units";
+import useSdkStore from "./sdk";
 
 enum Invoice_InvoiceState {
   OPEN = 0,
@@ -64,23 +64,25 @@ export interface State {
   uris: string[];
   numPendingChannels: number;
   numActiveChannels: number;
-  numPeers: -1;
-  channels: [
-    { type: "loading" },
-    { type: "loading" },
-    { type: "loading" },
-    { type: "loading" }
-  ];
+  numPeers: number;
+  channels:
+    | [
+        { type: "loading" },
+        { type: "loading" },
+        { type: "loading" },
+        { type: "loading" }
+      ]
+    | ParsedChannel[];
   connectionCode: string;
   maxSend: number;
   maxReceive: number;
   transactions: (CustomTransactionType | { type: "loading" })[];
   confirmedTransactions: [];
   pendingTransactions: [];
+  sdkStore: ReturnType<typeof useSdkStore>;
 }
 export type ParsedChannel = Channel & {
   type?: string | undefined;
-} & {
   status:
     | "Online"
     | "Offline"
@@ -94,9 +96,9 @@ export type ParsedChannel = Channel & {
   purpose: string;
 };
 
-const lightningModule: Module<State, RootState> = {
+export default defineStore("lightning", {
   // Initial state
-  state: () => ({
+  state: (): State => ({
     operational: false,
     unlocked: false,
     version: "",
@@ -138,168 +140,76 @@ const lightningModule: Module<State, RootState> = {
     ],
     confirmedTransactions: [],
     pendingTransactions: [],
+    sdkStore: useSdkStore(),
   }),
-  mutations: {
-    isOperational(state, operational) {
-      state.operational = operational;
-    },
-
-    setSync(state, sync) {
-      state.percent = Number(toPrecision(parseFloat(sync.percent) * 100, 2));
-      state.blockHeight = sync.knownBlockCount;
-      state.currentBlock = sync.processedBlocks;
-    },
-
-    isUnlocked(state, unlocked) {
-      state.unlocked = unlocked;
-    },
-
-    setVersion(state, version) {
-      state.version = version;
-    },
-
-    setImplementation(state, implementation) {
-      state.implementation = implementation || "lnd";
-    },
-
-    setConnectionCode(state, code) {
-      state.connectionCode = code;
-    },
-
-    setNumPeers(state, numPeers) {
-      state.numPeers = numPeers;
-    },
-
-    setNumActiveChannels(state, numActiveChannels) {
-      state.numActiveChannels = numActiveChannels;
-    },
-
-    setChannels(state, channels) {
-      state.channels = channels;
-    },
-
-    setBalance(state, balance) {
-      if (balance.confirmed !== undefined) {
-        state.balance.confirmed = parseInt(balance.confirmed);
-      }
-
-      if (balance.pending !== undefined) {
-        state.balance.pending = parseInt(balance.pending);
-      }
-
-      state.balance.total = state.balance.confirmed;
-    },
-
-    setMaxReceive(state, maxReceive) {
-      state.maxReceive = maxReceive;
-    },
-
-    setMaxSend(state, maxSend) {
-      state.maxSend = maxSend;
-    },
-
-    setTransactions(state, transactions) {
-      state.transactions = transactions;
-    },
-
-    setConfirmedTransactions(state, confirmedTransactions) {
-      state.confirmedTransactions = confirmedTransactions;
-    },
-
-    setPendingTransactions(state, pendingTransactions) {
-      state.pendingTransactions = pendingTransactions;
-    },
-
-    setPubKey(state, pubkey) {
-      state.pubkey = pubkey;
-    },
-
-    setAlias(state, alias) {
-      state.alias = alias;
-    },
-
-    setUris(state, uris) {
-      state.uris = uris;
-    },
-
-    setLndConnectUrls(state, urls) {
-      state.lndConnectUrls = urls;
-    },
-  },
   actions: {
-    async getStatus({ commit, rootState }) {
-      const status = await rootState.citadel.middleware.lnd.info.getStatus();
+    async getStatus() {
+      const status =
+        await this.sdkStore.citadel.middleware.lnd.info.getStatus();
       if (status) {
-        commit("isOperational", status.operational);
-        commit("isUnlocked", status.unlocked);
+        this.operational = status.operational;
+        this.unlocked = status.unlocked;
       }
     },
 
-    async getSync({ commit, rootState }) {
-      const sync = await rootState.citadel.middleware.lnd.info.syncStatus();
+    async getSync() {
+      const sync = await this.sdkStore.citadel.middleware.lnd.info.syncStatus();
       if (sync && sync.percent) {
-        commit("setSync", sync);
+        this.percent = Number(toPrecision(parseFloat(sync.percent) * 100, 2));
+        this.blockHeight = sync.knownBlockCount;
+        this.currentBlock = sync.processedBlocks;
       }
     },
 
     //basically fetches everything
-    async getLndPageData({ commit, dispatch, rootState }) {
-      const data = await rootState.citadel.middleware.pages.lightning();
-      const versionInfo = await rootState.citadel.middleware.lnd.info.version();
+    async getLndPageData() {
+      const data = await this.sdkStore.citadel.middleware.pages.lightning();
+      const versionInfo =
+        await this.sdkStore.citadel.middleware.lnd.info.version();
 
       if (data) {
         const channels = data.channels || [];
-        dispatch("getChannels", channels);
+        await this.getChannels(channels);
 
         const lightningInfo = data.lightningInfo;
 
-        commit("setAlias", lightningInfo.alias);
-        commit("setUris", lightningInfo.uris);
-        commit("setPubKey", lightningInfo.identityPubkey);
-        commit("setVersion", lightningInfo.version);
-        commit("setNumPeers", lightningInfo.numPeers);
-        commit("setNumActiveChannels", lightningInfo.numActiveChannels);
+        this.alias = lightningInfo.alias;
+        this.uris = lightningInfo.uris;
+        this.pubkey = lightningInfo.identityPubkey;
+        this.version = lightningInfo.version;
+        this.numPeers = parseInt(lightningInfo.numPeers.toString());
+        this.numActiveChannels = parseInt(
+          lightningInfo.numActiveChannels.toString()
+        );
       }
 
       if (versionInfo) {
-        commit("setVersion", versionInfo.version);
-        commit("setImplementation", versionInfo.implementation);
+        this.version = versionInfo.version;
+        this.implementation = versionInfo.implementation;
       }
     },
 
-    //basically fetches everything
-    async getVersionInfo({ commit, rootState }) {
-      const versionInfo = await rootState.citadel.middleware.lnd.info.version();
+    async getVersionInfo() {
+      const versionInfo =
+        await this.sdkStore.citadel.middleware.lnd.info.version();
 
       if (versionInfo) {
-        commit("setVersion", versionInfo.version);
-        commit("setImplementation", versionInfo.implementation);
+        this.version = versionInfo.version;
+        this.implementation = versionInfo.implementation;
       }
     },
 
-    async getConnectionCode({ commit, rootState }) {
-      const uris = await rootState.citadel.middleware.lnd.info.publicUris();
+    async getConnectionCode() {
+      const uris = await this.sdkStore.citadel.middleware.lnd.info.publicUris();
 
       if (uris && uris.length > 0) {
-        commit("setConnectionCode", uris[0]);
+        this.connectionCode = uris[0];
       } else {
-        commit("setConnectionCode", "Could not determine lnd connection code");
+        this.connectionCode = "Could not determine lnd connection code";
       }
     },
 
-    // Deprecated, this endpoint returns balance data minus estimated channel closing fees
-    // These estimates have caused many customers to be confused by the numbers displayed in the dashboard (leaky sats)
-    // Instead we can calculate our total balance by getting the sum of each channel's localBalance
-    async getBalance({ commit, rootState }) {
-      const balance =
-        await rootState.citadel.middleware.lnd.wallet.lightningBalance();
-
-      if (balance) {
-        commit("setBalance", { confirmed: balance });
-      }
-    },
-
-    async getChannels({ commit, rootState }, preFetchedChannels = []) {
+    async getChannels(preFetchedChannels: Channel[] = []) {
       let rawChannels: (Channel_extended & {
         status?:
           | "Online"
@@ -318,7 +228,7 @@ const lightningModule: Module<State, RootState> = {
         //eg when used by lnd page
         rawChannels = preFetchedChannels;
       } else {
-        rawChannels = await rootState.citadel.middleware.lnd.channel.list();
+        rawChannels = await this.sdkStore.citadel.middleware.lnd.channel.list();
       }
 
       const channels: ParsedChannel[] = [];
@@ -376,24 +286,25 @@ const lightningModule: Module<State, RootState> = {
           channel.purpose = "Managed by autopilot";
         }*/
 
-          channels.push(channel);
+          channels.push(channel as ParsedChannel);
         });
-        commit("setChannels", channels);
-        commit("setBalance", {
+        this.channels = channels;
+        this.balance = {
+          total: confirmedBalance + pendingBalance,
           confirmed: confirmedBalance,
           pending: pendingBalance,
-        });
-        commit("setMaxReceive", maxReceive);
-        commit("setMaxSend", maxSend);
+        };
+        this.maxReceive = maxReceive;
+        this.maxSend = maxSend;
       }
     },
 
-    async getTransactions({ commit, state, rootState }) {
+    async getTransactions() {
       // Get invoices and payments
       const invoices =
-        await rootState.citadel.middleware.lnd.lightning.invoices();
+        await this.sdkStore.citadel.middleware.lnd.lightning.invoices();
       const payments =
-        await rootState.citadel.middleware.lnd.lightning.getPayments();
+        await this.sdkStore.citadel.middleware.lnd.lightning.getPayments();
 
       if (!invoices || !payments) {
         return;
@@ -420,6 +331,7 @@ const lightningModule: Module<State, RootState> = {
                 : new Date(Number(tx.creationDate) * 1000),
             description: tx.memo || "",
             expiresOn: new Date(
+              // @ts-expect-error TODO: Investigate this
               (Number(tx.creationDate) + Number(tx.expiry)) * 1000
             ),
             paymentRequest: tx.paymentRequest,
@@ -431,7 +343,7 @@ const lightningModule: Module<State, RootState> = {
       if (payments) {
         outgoingTransactions = payments.map((tx) => {
           //load tx from state to copy description
-          const preFetchedTx = state.transactions.find(
+          const preFetchedTx = this.transactions.find(
             (trx) =>
               trx.type === "outgoing" &&
               trx.paymentPreImage === tx.paymentPreimage
@@ -461,13 +373,13 @@ const lightningModule: Module<State, RootState> = {
       //filter out new outgoing payments
       const newOutgoingTransactions = outgoingTransactions.filter(
         (tx) =>
-          !(state.transactions as CustomTransactionType[]).some(
+          !(this.transactions as CustomTransactionType[]).some(
             (trx) => trx.paymentPreImage === tx.paymentPreImage
           )
       );
 
       //update $store
-      commit("setTransactions", transactions);
+      this.transactions = transactions as CustomTransactionType[];
 
       // Fetch descriptions of all new outgoing transactions
       for (const tx of newOutgoingTransactions) {
@@ -478,13 +390,13 @@ const lightningModule: Module<State, RootState> = {
 
         try {
           const invoiceDetails =
-            await rootState.citadel.middleware.lnd.lightning.parsePaymentRequest(
+            await this.sdkStore.citadel.middleware.lnd.lightning.parsePaymentRequest(
               tx.paymentRequest
             );
           if (invoiceDetails) {
             //load state's txs
-            const updatedTransactions =
-              state.transactions as CustomTransactionType[];
+            const updatedTransactions = this
+              .transactions as CustomTransactionType[];
 
             //find tx to update
             const txIndex = updatedTransactions.findIndex(
@@ -495,7 +407,7 @@ const lightningModule: Module<State, RootState> = {
               //const outgoingTx = updatedTransactions[txIndex];
               //update tx description and state
               //outgoingTx.description = invoiceDetails.description;
-              commit("setTransactions", transactions);
+              this.transactions = transactions as CustomTransactionType[];
             }
           }
         } catch (error) {
@@ -504,22 +416,23 @@ const lightningModule: Module<State, RootState> = {
       }
     },
 
-    async getLndConnectUrls({ commit, rootState }) {
-      const urls = await rootState.citadel.manager.system.getLndConnectUrls();
+    async getLndConnectUrls() {
+      const urls =
+        await this.sdkStore.citadel.manager.system.getLndConnectUrls();
       if (urls) {
-        commit("setLndConnectUrls", urls);
+        this.lndConnectUrls = urls;
       }
     },
   },
   getters: {
-    status(state) {
+    status() {
       const data = {
         class: "loading",
         text: "Loading...",
       };
 
-      if (state.operational) {
-        if (state.unlocked) {
+      if (this.operational) {
+        if (this.unlocked) {
           data.class = "active";
           data.text = "Active";
         } else {
@@ -531,9 +444,4 @@ const lightningModule: Module<State, RootState> = {
       return data;
     },
   },
-};
-
-export default {
-  namespaced: true,
-  ...lightningModule,
-};
+});
