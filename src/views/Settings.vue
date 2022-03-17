@@ -147,6 +147,7 @@
                 <input-password
                   ref="password"
                   v-model="currentPassword"
+                  placeholder="current password"
                   input-group-class="neu-input-group"
                   :input-class="[
                     isIncorrectPassword ? 'incorrect-password' : '',
@@ -161,6 +162,7 @@
                 <input-password
                   ref="password"
                   v-model="newPassword"
+                  placeholder="new password"
                   input-group-class="neu-input-group"
                   input-class="form-control form-control-lg neu-input w-100"
                   :disabled="isChangingPassword"
@@ -172,6 +174,7 @@
                 <input-password
                   ref="password"
                   v-model="confirmNewPassword"
+                  placeholder="confirm password"
                   input-group-class="neu-input-group"
                   input-class="form-control form-control-lg neu-input w-100"
                   :disabled="isChangingPassword"
@@ -555,7 +558,7 @@ import { BIconCheckCircleFill } from "bootstrap-vue/src/index.js";
 import useSdkStore from "../store/sdk";
 import useSystemStore from "../store/system";
 import useUserStore from "../store/user";
-import { defineComponent, type DefineComponent } from "vue";
+import { defineComponent, DefineComponent } from "vue";
 
 export default defineComponent({
   components: {
@@ -768,6 +771,7 @@ export default defineComponent({
       );
 
       this.isChangingPassword = false;
+      this.$bvModal.hide("change-password-modal");
 
       // Remove passwords from view
       this.currentPassword = "";

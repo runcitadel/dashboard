@@ -122,6 +122,7 @@ body {
 
     .dropdown-item:hover, .dropdown-item:active {
       background: #2a3244 !important;
+      color: var(--bs-body-color);
     }
 
     .transaction-description-text, .wallet-transactions-container * {
