@@ -158,7 +158,7 @@ __metadata:
   dependencies:
     "@aarondewes/vue-slider-component": ^3.2.16
     "@bitcoin-design/bitcoin-icons-vue": ^0.1.9
-    "@runcitadel/sdk": ^0.3.3
+    "@runcitadel/sdk": ^0.3.4
     "@types/node": ^17.0.21
     "@typescript-eslint/eslint-plugin": ^5.13.0
     "@typescript-eslint/parser": ^5.13.0
@@ -187,15 +187,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@runcitadel/sdk@npm:^0.3.3":
-  version: 0.3.3
-  resolution: "@runcitadel/sdk@npm:0.3.3"
+"@runcitadel/sdk@npm:^0.3.4":
+  version: 0.3.4
+  resolution: "@runcitadel/sdk@npm:0.3.4"
   dependencies:
-    undici: ^4.14.1
+    undici: ^4.15.1
   peerDependencies:
     "@types/react": ^17.0.39
     react: ^17.0.2
-  checksum: 3fbddb297c84a66db19a99c4cad1964dea31cd39814f89c5f95d531ff7100f592553675f4df375008d4064e96f0d905ab1479c1f544b510c6040ef11c2b3bff4
+  checksum: 23cdfde3594f916f7a4b7d79856915d6ce474a83e1f96e0247767d2b8fcc6b0be4c181ef50cab37b11df8b97ec4601314b1949146c5e0ea833fc54a7b7b59752
   languageName: node
   linkType: hard
 
@@ -2664,7 +2664,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:^4.14.1":
+"undici@npm:^4.15.1":
   version: 4.15.1
   resolution: "undici@npm:4.15.1"
   checksum: 13b264d4966de105e211e1ca9433e2d8be5fcfe85e4cafea6b97c4685df3364bc8bc9e9b27796ce400e8a1e45e92a65b1453fcb499557e4f5c013af18f194852
