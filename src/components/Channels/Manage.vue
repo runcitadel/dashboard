@@ -245,7 +245,7 @@ export default defineComponent({
           this.toast.success("Lightning Network", "Channel closed");
         }, 200);
       } catch (err: unknown) {
-        this.toast.success("Error", JSON.stringify(err));
+        this.toast.error("Error", JSON.stringify(err));
       }
       this.isClosing = false;
     },
