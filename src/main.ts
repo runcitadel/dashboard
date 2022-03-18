@@ -2,17 +2,18 @@
 import { createApp, configureCompat } from "vue";
 import BootstrapVue from "bootstrap-vue/src/index.js";
 import { createPinia } from "pinia";
-
-const app = createApp(App);
-app.use(createPinia());
+import Toast, { PluginOptions } from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
 import App from "./App.vue";
 import router from "./router/index";
-
 import { satsToBtc } from "./helpers/units";
 import type useBitcoinStore from "./store/bitcoin";
 import type useSystemStore from "./store/system";
 
+const app = createApp(App);
+
+app.use(createPinia());
 app.use(router);
 
 app.config.globalProperties.$filters = {
@@ -62,4 +63,23 @@ configureCompat({
 });
 
 app.use(BootstrapVue);
+
+const toastOptions: PluginOptions = {
+  position: "bottom-right",
+  timeout: 3000,
+  closeOnClick: true,
+  pauseOnFocusLoss: true,
+  pauseOnHover: true,
+  newestOnTop: true,
+  draggable: false,
+  draggablePercent: 0.6,
+  showCloseButtonOnHover: true,
+  hideProgressBar: true,
+  closeButton: "button",
+  icon: true,
+  rtl: false,
+};
+
+app.use(Toast, toastOptions);
+
 app.mount("#app");

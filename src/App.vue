@@ -70,6 +70,7 @@
 <script lang="ts">
 import useSystemStore from "./store/system";
 import useUserStore from "./store/user";
+import useToast from "./utils/toast";
 import delay from "./helpers/delay";
 import Shutdown from "./components/Shutdown.vue";
 import Loading from "./components/Loading.vue";
@@ -84,7 +85,8 @@ export default defineComponent({
   setup() {
     const systemStore = useSystemStore();
     const userStore = useUserStore();
-    return { userStore, systemStore };
+    const toast = useToast();
+    return { userStore, systemStore, toast };
   },
   data() {
     return {
@@ -139,24 +141,18 @@ export default defineComponent({
 
           // if it just finished updating, then show success/failure toast
           if (wasUpdating) {
-            const toastOptions = {
-              title: "Update successful",
-              autoHideDelay: 2000,
-              variant: "success",
-              solid: true,
-              toaster: "b-toaster-bottom-right",
-            };
-
             if (this.systemStore.updateStatus.state === "failed") {
-              toastOptions.title = "Update failed";
-              toastOptions.variant = "danger";
+              this.toast.error(
+                "Update failed",
+                this.systemStore.updateStatus.description
+              );
             } else {
               this.systemStore.getAvailableUpdate();
             }
 
-            this.$bvToast.toast(
-              this.systemStore.updateStatus.description,
-              toastOptions
+            this.toast.success(
+              "Update successful",
+              this.systemStore.updateStatus.description
             );
 
             //refresh window to fetch latest code of dashboard

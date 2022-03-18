@@ -88,6 +88,7 @@
 import { defineComponent } from "vue";
 
 import { satsToBtc, btcToSats } from "../../helpers/units";
+import useToast from "../../utils/toast";
 
 import SatsBtcSwitch from "../Utility/SatsBtcSwitch.vue";
 import FeeSelector from "../Utility/FeeSelector.vue";
@@ -145,7 +146,8 @@ export default defineComponent({
     const bitcoinStore = useBitcoinStore();
     const sdkStore = useSdkStore();
     const systemStore = useSystemStore();
-    return { bitcoinStore, sdkStore, systemStore };
+    const toast = useToast();
+    return { bitcoinStore, sdkStore, systemStore, toast };
   },
   data(): data {
     return {
@@ -306,15 +308,9 @@ export default defineComponent({
         this.$emit("channelopen");
         //channel
         setTimeout(() => {
-          this.$bvToast.toast(
-            `Channel of ${this.fundingAmount} Sats opened successfully`,
-            {
-              title: "Lightning Network",
-              autoHideDelay: 3000,
-              variant: "success",
-              solid: true,
-              toaster: "b-toaster-bottom-right",
-            }
+          this.toast.success(
+            "Lightning Network",
+            `Channel of ${this.fundingAmount} Sats opened successfully`
           );
         }, 200);
       } catch (error) {

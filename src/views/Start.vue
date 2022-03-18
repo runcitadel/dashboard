@@ -161,6 +161,7 @@ import useBitcoinStore from "../store/bitcoin";
 import useLightningStore from "../store/lightning";
 import useAppsStore from "../store/apps";
 import useSdkStore from "../store/sdk";
+import useToast from "../utils/toast";
 
 import delay from "../helpers/delay";
 
@@ -227,6 +228,8 @@ export default defineComponent({
     const lightningStore = useLightningStore();
     const appsStore = useAppsStore();
     const sdkStore = useSdkStore();
+    const toast = useToast();
+
     return {
       sdkStore,
       appsStore,
@@ -234,6 +237,7 @@ export default defineComponent({
       systemStore,
       bitcoinStore,
       lightningStore,
+      toast,
     };
   },
   data(): {
@@ -369,13 +373,7 @@ export default defineComponent({
         } catch (error) {
           this.isRegistering = false;
           if (error) {
-            this.$bvToast.toast(`${JSON.stringify(error)}`, {
-              title: "Error",
-              autoHideDelay: 3000,
-              variant: "danger",
-              solid: true,
-              toaster: "b-toaster-top-center",
-            });
+            this.toast.error("Error", JSON.stringify(error));
           }
           //return;
         }
@@ -396,8 +394,8 @@ export default defineComponent({
           ],
         });*/
 
-       this.lndUnlockInterval = window.setInterval(async () => {
-         this.lightningStore.getStatus();
+        this.lndUnlockInterval = window.setInterval(async () => {
+          this.lightningStore.getStatus();
           if (this.lightningStore.unlocked) {
             return window.clearInterval(this.lndUnlockInterval);
           }
