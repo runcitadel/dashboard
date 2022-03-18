@@ -186,6 +186,7 @@ import { defineComponent } from "vue";
 import useBitcoinStore from "../../store/bitcoin";
 import useSdkStore from "../../store/sdk";
 import useSystemStore from "../../store/system";
+import useToast from "../../utils/toast";
 
 import Bar from "../Channels/Bar.vue";
 
@@ -204,7 +205,8 @@ export default defineComponent({
     const bitcoinStore = useBitcoinStore();
     const sdkStore = useSdkStore();
     const systemStore = useSystemStore();
-    return { bitcoinStore, sdkStore, systemStore };
+    const toast = useToast();
+    return { bitcoinStore, sdkStore, systemStore, toast };
   },
   data() {
     return {
@@ -240,22 +242,10 @@ export default defineComponent({
         );
         this.$emit("channelclose");
         setTimeout(() => {
-          this.$bvToast.toast(`Channel closed`, {
-            title: "Lightning Network",
-            autoHideDelay: 3000,
-            variant: "success",
-            solid: true,
-            toaster: "b-toaster-bottom-right",
-          });
+          this.toast.success("Lightning Network", "Channel closed");
         }, 200);
       } catch (err: unknown) {
-        this.$bvToast.toast(JSON.stringify(err), {
-          title: "Error",
-          autoHideDelay: 3000,
-          variant: "danger",
-          solid: true,
-          toaster: "b-toaster-bottom-right",
-        });
+        this.toast.success("Error", JSON.stringify(err));
       }
       this.isClosing = false;
     },

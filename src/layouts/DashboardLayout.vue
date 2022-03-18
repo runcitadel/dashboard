@@ -235,6 +235,7 @@ import useLightningStore from "../store/lightning";
 import useAppsStore from "../store/apps";
 
 import { readableSize } from "../helpers/size";
+import useToast from "../utils/toast";
 import AuthenticatedVerticalNavbar from "../components/AuthenticatedVerticalNavbar.vue";
 // @ts-expect-error No type definitions for this yet
 import { BellIcon } from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
@@ -253,12 +254,14 @@ export default defineComponent({
     const bitcoinStore = useBitcoinStore();
     const lightningStore = useLightningStore();
     const appsStore = useAppsStore();
+    const toast = useToast();
     return {
       appsStore,
       userStore,
       systemStore,
       bitcoinStore,
       lightningStore,
+      toast,
     };
   },
   data() {
@@ -376,13 +379,7 @@ export default defineComponent({
           }
         }, 2 * 1000);
       } catch (error) {
-        this.$bvToast.toast(`Unable to start the update process`, {
-          title: "Error",
-          autoHideDelay: 3000,
-          variant: "danger",
-          solid: true,
-          toaster: "b-toaster-bottom-right",
-        });
+        this.toast.error("Error", "Unable to start the update process");
       }
     },
     readableSize(n: number) {
