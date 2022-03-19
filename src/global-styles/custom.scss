@@ -400,6 +400,14 @@ button {
 
 // toasts
 
+.Vue-Toastification__toast--success {
+  background: var(--bs-success);
+}
+
+.Vue-Toastification__toast--error {
+  background: var(--bs-danger);
+}
+
 .b-toast {
   .toast {
     outline: none !important;

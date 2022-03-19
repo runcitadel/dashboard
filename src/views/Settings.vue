@@ -680,27 +680,15 @@ export default defineComponent({
         this.isEnablingTwoFactorAuth = false;
       } catch (error) {
         if (error) {
-          this.$bvToast.toast(JSON.stringify(error), {
-            title: "Error",
-            autoHideDelay: 3000,
-            variant: "danger",
-            solid: true,
-            toaster: "b-toaster-bottom-right",
-          });
+          this.toast.error("Error", JSON.stringify(error));
         }
         this.isEnablingTwoFactorAuth = false;
         return;
       }
 
-      this.$bvToast.toast(
-        `You've successfully enabled two-factor authentication`,
-        {
-          title: "2FA enabled",
-          autoHideDelay: 3000,
-          variant: "success",
-          solid: true,
-          toaster: "b-toaster-bottom-right",
-        }
+      this.toast.success(
+        "2FA enabled",
+        "You've successfully enabled two-factor authentication"
       );
 
       this.userStore.getTotpEnabledStatus();
@@ -716,27 +704,15 @@ export default defineComponent({
         this.isDisablingTwoFactorAuth = false;
       } catch (error) {
         if (error && (error as Error).message) {
-          this.$bvToast.toast((error as Error).message, {
-            title: "Error",
-            autoHideDelay: 3000,
-            variant: "danger",
-            solid: true,
-            toaster: "b-toaster-bottom-right",
-          });
+          this.toast.error("Error", (error as Error).message);
         }
         this.isDisablingTwoFactorAuth = false;
         return;
       }
 
-      this.$bvToast.toast(
-        `You've successfully disabled two-factor authentication`,
-        {
-          title: "2FA disabled",
-          autoHideDelay: 3000,
-          variant: "success",
-          solid: true,
-          toaster: "b-toaster-bottom-right",
-        }
+      this.toast.success(
+        "2FA disabled",
+        "You've successfully disabled two-factor authentication"
       );
 
       this.userStore.getTotpEnabledStatus();
@@ -759,15 +735,9 @@ export default defineComponent({
         return;
       }
 
-      this.$bvToast.toast(
-        `You've successfully changed your Citadel's password`,
-        {
-          title: "Password Changed",
-          autoHideDelay: 3000,
-          variant: "success",
-          solid: true,
-          toaster: "b-toaster-bottom-right",
-        }
+      this.toast.success(
+        "Password Changed",
+        "You've successfully changed your Citadel's password"
       );
 
       this.isChangingPassword = false;
@@ -837,27 +807,15 @@ export default defineComponent({
       }
 
       // Shutdown request
-      let toastText = "";
-      let toastOptions: {
-        autoHideDelay: number;
-        solid: boolean;
-        toaster: string;
-        variant?: string;
-        title?: string;
-      } = {
-        autoHideDelay: 3000,
-        solid: true,
-        toaster: "b-toaster-bottom-right",
-      };
       try {
         await this.systemStore.shutdown();
+        this.toast.success("Shutdown successful");
       } catch (e) {
-        toastText = "Shutdown failed";
-        toastOptions.title =
-          "Something went wrong and Citadel was not able to shutdown";
-        toastOptions.variant = "danger";
+        this.toast.error(
+          "Shutdown failed",
+          "Something went wrong and Citadel was not able to shutdown"
+        );
       }
-      this.$bvToast.toast(toastText, toastOptions);
     },
     rebootPrompt() {
       // Reset any cached hasRebooted value from previous reboot
@@ -870,13 +828,10 @@ export default defineComponent({
         try {
           await this.systemStore.reboot();
         } catch (e) {
-          this.$bvToast.toast("Reboot failed", {
-            title: "Something went wrong and Citadel was not able to reboot",
-            autoHideDelay: 3000,
-            variant: "danger",
-            solid: true,
-            toaster: "b-toaster-bottom-right",
-          });
+          this.toast.error(
+            "Reboot failed",
+            "Something went wrong and Citadel was not able to reboot"
+          );
         }
       }
     },
