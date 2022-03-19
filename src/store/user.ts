@@ -95,16 +95,17 @@ export default defineStore("user", {
       this.totpEnabled = totpEnabled;
     },
 
-    async getSeed(plainTextPassword?: string) {
+    async getSeed(auth?: { password: string; totpToken?: string }) {
       let rawSeed: string[];
 
       //first check if user is registered or not
       await this.getRegistered();
 
       //get user's stored seed if already registered
-      if (this.registered && plainTextPassword) {
+      if (this.registered && auth?.password) {
         rawSeed = await this.sdkStore.citadel.manager.auth.seed(
-          plainTextPassword
+          auth.password,
+          auth.totpToken
         );
       } else {
         //get a new seed if new user
