@@ -324,27 +324,6 @@
         <div class="px-3 px-lg-4 py-1"></div>
       </card-widget>
 
-      <card-widget header="Appearance" class="card-app-list">
-        <div class="d-block pt-2"></div>
-
-        <div class="pt-0">
-          <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
-            <div>
-              <span class="d-block">Theme</span>
-              <small class="d-block" style="opacity: 0.4"
-                >{{
-                  uiStore.userTheme === "light" ? "Light" : "Dark"
-                }}
-                Theme</small
-              >
-            </div>
-            <b-button variant="outline-primary" size="sm" @click="toggleTheme">
-              Switch
-            </b-button>
-          </div>
-        </div>
-      </card-widget>
-
       <card-widget
         header="System"
         class="card-app-list"
@@ -579,7 +558,6 @@ import { BIconCheckCircleFill } from "bootstrap-vue/src/index.js";
 import useSdkStore from "../store/sdk";
 import useSystemStore from "../store/system";
 import useUserStore from "../store/user";
-import useUiStore from "../store/ui";
 import { defineComponent, DefineComponent } from "vue";
 import useToast from "../utils/toast";
 
@@ -603,13 +581,11 @@ export default defineComponent({
     const sdkStore = useSdkStore();
     const systemStore = useSystemStore();
     const userStore = useUserStore();
-    const uiStore = useUiStore();
     const toast = useToast();
-    return { sdkStore, systemStore, userStore, uiStore, toast };
+    return { sdkStore, systemStore, userStore, toast };
   },
   data() {
     return {
-      userTheme: "light",
       currentPassword: "",
       isIncorrectPassword: false,
       newPassword: "",
@@ -624,7 +600,6 @@ export default defineComponent({
       showDmesg: false,
       authenticatorToken: "",
     } as {
-      userTheme: "light" | "dark";
       currentPassword: string;
       isIncorrectPassword: boolean;
       newPassword: string;
@@ -822,10 +797,6 @@ export default defineComponent({
       a.download = fileName;
       a.click();
       window.URL.revokeObjectURL(url);
-    },
-    toggleTheme() {
-      const theme = this.uiStore.userTheme === "light" ? "dark" : "light";
-      this.uiStore.setTheme(theme);
     },
     async shutdownPrompt() {
       // Get user consent first

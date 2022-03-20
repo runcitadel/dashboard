@@ -37,14 +37,27 @@
           >
 
           <div
-            class="nav-hamburger-icon d-lg-none d-xl-none ms-1"
+            class="toggle-theme-icon d-flex align-items-center"
+            @click="toggleTheme"
+          >
+            <div v-if="uiStore.userTheme === 'light'" class="icon-24px">
+              <MoonIcon />
+            </div>
+            <div v-if="uiStore.userTheme === 'dark'" class="icon-24px">
+              <SunIcon />
+            </div>
+          </div>
+
+          <div
+            class="nav-hamburger-icon d-lg-none d-xl-none ms-3"
             :class="{ active: uiStore.isMobileMenuOpen }"
             @click="toggleMobileMenu"
           >
             <div></div>
           </div>
+
           <b-nav-item-dropdown
-            class="d-none d-lg-block d-xl-block"
+            class="d-none d-lg-block d-xl-block ms-2"
             right
             no-caret
           >
@@ -239,7 +252,11 @@ import { readableSize } from "../helpers/size";
 import useToast from "../utils/toast";
 import AuthenticatedVerticalNavbar from "../components/AuthenticatedVerticalNavbar.vue";
 // @ts-expect-error No type definitions for this yet
-import { BellIcon } from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
+import {
+  BellIcon,
+  SunIcon,
+  MoonIcon,
+} from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
 import { BIconExclamationCircle } from "bootstrap-vue/src/index.js";
 import { defineComponent } from "vue";
 
@@ -247,6 +264,8 @@ export default defineComponent({
   components: {
     AuthenticatedVerticalNavbar,
     BellIcon,
+    SunIcon,
+    MoonIcon,
     BIconExclamationCircle,
   },
   setup() {
@@ -337,6 +356,10 @@ export default defineComponent({
     }
   },
   methods: {
+    toggleTheme() {
+      const theme = this.uiStore.userTheme === "light" ? "dark" : "light";
+      this.uiStore.setTheme(theme);
+    },
     logout() {
       //close mobile menu
       if (this.uiStore.isMobileMenuOpen) {
@@ -443,6 +466,10 @@ html[data-theme="dark"] {
 
 ::placeholder {
   color: #c3c6d1;
+}
+
+.toggle-theme-icon {
+  cursor: pointer;
 }
 
 .nav-hamburger-icon {
