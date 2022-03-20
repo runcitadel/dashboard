@@ -70,6 +70,7 @@
 <script lang="ts">
 import useSystemStore from "./store/system";
 import useUserStore from "./store/user";
+import useUiStore from "./store/ui";
 import useToast from "./utils/toast";
 import delay from "./helpers/delay";
 import Shutdown from "./components/Shutdown.vue";
@@ -85,8 +86,9 @@ export default defineComponent({
   setup() {
     const systemStore = useSystemStore();
     const userStore = useUserStore();
+    const uiStore = useUiStore();
     const toast = useToast();
-    return { userStore, systemStore, toast };
+    return { userStore, systemStore, uiStore, toast };
   },
   data() {
     return {
@@ -174,12 +176,31 @@ export default defineComponent({
     this.updateViewPortHeightCSS();
     window.addEventListener("resize", this.updateViewPortHeightCSS);
   },
+  mounted() {
+    const initTheme = this.getThemePreference();
+    this.uiStore.setTheme(initTheme);
+  },
   beforeUnmount() {
     window.removeEventListener("resize", this.updateViewPortHeightCSS);
     window.clearInterval(this.loadingInterval);
     window.clearInterval(this.updateStatusInterval);
   },
   methods: {
+    getThemePreference() {
+      const activeTheme = localStorage.getItem("user-theme");
+      const hasDarkPreference = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      if (activeTheme) {
+        return activeTheme;
+      } else {
+        if (hasDarkPreference) {
+          return "dark";
+        } else {
+          return "light";
+        }
+      }
+    },
     //TODO: move this to the specific layout that needs this 100vh fix
     updateViewPortHeightCSS() {
       return document.documentElement.style.setProperty(

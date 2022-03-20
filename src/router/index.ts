@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import useUserStore from "../store/user";
-import useSystemStore from "../store/system";
+import useUiStore from "../store/ui";
 
 const TransitionWrapperLayout = () =>
   import("../layouts/TransitionWrapperLayout.vue");
@@ -432,8 +432,8 @@ router.beforeEach((to, from, next) => {
 
 //Close Mobile Menu after route change
 router.afterEach(() => {
-  const systemStore = useSystemStore();
-  systemStore.isMobileMenuOpen = false;
+  const uiStore = useUiStore();
+  uiStore.isMobileMenuOpen = false;
 });
 
 export default router;

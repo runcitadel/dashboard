@@ -2,7 +2,7 @@
 import { createApp, configureCompat } from "vue";
 import BootstrapVue from "bootstrap-vue/src/index.js";
 import { createPinia } from "pinia";
-import Toast, { PluginOptions } from "vue-toastification";
+import Toast, { PluginOptions, POSITION } from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
 import App from "./App.vue";
@@ -12,7 +12,6 @@ import type useBitcoinStore from "./store/bitcoin";
 import type useSystemStore from "./store/system";
 
 const app = createApp(App);
-
 app.use(createPinia());
 app.use(router);
 
@@ -65,7 +64,7 @@ configureCompat({
 app.use(BootstrapVue);
 
 const toastOptions: PluginOptions = {
-  position: "bottom-right",
+  position: POSITION["BOTTOM_RIGHT"],
   timeout: 3000,
   closeOnClick: true,
   pauseOnFocusLoss: true,

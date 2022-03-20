@@ -38,7 +38,7 @@
 
           <div
             class="nav-hamburger-icon d-lg-none d-xl-none ms-1"
-            :class="{ active: systemStore.isMobileMenuOpen }"
+            :class="{ active: uiStore.isMobileMenuOpen }"
             @click="toggleMobileMenu"
           >
             <div></div>
@@ -61,7 +61,7 @@
     <!-- Mobile menu -->
     <transition name="mobile-vertical-menu">
       <div
-        v-if="systemStore.isMobileMenuOpen"
+        v-if="uiStore.isMobileMenuOpen"
         class="mobile-vertical-menu d-lg-none d-xl-none"
       >
         <authenticated-vertical-navbar :is-mobile-menu="true" />
@@ -70,7 +70,7 @@
 
     <transition name="mobile-vertical-menu-fader">
       <div
-        v-if="systemStore.isMobileMenuOpen"
+        v-if="uiStore.isMobileMenuOpen"
         class="mobile-vertical-menu-fader d-lg-none d-xl-none"
         @click="toggleMobileMenu"
       ></div>
@@ -230,6 +230,7 @@
 <script lang="ts">
 import useSystemStore from "../store/system";
 import useUserStore from "../store/user";
+import useUiStore from "../store/ui";
 import useBitcoinStore from "../store/bitcoin";
 import useLightningStore from "../store/lightning";
 import useAppsStore from "../store/apps";
@@ -251,6 +252,7 @@ export default defineComponent({
   setup() {
     const systemStore = useSystemStore();
     const userStore = useUserStore();
+    const uiStore = useUiStore();
     const bitcoinStore = useBitcoinStore();
     const lightningStore = useLightningStore();
     const appsStore = useAppsStore();
@@ -258,6 +260,7 @@ export default defineComponent({
     return {
       appsStore,
       userStore,
+      uiStore,
       systemStore,
       bitcoinStore,
       lightningStore,
@@ -336,7 +339,7 @@ export default defineComponent({
   methods: {
     logout() {
       //close mobile menu
-      if (this.systemStore.isMobileMenuOpen) {
+      if (this.uiStore.isMobileMenuOpen) {
         this.toggleMobileMenu();
       }
       this.userStore.logout();
@@ -358,7 +361,7 @@ export default defineComponent({
       this.systemStore.getCpuTemperature();
     },
     toggleMobileMenu() {
-      this.systemStore.isMobileMenuOpen = !this.systemStore.isMobileMenuOpen;
+      this.uiStore.isMobileMenuOpen = !this.uiStore.isMobileMenuOpen;
     },
     hideUpdateConfirmationModal() {
       this.systemStore.hideUpdateConfirmationModal();
@@ -390,15 +393,13 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@media (prefers-color-scheme: dark) {
-  :root:not(.prefer-light-mode) {
-    .nav-horizontal {
-      background: #2a3244 !important;
-    }
-    .mobile-vertical-menu {
-      background: #2a3244 !important;
-      box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.4);
-    }
+html[data-theme="dark"] {
+  .nav-horizontal {
+    background: #2a3244 !important;
+  }
+  .mobile-vertical-menu {
+    background: #2a3244 !important;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.4);
   }
 }
 
