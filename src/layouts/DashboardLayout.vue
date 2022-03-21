@@ -37,14 +37,27 @@
           >
 
           <div
-            class="nav-hamburger-icon d-lg-none d-xl-none ms-1"
-            :class="{ active: systemStore.isMobileMenuOpen }"
+            class="toggle-theme-icon d-flex align-items-center"
+            @click="toggleTheme"
+          >
+            <div v-if="uiStore.userTheme === 'light'" class="icon-24px">
+              <MoonIcon />
+            </div>
+            <div v-if="uiStore.userTheme === 'dark'" class="icon-24px">
+              <SunIcon />
+            </div>
+          </div>
+
+          <div
+            class="nav-hamburger-icon d-lg-none d-xl-none ms-3"
+            :class="{ active: uiStore.isMobileMenuOpen }"
             @click="toggleMobileMenu"
           >
             <div></div>
           </div>
+
           <b-nav-item-dropdown
-            class="d-none d-lg-block d-xl-block"
+            class="d-none d-lg-block d-xl-block ms-2"
             right
             no-caret
           >
@@ -61,7 +74,7 @@
     <!-- Mobile menu -->
     <transition name="mobile-vertical-menu">
       <div
-        v-if="systemStore.isMobileMenuOpen"
+        v-if="uiStore.isMobileMenuOpen"
         class="mobile-vertical-menu d-lg-none d-xl-none"
       >
         <authenticated-vertical-navbar :is-mobile-menu="true" />
@@ -70,7 +83,7 @@
 
     <transition name="mobile-vertical-menu-fader">
       <div
-        v-if="systemStore.isMobileMenuOpen"
+        v-if="uiStore.isMobileMenuOpen"
         class="mobile-vertical-menu-fader d-lg-none d-xl-none"
         @click="toggleMobileMenu"
       ></div>
@@ -230,6 +243,7 @@
 <script lang="ts">
 import useSystemStore from "../store/system";
 import useUserStore from "../store/user";
+import useUiStore from "../store/ui";
 import useBitcoinStore from "../store/bitcoin";
 import useLightningStore from "../store/lightning";
 import useAppsStore from "../store/apps";
@@ -238,7 +252,11 @@ import { readableSize } from "../helpers/size";
 import useToast from "../utils/toast";
 import AuthenticatedVerticalNavbar from "../components/AuthenticatedVerticalNavbar.vue";
 // @ts-expect-error No type definitions for this yet
-import { BellIcon } from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
+import {
+  BellIcon,
+  SunIcon,
+  MoonIcon,
+} from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
 import { BIconExclamationCircle } from "bootstrap-vue/src/index.js";
 import { defineComponent } from "vue";
 
@@ -246,11 +264,14 @@ export default defineComponent({
   components: {
     AuthenticatedVerticalNavbar,
     BellIcon,
+    SunIcon,
+    MoonIcon,
     BIconExclamationCircle,
   },
   setup() {
     const systemStore = useSystemStore();
     const userStore = useUserStore();
+    const uiStore = useUiStore();
     const bitcoinStore = useBitcoinStore();
     const lightningStore = useLightningStore();
     const appsStore = useAppsStore();
@@ -258,6 +279,7 @@ export default defineComponent({
     return {
       appsStore,
       userStore,
+      uiStore,
       systemStore,
       bitcoinStore,
       lightningStore,
@@ -334,9 +356,13 @@ export default defineComponent({
     }
   },
   methods: {
+    toggleTheme() {
+      const theme = this.uiStore.userTheme === "light" ? "dark" : "light";
+      this.uiStore.setTheme(theme);
+    },
     logout() {
       //close mobile menu
-      if (this.systemStore.isMobileMenuOpen) {
+      if (this.uiStore.isMobileMenuOpen) {
         this.toggleMobileMenu();
       }
       this.userStore.logout();
@@ -358,7 +384,7 @@ export default defineComponent({
       this.systemStore.getCpuTemperature();
     },
     toggleMobileMenu() {
-      this.systemStore.isMobileMenuOpen = !this.systemStore.isMobileMenuOpen;
+      this.uiStore.isMobileMenuOpen = !this.uiStore.isMobileMenuOpen;
     },
     hideUpdateConfirmationModal() {
       this.systemStore.hideUpdateConfirmationModal();
@@ -390,15 +416,13 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@media (prefers-color-scheme: dark) {
-  :root:not(.prefer-light-mode) {
-    .nav-horizontal {
-      background: #2a3244 !important;
-    }
-    .mobile-vertical-menu {
-      background: #2a3244 !important;
-      box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.4);
-    }
+html[data-theme="dark"] {
+  .nav-horizontal {
+    background: #2a3244 !important;
+  }
+  .mobile-vertical-menu {
+    background: #2a3244 !important;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.4);
   }
 }
 
@@ -442,6 +466,10 @@ export default defineComponent({
 
 ::placeholder {
   color: #c3c6d1;
+}
+
+.toggle-theme-icon {
+  cursor: pointer;
 }
 
 .nav-hamburger-icon {

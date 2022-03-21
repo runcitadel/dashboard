@@ -581,7 +581,8 @@ export default defineComponent({
     const sdkStore = useSdkStore();
     const systemStore = useSystemStore();
     const userStore = useUserStore();
-    return { sdkStore, systemStore, userStore };
+    const toast = useToast();
+    return { sdkStore, systemStore, userStore, toast };
   },
   data() {
     return {

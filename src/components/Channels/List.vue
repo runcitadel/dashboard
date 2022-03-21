@@ -61,24 +61,22 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@media (prefers-color-scheme: dark) {
-  :root:not(.prefer-light-mode) {
-    .channel-list-container {
-      &:before {
-        background-image: linear-gradient(
-          to bottom,
-          rgba(255, 255, 255, 0),
-          #2a3244
-        ) !important;
-      }
+html[data-theme="dark"] {
+  .channel-list-container {
+    &:before {
+      background-image: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0),
+        #2a3244
+      ) !important;
+    }
 
-      &:after {
-        background-image: linear-gradient(
-          to top,
-          rgba(255, 255, 255, 0),
-          #2a3244
-        ) !important;
-      }
+    &:after {
+      background-image: linear-gradient(
+        to top,
+        rgba(255, 255, 255, 0),
+        #2a3244
+      ) !important;
     }
   }
 }
