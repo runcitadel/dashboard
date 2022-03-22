@@ -245,6 +245,7 @@ import { defineComponent } from "vue";
 import delay from "../helpers/delay";
 
 import useAppsStore, { type app } from "../store/apps";
+import useBitcoinStore from "../store/bitcoin";
 import useLightningStore from "../store/lightning";
 
 import CardWidget from "../components/CardWidget.vue";
@@ -257,8 +258,9 @@ export default defineComponent({
   },
   setup() {
     const appsStore = useAppsStore();
+    const bitcoinStore = useBitcoinStore();
     const lightningStore = useLightningStore();
-    return { appsStore, lightningStore };
+    return { appsStore, bitcoinStore, lightningStore };
   },
   data() {
     return {
@@ -267,13 +269,6 @@ export default defineComponent({
     };
   },
   computed: {
-    /*...mapState({
-      installedApps: (state) => state.apps.installed,
-      appStore: (state) => state.apps.store,
-      installing: (state) => state.apps.installing,
-      uninstalling: (state) => state.apps.uninstalling,
-      lightningImplementation: (state) => state.lightning.implementation,
-    }),*/
     app(): app {
       return this.appsStore.store.find(
         (app) => app.id === this.$route.params.id
@@ -335,11 +330,11 @@ export default defineComponent({
       }
     },
     isDependencyInstalled(dependency: string) {
-      const allInstalled = [
-        "bitcoind",
-        "electrum",
-        this.lightningStore.implementation,
-      ];
+      const allInstalled = [this.lightningStore.implementation];
+      if (this.bitcoinStore.isInstalled) {
+        allInstalled.push("electrum");
+        allInstalled.push("bitcoind");
+      }
       return allInstalled.includes(dependency);
     },
     src(dependency: string) {

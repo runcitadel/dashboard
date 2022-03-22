@@ -11,7 +11,7 @@
       <b-col col cols="12" md="6" xl="4">
         <lightning-wallet></lightning-wallet>
       </b-col>
-      <b-col col cols="12" md="6" xl="4">
+      <b-col v-if="bitcoinStore.isInstalled" col cols="12" md="6" xl="4">
         <card-widget
           header="Bitcoin Core"
           :status="{

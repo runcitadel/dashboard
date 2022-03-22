@@ -46,6 +46,7 @@ type Transaction_extended = Transaction & {
 };
 
 export interface State {
+  isInstalled: boolean;
   operational: boolean;
   calibrating: boolean;
   version: string;
@@ -108,6 +109,7 @@ export interface State {
 export default defineStore("bitcoin", {
   // Initial state
   state: (): State => ({
+    isInstalled: true,
     operational: false,
     calibrating: false,
     version: "",
