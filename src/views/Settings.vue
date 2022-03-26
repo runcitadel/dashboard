@@ -619,8 +619,8 @@ export default defineComponent({
   computed: {
     authenticatorSecretUri(): string {
       return `otpauth://totp/${encodeURIComponent(
-        this.userStore.name + "'Citadel"
-      )}?secret=${this.userStore.totpKey}&period=30"`;
+        this.userStore.name
+      )}?secret=${this.userStore.totpKey}&period=30&issuer=Citadel`;
     },
     getUptime(): string {
       return prettifySeconds(this.systemStore.uptime as number);
