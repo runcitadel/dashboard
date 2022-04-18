@@ -26,8 +26,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import CardWidget from "../components/CardWidget.vue";
+import {defineComponent} from 'vue';
+import CardWidget from '../components/CardWidget.vue';
 
 export default defineComponent({
   components: {

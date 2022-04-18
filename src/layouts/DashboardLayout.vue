@@ -32,7 +32,7 @@
             class="align-self-center me-2 text-capitalize"
             pill
             >{{
-              bitcoinStore.chain === "test" ? "testnet" : bitcoinStore.chain
+              bitcoinStore.chain === 'test' ? 'testnet' : bitcoinStore.chain
             }}</b-badge
           >
 
@@ -50,7 +50,7 @@
 
           <div
             class="nav-hamburger-icon d-lg-none d-xl-none ms-3"
-            :class="{ active: uiStore.isMobileMenuOpen }"
+            :class="{active: uiStore.isMobileMenuOpen}"
             @click="toggleMobileMenu"
           >
             <div></div>
@@ -63,7 +63,7 @@
           >
             <!-- Using 'button-content' slot -->
             <template #button-content>{{
-              userStore.name.split(" ")[0]
+              userStore.name.split(' ')[0]
             }}</template>
             <b-dropdown-item @click="logout">Log out</b-dropdown-item>
           </b-nav-item-dropdown>
@@ -145,7 +145,7 @@
                 :disabled="isUpdating"
                 @click="startUpdate"
                 >{{
-                  isUpdating ? "Starting update..." : "Install now"
+                  isUpdating ? 'Starting update...' : 'Install now'
                 }}</b-button
               >
             </div>
@@ -241,24 +241,24 @@
 </template>
 
 <script lang="ts">
-import useSystemStore from "../store/system";
-import useUserStore from "../store/user";
-import useUiStore from "../store/ui";
-import useBitcoinStore from "../store/bitcoin";
-import useLightningStore from "../store/lightning";
-import useAppsStore from "../store/apps";
+import useSystemStore from '../store/system';
+import useUserStore from '../store/user';
+import useUiStore from '../store/ui';
+import useBitcoinStore from '../store/bitcoin';
+import useLightningStore from '../store/lightning';
+import useAppsStore from '../store/apps';
 
-import { readableSize } from "../helpers/size";
-import useToast from "../utils/toast";
-import AuthenticatedVerticalNavbar from "../components/AuthenticatedVerticalNavbar.vue";
+import {readableSize} from '../helpers/size';
+import useToast from '../utils/toast';
+import AuthenticatedVerticalNavbar from '../components/AuthenticatedVerticalNavbar.vue';
 // @ts-expect-error No type definitions for this yet
 import {
   BellIcon,
   SunIcon,
   MoonIcon,
-} from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
-import { BIconExclamationCircle } from "bootstrap-vue/src/index.js";
-import { defineComponent } from "vue";
+} from '@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js';
+import {BIconExclamationCircle} from 'bootstrap-vue/src/index.js';
+import {defineComponent} from 'vue';
 
 export default defineComponent({
   components: {
@@ -333,9 +333,9 @@ export default defineComponent({
     this.lightningStore.getVersionInfo();
     if (
       window.localStorage &&
-      window.localStorage.getItem("lightmode") === "true"
+      window.localStorage.getItem('lightmode') === 'true'
     ) {
-      document.querySelector(":root")?.classList?.add("prefer-light-mode");
+      document.querySelector(':root')?.classList?.add('prefer-light-mode');
     }
 
     //refresh this data every 20s:
@@ -345,7 +345,7 @@ export default defineComponent({
     this.fetchLessChangingData();
     this.otherInterval = window.setInterval(
       this.fetchLessChangingData,
-      60 * 5 * 1000
+      60 * 5 * 1000,
     );
   },
   beforeUnmount() {
@@ -357,7 +357,7 @@ export default defineComponent({
   },
   methods: {
     toggleTheme() {
-      const theme = this.uiStore.userTheme === "light" ? "dark" : "light";
+      const theme = this.uiStore.userTheme === 'light' ? 'dark' : 'light';
       this.uiStore.setTheme(theme);
     },
     logout() {
@@ -400,12 +400,12 @@ export default defineComponent({
         // because after it's updated, the loading view will take over
         this.pollUpdateStatus = window.setInterval(async () => {
           await this.systemStore.getUpdateStatus();
-          if (this.systemStore.updateStatus.state === "installing") {
+          if (this.systemStore.updateStatus.state === 'installing') {
             window.clearInterval(this.pollUpdateStatus);
           }
         }, 2 * 1000);
       } catch (error) {
-        this.toast.error("Error", "Unable to start the update process");
+        this.toast.error('Error', 'Unable to start the update process');
       }
     },
     readableSize(n: number) {
@@ -416,7 +416,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-html[data-theme="dark"] {
+html[data-theme='dark'] {
   .nav-horizontal {
     background: #2a3244 !important;
   }
@@ -480,7 +480,7 @@ html[data-theme="dark"] {
   div {
     background-color: #c3c6d1;
     border-radius: 3px;
-    content: "";
+    content: '';
     display: block;
     height: 4px;
     width: 100%;

@@ -13,7 +13,7 @@
           :size="300"
           class="qr-image mt-2"
           show-logo
-          :style="{ cursor: 'pointer' }"
+          :style="{cursor: 'pointer'}"
           @click="
             $emit('showQrModal', urls.lnd.grpcTor.replace(/cert=(.*)&/gm, ''))
           "
@@ -43,13 +43,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from 'vue';
 
-import ConnectionDetails from "../ConnectionDetails.vue";
-import StepList from "../StepList.vue";
-import Step from "../Step.vue";
-import InputCopy from "../../Utility/InputCopy.vue";
-import QrCode from "../../Utility/QrCode.vue";
+import ConnectionDetails from '../ConnectionDetails.vue';
+import StepList from '../StepList.vue';
+import Step from '../Step.vue';
+import InputCopy from '../../Utility/InputCopy.vue';
+import QrCode from '../../Utility/QrCode.vue';
 
 export default defineComponent({
   components: {
@@ -65,6 +65,6 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["showQrModal"],
+  emits: ['showQrModal'],
 });
 </script>

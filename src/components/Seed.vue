@@ -39,7 +39,7 @@
         :disabled="buttonEnabled"
         @click="fetchSeed"
       >
-        {{ isLoadingSeed ? "Decrypting Secret Words..." : "View Secret Words" }}
+        {{ isLoadingSeed ? 'Decrypting Secret Words...' : 'View Secret Words' }}
       </b-button>
     </div>
 
@@ -52,13 +52,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from 'vue';
 
-import InputPassword from "./Utility/InputPassword.vue";
-import InputOtpToken from "./Utility/InputOtpToken.vue";
-import Seed from "./Utility/Seed.vue";
-import useUserStore from "../store/user";
-import delay from "../helpers/delay";
+import InputPassword from './Utility/InputPassword.vue';
+import InputOtpToken from './Utility/InputOtpToken.vue';
+import Seed from './Utility/Seed.vue';
+import useUserStore from '../store/user';
+import delay from '../helpers/delay';
 
 export default defineComponent({
   components: {
@@ -74,12 +74,12 @@ export default defineComponent({
   },
   setup() {
     const userStore = useUserStore();
-    return { userStore };
+    return {userStore};
   },
   data() {
     return {
-      password: "",
-      totpToken: "",
+      password: '',
+      totpToken: '',
       isIncorrectPassword: false,
       isIncorrectTotp: false,
       isLoadingSeed: false,
@@ -105,7 +105,7 @@ export default defineComponent({
       this.totpToken = totpToken;
     },
     showSeed() {
-      (this.$refs["seed-modal"] as { show: () => void }).show();
+      (this.$refs['seed-modal'] as {show: () => void}).show();
     },
     async fetchSeed() {
       this.isLoadingSeed = true;
@@ -119,8 +119,8 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
         const errorString = String(error);
-        const isIncorrectPassword = errorString.includes("Incorrect password");
-        const isIncorrectTotp = errorString.includes("Incorrect 2FA code");
+        const isIncorrectPassword = errorString.includes('Incorrect password');
+        const isIncorrectTotp = errorString.includes('Incorrect 2FA code');
 
         this.isIncorrectPassword = isIncorrectPassword;
         this.isIncorrectTotp = isIncorrectTotp;

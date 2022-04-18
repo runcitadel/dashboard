@@ -39,12 +39,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import useAppsStore from "../store/apps";
+import {defineComponent} from 'vue';
+import useAppsStore from '../store/apps';
 // @ts-expect-error No type definitions for this yet
-import { TrashIcon } from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
+import {TrashIcon} from '@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js';
 
-import delay from "../helpers/delay";
+import delay from '../helpers/delay';
 
 export default defineComponent({
   components: {
@@ -69,7 +69,7 @@ export default defineComponent({
     },
     path: {
       type: String,
-      default: "/",
+      default: '/',
     },
     showUninstallButton: {
       type: Boolean,
@@ -98,28 +98,28 @@ export default defineComponent({
   },
   computed: {
     url: function () {
-      if (window.location.origin === "https://node.runcitadel.space") {
+      if (window.location.origin === 'https://node.runcitadel.space') {
         switch (this.id) {
-          case "ride-the-lightning":
-            return "https://rtl.runcitadel.space";
-          case "lnme":
-            return "https://donate.runcitadel.space";
-          case "nextcloud":
-            return "https://cloud.runcitadel.space";
-          case "btcpay-server":
-            return "https://pay.runcitadel.space";
-          case "lightning-terminal":
-            return "https://ln-terminal.runcitadel.space";
-          case "btc-rpc-explorer-public-fast":
-            return "https://rpc-explorer.runcitadel.space";
+          case 'ride-the-lightning':
+            return 'https://rtl.runcitadel.space';
+          case 'lnme':
+            return 'https://donate.runcitadel.space';
+          case 'nextcloud':
+            return 'https://cloud.runcitadel.space';
+          case 'btcpay-server':
+            return 'https://pay.runcitadel.space';
+          case 'lightning-terminal':
+            return 'https://ln-terminal.runcitadel.space';
+          case 'btc-rpc-explorer-public-fast':
+            return 'https://rpc-explorer.runcitadel.space';
         }
         return `https://${this.id}.runcitadel.space`;
       }
-      if (window.location.origin.indexOf(".onion") > 0) {
+      if (window.location.origin.indexOf('.onion') > 0) {
         return `http://${this.hiddenService}${this.path}`;
       } else {
         if (this.torOnly) {
-          return "#";
+          return '#';
         }
         return `http://${window.location.hostname}:${this.port}${this.path}`;
       }
@@ -135,7 +135,7 @@ export default defineComponent({
     uninstall(name: string, appId: string) {
       if (
         !window.confirm(
-          `Are you sure you want to uninstall ${name}? This is will also delete all of its data.`
+          `Are you sure you want to uninstall ${name}? This is will also delete all of its data.`,
         )
       ) {
         return;
@@ -143,10 +143,10 @@ export default defineComponent({
       this.appsStore.uninstall(appId);
     },
     openApp(event: Event) {
-      if (this.torOnly && window.location.origin.indexOf(".onion") < 0) {
+      if (this.torOnly && window.location.origin.indexOf('.onion') < 0) {
         event.preventDefault();
         alert(
-          `${this.name} can only be used over Tor. Please access your Citadel in a Tor browser on your remote access URL (Settings > Tor > Remote Access URL) to open this app.`
+          `${this.name} can only be used over Tor. Please access your Citadel in a Tor browser on your remote access URL (Settings > Tor > Remote Access URL) to open this app.`,
         );
         return;
       }
@@ -158,10 +158,10 @@ export default defineComponent({
     },
     async pollOfflineApp() {
       this.checkIfAppIsOffline = true;
-      if (this.id === "bluewallet") this.checkIfAppIsOffline = false;
+      if (this.id === 'bluewallet') this.checkIfAppIsOffline = false;
       while (this.checkIfAppIsOffline) {
         try {
-          await window.fetch(this.url, { mode: "no-cors" });
+          await window.fetch(this.url, {mode: 'no-cors'});
           this.isOffline = false;
           this.checkIfAppIsOffline = false;
         } catch (error) {

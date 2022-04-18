@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from "vue";
+import {defineComponent, type PropType} from 'vue';
 
 export default defineComponent({
   components: {},
@@ -17,8 +17,8 @@ export default defineComponent({
       required: true,
     },
     size: {
-      type: String as PropType<"sm" | "lg">, //sm, lg
-      default: "sm",
+      type: String as PropType<'sm' | 'lg'>, //sm, lg
+      default: 'sm',
     },
   },
   data() {
@@ -29,7 +29,7 @@ export default defineComponent({
       const leftValue = this.local;
       const rightValue = this.remote;
       const leftPercent = Math.round(
-        (leftValue * 100) / (leftValue + rightValue)
+        (leftValue * 100) / (leftValue + rightValue),
       );
 
       let background;
@@ -43,12 +43,12 @@ export default defineComponent({
         }%, #00CD98 ${leftPercent + 7}%, #00CD98 100%)`;
       }
 
-      let height = "4px";
-      let borderRadius = "4px";
+      let height = '4px';
+      let borderRadius = '4px';
 
-      if (this.size === "lg") {
-        height = "8px";
-        borderRadius = "8px";
+      if (this.size === 'lg') {
+        height = '8px';
+        borderRadius = '8px';
       }
 
       return {
@@ -61,7 +61,7 @@ export default defineComponent({
   methods: {
     getChannelBarGradient(leftValue: number, rightValue: number) {
       const leftPercent = Math.round(
-        (leftValue * 100) / (leftValue + rightValue)
+        (leftValue * 100) / (leftValue + rightValue),
       );
       if (leftPercent === 100) {
         return `#5351FB`;

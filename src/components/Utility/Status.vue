@@ -8,7 +8,7 @@
       viewBox="0 0 8 8"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      :class="{ blink: blink }"
+      :class="{blink: blink}"
     >
       <circle cx="4" cy="4" r="4" :class="`fill-${variant}`" />
     </svg>
@@ -20,7 +20,7 @@
       viewBox="0 0 6 6"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      :class="{ blink: blink }"
+      :class="{blink: blink}"
     >
       <circle cx="3" cy="3" r="3" :class="`fill-${variant}`" />
     </svg>
@@ -32,23 +32,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from "vue";
+import {defineComponent, type PropType} from 'vue';
 
 export default defineComponent({
   props: {
     variant: {
       type: String as PropType<
-        "success" | "primary" | "muted" | "danger" | "warning" | "default"
+        'success' | 'primary' | 'muted' | 'danger' | 'warning' | 'default'
       >,
-      default: "success",
+      default: 'success',
     },
     blink: {
       type: Boolean,
       default: false,
     },
     size: {
-      type: String as PropType<"sm" | "md">,
-      default: "md", //sm or md
+      type: String as PropType<'sm' | 'md'>,
+      default: 'md', //sm or md
     },
   },
 });

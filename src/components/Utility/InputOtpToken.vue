@@ -66,9 +66,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from 'vue';
 
-import delay from "../../helpers/delay";
+import delay from '../../helpers/delay';
 
 export default defineComponent({
   props: {
@@ -89,15 +89,15 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ["otpToken", "keyup"],
+  emits: ['otpToken', 'keyup'],
   data() {
     return {
-      digit1: "",
-      digit2: "",
-      digit3: "",
-      digit4: "",
-      digit5: "",
-      digit6: "",
+      digit1: '',
+      digit2: '',
+      digit3: '',
+      digit4: '',
+      digit5: '',
+      digit6: '',
     };
   },
   computed: {
@@ -130,12 +130,12 @@ export default defineComponent({
       if (errored) {
         // delay for ripple animation
         await delay(600);
-        this.digit1 = "";
-        this.digit2 = "";
-        this.digit3 = "";
-        this.digit4 = "";
-        this.digit5 = "";
-        this.digit6 = "";
+        this.digit1 = '';
+        this.digit2 = '';
+        this.digit3 = '';
+        this.digit4 = '';
+        this.digit5 = '';
+        this.digit6 = '';
         (this.$refs.digitOneInput as HTMLInputElement).focus();
       }
     },
@@ -147,11 +147,11 @@ export default defineComponent({
           previousElementSibling?: HTMLInputElement;
           nextElementSibling?: HTMLInputElement;
         };
-      }
+      },
     ): void {
-      this.$emit("keyup", event);
+      this.$emit('keyup', event);
       // backspace / delete keypress logic
-      if (event.code === "Backspace" || event.code === "Delete") {
+      if (event.code === 'Backspace' || event.code === 'Delete') {
         // ignore on first input or if there's still text in the input
         if (event.target?.previousElementSibling && !event.target.value) {
           event.target.previousElementSibling.focus();
@@ -160,15 +160,15 @@ export default defineComponent({
       }
       // reset input on everything except a single digit
       if (!event.target.value.match(/^[0-9]$/)) {
-        event.target.value = "";
+        event.target.value = '';
         return;
       }
       // let browser hand logic for control keys
       if (
-        event.key === "Tab" ||
-        event.key === "Control" ||
-        event.key === "Meta" ||
-        event.key === "Alt"
+        event.key === 'Tab' ||
+        event.key === 'Control' ||
+        event.key === 'Meta' ||
+        event.key === 'Alt'
       ) {
         return;
       }
@@ -191,7 +191,7 @@ export default defineComponent({
         this.digit5 &&
         this.digit6
       ) {
-        this.$emit("otpToken", this.otpToken);
+        this.$emit('otpToken', this.otpToken);
       }
     },
   },

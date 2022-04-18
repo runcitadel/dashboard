@@ -44,13 +44,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from 'vue';
 
-import ConnectionDetails from "../ConnectionDetails.vue";
-import StepList from "../StepList.vue";
-import Step from "../Step.vue";
-import TorSetup from "../TorSetup.vue";
-import InputCopy from "../../Utility/InputCopy.vue";
+import ConnectionDetails from '../ConnectionDetails.vue';
+import StepList from '../StepList.vue';
+import Step from '../Step.vue';
+import TorSetup from '../TorSetup.vue';
+import InputCopy from '../../Utility/InputCopy.vue';
 
 export default defineComponent({
   components: {
@@ -66,6 +66,6 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["showQrModal"],
+  emits: ['showQrModal'],
 });
 </script>

@@ -36,20 +36,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from 'vue';
 
-import useLightningStore from "../../store/lightning";
-import Channel from "./Channel.vue";
+import useLightningStore from '../../store/lightning';
+import Channel from './Channel.vue';
 
 export default defineComponent({
   components: {
     Channel,
   },
   props: {},
-  emits: ["selectchannel"],
+  emits: ['selectchannel'],
   setup() {
     const lightningStore = useLightningStore();
-    return { lightningStore };
+    return {lightningStore};
   },
   data() {
     return {
@@ -61,7 +61,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-html[data-theme="dark"] {
+html[data-theme='dark'] {
   .channel-list-container {
     &:before {
       background-image: linear-gradient(
@@ -88,7 +88,7 @@ html[data-theme="dark"] {
   //bottom fade
   &:before {
     //nice faded white so the discarded blocks don't abruptly cut off
-    content: "";
+    content: '';
     position: absolute;
     height: 2rem;
     width: 100%;
@@ -107,7 +107,7 @@ html[data-theme="dark"] {
   //top fade
   &:after {
     //nice faded white so the discarded blocks don't abruptly cut off
-    content: "";
+    content: '';
     position: absolute;
     height: 2rem;
     width: 100%;

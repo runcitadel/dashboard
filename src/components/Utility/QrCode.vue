@@ -1,7 +1,7 @@
 <template>
   <div
     class="qr-container"
-    :style="{ width: `${size}px`, height: `${size}px` }"
+    :style="{width: `${size}px`, height: `${size}px`}"
     @click="$emit('click')"
   >
     <!-- Popup logo in the middle of QR code -->
@@ -26,8 +26,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from "vue";
-import QrcodeVue from "qrcode.vue";
+import {defineComponent, type PropType} from 'vue';
+import QrcodeVue from 'qrcode.vue';
 
 export default defineComponent({
   components: {
@@ -39,8 +39,8 @@ export default defineComponent({
       default: 200,
     },
     level: {
-      type: String as PropType<"L" | "M" | "Q" | "H">,
-      default: "H",
+      type: String as PropType<'L' | 'M' | 'Q' | 'H'>,
+      default: 'H',
     },
     value: {
       required: true,
@@ -51,7 +51,7 @@ export default defineComponent({
       default: true,
     },
   },
-  emits: ["click"],
+  emits: ['click'],
   data() {
     return {};
   },

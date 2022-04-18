@@ -18,7 +18,7 @@
 
       <card-widget
         header="Tor"
-        :status="{ text: 'Running', variant: 'success', blink: false }"
+        :status="{text: 'Running', variant: 'success', blink: false}"
         title="100%"
         sub-title="Traffic relayed through Tor"
         icon="icon-app-tor.svg"
@@ -62,7 +62,7 @@
             >
 
             <b-modal id="seed-modal" centered hide-footer>
-              <template #modal-header="{ close }">
+              <template #modal-header="{close}">
                 <div
                   class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
                 >
@@ -112,7 +112,7 @@
             >
 
             <b-modal id="change-password-modal" centered hide-footer>
-              <template #modal-header="{ close }">
+              <template #modal-header="{close}">
                 <div
                   class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
                 >
@@ -195,8 +195,8 @@
                   @click="changePassword"
                   >{{
                     isChangingPassword
-                      ? "Changing password..."
-                      : "Change password"
+                      ? 'Changing password...'
+                      : 'Change password'
                   }}</b-button
                 >
               </div>
@@ -228,7 +228,7 @@
               centered
               hide-footer
             >
-              <template #modal-header="{ close }">
+              <template #modal-header="{close}">
                 <div
                   class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
                 >
@@ -280,7 +280,7 @@
                 </div>
                 <label class="visually-hidden" for="input-token">
                   Enter the code from your authenticator app to verify and
-                  {{ userStore.totpEnabled ? "disable" : "enable" }} 2FA.
+                  {{ userStore.totpEnabled ? 'disable' : 'enable' }} 2FA.
                 </label>
                 <b-input
                   id="input-token"
@@ -298,7 +298,7 @@
                   "
                   @click="enableTwoFactorAuth"
                   >{{
-                    isEnablingTwoFactorAuth ? "Enabling 2FA..." : "Enable 2FA"
+                    isEnablingTwoFactorAuth ? 'Enabling 2FA...' : 'Enable 2FA'
                   }}</b-button
                 >
 
@@ -313,8 +313,8 @@
                   @click="disableTwoFactorAuth"
                   >{{
                     isDisablingTwoFactorAuth
-                      ? "Disabling 2FA..."
-                      : "Disable 2FA"
+                      ? 'Disabling 2FA...'
+                      : 'Disable 2FA'
                   }}</b-button
                 >
               </div>
@@ -412,11 +412,11 @@
               body-text-variant="light"
               @close="closeDebugModal"
             >
-              <template #modal-header="{ close }">
+              <template #modal-header="{close}">
                 <div class="px-2 pt-2 d-flex justify-content-between w-100">
                   <h4 v-if="loadingDebug">Generating logs...</h4>
                   <h4 v-else>
-                    {{ showDmesg ? "DMESG logs" : "Citadel logs" }}
+                    {{ showDmesg ? 'DMESG logs' : 'Citadel logs' }}
                   </h4>
                   <!-- Emulate built in modal header close button action -->
                   <a
@@ -462,7 +462,7 @@
                   >
                     <div class="me-1"><FlipHorizontalIcon /></div>
                     View
-                    {{ !showDmesg ? "DMESG logs" : "Citadel logs" }}
+                    {{ !showDmesg ? 'DMESG logs' : 'Citadel logs' }}
                   </b-button>
                   <b-button
                     size="sm"
@@ -471,7 +471,7 @@
                   >
                     <div class="me-2"><ReceiveIcon /></div>
                     Download
-                    {{ showDmesg ? "DMESG logs" : "Citadel logs" }}
+                    {{ showDmesg ? 'DMESG logs' : 'Citadel logs' }}
                   </b-button>
                 </div>
               </template>
@@ -528,7 +528,7 @@
             class="me-2"
             :animation="isCheckingForUpdate ? 'spin' : ''"
           />
-          {{ isCheckingForUpdate ? "Checking for update" : "Check for update" }}
+          {{ isCheckingForUpdate ? 'Checking for update' : 'Check for update' }}
         </b-button>
       </card-widget>
     </div>
@@ -536,30 +536,30 @@
 </template>
 
 <script lang="ts">
-import delay from "../helpers/delay";
-import { prettifySeconds } from "../helpers/date";
+import delay from '../helpers/delay';
+import {prettifySeconds} from '../helpers/date';
 
-import CardWidget from "../components/CardWidget.vue";
-import StorageWidget from "../components/Widgets/StorageWidget.vue";
-import RamWidget from "../components/Widgets/RamWidget.vue";
-import TemperatureWidget from "../components/Widgets/TemperatureWidget.vue";
-import Seed from "../components/Seed.vue";
-import InputPassword from "../components/Utility/InputPassword.vue";
-import InputCopy from "../components/Utility/InputCopy.vue";
-import QrCode from "../components/Utility/QrCode.vue";
+import CardWidget from '../components/CardWidget.vue';
+import StorageWidget from '../components/Widgets/StorageWidget.vue';
+import RamWidget from '../components/Widgets/RamWidget.vue';
+import TemperatureWidget from '../components/Widgets/TemperatureWidget.vue';
+import Seed from '../components/Seed.vue';
+import InputPassword from '../components/Utility/InputPassword.vue';
+import InputCopy from '../components/Utility/InputCopy.vue';
+import QrCode from '../components/Utility/QrCode.vue';
 import {
   BellIcon,
   ReceiveIcon,
   FlipHorizontalIcon,
   RefreshIcon,
   // @ts-expect-error No type definitions for this  yet
-} from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
-import { BIconCheckCircleFill } from "bootstrap-vue/src/index.js";
-import useSdkStore from "../store/sdk";
-import useSystemStore from "../store/system";
-import useUserStore from "../store/user";
-import { defineComponent, DefineComponent } from "vue";
-import useToast from "../utils/toast";
+} from '@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js';
+import {BIconCheckCircleFill} from 'bootstrap-vue/src/index.js';
+import useSdkStore from '../store/sdk';
+import useSystemStore from '../store/system';
+import useUserStore from '../store/user';
+import {defineComponent, DefineComponent} from 'vue';
+import useToast from '../utils/toast';
 
 export default defineComponent({
   components: {
@@ -582,14 +582,14 @@ export default defineComponent({
     const systemStore = useSystemStore();
     const userStore = useUserStore();
     const toast = useToast();
-    return { sdkStore, systemStore, userStore, toast };
+    return {sdkStore, systemStore, userStore, toast};
   },
   data() {
     return {
-      currentPassword: "",
+      currentPassword: '',
       isIncorrectPassword: false,
-      newPassword: "",
-      confirmNewPassword: "",
+      newPassword: '',
+      confirmNewPassword: '',
       isChangingPassword: false,
       isCheckingForUpdate: false,
       isEnablingTwoFactorAuth: false,
@@ -598,7 +598,7 @@ export default defineComponent({
       loadingDebug: false,
       debugFailed: false,
       showDmesg: false,
-      authenticatorToken: "",
+      authenticatorToken: '',
     } as {
       currentPassword: string;
       isIncorrectPassword: boolean;
@@ -619,21 +619,21 @@ export default defineComponent({
   computed: {
     authenticatorSecretUri(): string {
       return `otpauth://totp/${encodeURIComponent(
-        this.userStore.name
+        this.userStore.name,
       )}?secret=${this.userStore.totpKey}&period=30&issuer=Citadel`;
     },
     getUptime(): string {
       return prettifySeconds(this.systemStore.uptime as number);
     },
     debugContents(): string {
-      if (typeof this.systemStore.debugResult === "string")
-        return "Error loading data!";
+      if (typeof this.systemStore.debugResult === 'string')
+        return 'Error loading data!';
       return this.showDmesg
         ? this.systemStore.debugResult.dmesg
         : this.systemStore.debugResult.debug;
     },
     debugFilename(): string {
-      const type: string = this.showDmesg ? "dmesg" : "debug";
+      const type: string = this.showDmesg ? 'dmesg' : 'debug';
       return `citadel-${Date.now()}-${type}.log`;
     },
     isAllowedToChangeTwoFactorAuth(): boolean {
@@ -677,48 +677,48 @@ export default defineComponent({
 
       try {
         await this.sdkStore.citadel.manager.auth.enableTotp(
-          this.authenticatorToken
+          this.authenticatorToken,
         );
         this.isEnablingTwoFactorAuth = false;
       } catch (error) {
         if (error) {
-          this.toast.error("Error", JSON.stringify(error));
+          this.toast.error('Error', JSON.stringify(error));
         }
         this.isEnablingTwoFactorAuth = false;
         return;
       }
 
       this.toast.success(
-        "2FA enabled",
-        "You've successfully enabled two-factor authentication"
+        '2FA enabled',
+        "You've successfully enabled two-factor authentication",
       );
 
       this.userStore.getTotpEnabledStatus();
-      this.$bvModal.hide("two-factor-auth-modal");
+      this.$bvModal.hide('two-factor-auth-modal');
     },
     async disableTwoFactorAuth() {
       this.isDisablingTwoFactorAuth = true;
 
       try {
         await this.sdkStore.citadel.manager.auth.disableTotp(
-          this.authenticatorToken
+          this.authenticatorToken,
         );
         this.isDisablingTwoFactorAuth = false;
       } catch (error) {
         if (error && (error as Error).message) {
-          this.toast.error("Error", (error as Error).message);
+          this.toast.error('Error', (error as Error).message);
         }
         this.isDisablingTwoFactorAuth = false;
         return;
       }
 
       this.toast.success(
-        "2FA disabled",
-        "You've successfully disabled two-factor authentication"
+        '2FA disabled',
+        "You've successfully disabled two-factor authentication",
       );
 
       this.userStore.getTotpEnabledStatus();
-      this.$bvModal.hide("two-factor-auth-modal");
+      this.$bvModal.hide('two-factor-auth-modal');
     },
     async changePassword() {
       this.isChangingPassword = true;
@@ -726,7 +726,7 @@ export default defineComponent({
       try {
         await this.sdkStore.citadel.manager.auth.changePassword(
           this.currentPassword,
-          this.newPassword
+          this.newPassword,
         );
       } catch (error) {
         if (error) {
@@ -738,17 +738,17 @@ export default defineComponent({
       }
 
       this.toast.success(
-        "Password Changed",
-        "You've successfully changed your Citadel's password"
+        'Password Changed',
+        "You've successfully changed your Citadel's password",
       );
 
       this.isChangingPassword = false;
-      this.$bvModal.hide("change-password-modal");
+      this.$bvModal.hide('change-password-modal');
 
       // Remove passwords from view
-      this.currentPassword = "";
-      this.newPassword = "";
-      this.confirmNewPassword = "";
+      this.currentPassword = '';
+      this.newPassword = '';
+      this.confirmNewPassword = '';
     },
     confirmUpdate() {
       this.systemStore.confirmUpdate();
@@ -759,22 +759,22 @@ export default defineComponent({
       this.isCheckingForUpdate = false;
     },
     async openTwoFactorAuthModal() {
-      (this.$refs["two-factor-auth-modal"] as { show: () => void }).show();
+      (this.$refs['two-factor-auth-modal'] as {show: () => void}).show();
       this.userStore.getTotpKey();
     },
     async openDebugModal() {
       this.showDmesg = false;
       this.debugFailed = false;
       this.loadingDebug = true;
-      (this.$refs["debug-modal"] as { show: () => void }).show();
+      (this.$refs['debug-modal'] as {show: () => void}).show();
       try {
         await this.systemStore.debug();
         while (this.loadingDebug) {
           await delay(1000);
           await this.systemStore.getDebugResult();
           if (
-            typeof this.systemStore.debugResult !== "string" &&
-            this.systemStore.debugResult.status == "success"
+            typeof this.systemStore.debugResult !== 'string' &&
+            this.systemStore.debugResult.status == 'success'
           ) {
             this.loadingDebug = false;
           }
@@ -785,14 +785,14 @@ export default defineComponent({
     },
     closeDebugModal() {
       this.loadingDebug = false;
-      (this.$refs["debug-modal"] as { hide: () => void }).hide();
+      (this.$refs['debug-modal'] as {hide: () => void}).hide();
     },
     downloadTextFile(contents: string, fileName: string) {
       const blob = new Blob([contents], {
-        type: "text/plain;charset=utf-8;",
+        type: 'text/plain;charset=utf-8;',
       });
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
+      const a = document.createElement('a');
       a.href = url;
       a.download = fileName;
       a.click();
@@ -801,8 +801,8 @@ export default defineComponent({
     async shutdownPrompt() {
       // Get user consent first
       const approved = await this.$bvModal.msgBoxConfirm(
-        "Your Lightning wallet will not be able to receive any payments while your Citadel is offline.",
-        { title: "Are you sure?" }
+        'Your Lightning wallet will not be able to receive any payments while your Citadel is offline.',
+        {title: 'Are you sure?'},
       );
       if (!approved) {
         return;
@@ -811,18 +811,18 @@ export default defineComponent({
       // Shutdown request
       try {
         await this.systemStore.shutdown();
-        this.toast.success("Shutdown successful");
+        this.toast.success('Shutdown successful');
       } catch (e) {
         this.toast.error(
-          "Shutdown failed",
-          "Something went wrong and Citadel was not able to shutdown"
+          'Shutdown failed',
+          'Something went wrong and Citadel was not able to shutdown',
         );
       }
     },
     rebootPrompt() {
       // Reset any cached hasRebooted value from previous reboot
       this.systemStore.hasRebooted = false;
-      (this.$refs["reboot-modal"] as { show: () => void }).show();
+      (this.$refs['reboot-modal'] as {show: () => void}).show();
     },
     async reboot(event: Event) {
       if (!this.systemStore.hasRebooted) {
@@ -831,8 +831,8 @@ export default defineComponent({
           await this.systemStore.reboot();
         } catch (e) {
           this.toast.error(
-            "Reboot failed",
-            "Something went wrong and Citadel was not able to reboot"
+            'Reboot failed',
+            'Something went wrong and Citadel was not able to reboot',
           );
         }
       }

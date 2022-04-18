@@ -139,15 +139,15 @@
 </template>
 
 <script lang="ts">
-import { satsToBtc } from "../helpers/units";
-import CountUp from "./Utility/CountUp.vue";
-import SatsBtcSwitch from "./Utility/SatsBtcSwitch.vue";
-import useSystemStore from "../store/system";
-import useUserStore from "../store/user";
-import useBitcoinStore from "../store/bitcoin";
-import useLightningStore from "../store/lightning";
-import useAppsStore from "../store/apps";
-import { defineComponent } from "vue";
+import {satsToBtc} from '../helpers/units';
+import CountUp from './Utility/CountUp.vue';
+import SatsBtcSwitch from './Utility/SatsBtcSwitch.vue';
+import useSystemStore from '../store/system';
+import useUserStore from '../store/user';
+import useBitcoinStore from '../store/bitcoin';
+import useLightningStore from '../store/lightning';
+import useAppsStore from '../store/apps';
+import {defineComponent} from 'vue';
 
 import {
   BitcoinIcon,
@@ -162,7 +162,7 @@ import {
   HiddenIcon,
   ContactsIcon,
   // @ts-expect-error No type definitions for this yet
-} from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
+} from '@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js';
 
 export default defineComponent({
   components: {
@@ -189,7 +189,7 @@ export default defineComponent({
     const bitcoinStore = useBitcoinStore();
     const lightningStore = useLightningStore();
     const appsStore = useAppsStore();
-    return { appsStore, userStore, systemStore, bitcoinStore, lightningStore };
+    return {appsStore, userStore, systemStore, bitcoinStore, lightningStore};
   },
   data() {
     return {
@@ -206,7 +206,7 @@ export default defineComponent({
       return this.lightningStore.balance.total;
     },
     walletBalance() {
-      return this.systemStore.unit === "sats"
+      return this.systemStore.unit === 'sats'
         ? this.btcBalance + this.lightningBalance
         : satsToBtc(this.btcBalance + this.lightningBalance);
     },

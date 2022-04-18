@@ -279,7 +279,7 @@
                 <div></div>
                 <small
                   class="text-muted mt-1 d-block text-end mb-0"
-                  :style="{ opacity: withdraw.amount > 0 ? 1 : 0 }"
+                  :style="{opacity: withdraw.amount > 0 ? 1 : 0}"
                   >~
                   {{
                     $filters.satsToUSD(withdraw.amount, bitcoinStore).toString()
@@ -382,13 +382,13 @@
                       (parseInt(bitcoinStore.fees.fast.total.toString(), 10) /
                         parseInt(
                           bitcoinStore.fees.fast.perByte.toString(),
-                          10
+                          10,
                         )) *
                         parseInt(
                           withdraw.selectedFee.satPerByte.toString(),
-                          10
+                          10,
                         ),
-                      bitcoinStore
+                      bitcoinStore,
                     )
                   }}
                   Transaction fee
@@ -425,8 +425,8 @@
                   ~
                   {{
                     $filters.satsToUSD(
-                      bitcoinStore.fees[withdraw.selectedFee.type]["total"],
-                      bitcoinStore
+                      bitcoinStore.fees[withdraw.selectedFee.type]['total'],
+                      bitcoinStore,
                     )
                   }}
                   Transaction fee
@@ -638,7 +638,7 @@
         :disabled="withdraw.isWithdrawing || !!error"
         @click="withdrawBtc"
       >
-        {{ withdraw.isWithdrawing ? "Withdrawing..." : "Confirm Withdrawal" }}
+        {{ withdraw.isWithdrawing ? 'Withdrawing...' : 'Confirm Withdrawal' }}
       </b-button>
       <b-button
         v-else-if="mode === 'withdrawn'"
@@ -678,21 +678,21 @@
 type data = {
   //balance: 162500, //net user's balance in sats
   mode:
-    | "transactions"
-    | "deposit"
-    | "withdraw"
-    | "review-withdraw"
-    | "withdrawn";
+    | 'transactions'
+    | 'deposit'
+    | 'withdraw'
+    | 'review-withdraw'
+    | 'withdrawn';
   withdraw: {
     amountInput: string;
-    amount: "" | number;
+    amount: '' | number;
     address: string;
     sweep: boolean;
     feesTimeout: null | number;
     isTyping: boolean;
     isWithdrawing: boolean;
     txHash: string;
-    selectedFee: { type: string; satPerByte: number }; //selected withdrawal fee
+    selectedFee: {type: string; satPerByte: number}; //selected withdrawal fee
   };
   loading: boolean;
   error: string;
@@ -701,23 +701,23 @@ import {
   formatDistance,
   format,
   getDateFormatWithSeconds,
-} from "../helpers/date";
+} from '../helpers/date';
 
-import { satsToBtc, btcToSats } from "../helpers/units";
+import {satsToBtc, btcToSats} from '../helpers/units';
 
-import CountUp from "../components/Utility/CountUp.vue";
-import CardWidget from "../components/CardWidget.vue";
-import InputCopy from "../components/Utility/InputCopy.vue";
-import QrCode from "../components/Utility/QrCode.vue";
-import CircularCheckmark from "../components/Utility/CircularCheckmark.vue";
-import SatsBtcSwitch from "../components/Utility/SatsBtcSwitch.vue";
-import FeeSelector from "../components/Utility/FeeSelector.vue";
-import { defineComponent } from "vue";
-import useSystemStore from "../store/system";
-import useUserStore from "../store/user";
-import useBitcoinStore from "../store/bitcoin";
-import useAppsStore from "../store/apps";
-import useSdkStore from "../store/sdk";
+import CountUp from '../components/Utility/CountUp.vue';
+import CardWidget from '../components/CardWidget.vue';
+import InputCopy from '../components/Utility/InputCopy.vue';
+import QrCode from '../components/Utility/QrCode.vue';
+import CircularCheckmark from '../components/Utility/CircularCheckmark.vue';
+import SatsBtcSwitch from '../components/Utility/SatsBtcSwitch.vue';
+import FeeSelector from '../components/Utility/FeeSelector.vue';
+import {defineComponent} from 'vue';
+import useSystemStore from '../store/system';
+import useUserStore from '../store/user';
+import useBitcoinStore from '../store/bitcoin';
+import useAppsStore from '../store/apps';
+import useSdkStore from '../store/sdk';
 
 export default defineComponent({
   components: {
@@ -746,20 +746,20 @@ export default defineComponent({
   data() {
     return {
       //balance: 162500, //net user's balance in sats
-      mode: "transactions", //transactions (default mode), deposit, withdraw, review-withdraw, withdrawn
+      mode: 'transactions', //transactions (default mode), deposit, withdraw, review-withdraw, withdrawn
       withdraw: {
-        amountInput: "",
-        amount: "", //withdrawal amount
-        address: "", //withdrawal address
+        amountInput: '',
+        amount: '', //withdrawal amount
+        address: '', //withdrawal address
         sweep: false, //sweep = send all funds?
         feesTimeout: null, //window.setTimeout for fee fetching
         isTyping: false, //to disable button when the user changes amount/address
         isWithdrawing: false, //awaiting api response for withdrawal request?
-        txHash: "", //tx hash of withdrawal tx,
-        selectedFee: { type: "normal", satPerByte: 0 }, //selected withdrawal fee
+        txHash: '', //tx hash of withdrawal tx,
+        selectedFee: {type: 'normal', satPerByte: 0}, //selected withdrawal fee
       },
       loading: false, //overall state of the wallet, used to toggle progress bar on top of the card,
-      error: "", //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
+      error: '', //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
     } as data;
   },
   computed: {
@@ -768,14 +768,14 @@ export default defineComponent({
         return 0;
       }
 
-      if (this.withdraw.selectedFee.type !== "custom") {
+      if (this.withdraw.selectedFee.type !== 'custom') {
         const remainingBalanceInSats =
           this.bitcoinStore.balance.total -
           parseInt(this.withdraw.amount.toString()) -
           parseInt(
             this.bitcoinStore.fees[
               this.withdraw.selectedFee.type
-            ].total.toString()
+            ].total.toString(),
           );
         return parseInt(remainingBalanceInSats.toString(), 10);
       } else {
@@ -790,47 +790,45 @@ export default defineComponent({
     },
     localExplorerTxUrl(): string {
       // Check for mempool app
-      const mempool = this.appsStore.installed.find(
-        ({ id }) => id === "mempool"
-      );
+      const mempool = this.appsStore.installed.find(({id}) => id === 'mempool');
       if (mempool) {
-        return window.location.origin.indexOf(".onion") > 0
+        return window.location.origin.indexOf('.onion') > 0
           ? `http://${mempool.hiddenService}${mempool.path}/tx/`
           : `http://${window.location.hostname}:${mempool.port}${mempool.path}/tx/`;
       }
 
       // Check for btc-rpc-explorer app
       const btcRpcExplorer = this.appsStore.installed.find(
-        ({ id }) => id === "btc-rpc-explorer"
+        ({id}) => id === 'btc-rpc-explorer',
       );
       if (btcRpcExplorer) {
-        return window.location.origin.indexOf(".onion") > 0
+        return window.location.origin.indexOf('.onion') > 0
           ? `http://${btcRpcExplorer.hiddenService}${btcRpcExplorer.path}/tx/`
           : `http://${window.location.hostname}:${btcRpcExplorer.port}${btcRpcExplorer.path}/tx/`;
       }
 
       // Else return empty string
-      return "";
+      return '';
     },
   },
   watch: {
-    "withdraw.amountInput": function (val) {
-      if (this.systemStore.unit === "sats") {
+    'withdraw.amountInput': function (val) {
+      if (this.systemStore.unit === 'sats') {
         this.withdraw.amount = Number(val);
-      } else if (this.systemStore.unit === "btc") {
+      } else if (this.systemStore.unit === 'btc') {
         this.withdraw.amount = btcToSats(val);
       }
       this.fetchWithdrawalFees();
     },
-    "withdraw.sweep": async function (val) {
+    'withdraw.sweep': async function (val) {
       if (val) {
-        if (this.systemStore.unit === "sats") {
+        if (this.systemStore.unit === 'sats') {
           this.withdraw.amountInput = String(
-            this.bitcoinStore.balance.confirmed
+            this.bitcoinStore.balance.confirmed,
           );
-        } else if (this.systemStore.unit === "btc") {
+        } else if (this.systemStore.unit === 'btc') {
           this.withdraw.amountInput = String(
-            satsToBtc(this.bitcoinStore.balance.confirmed)
+            satsToBtc(this.bitcoinStore.balance.confirmed),
           );
         }
       } else {
@@ -838,11 +836,11 @@ export default defineComponent({
       }
     },
     unit: function (val) {
-      if (val === "sats") {
+      if (val === 'sats') {
         this.withdraw.amount = Number(this.withdraw.amountInput);
-      } else if (val === "btc") {
+      } else if (val === 'btc') {
         this.withdraw.amount = btcToSats(
-          parseInt(this.withdraw.amountInput as string)
+          parseInt(this.withdraw.amountInput as string),
         );
       }
       this.fetchWithdrawalFees();
@@ -866,12 +864,12 @@ export default defineComponent({
       if (this.localExplorerTxUrl) {
         return `${this.localExplorerTxUrl}${txHash}`;
       } else {
-        if (window.location.origin.indexOf(".onion") > 0) {
-          return this.bitcoinStore.chain === "test"
+        if (window.location.origin.indexOf('.onion') > 0) {
+          return this.bitcoinStore.chain === 'test'
             ? `http://mempoolhqx4isw62xs7abwphsq7ldayuidyx2v2oethdhhj6mlo2r6ad.onion/testnet/tx/${txHash}`
             : `http://mempoolhqx4isw62xs7abwphsq7ldayuidyx2v2oethdhhj6mlo2r6ad.onion/tx/${txHash}`;
         }
-        return this.bitcoinStore.chain === "test"
+        return this.bitcoinStore.chain === 'test'
           ? `https://mempool.space/testnet/tx/${txHash}`
           : `https://mempool.space/tx/${txHash}`;
       }
@@ -880,7 +878,7 @@ export default defineComponent({
       if (
         !this.localExplorerTxUrl &&
         !window.confirm(
-          "This will open your transaction details in a public explorer (mempool.space). Do you wish to continue?"
+          'This will open your transaction details in a public explorer (mempool.space). Do you wish to continue?',
         )
       ) {
         event.preventDefault();
@@ -888,16 +886,16 @@ export default defineComponent({
     },
     async changeMode(
       mode:
-        | "transactions"
-        | "deposit"
-        | "withdraw"
-        | "review-withdraw"
-        | "withdrawn"
+        | 'transactions'
+        | 'deposit'
+        | 'withdraw'
+        | 'review-withdraw'
+        | 'withdrawn',
     ) {
       //change between different modes/screens of the wallet from - transactions (default), withdraw, withdrawan, depsoit
 
       //on deposit mode, get new btc address
-      if (mode === "deposit") {
+      if (mode === 'deposit') {
         await this.bitcoinStore.getDepositAddress();
       }
 
@@ -909,29 +907,29 @@ export default defineComponent({
       //to do: refresh balance, txs
 
       //in case going back from review withdrawal to edit withdrwal
-      if (this.mode === "review-withdraw") {
+      if (this.mode === 'review-withdraw') {
         // Clear any error
-        this.error = "";
-        this.mode = "withdraw";
+        this.error = '';
+        this.mode = 'withdraw';
         return;
       }
 
       //reset state
       this.withdraw = {
-        amountInput: "",
-        amount: "",
-        address: "",
+        amountInput: '',
+        amount: '',
+        address: '',
         sweep: false,
         feesTimeout: null,
         isTyping: false, //to disable button when the user changes amount/address
         isWithdrawing: false,
-        txHash: "",
-        selectedFee: { type: "normal", satPerByte: 0 },
+        txHash: '',
+        selectedFee: {type: 'normal', satPerByte: 0},
       };
 
       this.loading = false;
-      this.error = "";
-      this.mode = "transactions";
+      this.error = '';
+      this.mode = 'transactions';
     },
     async fetchWithdrawalFees() {
       if (this.withdraw.feesTimeout) {
@@ -960,7 +958,7 @@ export default defineComponent({
               address: string;
               amt: number;
               sweep: boolean;
-            }
+            },
           );
 
           if (this.bitcoinStore.fees) {
@@ -970,10 +968,10 @@ export default defineComponent({
               this.bitcoinStore.fees[this.withdraw.selectedFee.type].error
             ) {
               this.error = JSON.stringify(
-                this.bitcoinStore.fees[this.withdraw.selectedFee.type].error
+                this.bitcoinStore.fees[this.withdraw.selectedFee.type].error,
               );
             } else {
-              this.error = "";
+              this.error = '';
             }
             // if (this.withdraw.sweep) {
             // this.estimateSweep();
@@ -984,7 +982,7 @@ export default defineComponent({
         this.withdraw.isTyping = false;
       }, 500);
     },
-    selectWithdrawalFee(fee: { type: string; satPerByte: number }) {
+    selectWithdrawalFee(fee: {type: string; satPerByte: number}) {
       this.withdraw.selectedFee = fee;
     },
     async withdrawBtc() {
@@ -996,7 +994,7 @@ export default defineComponent({
         amt: this.withdraw.amount,
         satPerByte: parseInt(
           this.withdraw.selectedFee.satPerByte.toString(),
-          10
+          10,
         ),
         sendAll: this.withdraw.sweep,
       };
@@ -1006,18 +1004,18 @@ export default defineComponent({
           await this.sdkStore.citadel.middleware.lnd.transaction.sendCoins(
             payload.addr,
             payload.amt as number,
-            payload.satPerByte
+            payload.satPerByte,
           );
         const withdrawTx = res;
         this.withdraw.txHash = withdrawTx.txid;
-        this.changeMode("withdrawn");
+        this.changeMode('withdrawn');
 
         //update
         await this.bitcoinStore.getBalance();
         await this.bitcoinStore.getTransactions();
       } catch (error) {
         console.error(error);
-        this.error = "Error sending BTC";
+        this.error = 'Error sending BTC';
       }
       this.loading = false;
       this.withdraw.isWithdrawing = false;

@@ -66,7 +66,7 @@
                 :value="Math.round(bitcoinStore.percent)"
                 class="mb-1"
                 variant="success"
-                :style="{ height: '4px' }"
+                :style="{height: '4px'}"
                 animated
                 striped
               ></b-progress>
@@ -154,13 +154,13 @@
 </template>
 
 <script lang="ts">
-import CardWidget from "../components/CardWidget.vue";
-import Blockchain from "../components/Blockchain.vue";
-import Stat from "../components/Utility/Stat.vue";
-import BitcoinWallet from "../components/BitcoinWallet.vue";
-import useBitcoinStore from "../store/bitcoin";
+import CardWidget from '../components/CardWidget.vue';
+import Blockchain from '../components/Blockchain.vue';
+import Stat from '../components/Utility/Stat.vue';
+import BitcoinWallet from '../components/BitcoinWallet.vue';
+import useBitcoinStore from '../store/bitcoin';
 
-import { defineComponent } from "vue";
+import {defineComponent} from 'vue';
 
 export default defineComponent({
   components: {
@@ -171,7 +171,7 @@ export default defineComponent({
   },
   setup() {
     const bitcoinStore = useBitcoinStore();
-    return { bitcoinStore };
+    return {bitcoinStore};
   },
   data() {
     return {} as {
@@ -195,10 +195,10 @@ export default defineComponent({
   },*/
   computed: {
     coreVersion(): string {
-      return this.bitcoinStore.version.split("/")[1].split(":")[1];
+      return this.bitcoinStore.version.split('/')[1].split(':')[1];
     },
     knotsVersion(): string {
-      return this.bitcoinStore.version.split("/")[2].split(":")[1];
+      return this.bitcoinStore.version.split('/')[2].split(':')[1];
     },
   },
   created() {
@@ -214,26 +214,26 @@ export default defineComponent({
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
     abbreviateHashRate(n: number): [number, string] {
-      if (n < 1e3) return [Number(n.toFixed(1)), "H/s"];
-      if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), "kH/s"];
-      if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), "MH/s"];
-      if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), "GH/s"];
-      if (n >= 1e12 && n < 1e15) return [Number((n / 1e12).toFixed(1)), "TH/s"];
-      if (n >= 1e15 && n < 1e18) return [Number((n / 1e15).toFixed(1)), "PH/s"];
-      if (n >= 1e18 && n < 1e21) return [Number((n / 1e18).toFixed(1)), "EH/s"];
-      if (n >= 1e21) return [Number(+(n / 1e21).toFixed(1)), "ZH/s"];
+      if (n < 1e3) return [Number(n.toFixed(1)), 'H/s'];
+      if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), 'kH/s'];
+      if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), 'MH/s'];
+      if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), 'GH/s'];
+      if (n >= 1e12 && n < 1e15) return [Number((n / 1e12).toFixed(1)), 'TH/s'];
+      if (n >= 1e15 && n < 1e18) return [Number((n / 1e15).toFixed(1)), 'PH/s'];
+      if (n >= 1e18 && n < 1e21) return [Number((n / 1e18).toFixed(1)), 'EH/s'];
+      if (n >= 1e21) return [Number(+(n / 1e21).toFixed(1)), 'ZH/s'];
       // Just a fallback to prevent TS errors
-      return [Number(n.toFixed(1)), "H/s"];
+      return [Number(n.toFixed(1)), 'H/s'];
     },
     abbreviateSize(n: number): [number, string] {
-      if (n < 1e3) return [Number(n.toFixed(1)), "Bytes"];
-      if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), "KB"];
-      if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), "MB"];
-      if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), "GB"];
-      if (n >= 1e12 && n < 1e15) return [Number((n / 1e12).toFixed(1)), "TB"];
-      if (n >= 1e15) return [Number(+(n / 1e15).toFixed(1)), "PB"];
+      if (n < 1e3) return [Number(n.toFixed(1)), 'Bytes'];
+      if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), 'KB'];
+      if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), 'MB'];
+      if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), 'GB'];
+      if (n >= 1e12 && n < 1e15) return [Number((n / 1e12).toFixed(1)), 'TB'];
+      if (n >= 1e15) return [Number(+(n / 1e15).toFixed(1)), 'PB'];
       // Just a fallback to prevent TS errors
-      return [Number(n.toFixed(1)), "Bytes"];
+      return [Number(n.toFixed(1)), 'Bytes'];
     },
     fetchStats() {
       this.bitcoinStore.getStats();

@@ -15,7 +15,7 @@
               src(
                 lightningStore.implementation === 'lnd'
                   ? 'icon-app-lnd.svg'
-                  : 'icon-app-c-lightning.svg'
+                  : 'icon-app-c-lightning.svg',
               )
             "
           />
@@ -34,8 +34,8 @@
             <span class="d-block text-muted">
               {{
                 lightningStore.version
-                  ? `v${lightningStore.version.split(" commit")[0]}`
-                  : "..."
+                  ? `v${lightningStore.version.split(' commit')[0]}`
+                  : '...'
               }}
             </span>
           </div>
@@ -83,7 +83,7 @@
           </b-dropdown>
 
           <b-modal id="lightning-address-modal" size="lg" centered hide-footer>
-            <template #modal-header="{ close }">
+            <template #modal-header="{close}">
               <div
                 class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
               >
@@ -253,7 +253,7 @@
               centered
               hide-footer
             >
-              <template #modal-header="{ close }">
+              <template #modal-header="{close}">
                 <div
                   class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
                 >
@@ -294,7 +294,7 @@
               centered
               hide-footer
             >
-              <template #modal-header="{ close }">
+              <template #modal-header="{close}">
                 <div
                   class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
                 >
@@ -338,22 +338,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { format } from "date-fns";
+import {defineComponent} from 'vue';
+import {format} from 'date-fns';
 
-import CardWidget from "../components/CardWidget.vue";
-import Stat from "../components/Utility/Stat.vue";
-import LightningWallet from "../components/LightningWallet.vue";
-import QrCode from "../components/Utility/QrCode.vue";
-import InputCopy from "../components/Utility/InputCopy.vue";
-import ToggleSwitch from "../components/ToggleSwitch.vue";
-import ChannelList from "../components/Channels/List.vue";
-import ChannelOpen from "../components/Channels/Open.vue";
-import ChannelManage from "../components/Channels/Manage.vue";
+import CardWidget from '../components/CardWidget.vue';
+import Stat from '../components/Utility/Stat.vue';
+import LightningWallet from '../components/LightningWallet.vue';
+import QrCode from '../components/Utility/QrCode.vue';
+import InputCopy from '../components/Utility/InputCopy.vue';
+import ToggleSwitch from '../components/ToggleSwitch.vue';
+import ChannelList from '../components/Channels/List.vue';
+import ChannelOpen from '../components/Channels/Open.vue';
+import ChannelManage from '../components/Channels/Manage.vue';
 
-import useBitcoinStore from "../store/bitcoin";
-import useLightningStore, { type ParsedChannel } from "../store/lightning";
-import useSystemStore from "../store/system";
+import useBitcoinStore from '../store/bitcoin';
+import useLightningStore, {type ParsedChannel} from '../store/lightning';
+import useSystemStore from '../store/system';
 
 export default defineComponent({
   components: {
@@ -371,11 +371,11 @@ export default defineComponent({
     const bitcoinStore = useBitcoinStore();
     const lightningStore = useLightningStore();
     const systemStore = useSystemStore();
-    return { bitcoinStore, lightningStore, systemStore };
+    return {bitcoinStore, lightningStore, systemStore};
   },
   data() {
     return {
-      status: "Running",
+      status: 'Running',
       selectedChannel: {},
     } as {
       status: string;
@@ -394,18 +394,18 @@ export default defineComponent({
   },
   methods: {
     getReadableTime(timestamp: number | Date) {
-      return format(new Date(timestamp), "MMM d, h:mm:ss a");
+      return format(new Date(timestamp), 'MMM d, h:mm:ss a');
     },
     manageChannel(channel: ParsedChannel) {
       if (channel) {
         this.selectedChannel = channel;
-        (this.$refs["manage-channel-modal"] as { show: () => unknown }).show();
+        (this.$refs['manage-channel-modal'] as {show: () => unknown}).show();
       }
     },
     onChannelOpen() {
       //refresh channels, balance and txs
       this.fetchPageData();
-      (this.$refs["open-channel-modal"] as { hide: () => unknown }).hide();
+      (this.$refs['open-channel-modal'] as {hide: () => unknown}).hide();
 
       //refresh bitcoin balance and txs
       this.bitcoinStore.getBalance();
@@ -414,7 +414,7 @@ export default defineComponent({
     onChannelClose() {
       //refresh channels, balance and txs
       this.fetchPageData();
-      (this.$refs["manage-channel-modal"] as { hide: () => unknown }).hide();
+      (this.$refs['manage-channel-modal'] as {hide: () => unknown}).hide();
 
       //refresh bitcoin balance and txs
       this.bitcoinStore.getBalance();

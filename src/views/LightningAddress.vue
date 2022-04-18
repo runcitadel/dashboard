@@ -44,11 +44,11 @@
 </template>
 
 <script lang="ts">
-import StepList from "../components/ConnectWallet/StepList.vue";
-import Step from "../components/ConnectWallet/Step.vue";
-import InputCopy from "../components/Utility/InputCopy.vue";
-import useAppsStore from "../store/apps";
-import { defineComponent } from "vue";
+import StepList from '../components/ConnectWallet/StepList.vue';
+import Step from '../components/ConnectWallet/Step.vue';
+import InputCopy from '../components/Utility/InputCopy.vue';
+import useAppsStore from '../store/apps';
+import {defineComponent} from 'vue';
 
 export default defineComponent({
   components: {
@@ -67,12 +67,12 @@ export default defineComponent({
       try {
         // Get the app from state.apps.installed where the ID is lnme
         return (
-          "tips@" +
-            this.appsStore.installed.find((app) => app.id === "lnme")
-              ?.hiddenService || "None yet, please install LnMe first."
+          'tips@' +
+            this.appsStore.installed.find((app) => app.id === 'lnme')
+              ?.hiddenService || 'None yet, please install LnMe first.'
         );
       } catch {
-        return "None yet, please install LnMe first.";
+        return 'None yet, please install LnMe first.';
       }
     },
   },

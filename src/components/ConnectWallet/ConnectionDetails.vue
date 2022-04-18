@@ -13,7 +13,7 @@
       <line x1="0" y1="0" x2="12" y2="0" class="minute" />
     </svg>
     You will be able to connect {{ name }} to your Citadel
-    {{ requires === "electrum" ? "~24 hours" : "" }} after Bitcoin Core has
+    {{ requires === 'electrum' ? '~24 hours' : '' }} after Bitcoin Core has
     synchronized 100%.
   </b-alert>
   <card-widget v-else :header="`Here's how to connect ${name} to your Citadel`">
@@ -28,9 +28,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import useBitcoinStore from "../../store/bitcoin";
-import CardWidget from "../CardWidget.vue";
+import {defineComponent} from 'vue';
+import useBitcoinStore from '../../store/bitcoin';
+import CardWidget from '../CardWidget.vue';
 
 export default defineComponent({
   components: {
@@ -43,12 +43,12 @@ export default defineComponent({
     },
     requires: {
       type: String,
-      default: "", //electrum, bitcoin-core, lnd, or empty if no specific protocol required
+      default: '', //electrum, bitcoin-core, lnd, or empty if no specific protocol required
     },
   },
   setup() {
     const bitcoinStore = useBitcoinStore();
-    return { bitcoinStore };
+    return {bitcoinStore};
   },
   data() {
     return {};

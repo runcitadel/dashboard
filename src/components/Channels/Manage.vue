@@ -49,7 +49,7 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Channel Type</span>
           <span class="text-capitalize font-weight-bold"
-            >{{ channel.private ? "Private" : "Public" }} Channel</span
+            >{{ channel.private ? 'Private' : 'Public' }} Channel</span
           >
         </div>
 
@@ -68,7 +68,7 @@
         >
           <span class="text-muted">Opened By</span>
           <span class="text-capitalize font-weight-bold">{{
-            channel.initiator ? "Your node" : "Remote peer"
+            channel.initiator ? 'Your node' : 'Remote peer'
           }}</span>
         </div>
 
@@ -173,7 +173,7 @@
             variant="danger"
             :disabled="isClosing"
             @click="confirmChannelClose"
-            >{{ isClosing ? "Closing Channel..." : "Confirm Close" }}</b-button
+            >{{ isClosing ? 'Closing Channel...' : 'Confirm Close' }}</b-button
           >
         </div>
       </div>
@@ -182,13 +182,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import useBitcoinStore from "../../store/bitcoin";
-import useSdkStore from "../../store/sdk";
-import useSystemStore from "../../store/system";
-import useToast from "../../utils/toast";
+import {defineComponent} from 'vue';
+import useBitcoinStore from '../../store/bitcoin';
+import useSdkStore from '../../store/sdk';
+import useSystemStore from '../../store/system';
+import useToast from '../../utils/toast';
 
-import Bar from "../Channels/Bar.vue";
+import Bar from '../Channels/Bar.vue';
 
 export default defineComponent({
   components: {
@@ -200,13 +200,13 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["channelclose"],
+  emits: ['channelclose'],
   setup() {
     const bitcoinStore = useBitcoinStore();
     const sdkStore = useSdkStore();
     const systemStore = useSystemStore();
     const toast = useToast();
-    return { bitcoinStore, sdkStore, systemStore, toast };
+    return {bitcoinStore, sdkStore, systemStore, toast};
   },
   data() {
     return {
@@ -220,8 +220,8 @@ export default defineComponent({
     },
     canCloseChannel() {
       if (
-        this.channel.status === "Opening" ||
-        this.channel.status === "Closing"
+        this.channel.status === 'Opening' ||
+        this.channel.status === 'Closing'
       ) {
         return false;
       }
@@ -238,14 +238,14 @@ export default defineComponent({
       try {
         await this.sdkStore.citadel.middleware.lnd.channel.closeChannel(
           this.channel.channelPoint,
-          !this.channel.active // Avoids force closing if channel is active
+          !this.channel.active, // Avoids force closing if channel is active
         );
-        this.$emit("channelclose");
+        this.$emit('channelclose');
         setTimeout(() => {
-          this.toast.success("Lightning Network", "Channel closed");
+          this.toast.success('Lightning Network', 'Channel closed');
         }, 200);
       } catch (err: unknown) {
-        this.toast.error("Error", JSON.stringify(err));
+        this.toast.error('Error', JSON.stringify(err));
       }
       this.isClosing = false;
     },

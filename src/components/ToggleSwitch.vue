@@ -22,10 +22,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits, onMounted } from "vue";
+import {ref, defineEmits, onMounted} from 'vue';
 
 const isOn = ref(false);
-const emit = defineEmits(["toggleOn", "toggleOff"]);
+const emit = defineEmits(['toggleOn', 'toggleOff']);
 
 const props = defineProps({
   disabled: {
@@ -34,7 +34,7 @@ const props = defineProps({
   },
   tooltip: {
     type: String,
-    default: "",
+    default: '',
   },
   loading: {
     type: Boolean,
@@ -51,7 +51,7 @@ function toggle() {
     return;
   }
   isOn.value = !isOn.value;
-  emit(isOn.value ? "toggleOn" : "toggleOff");
+  emit(isOn.value ? 'toggleOn' : 'toggleOff');
 }
 
 onMounted(() => {

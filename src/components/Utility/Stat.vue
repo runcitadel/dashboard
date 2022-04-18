@@ -56,7 +56,7 @@
             'text-muted': change.value === 0,
           }"
         >
-          {{ change.value >= 0 ? "+" : "" }}{{ change.value
+          {{ change.value >= 0 ? '+' : '' }}{{ change.value
           }}{{ change.suffix }}
         </span>
       </div>
@@ -68,18 +68,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import CountUp from "./CountUp.vue";
+import {defineComponent} from 'vue';
+import CountUp from './CountUp.vue';
 
 const abbreviate = (n: number): [number, string] => {
-  if (n < 1e2) return [Number(n), ""];
-  if (n >= 1e2 && n < 1e3) return [Number(n.toFixed(1)), ""];
-  if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), "K"];
-  if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), "M"];
-  if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), "B"];
-  if (n >= 1e12) return [Number(+(n / 1e12).toFixed(1)), "T"];
+  if (n < 1e2) return [Number(n), ''];
+  if (n >= 1e2 && n < 1e3) return [Number(n.toFixed(1)), ''];
+  if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), 'K'];
+  if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), 'M'];
+  if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), 'B'];
+  if (n >= 1e12) return [Number(+(n / 1e12).toFixed(1)), 'T'];
   // This is just for TypeScript, we'll never actually get here
-  return [0, "Error"];
+  return [0, 'Error'];
 };
 
 export default defineComponent({
@@ -97,7 +97,7 @@ export default defineComponent({
     },
     suffix: {
       type: String,
-      default: "",
+      default: '',
     },
     abbreviateValue: {
       type: Boolean,
@@ -120,7 +120,7 @@ export default defineComponent({
     return {
       change: {
         value: 0,
-        suffix: "",
+        suffix: '',
       },
     };
   },
@@ -134,7 +134,7 @@ export default defineComponent({
     },
     numberSuffix() {
       if (!this.abbreviateValue) {
-        return "";
+        return '';
       } else {
         return abbreviate(this.value)[1];
       }
@@ -146,13 +146,13 @@ export default defineComponent({
         if (oldValue <= 0) {
           this.change = {
             value: 0,
-            suffix: "",
+            suffix: '',
           };
         } else {
           if (!this.abbreviateValue) {
             this.change = {
               value: newValue - oldValue,
-              suffix: "",
+              suffix: '',
             };
           } else {
             //because fn abbreviate doesn't work with negative numbers
@@ -173,12 +173,12 @@ export default defineComponent({
         if (oldValue <= 0) {
           this.change = {
             value: 0,
-            suffix: "%",
+            suffix: '%',
           };
         } else {
           this.change = {
             value: Math.round(((newValue - oldValue) * 100) / oldValue),
-            suffix: "%",
+            suffix: '%',
           };
         }
       }
