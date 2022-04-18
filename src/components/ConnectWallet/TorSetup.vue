@@ -57,8 +57,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import InputCopy from "../Utility/InputCopy.vue";
+import {defineComponent} from 'vue';
+import InputCopy from '../Utility/InputCopy.vue';
 
 export default defineComponent({
   components: {

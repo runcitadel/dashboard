@@ -15,7 +15,7 @@ export default {
     body: {
       required: false,
       type: String,
-      default: "",
+      default: '',
     },
   },
 };

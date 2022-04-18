@@ -70,7 +70,7 @@
           <b-progress
             :value="Math.round((ram.used * 100) / ram.total)"
             class="mb-1"
-            :style="{ height: '5px' }"
+            :style="{height: '5px'}"
             :variant="
               isRunningLowOnRam ? (isRamFull ? 'danger' : 'warning') : 'success'
             "
@@ -147,7 +147,7 @@
                       :value="Math.round((app.used * 100) / ram.used)"
                       class="mt-1"
                       variant="success"
-                      :style="{ height: '2px' }"
+                      :style="{height: '2px'}"
                     ></b-progress>
                   </div>
                 </div>
@@ -162,14 +162,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from 'vue';
 
-import { BIconInfoCircleFill } from "bootstrap-vue/src/index.js";
+import {BIconInfoCircleFill} from 'bootstrap-vue/src/index.js';
 
-import { readableSize } from "../../helpers/size";
-import CardWidget from "../CardWidget.vue";
-import useAppsStore from "../../store/apps";
-import useSystemStore from "../../store/system";
+import {readableSize} from '../../helpers/size';
+import CardWidget from '../CardWidget.vue';
+import useAppsStore from '../../store/apps';
+import useSystemStore from '../../store/system';
 
 export default defineComponent({
   components: {
@@ -179,13 +179,13 @@ export default defineComponent({
   setup() {
     const systemStore = useSystemStore();
     const appsStore = useAppsStore();
-    return { appsStore, systemStore };
+    return {appsStore, systemStore};
   },
   computed: {
     ram(): {
       total: number;
       used: number;
-      breakdown: { id: string; used: number }[];
+      breakdown: {id: string; used: number}[];
     } {
       return this.systemStore.ram;
     },
@@ -207,21 +207,21 @@ export default defineComponent({
     cardStatus():
       | {
           text: string;
-          variant: "success" | "primary" | "muted" | "danger" | "warning";
+          variant: 'success' | 'primary' | 'muted' | 'danger' | 'warning';
           blink: boolean;
         }
       | undefined {
       if (this.isRamFull) {
         return {
-          text: "RAM full",
-          variant: "danger",
+          text: 'RAM full',
+          variant: 'danger',
           blink: true,
         };
       }
       if (this.isRunningLowOnRam) {
         return {
-          text: "Low RAM",
-          variant: "warning",
+          text: 'Low RAM',
+          variant: 'warning',
           blink: true,
         };
       }
@@ -239,7 +239,7 @@ export default defineComponent({
     },
     getAppName(appId: string) {
       const appStore = this.appsStore.store;
-      return appStore.find(({ id }) => id === appId)?.name || appId;
+      return appStore.find(({id}) => id === appId)?.name || appId;
     },
   },
 });

@@ -10,11 +10,11 @@
               size="sm"
               @click="startUpdate"
               >{{
-                isUpdating ? "Update running in the background..." : "Update"
+                isUpdating ? 'Update running in the background...' : 'Update'
               }}</b-button
             >
             <b-button variant="outline-primary" size="sm" @click="toggleEdit">{{
-              isEditing ? "Done" : "Edit"
+              isEditing ? 'Done' : 'Edit'
             }}</b-button>
           </div>
         </div>
@@ -52,10 +52,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from 'vue';
 
-import InstalledApp from "../components/InstalledApp.vue";
-import useAppsStore from "../store/apps";
+import InstalledApp from '../components/InstalledApp.vue';
+import useAppsStore from '../store/apps';
 
 export default defineComponent({
   components: {
@@ -63,7 +63,7 @@ export default defineComponent({
   },
   setup() {
     const appsStore = useAppsStore();
-    return { appsStore };
+    return {appsStore};
   },
   data() {
     return {

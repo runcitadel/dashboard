@@ -48,7 +48,7 @@
                   </h6>
                   <small v-if="block.numTransactions" class="text-muted">
                     {{ block.numTransactions.toLocaleString() }}
-                    transaction{{ block.numTransactions !== 1 ? "s" : "" }}
+                    transaction{{ block.numTransactions !== 1 ? 's' : '' }}
                   </small>
                   <small v-if="block.size" class="text-muted">
                     <span>&bull; {{ Math.round(block.size / 1000) }} KB</span>
@@ -126,13 +126,13 @@
 </template>
 
 <script lang="ts">
-import useBitcoinStore from "../store/bitcoin";
+import useBitcoinStore from '../store/bitcoin';
 import {
   formatDistance,
   format,
   getDateFormatWithSeconds,
-} from "../helpers/date";
-import { defineComponent } from "vue";
+} from '../helpers/date';
+import {defineComponent} from 'vue';
 
 export default defineComponent({
   components: {},
@@ -202,7 +202,7 @@ export default defineComponent({
       if (new Date(minedAt) < new Date()) {
         return formatDistance(new Date(minedAt), new Date());
       } else {
-        return "just now";
+        return 'just now';
       }
     },
     blockReadableTime(timestamp: number) {
@@ -213,7 +213,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-html[data-theme="dark"] {
+html[data-theme='dark'] {
   .blockchain-container {
     &:before {
       background-image: linear-gradient(
@@ -255,7 +255,7 @@ html[data-theme="dark"] {
   //bottom fade
   &:before {
     //nice faded white so the discarded blocks don't abruptly cut off
-    content: "";
+    content: '';
     position: absolute;
     height: 2rem;
     width: 100%;
@@ -272,7 +272,7 @@ html[data-theme="dark"] {
   //top fade
   &:after {
     //nice faded white so the discarded blocks don't abruptly cut off
-    content: "";
+    content: '';
     position: absolute;
     height: 2rem;
     width: 100%;
@@ -414,11 +414,11 @@ html[data-theme="dark"] {
     opacity: 0;
   }
   &:before {
-    content: "● Validated";
+    content: '● Validated';
     color: #00cd98;
   }
   &:after {
-    content: "Validating...";
+    content: 'Validating...';
     color: #b1b5b9;
   }
 }

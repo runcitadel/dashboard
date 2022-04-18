@@ -422,7 +422,7 @@
             </b-input-group>
             <small
               class="text-muted mt-2 d-block text-end mb-0"
-              :style="{ opacity: (receive.amount || 0) > 0 ? 1 : 0 }"
+              :style="{opacity: (receive.amount || 0) > 0 ? 1 : 0}"
               >~
               {{ $filters.satsToUSD(receive.amount?.toString() as string, bitcoinStore) }}</small
             >
@@ -485,7 +485,7 @@
                 }}
                 {{ $filters.formatUnit(systemStore.unit) }}
               </b>
-              {{ receive.description ? "for" : null }}
+              {{ receive.description ? 'for' : null }}
               <b>{{ receive.description }}</b>
             </span>
           </p>
@@ -799,7 +799,7 @@
             fill="#FFFFFF"
           />
         </svg>
-        {{ send.isSending ? "Sending..." : "Send" }}
+        {{ send.isSending ? 'Sending...' : 'Send' }}
       </b-button>
 
       <!-- Button: Create Invoice (receive mode) -->
@@ -836,41 +836,41 @@
 </template>
 
 <script lang="ts">
-import useSystemStore from "../store/system";
-import useUserStore from "../store/user";
-import useBitcoinStore from "../store/bitcoin";
+import useSystemStore from '../store/system';
+import useUserStore from '../store/user';
+import useBitcoinStore from '../store/bitcoin';
 import useLightningStore, {
   type CustomTransactionType,
-} from "../store/lightning";
-import useAppsStore from "../store/apps";
-import useSdkStore from "../store/sdk";
+} from '../store/lightning';
+import useAppsStore from '../store/apps';
+import useSdkStore from '../store/sdk';
 
 import {
   formatDistance,
   format,
   getDateFormatWithSeconds,
-} from "../helpers/date";
-import { addHours } from "date-fns";
+} from '../helpers/date';
+import {addHours} from 'date-fns';
 
-import { satsToBtc, btcToSats } from "../helpers/units";
+import {satsToBtc, btcToSats} from '../helpers/units';
 
-import CountUp from "../components/Utility/CountUp.vue";
-import CardWidget from "../components/CardWidget.vue";
-import InputCopy from "../components/Utility/InputCopy.vue";
-import QrCode from "../components/Utility/QrCode.vue";
-import CircularCheckmark from "../components/Utility/CircularCheckmark.vue";
-import SatsBtcSwitch from "../components/Utility/SatsBtcSwitch.vue";
-import { defineComponent } from "vue";
+import CountUp from '../components/Utility/CountUp.vue';
+import CardWidget from '../components/CardWidget.vue';
+import InputCopy from '../components/Utility/InputCopy.vue';
+import QrCode from '../components/Utility/QrCode.vue';
+import CircularCheckmark from '../components/Utility/CircularCheckmark.vue';
+import SatsBtcSwitch from '../components/Utility/SatsBtcSwitch.vue';
+import {defineComponent} from 'vue';
 
 type mode =
-  | "invoice"
-  | "sent"
-  | "transactions"
-  | "receive"
-  | "send"
-  | "invoice-expired"
-  | "payment-success"
-  | "received";
+  | 'invoice'
+  | 'sent'
+  | 'transactions'
+  | 'receive'
+  | 'send'
+  | 'invoice-expired'
+  | 'payment-success'
+  | 'received';
 type data = {
   mode: mode; //transactions (default mode), receive (create invoice), invoice, send, sent, payment-success, invoice-info
   receive: {
@@ -939,13 +939,13 @@ export default defineComponent({
   },
   data(): data {
     return {
-      mode: "transactions", //transactions (default mode), receive (create invoice), invoice, send, sent, payment-success, invoice-info
+      mode: 'transactions', //transactions (default mode), receive (create invoice), invoice, send, sent, payment-success, invoice-info
       receive: {
         //receive info
         amount: null, //invoice amount
-        description: "", //invoice description
-        paymentRequest: "", //Bolt 11 invoice
-        invoiceQR: "1", //used for "generating" animation, is ultimately equal to paymentRequest after animation
+        description: '', //invoice description
+        paymentRequest: '', //Bolt 11 invoice
+        invoiceQR: '1', //used for "generating" animation, is ultimately equal to paymentRequest after animation
         isGeneratingInvoice: false, //used for transitions, animations, etc
         expiresOn: null, //invoice expiry date
         invoiceStatusPoller: null, // = setInterval used to fetch invoice settlement status
@@ -953,28 +953,28 @@ export default defineComponent({
       },
       send: {
         //send info
-        paymentRequest: "", //Bolt 11 payment request/invoice entered by the user
-        description: "", //invoice description
+        paymentRequest: '', //Bolt 11 payment request/invoice entered by the user
+        description: '', //invoice description
         amount: null, //invoice amount
         isValidInvoice: false, //check if invoice entered by user is a valid Bolt 11 invoice
         isSending: false, //used for transition while tx is being broadcasted,
-        paymentPreImage: "", //proof of payment
+        paymentPreImage: '', //proof of payment
       },
       paymentInfo: {
         //outgoing payment info
         amount: null, // payment amount
-        description: "", //payment memo or description
+        description: '', //payment memo or description
         timestamp: null, //time of settlement
         fee: null, //routing fee of payment
-        paymentRequest: "", //original payment request
-        paymentPreImage: "", //proof of payment
+        paymentRequest: '', //original payment request
+        paymentPreImage: '', //proof of payment
       },
       expiredInvoice: {
         //expired invoice info
         expiresOn: null, //expiry date of the unpaid/expired invoice
       },
       loading: false, //overall state of the wallet. eg. used to toggle progress bar on top of the card,
-      error: "", //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
+      error: '', //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
     };
   },
   computed: {
@@ -983,17 +983,17 @@ export default defineComponent({
       if (this.lightningStore.balance.total === -1) {
         return -1;
       }
-      if (this.systemStore.unit === "btc") {
+      if (this.systemStore.unit === 'btc') {
         return satsToBtc(this.lightningStore.balance.total);
       }
       return this.lightningStore.balance.total;
     },
     isLightningPage() {
-      return this.$router.currentRoute.value.path === "/lightning";
+      return this.$router.currentRoute.value.path === '/lightning';
     },
   },
   watch: {
-    "receive.paymentRequest": function (paymentRequest) {
+    'receive.paymentRequest': function (paymentRequest) {
       window.clearInterval(this.receive.invoiceStatusPoller as number);
 
       //if payment request is generated, fetch invoices to check settlement status as long as the user is on the generated invoice mode
@@ -1013,7 +1013,7 @@ export default defineComponent({
             })[0];
 
             if (currentInvoice && currentInvoice.state === 1) {
-              this.changeMode("received");
+              this.changeMode('received');
               window.clearInterval(this.receive.invoiceStatusPoller as number);
 
               //refresh
@@ -1025,17 +1025,17 @@ export default defineComponent({
         }, 1000);
       }
     },
-    "receive.amountInput": function (val) {
-      if (this.systemStore.unit === "sats") {
+    'receive.amountInput': function (val) {
+      if (this.systemStore.unit === 'sats') {
         this.receive.amount = Number(val);
-      } else if (this.systemStore.unit === "btc") {
+      } else if (this.systemStore.unit === 'btc') {
         this.receive.amount = btcToSats(val);
       }
     },
-    unit(val: "sats" | "btc") {
-      if (val === "sats") {
+    unit(val: 'sats' | 'btc') {
+      if (val === 'sats') {
         this.receive.amount = Number(this.receive.amountInput);
-      } else if (val === "btc") {
+      } else if (val === 'btc') {
         this.receive.amount = btcToSats(this.receive.amountInput as number);
       }
     },
@@ -1052,14 +1052,14 @@ export default defineComponent({
       try {
         return formatDistance(new Date(timestamp), new Date()); //used in the list of txs, eg "a few seconds ago"
       } catch {
-        return "Unknown time";
+        return 'Unknown time';
       }
     },
     getReadableTime(timestamp: number | Date) {
       try {
         return format(new Date(timestamp), getDateFormatWithSeconds()); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
       } catch {
-        return "Unknown time";
+        return 'Unknown time';
       }
     },
     //change between different modes/screens of the wallet from - transactions (default), receive (create invoice), invoice, send, sent
@@ -1079,36 +1079,36 @@ export default defineComponent({
       //reset state
       this.receive = {
         amount: null,
-        description: "",
-        paymentRequest: "",
-        invoiceQR: "1",
+        description: '',
+        paymentRequest: '',
+        invoiceQR: '1',
         isGeneratingInvoice: false,
         expiresOn: null,
         invoiceStatusPoller: null,
         invoiceStatusPollerInprogress: false,
       };
       this.send = {
-        paymentRequest: "",
-        description: "",
+        paymentRequest: '',
+        description: '',
         amount: null,
         isValidInvoice: false,
         isSending: false,
-        paymentPreImage: "",
+        paymentPreImage: '',
       };
       this.paymentInfo = {
         amount: null,
-        description: "",
+        description: '',
         timestamp: null,
         fee: null,
-        paymentRequest: "",
-        paymentPreImage: "",
+        paymentRequest: '',
+        paymentPreImage: '',
       };
       this.expiredInvoice = {
         expiresOn: null,
       };
       this.loading = false;
-      this.error = "";
-      this.mode = "transactions";
+      this.error = '';
+      this.mode = 'transactions';
     },
     async sendSats() {
       //broadcast tx
@@ -1116,23 +1116,23 @@ export default defineComponent({
 
       this.loading = true;
       this.send.isSending = true;
-      this.error = "";
+      this.error = '';
 
       try {
         await this.sdkStore.citadel.middleware.lnd.lightning.payInvoice(
-          this.send.paymentRequest
+          this.send.paymentRequest,
         );
         // TODO: Fix this
         /*if (res.data.paymentError) {
           return (this.error = res.data.paymentError);
         }*/
-        this.mode = "sent";
+        this.mode = 'sent';
 
         //refresh
         this.lightningStore.getTransactions();
         this.lightningStore.getChannels();
       } catch (error) {
-        this.error = JSON.stringify(error) || "Error sending payment";
+        this.error = JSON.stringify(error) || 'Error sending payment';
       }
 
       this.loading = false;
@@ -1142,8 +1142,8 @@ export default defineComponent({
       //generate invoice to receive payment
       this.loading = true;
       this.receive.isGeneratingInvoice = true;
-      this.mode = "invoice";
-      this.error = "";
+      this.mode = 'invoice';
+      this.error = '';
 
       //start animated QR invoice until real invoice is fetched from the node
       this.QRAnimation = window.setInterval(() => {
@@ -1156,7 +1156,7 @@ export default defineComponent({
           const res =
             await this.sdkStore.citadel.middleware.lnd.lightning.addInvoice(
               (this.receive.amount as number).toString(),
-              this.receive.description
+              this.receive.description,
             );
           this.receive.invoiceQR = this.receive.paymentRequest =
             res.paymentRequest;
@@ -1167,8 +1167,8 @@ export default defineComponent({
           //refresh txs
           this.lightningStore.getTransactions();
         } catch (error) {
-          this.mode = "receive";
-          this.error = JSON.stringify(error) || "Error creating invoice";
+          this.mode = 'receive';
+          this.error = JSON.stringify(error) || 'Error creating invoice';
         }
         this.loading = false;
         this.receive.isGeneratingInvoice = false;
@@ -1180,29 +1180,29 @@ export default defineComponent({
       //if empty field, reset last fetched invoice
       if (!this.send.paymentRequest) {
         this.loading = false;
-        this.send.description = "";
+        this.send.description = '';
         this.send.isValidInvoice = false;
         this.send.amount = null;
-        this.send.description = "";
-        this.error = "";
+        this.send.description = '';
+        this.error = '';
         return;
       }
 
-      this.send.description = "";
+      this.send.description = '';
       this.send.isValidInvoice = false;
       this.send.amount = null;
-      this.send.description = "";
-      this.error = "";
+      this.send.description = '';
+      this.error = '';
       this.loading = true;
 
       const fetchedInvoice =
         await this.sdkStore.citadel.middleware.lnd.lightning.parsePaymentRequest(
-          this.send.paymentRequest
+          this.send.paymentRequest,
         );
 
       if (!fetchedInvoice) {
         this.send.isValidInvoice = false;
-        this.error = "Invalid invoice";
+        this.error = 'Invalid invoice';
         this.loading = false;
         return;
       }
@@ -1217,22 +1217,22 @@ export default defineComponent({
         this.send.isValidInvoice = false;
         this.error = `Invoice expired ${formatDistance(
           new Date(invoiceExpiresOn),
-          new Date()
+          new Date(),
         )}`;
       } else {
         this.send.amount = Number(fetchedInvoice.numSatoshis);
         this.send.description = fetchedInvoice.description;
         this.send.isValidInvoice = true;
-        this.error = "";
+        this.error = '';
       }
 
       this.loading = false;
     },
-    showTransactionInfo(tx: CustomTransactionType | { type: "loading" }) {
-      if (!tx || tx.type === "loading") return; //eg. when tx is loading
+    showTransactionInfo(tx: CustomTransactionType | {type: 'loading'}) {
+      if (!tx || tx.type === 'loading') return; //eg. when tx is loading
 
       //if outgoing payment, show success
-      if (tx.type === "outgoing") {
+      if (tx.type === 'outgoing') {
         this.paymentInfo = {
           amount: tx.amount,
           description: tx.description,
@@ -1242,30 +1242,30 @@ export default defineComponent({
           paymentRequest: tx.paymentRequest,
           paymentPreImage: tx.paymentPreImage as string,
         };
-        return this.changeMode("payment-success");
+        return this.changeMode('payment-success');
       }
 
       //if pending, show generated invoice screen (receive, so it also triggers poller)
-      if (tx.type === "pending") {
+      if (tx.type === 'pending') {
         this.receive.amount = tx.amount;
         this.receive.description = tx.description;
         this.receive.paymentRequest = tx.paymentRequest;
         this.receive.invoiceQR = tx.paymentRequest;
         this.receive.isGeneratingInvoice = false;
         this.receive.expiresOn = tx.expiresOn as Date;
-        return this.changeMode("invoice");
+        return this.changeMode('invoice');
       }
 
-      if (tx.type === "incoming") {
+      if (tx.type === 'incoming') {
         this.receive.amount = tx.amount;
         this.receive.description = tx.description;
         this.receive.timestamp = tx.timestamp;
-        return this.changeMode("received");
+        return this.changeMode('received');
       }
 
-      if (tx.type === "expired") {
+      if (tx.type === 'expired') {
         this.expiredInvoice.expiresOn = tx.expiresOn as Date;
-        this.changeMode("invoice-expired");
+        this.changeMode('invoice-expired');
       }
     },
   },

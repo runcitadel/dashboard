@@ -87,10 +87,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import useAppsStore, { type app } from "../store/apps";
+import {defineComponent} from 'vue';
+import useAppsStore, {type app} from '../store/apps';
 
-import CardWidget from "../components/CardWidget.vue";
+import CardWidget from '../components/CardWidget.vue';
 
 export default defineComponent({
   components: {
@@ -98,7 +98,7 @@ export default defineComponent({
   },
   setup() {
     const appsStore = useAppsStore();
-    return { appsStore };
+    return {appsStore};
   },
   computed: {
     categorizedAppStore(): Record<string, app[]> {
@@ -107,7 +107,7 @@ export default defineComponent({
           r[app.category] = [...(r[app.category] || []), app];
           return r;
         },
-        {}
+        {},
       );
       return group;
     },

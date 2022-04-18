@@ -26,11 +26,11 @@
         :disabled="isDisabled"
         @change="emitValue"
       >
-        <template #tooltip="{ value, focus }">
+        <template #tooltip="{value, focus}">
           <div
             :class="[
               'vue-slider-dot-tooltip-inner vue-slider-dot-tooltip-inner-top',
-              { focus },
+              {focus},
             ]"
           >
             <span class="vue-slider-dot-tooltip-text d-block"
@@ -43,7 +43,7 @@
                   (parseInt(fee.fast.total, 10) /
                     parseInt(fee.fast.perByte, 10)) *
                     value,
-                  bitcoinStore
+                  bitcoinStore,
                 )
               }}</small
             >
@@ -67,16 +67,16 @@
         :disabled="isDisabled"
         @change="emitValue"
       >
-        <template #label="{ active, value }">
-          <div :class="['vue-slider-mark-label', 'text-center', { active }]">
+        <template #label="{active, value}">
+          <div :class="['vue-slider-mark-label', 'text-center', {active}]">
             <span class="text-muted">~ {{ timeToConfirm(value) }}</span>
           </div>
         </template>
-        <template #tooltip="{ value, focus }">
+        <template #tooltip="{value, focus}">
           <div
             :class="[
               'vue-slider-dot-tooltip-inner vue-slider-dot-tooltip-inner-top',
-              { focus },
+              {focus},
             ]"
           >
             <span class="vue-slider-dot-tooltip-text d-block mb-0"
@@ -93,10 +93,10 @@
 </template>
 
 <script lang="ts">
-import VueSlider from "@aarondewes/vue-slider-component";
-import "@aarondewes/vue-slider-component/theme/default.css";
-import { defineComponent } from "vue";
-import useBitcoinStore from "../../store/bitcoin";
+import VueSlider from '@aarondewes/vue-slider-component';
+import '@aarondewes/vue-slider-component/theme/default.css';
+import {defineComponent} from 'vue';
+import useBitcoinStore from '../../store/bitcoin';
 
 export default defineComponent({
   components: {
@@ -120,14 +120,14 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ["change"],
+  emits: ['change'],
   setup() {
     const bitcoinStore = useBitcoinStore();
-    return { bitcoinStore };
+    return {bitcoinStore};
   },
   data() {
     return {
-      chosenFee: "normal",
+      chosenFee: 'normal',
       useCustomFee: false,
       customFee: 30,
     };
@@ -136,27 +136,27 @@ export default defineComponent({
     isDisabled() {
       return (
         this.fee.fast.total <= 0 ||
-        this.fee.fast.total === "--" ||
-        this.fee.fast.total === "N/A" ||
+        this.fee.fast.total === '--' ||
+        this.fee.fast.total === 'N/A' ||
         this.disabled
       );
     },
     recommendedFees() {
       if (this.isDisabled) {
-        return ["cheapest", "slow", "normal", "fast"];
+        return ['cheapest', 'slow', 'normal', 'fast'];
       }
       const intervals = [];
       if (this.fee.cheapest && !this.fee.cheapest.error) {
-        intervals.push("cheapest");
+        intervals.push('cheapest');
       }
       if (this.fee.slow && !this.fee.slow.error) {
-        intervals.push("slow");
+        intervals.push('slow');
       }
       if (this.fee.normal && !this.fee.normal.error) {
-        intervals.push("normal");
+        intervals.push('normal');
       }
       if (this.fee.fast && !this.fee.fast.error) {
-        intervals.push("fast");
+        intervals.push('fast');
       }
       return intervals;
     },
@@ -165,7 +165,7 @@ export default defineComponent({
     useCustomFee: function () {
       this.emitValue();
     },
-    "fee.fast.total": function () {
+    'fee.fast.total': function () {
       this.emitValue();
     },
   },
@@ -173,30 +173,30 @@ export default defineComponent({
     emitValue() {
       if (this.useCustomFee) {
         const fee = {
-          type: "custom",
+          type: 'custom',
           satPerByte: parseInt(this.customFee.toString(), 10),
         };
-        this.$emit("change", fee);
+        this.$emit('change', fee);
       } else {
         const fee = {
           type: this.chosenFee,
           satPerByte: parseInt(this.fee[this.chosenFee].perByte, 10),
         };
-        this.$emit("change", fee);
+        this.$emit('change', fee);
       }
     },
-    timeToConfirm(fee: "fast" | "normal" | "slow" | "cheapest") {
+    timeToConfirm(fee: 'fast' | 'normal' | 'slow' | 'cheapest') {
       switch (fee) {
-        case "fast":
-          return "10 min";
-        case "normal":
-          return "60 min";
-        case "slow":
-          return "4 hrs";
-        case "cheapest":
-          return "24 hrs";
+        case 'fast':
+          return '10 min';
+        case 'normal':
+          return '60 min';
+        case 'slow':
+          return '4 hrs';
+        case 'cheapest':
+          return '24 hrs';
         default:
-          return "unknown";
+          return 'unknown';
       }
     },
   },
@@ -230,7 +230,7 @@ $stepBgColor: rgba(0, 0, 0, 0.1) !default;
 $labelFontSize: 0.8rem;
 
 /* import theme style */
-@import "node_modules/@aarondewes/vue-slider-component/lib/theme/default.scss";
+@import 'node_modules/@aarondewes/vue-slider-component/lib/theme/default.scss';
 
 .vue-slider-container {
   padding-top: 3rem;

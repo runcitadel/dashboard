@@ -7,12 +7,12 @@
 </template>
 
 <script lang="ts">
-import { CountUp, type CountUpOptions } from "countup.js";
-import { defineComponent, type PropType } from "vue";
+import {CountUp, type CountUpOptions} from 'countup.js';
+import {defineComponent, type PropType} from 'vue';
 
 const typeOf = (type: string) => (object: unknown) =>
   Object.prototype.toString.call(object) === `[object ${type}]`;
-const isFunction = typeOf("Function");
+const isFunction = typeOf('Function');
 
 export default defineComponent({
   components: {},
@@ -36,14 +36,14 @@ export default defineComponent({
     suffix: {
       type: String,
       required: false,
-      default: "",
+      default: '',
     },
     countOnLoad: {
       type: Boolean,
       default: false,
     },
   },
-  emits: ["ready"],
+  emits: ['ready'],
   data() {
     return {
       startVal: 0,
@@ -103,11 +103,11 @@ export default defineComponent({
       }
       this.instance = instance;
       if (this.delay < 0) {
-        this.$emit("ready", instance, CountUp);
+        this.$emit('ready', instance, CountUp);
         return;
       }
       setTimeout(() => {
-        instance.start(() => this.$emit("ready", instance, CountUp));
+        instance.start(() => this.$emit('ready', instance, CountUp));
         this.firstLoad = false;
       }, this.delay);
     },

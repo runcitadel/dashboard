@@ -6,7 +6,8 @@
     "dev": "vite",
     "serve": "vite preview",
     "build": "vite build",
-    "lint": "eslint src/**/*.vue"
+    "lint": "eslint --fix src/**/*.vue",
+    "lint:check": "eslint src/**/*.vue"
   },
   "dependencies": {
     "@aarondewes/vue-slider-component": "^3.2.16",

@@ -46,7 +46,7 @@
             <div></div>
             <small
               class="text-muted d-block mb-0"
-              :style="{ opacity: fundingAmount > 0 ? 1 : 0 }"
+              :style="{opacity: fundingAmount > 0 ? 1 : 0}"
               >~ {{ $filters.satsToUSD(fundingAmount, bitcoinStore) }}</small
             >
           </div>
@@ -76,7 +76,7 @@
             type="submit"
             variant="success"
             :disabled="isOpening || !!error"
-            >{{ isOpening ? "Opening..." : "Open Channel" }}</b-button
+            >{{ isOpening ? 'Opening...' : 'Open Channel' }}</b-button
           >
         </div>
       </b-col>
@@ -85,17 +85,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from 'vue';
 
-import { satsToBtc, btcToSats } from "../../helpers/units";
-import useToast from "../../utils/toast";
+import {satsToBtc, btcToSats} from '../../helpers/units';
+import useToast from '../../utils/toast';
 
-import SatsBtcSwitch from "../Utility/SatsBtcSwitch.vue";
-import FeeSelector from "../Utility/FeeSelector.vue";
+import SatsBtcSwitch from '../Utility/SatsBtcSwitch.vue';
+import FeeSelector from '../Utility/FeeSelector.vue';
 
-import useBitcoinStore from "../../store/bitcoin";
-import useSdkStore from "../../store/sdk";
-import useSystemStore from "../../store/system";
+import useBitcoinStore from '../../store/bitcoin';
+import useSdkStore from '../../store/sdk';
+import useSystemStore from '../../store/system';
 
 type data = {
   peerConnectionCode: string;
@@ -103,7 +103,7 @@ type data = {
   fundingAmount: number;
   isOpening: boolean;
   selectedFee: {
-    type: "custom" | "fast" | "normal" | "slow" | "cheapest";
+    type: 'custom' | 'fast' | 'normal' | 'slow' | 'cheapest';
     satPerByte: number;
   };
   fee: {
@@ -141,80 +141,80 @@ export default defineComponent({
     SatsBtcSwitch,
     FeeSelector,
   },
-  emits: ["channelopen"],
+  emits: ['channelopen'],
   setup() {
     const bitcoinStore = useBitcoinStore();
     const sdkStore = useSdkStore();
     const systemStore = useSystemStore();
     const toast = useToast();
-    return { bitcoinStore, sdkStore, systemStore, toast };
+    return {bitcoinStore, sdkStore, systemStore, toast};
   },
   data(): data {
     return {
-      peerConnectionCode: "",
-      fundingAmountInput: "",
+      peerConnectionCode: '',
+      fundingAmountInput: '',
       fundingAmount: 0,
       isOpening: false,
       selectedFee: {
-        type: "normal",
+        type: 'normal',
         satPerByte: 0,
       },
       fee: {
         fast: {
           total: 0,
-          perByte: "--",
-          error: "",
+          perByte: '--',
+          error: '',
           sweepAmount: 0,
         },
         normal: {
           total: 0,
-          perByte: "--",
-          error: "",
+          perByte: '--',
+          error: '',
           sweepAmount: 0,
         },
         slow: {
           total: 0,
-          perByte: "--",
-          error: "",
+          perByte: '--',
+          error: '',
           sweepAmount: 0,
         },
         cheapest: {
           total: 0,
-          perByte: "--",
-          error: "",
+          perByte: '--',
+          error: '',
           sweepAmount: 0,
         },
       },
-      error: "",
+      error: '',
       feeTimeout: null,
       sweep: false,
     } as data;
   },
   watch: {
     unit: function (val) {
-      if (val === "sats") {
+      if (val === 'sats') {
         this.fundingAmount = Number(this.fundingAmountInput);
-      } else if (val === "btc") {
+      } else if (val === 'btc') {
         this.fundingAmount = btcToSats(parseFloat(this.fundingAmountInput));
       }
       this.fetchFees();
     },
     sweep: function (val) {
       if (val) {
-        if (this.systemStore.unit === "btc") {
+        if (this.systemStore.unit === 'btc') {
           this.fundingAmountInput = String(
-            satsToBtc(this.bitcoinStore.balance.confirmed)
+            satsToBtc(this.bitcoinStore.balance.confirmed),
           );
-        } else if (this.systemStore.unit === "sats") {
+        } else if (this.systemStore.unit === 'sats') {
           this.fundingAmountInput = String(this.bitcoinStore.balance.confirmed);
         }
       }
       this.fetchFees();
     },
     fundingAmountInput: function (val) {
-      if (this.systemStore.unit === "sats") {
+      if (this.systemStore.unit === 'sats') {
         this.fundingAmount = Number(val);
-      } else if (this.systemStore.unit === "btc") {
+      } else if (this.systemStore.unit === 'btc') {
         this.fundingAmount = btcToSats(val);
       }
       this.fetchFees();
@@ -222,24 +222,24 @@ export default defineComponent({
   },
   methods: {
     selectFee(fee: {
-      type: "normal" | "fast" | "slow" | "cheapest" | "custom";
+      type: 'normal' | 'fast' | 'slow' | 'cheapest' | 'custom';
       satPerByte: number;
     }) {
       // Remove any error shown due to fee
-      this.error = "";
+      this.error = '';
       this.selectedFee = fee;
     },
     async openChannel() {
       this.isOpening = true;
 
       if (!this.peerConnectionCode || this.fundingAmount <= 0) {
-        this.error = "Please fill all fields";
+        this.error = 'Please fill all fields';
         this.isOpening = false;
         return;
       }
 
       if (
-        this.selectedFee.type !== "custom" &&
+        this.selectedFee.type !== 'custom' &&
         this.fee[this.selectedFee.type].error
       ) {
         this.isOpening = false;
@@ -247,7 +247,7 @@ export default defineComponent({
         return;
       }
 
-      this.error = "";
+      this.error = '';
 
       const payload: {
         amt: number;
@@ -261,21 +261,21 @@ export default defineComponent({
         amt: this.sweep
           ? parseInt(
               this.fee[
-                this.selectedFee.type as "fast" | "normal" | "slow" | "cheapest"
+                this.selectedFee.type as 'fast' | 'normal' | 'slow' | 'cheapest'
               ].sweepAmount as unknown as string,
-              10
+              10,
             )
           : parseInt(this.fundingAmount as unknown as string, 10),
-        name: "",
-        purpose: "",
+        name: '',
+        purpose: '',
         satPerByte: parseInt(
           this.selectedFee.satPerByte as unknown as string,
-          10
+          10,
         ),
       };
 
       const parsedConnectionCode = this.peerConnectionCode.match(
-        /^(.*?)@(.*?)(?::([0-9]+))?$/
+        /^(.*?)@(.*?)(?::([0-9]+))?$/,
       );
 
       if (parsedConnectionCode) {
@@ -290,7 +290,7 @@ export default defineComponent({
       } else {
         this.isOpening = false;
         this.error =
-          "Please check the lightning address (also known as peer address)";
+          'Please check the lightning address (also known as peer address)';
         return;
       }
 
@@ -302,15 +302,15 @@ export default defineComponent({
           payload.ip as string,
           payload.port as string,
           payload.amt,
-          payload.satPerByte
+          payload.satPerByte,
         );
         this.isOpening = false;
-        this.$emit("channelopen");
+        this.$emit('channelopen');
         //channel
         setTimeout(() => {
           this.toast.success(
-            "Lightning Network",
-            `Channel of ${this.fundingAmount} Sats opened successfully`
+            'Lightning Network',
+            `Channel of ${this.fundingAmount} Sats opened successfully`,
           );
         }, 200);
       } catch (error) {
@@ -327,7 +327,7 @@ export default defineComponent({
         clearTimeout(this.feeTimeout);
       }
       this.feeTimeout = window.setTimeout(async () => {
-        this.error = "";
+        this.error = '';
         if (this.fundingAmount) {
           let estimates;
 
@@ -335,7 +335,7 @@ export default defineComponent({
             estimates =
               await this.sdkStore.citadel.middleware.lnd.channel.estimateFeeAll(
                 this.fundingAmount,
-                this.sweep
+                this.sweep,
               );
           } catch (error) {
             if (error) {
@@ -347,22 +347,22 @@ export default defineComponent({
           if (estimates) {
             for (const [speed, estimate] of Object.entries(estimates)) {
               // If the API returned an error message
-              if ((estimate as { text?: string }).text) {
+              if ((estimate as {text?: string}).text) {
                 this.fee[speed as keyof typeof this.fee].total = 0;
-                this.fee[speed as keyof typeof this.fee].perByte = "N/A";
+                this.fee[speed as keyof typeof this.fee].perByte = 'N/A';
                 this.fee[speed as keyof typeof this.fee].error = (
-                  estimate as unknown as { text: string }
+                  estimate as unknown as {text: string}
                 ).text;
                 this.fee[speed as keyof typeof this.fee].sweepAmount = 0;
               } else {
                 this.fee[speed as keyof typeof this.fee].total = parseFloat(
-                  estimate.feeSat.toString()
+                  estimate.feeSat.toString(),
                 );
                 this.fee[speed as keyof typeof this.fee].perByte =
                   estimate.satPerVbyte.toString();
                 this.fee[speed as keyof typeof this.fee].sweepAmount =
                   parseFloat(
-                    estimate.sweepAmount?.toString() as string
+                    estimate.sweepAmount?.toString() as string,
                   ) as number;
                 this.fee[speed as keyof typeof this.fee].error = false;
               }

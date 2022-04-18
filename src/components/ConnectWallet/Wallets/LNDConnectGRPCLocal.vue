@@ -10,7 +10,7 @@
         level="M"
         class="qr-image mx-auto mb-3 mb-lg-0"
         show-logo
-        :style="{ cursor: 'pointer' }"
+        :style="{cursor: 'pointer'}"
         @click="$emit('showQrModal', urls.lnd.grpcLocal)"
       ></qr-code>
       <div class="w-100 align-self-center ms-lg-3">
@@ -24,11 +24,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from 'vue';
 
-import ConnectionDetails from "../ConnectionDetails.vue";
-import InputCopy from "../../Utility/InputCopy.vue";
-import QrCode from "../../Utility/QrCode.vue";
+import ConnectionDetails from '../ConnectionDetails.vue';
+import InputCopy from '../../Utility/InputCopy.vue';
+import QrCode from '../../Utility/QrCode.vue';
 
 export default defineComponent({
   components: {
@@ -42,6 +42,6 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["showQrModal"],
+  emits: ['showQrModal'],
 });
 </script>

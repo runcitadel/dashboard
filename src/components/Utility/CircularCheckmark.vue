@@ -56,7 +56,7 @@ defineProps({
   margin-left: auto;
   margin-right: auto;
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     top: 50%;
     left: 50%;

@@ -84,8 +84,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from "vue";
-import Status from "./Utility/Status.vue";
+import {defineComponent, type PropType} from 'vue';
+import Status from './Utility/Status.vue';
 
 export default defineComponent({
   components: {
@@ -94,13 +94,13 @@ export default defineComponent({
   props: {
     header: {
       type: String,
-      default: "",
+      default: '',
     },
     status: {
       type: Object as PropType<
         | {
             text: string;
-            variant: "success" | "primary" | "muted" | "danger" | "warning";
+            variant: 'success' | 'primary' | 'muted' | 'danger' | 'warning';
             blink: boolean;
           }
         | Record<string, never>
@@ -112,15 +112,15 @@ export default defineComponent({
     },
     title: {
       type: String,
-      default: "",
+      default: '',
     },
     subTitle: {
       type: String,
-      default: "",
+      default: '',
     },
     icon: {
       type: String,
-      default: "",
+      default: '',
     },
     loading: Boolean,
   },

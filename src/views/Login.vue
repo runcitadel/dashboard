@@ -55,7 +55,7 @@
               type="submit"
               size="lg"
               class="px-4 login-button"
-              :class="{ 'loading-fade-blink': isLoggingIn }"
+              :class="{'loading-fade-blink': isLoggingIn}"
               :disabled="isLoggingIn"
               >Log in</b-button
             >
@@ -88,11 +88,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import useUserStore from "../store/user";
-import InputPassword from "../components/Utility/InputPassword.vue";
-import InputOtpToken from "../components/Utility/InputOtpToken.vue";
-import delay from "../helpers/delay";
+import {defineComponent} from 'vue';
+import useUserStore from '../store/user';
+import InputPassword from '../components/Utility/InputPassword.vue';
+import InputOtpToken from '../components/Utility/InputOtpToken.vue';
+import delay from '../helpers/delay';
 
 export default defineComponent({
   components: {
@@ -101,16 +101,16 @@ export default defineComponent({
   },
   setup() {
     const userStore = useUserStore();
-    return { userStore };
+    return {userStore};
   },
   data() {
     return {
       loading: true,
-      password: "",
+      password: '',
       isIncorrectPassword: false,
       isIncorrectToken: false,
       isLoggingIn: false,
-      otpToken: "",
+      otpToken: '',
       showOtpInput: false,
       isCorrectOtp: false,
       isIncorrectOtp: false,
@@ -125,13 +125,13 @@ export default defineComponent({
   async created() {
     //redirect to dashboard if already logged in
     if (this.userStore.jwt) {
-      this.$router.push("/dashboard");
+      this.$router.push('/dashboard');
     }
 
     //redirect to onboarding if the user is not registered
     await this.userStore.getRegistered();
     if (!this.userStore.registered) {
-      return this.$router.push("/start");
+      return this.$router.push('/start');
     } else {
       await this.userStore.getTotpEnabledStatus();
     }
@@ -164,8 +164,8 @@ export default defineComponent({
       //redirect to dashboard
       return this.$router.push(
         new URL(window.location as unknown as URL).searchParams.get(
-          "redirect"
-        ) || "/dashboard"
+          'redirect',
+        ) || '/dashboard',
       );
     },
 

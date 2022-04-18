@@ -23,8 +23,8 @@ import {
   HiddenIcon,
   VisibleIcon,
   // @ts-expect-error No type definitions for this yet
-} from "@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js";
-import { defineComponent, type PropType } from "vue";
+} from '@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js';
+import {defineComponent, type PropType} from 'vue';
 
 export default defineComponent({
   components: {
@@ -34,26 +34,26 @@ export default defineComponent({
   props: {
     value: {
       type: String,
-      default: "",
+      default: '',
     },
     inputClass: {
       type: [String, Array] as PropType<string | string[]>,
-      default: "",
+      default: '',
     },
     inputGroupClass: {
       type: String,
-      default: "card-input-group",
+      default: 'card-input-group',
     },
     placeholder: {
       type: String,
-      default: "password",
+      default: 'password',
     },
     disabled: {
       type: Boolean,
       default: false,
     },
   },
-  emits: ["input"],
+  emits: ['input'],
   data() {
     return {
       state: {

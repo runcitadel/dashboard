@@ -41,7 +41,7 @@
       </div>
       <button
         class="btn-neu-circle btn-neu-circle-next btn-neu"
-        :class="{ 'btn-allowed': index > 0 }"
+        :class="{'btn-allowed': index > 0}"
         :disabled="index === words.length - 1"
         @click="next"
       >
@@ -63,8 +63,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from "vue";
-import ScrambledText from "./ScrambledText.vue";
+import {defineComponent, type PropType} from 'vue';
+import ScrambledText from './ScrambledText.vue';
 
 export default defineComponent({
   components: {
@@ -80,36 +80,36 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: { incomplete: null, input: null, complete: null },
+  emits: {incomplete: null, input: null, complete: null},
   data() {
     return {
       index: 0,
-      inputWord: "",
+      inputWord: '',
       inputWords: [
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
       ],
     };
   },
@@ -120,14 +120,14 @@ export default defineComponent({
       if (
         this.inputWords.length === 24 &&
         !this.inputWords.includes(undefined as unknown as string) &&
-        !this.inputWords.includes("")
+        !this.inputWords.includes('')
       ) {
-        this.$emit("complete");
+        this.$emit('complete');
       } else {
-        this.$emit("incomplete");
+        this.$emit('incomplete');
       }
       // Emit entered words
-      this.$emit("input", this.inputWords);
+      this.$emit('input', this.inputWords);
     },
   },
   methods: {
@@ -136,7 +136,7 @@ export default defineComponent({
         this.index -= 1;
         // Autofocus input field if user is recovering
         if (this.recover) {
-          (this.$refs["input-words-input"] as HTMLInputElement).focus();
+          (this.$refs['input-words-input'] as HTMLInputElement).focus();
         }
       }
     },
@@ -145,11 +145,11 @@ export default defineComponent({
         this.index += 1;
         // Autofocus input field if user is recovering
         if (this.recover) {
-          (this.$refs["input-words-input"] as HTMLInputElement).focus();
+          (this.$refs['input-words-input'] as HTMLInputElement).focus();
         }
         // Emit "complete" on reaching the last word
         else if (this.index === this.words.length - 1) {
-          this.$emit("complete");
+          this.$emit('complete');
         }
       }
     },

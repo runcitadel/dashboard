@@ -107,7 +107,7 @@
             >Install</b-button
           >
           <small
-            :style="{ opacity: isInstalling || isUninstalling ? 1 : 0 }"
+            :style="{opacity: isInstalling || isUninstalling ? 1 : 0}"
             class="mt-1 d-block text-muted text-center"
             >This may take a few minutes</small
           >
@@ -240,15 +240,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from 'vue';
 
-import delay from "../helpers/delay";
+import delay from '../helpers/delay';
 
-import useAppsStore, { type app } from "../store/apps";
-import useLightningStore from "../store/lightning";
+import useAppsStore, {type app} from '../store/apps';
+import useLightningStore from '../store/lightning';
 
-import CardWidget from "../components/CardWidget.vue";
-import InputCopy from "../components/Utility/InputCopy.vue";
+import CardWidget from '../components/CardWidget.vue';
+import InputCopy from '../components/Utility/InputCopy.vue';
 
 export default defineComponent({
   components: {
@@ -258,7 +258,7 @@ export default defineComponent({
   setup() {
     const appsStore = useAppsStore();
     const lightningStore = useLightningStore();
-    return { appsStore, lightningStore };
+    return {appsStore, lightningStore};
   },
   data() {
     return {
@@ -276,36 +276,36 @@ export default defineComponent({
     }),*/
     app(): app {
       return this.appsStore.store.find(
-        (app) => app.id === this.$route.params.id
+        (app) => app.id === this.$route.params.id,
       ) as app;
     },
     isInstalled(): boolean {
       const installedAppIndex = this.appsStore.installed.findIndex(
-        (app) => app.id === this.app.id
+        (app) => app.id === this.app.id,
       );
       return installedAppIndex !== -1;
     },
     isInstalling(): boolean {
       const index = this.appsStore.installing.findIndex(
-        (appId) => appId === this.app.id
+        (appId) => appId === this.app.id,
       );
       return index !== -1;
     },
     isUninstalling(): boolean {
       const index = this.appsStore.uninstalling.findIndex(
-        (appId) => appId === this.app.id
+        (appId) => appId === this.app.id,
       );
       return index !== -1;
     },
     url(): string {
-      if (window.location.origin.indexOf(".onion") > 0) {
+      if (window.location.origin.indexOf('.onion') > 0) {
         const installedApp = this.appsStore.installed.find(
-          (app) => app.id === this.app.id
+          (app) => app.id === this.app.id,
         );
-        return `http://${installedApp?.hiddenService || ""}${this.app.path}`;
+        return `http://${installedApp?.hiddenService || ''}${this.app.path}`;
       } else {
         if (this.app.torOnly) {
-          return "#";
+          return '#';
         }
         return `http://${window.location.hostname}:${this.app.port}${this.app.path}`;
       }
@@ -324,20 +324,20 @@ export default defineComponent({
   methods: {
     formatDependency(dependency: string) {
       switch (dependency) {
-        case "bitcoind":
-          return "Bitcoin Core";
-        case "lnd":
-          return "LND";
-        case "electrum":
-          return "Electrum Server";
+        case 'bitcoind':
+          return 'Bitcoin Core';
+        case 'lnd':
+          return 'LND';
+        case 'electrum':
+          return 'Electrum Server';
         default:
           return dependency;
       }
     },
     isDependencyInstalled(dependency: string) {
       const allInstalled = [
-        "bitcoind",
-        "electrum",
+        'bitcoind',
+        'electrum',
         this.lightningStore.implementation,
       ];
       return allInstalled.includes(dependency);
@@ -345,7 +345,7 @@ export default defineComponent({
     src(dependency: string) {
       return new URL(
         `../assets/app-store/dependencies/${dependency}.svg`,
-        import.meta.url
+        import.meta.url,
       ).href;
     },
     installApp() {
@@ -355,11 +355,11 @@ export default defineComponent({
       this.pollOfflineApp();
     },
     openApp(event: Event) {
-      if (this.app.id === "bluewallet") this.checkIfAppIsOffline = false;
-      if (this.app.torOnly && window.location.origin.indexOf(".onion") < 0) {
+      if (this.app.id === 'bluewallet') this.checkIfAppIsOffline = false;
+      if (this.app.torOnly && window.location.origin.indexOf('.onion') < 0) {
         event.preventDefault();
         alert(
-          `${this.app.name} can only be used over Tor. Please access your Citadel in a Tor browser on your remote access URL (Settings > Tor > Remote Access URL) to open this app.`
+          `${this.app.name} can only be used over Tor. Please access your Citadel in a Tor browser on your remote access URL (Settings > Tor > Remote Access URL) to open this app.`,
         );
       }
       return;
@@ -368,7 +368,7 @@ export default defineComponent({
       this.checkIfAppIsOffline = true;
       while (this.checkIfAppIsOffline) {
         try {
-          await window.fetch(this.url, { mode: "no-cors" });
+          await window.fetch(this.url, {mode: 'no-cors'});
           this.isOffline = false;
           this.checkIfAppIsOffline = false;
         } catch (error) {

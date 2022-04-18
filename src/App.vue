@@ -54,7 +54,7 @@
               >Please do not refresh this page or turn off your Citadel while it
               is
               {{
-                systemStore.shuttingDown ? "shutting down" : "rebooting"
+                systemStore.shuttingDown ? 'shutting down' : 'rebooting'
               }}</small
             >
           </b-alert>
@@ -68,17 +68,17 @@
 </template>
 
 <script lang="ts">
-import useSystemStore from "./store/system";
-import useUserStore from "./store/user";
-import useUiStore from "./store/ui";
-import useToast from "./utils/toast";
-import delay from "./helpers/delay";
-import Shutdown from "./components/Shutdown.vue";
-import Loading from "./components/Loading.vue";
-import { defineComponent } from "vue";
+import useSystemStore from './store/system';
+import useUserStore from './store/user';
+import useUiStore from './store/ui';
+import useToast from './utils/toast';
+import delay from './helpers/delay';
+import Shutdown from './components/Shutdown.vue';
+import Loading from './components/Loading.vue';
+import {defineComponent} from 'vue';
 
 export default defineComponent({
-  name: "App",
+  name: 'App',
   components: {
     Loading,
     Shutdown,
@@ -88,7 +88,7 @@ export default defineComponent({
     const userStore = useUserStore();
     const uiStore = useUiStore();
     const toast = useToast();
-    return { userStore, systemStore, uiStore, toast };
+    return {userStore, systemStore, uiStore, toast};
   },
   data() {
     return {
@@ -115,13 +115,13 @@ export default defineComponent({
         if (isLoading) {
           this.loadingInterval = window.setInterval(
             this.getLoadingStatus,
-            2000
+            2000,
           );
         } else {
           //else check every 20s
           this.loadingInterval = window.setInterval(
             this.getLoadingStatus,
-            20000
+            20000,
           );
         }
       },
@@ -143,18 +143,18 @@ export default defineComponent({
 
           // if it just finished updating, then show success/failure toast
           if (wasUpdating) {
-            if (this.systemStore.updateStatus.state === "failed") {
+            if (this.systemStore.updateStatus.state === 'failed') {
               this.toast.error(
-                "Update failed",
-                this.systemStore.updateStatus.description
+                'Update failed',
+                this.systemStore.updateStatus.description,
               );
             } else {
               this.systemStore.getAvailableUpdate();
             }
 
             this.toast.success(
-              "Update successful",
-              this.systemStore.updateStatus.description
+              'Update successful',
+              this.systemStore.updateStatus.description,
             );
 
             //refresh window to fetch latest code of dashboard
@@ -174,45 +174,45 @@ export default defineComponent({
 
     //for 100vh consistency
     this.updateViewPortHeightCSS();
-    window.addEventListener("resize", this.updateViewPortHeightCSS);
+    window.addEventListener('resize', this.updateViewPortHeightCSS);
   },
   mounted() {
     const initTheme = this.getThemePreference();
     this.uiStore.setTheme(initTheme);
   },
   beforeUnmount() {
-    window.removeEventListener("resize", this.updateViewPortHeightCSS);
+    window.removeEventListener('resize', this.updateViewPortHeightCSS);
     window.clearInterval(this.loadingInterval);
     window.clearInterval(this.updateStatusInterval);
   },
   methods: {
     getThemePreference() {
-      const activeTheme = localStorage.getItem("user-theme");
+      const activeTheme = localStorage.getItem('user-theme');
       const hasDarkPreference = window.matchMedia(
-        "(prefers-color-scheme: dark)"
+        '(prefers-color-scheme: dark)',
       ).matches;
       if (activeTheme) {
         return activeTheme;
       } else {
         if (hasDarkPreference) {
-          return "dark";
+          return 'dark';
         } else {
-          return "light";
+          return 'light';
         }
       }
     },
     //TODO: move this to the specific layout that needs this 100vh fix
     updateViewPortHeightCSS() {
       return document.documentElement.style.setProperty(
-        "--vh100",
-        `${window.innerHeight}px`
+        '--vh100',
+        `${window.innerHeight}px`,
       );
     },
     async getLoadingStatus() {
       // Skip if previous poll in progress or if system is updating
       if (
         this.loadingPollInProgress ||
-        this.systemStore.updateStatus.state === "installing"
+        this.systemStore.updateStatus.state === 'installing'
       ) {
         return;
       }
@@ -264,7 +264,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "@/global-styles/design-system.scss";
+@import '@/global-styles/design-system.scss';
 </style>
 
 <style lang="scss" scoped>

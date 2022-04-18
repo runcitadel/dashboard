@@ -114,7 +114,7 @@
           }"
           @click="nextStep"
           >{{
-            !lightningStore.operational ? "Loading" : nextButtonText
+            !lightningStore.operational ? 'Loading' : nextButtonText
           }}</b-button
         >
         <b-button
@@ -154,21 +154,21 @@
 
 <script lang="ts">
 /* eslint-disable */
-import { DefineComponent, defineComponent } from "vue";
-import useSystemStore from "../store/system";
-import useUserStore from "../store/user";
-import useBitcoinStore from "../store/bitcoin";
-import useLightningStore from "../store/lightning";
-import useAppsStore from "../store/apps";
-import useSdkStore from "../store/sdk";
-import useToast from "../utils/toast";
+import {DefineComponent, defineComponent} from 'vue';
+import useSystemStore from '../store/system';
+import useUserStore from '../store/user';
+import useBitcoinStore from '../store/bitcoin';
+import useLightningStore from '../store/lightning';
+import useAppsStore from '../store/apps';
+import useSdkStore from '../store/sdk';
+import useToast from '../utils/toast';
 
-import delay from "../helpers/delay";
+import delay from '../helpers/delay';
 
-import InputPassword from "../components/Utility/InputPassword.vue";
-import Seed from "../components/Utility/Seed.vue";
-import InputCopy from "../components/Utility/InputCopy.vue";
-import { BIconExclamationCircleFill } from "bootstrap-vue/src/index.js";
+import InputPassword from '../components/Utility/InputPassword.vue';
+import Seed from '../components/Utility/Seed.vue';
+import InputCopy from '../components/Utility/InputCopy.vue';
+import {BIconExclamationCircleFill} from 'bootstrap-vue/src/index.js';
 
 type Step = {
   heading: string;
@@ -177,40 +177,40 @@ type Step = {
 
 const steps: Step[] = [
   {
-    heading: "welcome to citadel",
-    text: "Your journey to digital freedom starts now.",
+    heading: 'welcome to citadel',
+    text: 'Your journey to digital freedom starts now.',
   },
   {
-    heading: "what is your name?",
-    text: "Your name stays on your Citadel and is never shared with us or a 3rd party.",
+    heading: 'what is your name?',
+    text: 'Your name stays on your Citadel and is never shared with us or a 3rd party.',
   },
   {
-    heading: "set your password",
+    heading: 'set your password',
     text: "You'll need this password to login to your Citadel.",
   },
   {
-    heading: "confirm your password",
+    heading: 'confirm your password',
     text: "You'll need this password to login to your Citadel.",
   },
   {
-    heading: "note down your secret words",
+    heading: 'note down your secret words',
     text: "On the next screen you will be shown 24 words. It's recommended that you write them down on a piece of paper and store it in a safe place.",
   },
   {
-    heading: "note down your secret words",
+    heading: 'note down your secret words',
     text: 'Remember, there is no "forgot password" button. You will need these 24 words to recover your Citadel.',
   },
   {
-    heading: "access from anywhere",
+    heading: 'access from anywhere',
     text: "Even when you're not on your home network, you can access your Citadel using Tor Browser on the following URL",
   },
   {
-    heading: "one last thing",
+    heading: 'one last thing',
     text: "Don't be too #reckless.",
   },
   {
     heading: "🎉 that's it!",
-    text: "Congratulations! Your Citadel is now set up and synchronizing the Bitcoin blockchain.",
+    text: 'Congratulations! Your Citadel is now set up and synchronizing the Bitcoin blockchain.',
   },
 ];
 
@@ -252,9 +252,9 @@ export default defineComponent({
     lndUnlockInterval: undefined | number;
   } {
     return {
-      name: "",
-      password: "",
-      confirmPassword: "",
+      name: '',
+      password: '',
+      confirmPassword: '',
       currentStep: 0,
       notedSeed: false,
       isRegistering: false,
@@ -273,24 +273,24 @@ export default defineComponent({
     }),*/
     heading(): string {
       if (this.currentStep === 5 && this.recover) {
-        return "recover your citadel";
+        return 'recover your citadel';
       }
-      return steps[this.currentStep]["heading"];
+      return steps[this.currentStep]['heading'];
     },
     text(): string {
       if (this.currentStep === 5 && this.recover) {
-        return "Enter your 24 secret words in the exact order to recover your Citadel.";
+        return 'Enter your 24 secret words in the exact order to recover your Citadel.';
       }
-      return steps[this.currentStep]["text"];
+      return steps[this.currentStep]['text'];
     },
     nextButtonText(): string {
       if (this.currentStep === 0) {
-        return "Start";
+        return 'Start';
       }
       if (this.currentStep === 8) {
-        return "Go to dashboard";
+        return 'Go to dashboard';
       }
-      return "Next";
+      return 'Next';
     },
     isStepValid(): boolean {
       if (this.currentStep === 1) {
@@ -326,7 +326,7 @@ export default defineComponent({
   async created() {
     //redirect to home if the user is already registered
     if (this.userStore.registered) {
-      return this.$router.push("/");
+      return this.$router.push('/');
     }
 
     // Wait for LND
@@ -373,7 +373,7 @@ export default defineComponent({
         } catch (error) {
           this.isRegistering = false;
           if (error) {
-            this.toast.error("Error", JSON.stringify(error));
+            this.toast.error('Error', JSON.stringify(error));
           }
           //return;
         }
@@ -416,7 +416,7 @@ export default defineComponent({
       }
 
       if (this.currentStep === 8) {
-        return this.$router.push("/dashboard");
+        return this.$router.push('/dashboard');
       }
 
       return (this.currentStep = this.currentStep + 1);

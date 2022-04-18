@@ -8,7 +8,7 @@
       :value="progress"
       class="mb-2 w-25"
       variant="primary"
-      :style="{ height: '4px' }"
+      :style="{height: '4px'}"
       animated
       striped
     ></b-progress>
@@ -17,10 +17,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from 'vue';
 
 export default defineComponent({
-  props: { progress: { type: Number, default: 0 } },
+  props: {progress: {type: Number, default: 0}},
 });
 </script>
 

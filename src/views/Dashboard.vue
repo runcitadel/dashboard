@@ -3,7 +3,7 @@
     <div class="my-3 pb-2">
       <h1 class="text-lowercase">
         {{ greeting
-        }}{{ userStore.name ? `, ${userStore.name.split(" ")[0]}` : "" }}
+        }}{{ userStore.name ? `, ${userStore.name.split(' ')[0]}` : '' }}
       </h1>
       <p class="text-muted">Here's an overview of your Citadel</p>
     </div>
@@ -110,19 +110,19 @@
 </template>
 
 <script lang="ts">
-import useSystemStore from "../store/system";
-import useUserStore from "../store/user";
-import useBitcoinStore from "../store/bitcoin";
-import useLightningStore from "../store/lightning";
+import useSystemStore from '../store/system';
+import useUserStore from '../store/user';
+import useBitcoinStore from '../store/bitcoin';
+import useLightningStore from '../store/lightning';
 
-import { defineComponent } from "vue";
-import { satsToBtc } from "../helpers/units";
+import {defineComponent} from 'vue';
+import {satsToBtc} from '../helpers/units';
 
-import CountUp from "../components/Utility/CountUp.vue";
-import CardWidget from "../components/CardWidget.vue";
-import Blockchain from "../components/Blockchain.vue";
-import LightningWallet from "../components/LightningWallet.vue";
-import StorageWidget from "../components/Widgets/StorageWidget.vue";
+import CountUp from '../components/Utility/CountUp.vue';
+import CardWidget from '../components/CardWidget.vue';
+import Blockchain from '../components/Blockchain.vue';
+import LightningWallet from '../components/LightningWallet.vue';
+import StorageWidget from '../components/Widgets/StorageWidget.vue';
 
 export default defineComponent({
   components: {
@@ -157,7 +157,7 @@ export default defineComponent({
       if (this.bitcoinStore.balance.total === -1) {
         return -1;
       }
-      if (this.systemStore.unit === "btc") {
+      if (this.systemStore.unit === 'btc') {
         return satsToBtc(this.bitcoinStore.balance.total);
       }
       return this.bitcoinStore.balance.total;
@@ -167,12 +167,12 @@ export default defineComponent({
 
       const greetingMessage =
         currentHour >= 4 && currentHour < 12 // after 4:00AM and before 12:00PM
-          ? "Good morning"
+          ? 'Good morning'
           : currentHour >= 12 && currentHour <= 16 // after 12:00PM and before 5:00PM
-          ? "Good afternoon"
+          ? 'Good afternoon'
           : currentHour > 16 || currentHour < 4 // after 5:00PM or before 4:00AM (to accommodate our fellow hackers)
-          ? "Good evening"
-          : "Welcome back"; // if for some reason the calculation didn't work
+          ? 'Good evening'
+          : 'Welcome back'; // if for some reason the calculation didn't work
 
       return greetingMessage;
     },

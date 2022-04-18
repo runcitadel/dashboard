@@ -20,19 +20,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import useSystemStore from "../../store/system";
+import {defineComponent} from 'vue';
+import useSystemStore from '../../store/system';
 
 export default defineComponent({
   props: {
     size: {
       type: String, //sm, md, lg
-      default: "md",
+      default: 'md',
     },
   },
   setup() {
     const systemStore = useSystemStore();
-    return { systemStore };
+    return {systemStore};
   },
   data() {
     return {};
@@ -44,7 +44,7 @@ export default defineComponent({
   },
   methods: {
     toggleUnit() {
-      this.systemStore.changeUnit(this.unit === "sats" ? "btc" : "sats");
+      this.systemStore.changeUnit(this.unit === 'sats' ? 'btc' : 'sats');
     },
   },
 });

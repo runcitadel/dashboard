@@ -12,7 +12,7 @@
           :size="300"
           class="qr-image mt-2"
           show-logo
-          :style="{ cursor: 'pointer' }"
+          :style="{cursor: 'pointer'}"
           @click="
             $emit('showQrModal', urls.lnd.restTor.replace(/cert=(.*)&/gm, ''))
           "
@@ -71,16 +71,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from 'vue';
 
-import ConnectionDetails from "../ConnectionDetails.vue";
-import StepList from "../StepList.vue";
-import Step from "../Step.vue";
-import InputCopy from "../../Utility/InputCopy.vue";
-import QrCode from "../../Utility/QrCode.vue";
+import ConnectionDetails from '../ConnectionDetails.vue';
+import StepList from '../StepList.vue';
+import Step from '../Step.vue';
+import InputCopy from '../../Utility/InputCopy.vue';
+import QrCode from '../../Utility/QrCode.vue';
 // @ts-expect-error TypeScript and Vite understand this module differently
-import BufferModule from "buffer/index.js";
-const { Buffer } = BufferModule;
+import BufferModule from 'buffer/index.js';
+const {Buffer} = BufferModule;
 
 export default defineComponent({
   components: {
@@ -96,16 +96,16 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["showQrModal"],
+  emits: ['showQrModal'],
   computed: {
     macaroonHex() {
       return Buffer.from(
         Array.from(
           this.urls.lnd.restTor.matchAll(/macaroon=(.*)/gm),
-          (m: string[]) => m[1]
+          (m: string[]) => m[1],
         )[0],
-        "base64"
-      ).toString("hex");
+        'base64',
+      ).toString('hex');
     },
   },
 });

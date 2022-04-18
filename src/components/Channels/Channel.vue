@@ -81,12 +81,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from 'vue';
 
-import Status from "../Utility/Status.vue";
-import Bar from "./Bar.vue";
-import useSystemStore from "../../store/system";
-import useBitcoinStore from "../../store/bitcoin";
+import Status from '../Utility/Status.vue';
+import Bar from './Bar.vue';
+import useSystemStore from '../../store/system';
+import useBitcoinStore from '../../store/bitcoin';
 
 export default defineComponent({
   components: {
@@ -102,7 +102,7 @@ export default defineComponent({
   setup() {
     const systemStore = useSystemStore();
     const bitcoinStore = useBitcoinStore();
-    return { systemStore, bitcoinStore };
+    return {systemStore, bitcoinStore};
   },
   computed: {
     unit() {
@@ -110,16 +110,16 @@ export default defineComponent({
     },
     statusVariant() {
       switch (this.channel.status) {
-        case "Online":
-          return "success";
-        case "Opening":
-          return "warning";
-        case "Closing":
-        case "unknown":
-          return "danger";
-        case "Offline":
+        case 'Online':
+          return 'success';
+        case 'Opening':
+          return 'warning';
+        case 'Closing':
+        case 'unknown':
+          return 'danger';
+        case 'Offline':
         default:
-          return "default";
+          return 'default';
       }
     },
   },
