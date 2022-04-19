@@ -1,21 +1,21 @@
-import { defineStore } from "pinia";
+import {defineStore} from 'pinia';
 
 export interface State {
   isMobileMenuOpen: boolean;
-  userTheme: "light" | "dark";
+  userTheme: 'light' | 'dark';
 }
 
-export default defineStore("ui", {
+export default defineStore('ui', {
   // Initial state
   state: (): State => ({
     isMobileMenuOpen: false,
-    userTheme: "light",
+    userTheme: 'light',
   }),
   actions: {
-    setTheme(theme: "light" | "dark") {
+    setTheme(theme: 'light' | 'dark') {
       this.userTheme = theme;
-      document.documentElement.setAttribute("data-theme", theme);
-      localStorage.setItem("user-theme", theme);
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('user-theme', theme);
     },
   },
 });

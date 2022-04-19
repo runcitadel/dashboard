@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
-import useSdkStore from "./sdk";
+import {defineStore} from 'pinia';
+import useSdkStore from './sdk';
 
 type memBreakdown = {
   id: string;
@@ -15,34 +15,34 @@ export interface State {
   };
   updateStatus: {
     state:
-      | ""
-      | "available"
-      | "unavailable"
-      | "installing"
-      | "failed"
-      | "installing"
-      | "success";
+      | ''
+      | 'available'
+      | 'unavailable'
+      | 'installing'
+      | 'failed'
+      | 'installing'
+      | 'success';
     progress: number;
     description: string;
   };
   backupStatus: {
-    status: "" | "success" | "failed";
+    status: '' | 'success' | 'failed';
     timestamp: null | number;
   };
   debugResult:
     | {
-        status: "" | "success" | "processing";
+        status: '' | 'success' | 'processing';
         debug: string;
         dmesg: string;
       }
-    | "Debug requested";
+    | 'Debug requested';
   showUpdateConfirmationModal: boolean;
   loading: boolean;
   rebooting: boolean;
   hasRebooted: boolean;
   shuttingDown: boolean;
   hasShutdown: boolean;
-  unit: "sats" | "btc";
+  unit: 'sats' | 'btc';
   api: {
     operational: boolean;
     version: string;
@@ -64,34 +64,34 @@ export interface State {
   };
   isCitadelOS: boolean;
   cpuTemperature: number;
-  cpuTemperatureUnit: "celsius" | "fahrenheit";
+  cpuTemperatureUnit: 'celsius' | 'fahrenheit';
   uptime: null | number;
   isNvme: boolean;
   sdkStore: ReturnType<typeof useSdkStore>;
 }
 
-export default defineStore("system", {
+export default defineStore('system', {
   // Initial state
   state: (): State => ({
-    version: "",
+    version: '',
     availableUpdate: {
-      version: "", //update version available to download
-      name: "",
-      notes: "",
+      version: '', //update version available to download
+      name: '',
+      notes: '',
     },
     updateStatus: {
-      state: "", //available, unavailable, installing, successful, failed
+      state: '', //available, unavailable, installing, successful, failed
       progress: 0, //progress of update installation
-      description: "",
+      description: '',
     },
     backupStatus: {
-      status: "", //success, failed
+      status: '', //success, failed
       timestamp: null,
     },
     debugResult: {
-      status: "", //success, processing
-      debug: "",
-      dmesg: "",
+      status: '', //success, processing
+      debug: '',
+      dmesg: '',
     },
     showUpdateConfirmationModal: false,
     loading: true,
@@ -99,16 +99,16 @@ export default defineStore("system", {
     hasRebooted: false,
     shuttingDown: false,
     hasShutdown: false,
-    unit: "sats", //sats or btc
+    unit: 'sats', //sats or btc
     api: {
       operational: false,
-      version: "",
+      version: '',
     },
     managerApi: {
       operational: false,
-      version: "",
+      version: '',
     },
-    onionAddress: "",
+    onionAddress: '',
     storage: {
       total: 0,
       used: 0,
@@ -121,7 +121,7 @@ export default defineStore("system", {
     },
     isCitadelOS: false,
     cpuTemperature: 0, //in celsius
-    cpuTemperatureUnit: "celsius",
+    cpuTemperatureUnit: 'celsius',
     uptime: null,
     isNvme: false,
     sdkStore: useSdkStore(),
@@ -130,18 +130,18 @@ export default defineStore("system", {
     async getVersion() {
       const data = await this.sdkStore.citadel.manager.system.info();
       if (data && data.version) {
-        const { version } = data;
+        const {version} = data;
         this.version = version;
       }
     },
     getUnit() {
-      if (window.localStorage.getItem("unit")) {
-        this.unit = window.localStorage.getItem("unit") as "sats" | "btc";
+      if (window.localStorage.getItem('unit')) {
+        this.unit = window.localStorage.getItem('unit') as 'sats' | 'btc';
       }
     },
-    changeUnit(unit: "sats" | "btc") {
-      if (unit === "sats" || unit === "btc") {
-        window.localStorage.setItem("unit", unit);
+    changeUnit(unit: 'sats' | 'btc') {
+      if (unit === 'sats' || unit === 'btc') {
+        window.localStorage.setItem('unit', unit);
         this.unit = unit;
       }
     },
@@ -149,7 +149,7 @@ export default defineStore("system", {
       const api = await this.sdkStore.citadel.manager.ping();
       this.managerApi = {
         operational: !!(api && api.version),
-        version: api && api.version ? api.version : "",
+        version: api && api.version ? api.version : '',
       };
     },
     async getOnionAddress() {
@@ -163,9 +163,9 @@ export default defineStore("system", {
         this.availableUpdate = update;
       } else {
         this.availableUpdate = {
-          version: "",
-          name: "",
-          notes: "",
+          version: '',
+          name: '',
+          notes: '',
         };
       }
     },
@@ -186,7 +186,7 @@ export default defineStore("system", {
     },
     async getDiskInfo() {
       const status =
-        (await this.sdkStore.citadel.manager.system.disk()) === "nvme";
+        (await this.sdkStore.citadel.manager.system.disk()) === 'nvme';
       if (status) {
         this.isNvme = status;
       }
@@ -200,7 +200,7 @@ export default defineStore("system", {
     async getDebugResult() {
       const result = await this.sdkStore.citadel.manager.system.debugResult();
       if (!result) {
-        throw new Error("Get debug request failed");
+        throw new Error('Get debug request failed');
       }
 
       this.debugResult = result;
@@ -208,7 +208,7 @@ export default defineStore("system", {
     async debug() {
       await this.sdkStore.citadel.manager.system.debug();
 
-      this.debugResult = "Debug requested";
+      this.debugResult = 'Debug requested';
     },
     async shutdown() {
       // Reset any cached hasShutdown value from previous shutdown
@@ -222,7 +222,7 @@ export default defineStore("system", {
       // Poll to check if system has shut down
       const pollIfDown = window.setInterval(async () => {
         try {
-          const { version } = await this.sdkStore.citadel.manager.ping();
+          const {version} = await this.sdkStore.citadel.manager.ping();
           if (!version) {
             // System shut down successfully
             window.clearInterval(pollIfDown);
@@ -255,7 +255,7 @@ export default defineStore("system", {
       let pollIfUp: number;
 
       const pollIfUpFunction = async () => {
-        const { version } = await this.sdkStore.citadel.manager.ping();
+        const {version} = await this.sdkStore.citadel.manager.ping();
         if (version) {
           // System is online again
           this.rebooting = false;
@@ -266,7 +266,7 @@ export default defineStore("system", {
       // Poll to check if system has shut down
       const pollIfDown = window.setInterval(async () => {
         try {
-          const { version } = await this.sdkStore.citadel.manager.ping();
+          const {version} = await this.sdkStore.citadel.manager.ping();
           if (!version) {
             // System shut down successfully
             window.clearInterval(pollIfDown);
@@ -310,16 +310,16 @@ export default defineStore("system", {
     async getCpuTemperatureUnit() {
       if (
         window.localStorage &&
-        window.localStorage.getItem("cpuTemperatureUnit")
+        window.localStorage.getItem('cpuTemperatureUnit')
       ) {
         this.cpuTemperatureUnit = window.localStorage.getItem(
-          "cpuTemperatureUnit"
-        ) as "celsius" | "fahrenheit";
+          'cpuTemperatureUnit',
+        ) as 'celsius' | 'fahrenheit';
       }
     },
-    changeCpuTemperatureUnit(unit: "celsius" | "fahrenheit") {
-      if (unit === "celsius" || unit === "fahrenheit") {
-        window.localStorage.setItem("cpuTemperatureUnit", unit);
+    changeCpuTemperatureUnit(unit: 'celsius' | 'fahrenheit') {
+      if (unit === 'celsius' || unit === 'fahrenheit') {
+        window.localStorage.setItem('cpuTemperatureUnit', unit);
         this.cpuTemperatureUnit = unit;
       }
     },
