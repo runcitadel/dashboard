@@ -2,6 +2,7 @@
   "name": "@runcitadel/dashboard",
   "version": "0.3.25",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "serve": "vite preview",
@@ -44,28 +45,6 @@
     "sass": "^1.49.9",
     "vite": "^2.8.6"
   },
-  "eslintConfig": {
-    "parser": "vue-eslint-parser",
-    "parserOptions": {
-      "parser": "@typescript-eslint/parser"
-    },
-    "plugins": [
-      "@typescript-eslint"
-    ],
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/vue3-recommended",
-      "plugin:prettier/recommended",
-      "plugin:@typescript-eslint/recommended"
-    ],
-    "rules": {
-      "no-console": "off",
-      "vue/multi-word-component-names": "off"
-    }
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
@@ -75,6 +54,5 @@
   "packageManager": "yarn@3.2.0",
   "resolutions": {
     "portal-vue": "^3.0.0-beta.0"
-  },
-  "type": "module"
+  }
 }

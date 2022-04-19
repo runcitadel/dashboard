@@ -1,9 +1,9 @@
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
+import {defineConfig} from 'vite';
+import vue from '@vitejs/plugin-vue';
 
 export default defineConfig(() => {
   // check if we're running in a container
-  const isDocker = process.env.PROJECT_CWD === "/app";
+  const isDocker = process.env.PROJECT_CWD === '/app';
   const remoteServer = {
     host: true,
     port: process.env.PORT,
@@ -13,15 +13,15 @@ export default defineConfig(() => {
       port: 80,
     },
     watch: {
-      usePolling: true
-    }
+      usePolling: true,
+    },
   };
 
   return {
     // only configure server if in container
-    ...(isDocker && { server: remoteServer }),
-    build: { target: "esnext" },
-    resolve: { alias: { "@": "/src", vue: "@vue/compat" } },
+    ...(isDocker && {server: remoteServer}),
+    build: {target: 'esnext'},
+    resolve: {alias: {'@': '/src', vue: '@vue/compat'}},
     plugins: [
       vue({
         template: {

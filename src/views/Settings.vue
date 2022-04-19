@@ -626,8 +626,9 @@ export default defineComponent({
       return prettifySeconds(this.systemStore.uptime as number);
     },
     debugContents(): string {
-      if (typeof this.systemStore.debugResult === 'string')
+      if (typeof this.systemStore.debugResult === 'string') {
         return 'Error loading data!';
+      }
       return this.showDmesg
         ? this.systemStore.debugResult.dmesg
         : this.systemStore.debugResult.debug;
