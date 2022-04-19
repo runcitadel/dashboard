@@ -1,21 +1,21 @@
-import Citadel from "@runcitadel/sdk";
-import { defineStore } from "pinia";
+import Citadel from '@runcitadel/sdk';
+import {defineStore} from 'pinia';
 
 export interface State {
   citadel: Citadel;
 }
 
-export default defineStore("sdk", {
+export default defineStore('sdk', {
   state: (): State => {
     const state: State = {
       citadel: new Citadel(
-        process.env.NODE_ENV === "development"
-          ? "http://citadel-dev.local"
-          : window.location.origin
+        process.env.NODE_ENV === 'development'
+          ? 'http://citadel-dev.local'
+          : window.location.origin,
       ),
       //citadel: new Citadel("https://node.runcitadel.space"),
     };
-    state.citadel.jwt = window.localStorage.getItem("jwt") || "";
+    state.citadel.jwt = window.localStorage.getItem('jwt') || '';
     return state;
   },
   actions: {

@@ -1,10 +1,11 @@
-import type { Channel } from "@runcitadel/sdk";
+import type {Channel} from '@runcitadel/sdk';
+import {defineStore} from 'pinia';
+import {toPrecision} from '../helpers/units';
+import useSdkStore from './sdk';
+
 type Channel_extended = Channel & {
   type?: string;
 };
-import { defineStore } from "pinia";
-import { toPrecision } from "../helpers/units";
-import useSdkStore from "./sdk";
 
 enum Invoice_InvoiceState {
   OPEN = 0,
@@ -15,7 +16,7 @@ enum Invoice_InvoiceState {
 }
 
 export type IncomingTransaction = {
-  type: "incoming" | "expired" | "pending";
+  type: 'incoming' | 'expired' | 'pending';
   amount: number;
   timestamp: Date;
   description: string;
@@ -23,7 +24,7 @@ export type IncomingTransaction = {
   paymentRequest: string;
 };
 export type OutgoingTransaction = {
-  type: "outgoing";
+  type: 'outgoing';
   amount: number;
   timestamp: Date;
   paymentRequest: string;
@@ -67,16 +68,16 @@ export interface State {
   numPeers: number;
   channels:
     | [
-        { type: "loading" },
-        { type: "loading" },
-        { type: "loading" },
-        { type: "loading" }
+        {type: 'loading'},
+        {type: 'loading'},
+        {type: 'loading'},
+        {type: 'loading'},
       ]
     | ParsedChannel[];
   connectionCode: string;
   maxSend: number;
   maxReceive: number;
-  transactions: (CustomTransactionType | { type: "loading" })[];
+  transactions: (CustomTransactionType | {type: 'loading'})[];
   confirmedTransactions: [];
   pendingTransactions: [];
   sdkStore: ReturnType<typeof useSdkStore>;
@@ -84,25 +85,25 @@ export interface State {
 export type ParsedChannel = Channel & {
   type?: string | undefined;
   status:
-    | "Online"
-    | "Offline"
-    | "Opening"
-    | "Closing"
-    | "Unknown"
-    | "WAITING_CLOSING_CHANNEL"
-    | "FORCE_CLOSING_CHANNEL"
-    | "PENDING_OPEN_CHANNEL";
+    | 'Online'
+    | 'Offline'
+    | 'Opening'
+    | 'Closing'
+    | 'Unknown'
+    | 'WAITING_CLOSING_CHANNEL'
+    | 'FORCE_CLOSING_CHANNEL'
+    | 'PENDING_OPEN_CHANNEL';
   name: string;
   purpose: string;
 };
 
-export default defineStore("lightning", {
+export default defineStore('lightning', {
   // Initial state
   state: (): State => ({
     operational: false,
     unlocked: false,
-    version: "",
-    implementation: "lnd",
+    version: '',
+    implementation: 'lnd',
     currentBlock: 0,
     blockHeight: 0,
     percent: -1, //for loading state
@@ -111,32 +112,32 @@ export default defineStore("lightning", {
       confirmed: -1,
       pending: -1,
     },
-    alias: "",
-    pubkey: "",
+    alias: '',
+    pubkey: '',
     lndConnectUrls: {
-      restTor: "",
-      restLocal: "",
-      grpcTor: "",
-      grpcLocal: "",
+      restTor: '',
+      restLocal: '',
+      grpcTor: '',
+      grpcLocal: '',
     },
     uris: [],
     numPendingChannels: 0,
     numActiveChannels: -1,
     numPeers: -1,
     channels: [
-      { type: "loading" },
-      { type: "loading" },
-      { type: "loading" },
-      { type: "loading" },
+      {type: 'loading'},
+      {type: 'loading'},
+      {type: 'loading'},
+      {type: 'loading'},
     ],
-    connectionCode: "unknown",
+    connectionCode: 'unknown',
     maxSend: -1,
     maxReceive: -1,
     transactions: [
-      { type: "loading" },
-      { type: "loading" },
-      { type: "loading" },
-      { type: "loading" },
+      {type: 'loading'},
+      {type: 'loading'},
+      {type: 'loading'},
+      {type: 'loading'},
     ],
     confirmedTransactions: [],
     pendingTransactions: [],
@@ -153,7 +154,8 @@ export default defineStore("lightning", {
     },
 
     async getSync() {
-      const sync = await this.sdkStore.citadel.middleware.lightning.info.syncStatus();
+      const sync =
+        await this.sdkStore.citadel.middleware.lightning.info.syncStatus();
       if (sync && sync.percent) {
         this.percent = Number(toPrecision(parseFloat(sync.percent) * 100, 2));
         this.blockHeight = sync.knownBlockCount;
@@ -179,7 +181,7 @@ export default defineStore("lightning", {
         this.version = lightningInfo.version;
         this.numPeers = parseInt(lightningInfo.numPeers.toString());
         this.numActiveChannels = parseInt(
-          lightningInfo.numActiveChannels.toString()
+          lightningInfo.numActiveChannels.toString(),
         );
       }
 
@@ -200,26 +202,27 @@ export default defineStore("lightning", {
     },
 
     async getConnectionCode() {
-      const uris = await this.sdkStore.citadel.middleware.lightning.info.publicUris();
+      const uris =
+        await this.sdkStore.citadel.middleware.lightning.info.publicUris();
 
       if (uris && uris.length > 0) {
         this.connectionCode = uris[0];
       } else {
-        this.connectionCode = "Could not determine lnd connection code";
+        this.connectionCode = 'Could not determine lnd connection code';
       }
     },
 
     async getChannels(preFetchedChannels: Channel[] = []) {
       let rawChannels: (Channel_extended & {
         status?:
-          | "Online"
-          | "Offline"
-          | "Opening"
-          | "Closing"
-          | "Unknown"
-          | "WAITING_CLOSING_CHANNEL"
-          | "FORCE_CLOSING_CHANNEL"
-          | "PENDING_OPEN_CHANNEL";
+          | 'Online'
+          | 'Offline'
+          | 'Opening'
+          | 'Closing'
+          | 'Unknown'
+          | 'WAITING_CLOSING_CHANNEL'
+          | 'FORCE_CLOSING_CHANNEL'
+          | 'PENDING_OPEN_CHANNEL';
         name?: string;
         purpose?: string;
       })[];
@@ -228,7 +231,8 @@ export default defineStore("lightning", {
         //eg when used by lnd page
         rawChannels = preFetchedChannels;
       } else {
-        rawChannels = await this.sdkStore.citadel.middleware.lightning.channel.list();
+        rawChannels =
+          await this.sdkStore.citadel.middleware.lightning.channel.list();
       }
 
       const channels: ParsedChannel[] = [];
@@ -243,40 +247,40 @@ export default defineStore("lightning", {
           const localBalance = parseInt(channel.localBalance as string) || 0;
           const remoteBalance = parseInt(channel.remoteBalance as string) || 0;
 
-          if (channel.type === "OPEN") {
+          if (channel.type === 'OPEN') {
             if (channel.active) {
-              channel.status = "Online";
+              channel.status = 'Online';
             } else {
-              channel.status = "Offline";
+              channel.status = 'Offline';
             }
 
             maxReceive += remoteBalance;
             maxSend += localBalance;
 
             confirmedBalance += localBalance;
-          } else if (channel.type === "PENDING_OPEN_CHANNEL") {
+          } else if (channel.type === 'PENDING_OPEN_CHANNEL') {
             pendingBalance += localBalance;
-            channel.status = "Opening";
+            channel.status = 'Opening';
           } else if (
             [
-              "WAITING_CLOSING_CHANNEL",
-              "FORCE_CLOSING_CHANNEL",
-              "PENDING_CLOSING_CHANNEL",
+              'WAITING_CLOSING_CHANNEL',
+              'FORCE_CLOSING_CHANNEL',
+              'PENDING_CLOSING_CHANNEL',
             ].includes(channel.type as string)
           ) {
             pendingBalance += localBalance;
-            channel.status = "Closing";
+            channel.status = 'Closing';
 
             // Lnd doesn't provide initiator or autopilot data via rpc. So, we just display a generic closing message.
-            channel.name = "Closing Channel";
-            channel.purpose = "A channel that is in the process of closing";
+            channel.name = 'Closing Channel';
+            channel.purpose = 'A channel that is in the process of closing';
           } else {
-            channel.status = "Unknown";
+            channel.status = 'Unknown';
           }
 
-          if (channel.name === "" && !channel.initiator) {
-            channel.name = "Inbound Channel";
-            channel.purpose = "A channel that another node has opened to you";
+          if (channel.name === '' && !channel.initiator) {
+            channel.name = 'Inbound Channel';
+            channel.purpose = 'A channel that another node has opened to you';
           }
 
           /*
@@ -316,11 +320,11 @@ export default defineStore("lightning", {
 
       if (invoices) {
         incomingTransactions = invoices.map((tx) => {
-          let type: "incoming" | "expired" | "pending" = "incoming";
+          let type: 'incoming' | 'expired' | 'pending' = 'incoming';
           if (tx.state === Invoice_InvoiceState.CANCELED) {
-            type = "expired";
+            type = 'expired';
           } else if (tx.state === Invoice_InvoiceState.OPEN) {
-            type = "pending";
+            type = 'pending';
           }
           return {
             type,
@@ -329,10 +333,10 @@ export default defineStore("lightning", {
               tx.state === Invoice_InvoiceState.SETTLED
                 ? new Date(Number(tx.settleDate) * 1000)
                 : new Date(Number(tx.creationDate) * 1000),
-            description: tx.memo || "",
+            description: tx.memo || '',
             expiresOn: new Date(
               // @ts-expect-error TODO: Investigate this
-              (Number(tx.creationDate) + Number(tx.expiry)) * 1000
+              (Number(tx.creationDate) + Number(tx.expiry)) * 1000,
             ),
             paymentRequest: tx.paymentRequest,
           };
@@ -345,20 +349,20 @@ export default defineStore("lightning", {
           //load tx from state to copy description
           const preFetchedTx = this.transactions.find(
             (trx) =>
-              trx.type === "outgoing" &&
-              trx.paymentPreImage === tx.paymentPreimage
+              trx.type === 'outgoing' &&
+              trx.paymentPreImage === tx.paymentPreimage,
           );
 
           return {
-            type: "outgoing",
+            type: 'outgoing',
             amount: Number(tx.valueSat),
             timestamp: new Date(Number(tx.creationTimeNs) * 1000),
             paymentRequest: tx.paymentRequest,
             paymentPreImage: tx.paymentPreimage,
             fee: Number(tx.feeSat),
             description: preFetchedTx
-              ? (preFetchedTx as { description: string }).description
-              : "",
+              ? (preFetchedTx as {description: string}).description
+              : '',
           };
         });
 
@@ -374,8 +378,8 @@ export default defineStore("lightning", {
       const newOutgoingTransactions = outgoingTransactions.filter(
         (tx) =>
           !(this.transactions as CustomTransactionType[]).some(
-            (trx) => trx.paymentPreImage === tx.paymentPreImage
-          )
+            (trx) => trx.paymentPreImage === tx.paymentPreImage,
+          ),
       );
 
       //update $store
@@ -391,7 +395,7 @@ export default defineStore("lightning", {
         try {
           const invoiceDetails =
             await this.sdkStore.citadel.middleware.lightning.lightning.parsePaymentRequest(
-              tx.paymentRequest
+              tx.paymentRequest,
             );
           if (invoiceDetails) {
             //load state's txs
@@ -400,7 +404,7 @@ export default defineStore("lightning", {
 
             //find tx to update
             const txIndex = updatedTransactions.findIndex(
-              (trx) => trx.paymentPreImage === tx.paymentPreImage
+              (trx) => trx.paymentPreImage === tx.paymentPreImage,
             );
 
             if (txIndex !== -1) {
@@ -427,17 +431,17 @@ export default defineStore("lightning", {
   getters: {
     status() {
       const data = {
-        class: "loading",
-        text: "Loading...",
+        class: 'loading',
+        text: 'Loading...',
       };
 
       if (this.operational) {
         if (this.unlocked) {
-          data.class = "active";
-          data.text = "Active";
+          data.class = 'active';
+          data.text = 'Active';
         } else {
-          data.class = "inactive";
-          data.text = "Locked";
+          data.class = 'inactive';
+          data.text = 'Locked';
         }
       }
 

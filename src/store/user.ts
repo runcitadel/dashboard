@@ -1,6 +1,6 @@
-import router from "../router/index.js";
-import { defineStore } from "pinia";
-import useSdkStore from "./sdk";
+import {defineStore} from 'pinia';
+import router from '../router/index.js';
+import useSdkStore from './sdk';
 
 export interface State {
   name: string;
@@ -15,12 +15,12 @@ export interface State {
 }
 
 // Initial state
-export default defineStore("user", {
+export default defineStore('user', {
   state: (): State => ({
-    name: "",
-    jwt: window.localStorage.getItem("jwt") || "",
+    name: '',
+    jwt: window.localStorage.getItem('jwt') || '',
     registered: true,
-    totpKey: "",
+    totpKey: '',
     totpEnabled: false,
     totpAuthenticated: false,
     seed: [],
@@ -30,16 +30,10 @@ export default defineStore("user", {
 
   // Functions to get data from the API
   actions: {
-    async login({
-      password,
-      totpToken,
-    }: {
-      password: string;
-      totpToken: string;
-    }) {
+    async login({password, totpToken}: {password: string; totpToken: string}) {
       const jwt = await this.sdkStore.citadel.manager.auth.login(
         password,
-        totpToken
+        totpToken,
       );
       if (jwt) {
         this.setJwt(jwt);
@@ -48,13 +42,13 @@ export default defineStore("user", {
 
     logout() {
       if (this.jwt) {
-        this.setJwt("");
-        router.push("/");
+        this.setJwt('');
+        router.push('/');
       }
     },
 
     async setJwt(jwt: string) {
-      window.localStorage.setItem("jwt", jwt);
+      window.localStorage.setItem('jwt', jwt);
       this.jwt = jwt;
       this.sdkStore.setJwt(jwt);
     },
@@ -66,8 +60,8 @@ export default defineStore("user", {
           this.setJwt(jwt);
         }
       } catch {
-        this.setJwt("");
-        router.push("/");
+        this.setJwt('');
+        router.push('/');
       }
     },
 
@@ -78,7 +72,7 @@ export default defineStore("user", {
     },
 
     async getInfo() {
-      const { name, installedApps } =
+      const {name, installedApps} =
         await this.sdkStore.citadel.manager.auth.info();
       this.name = name;
       this.installedApps = installedApps || [];
@@ -95,7 +89,7 @@ export default defineStore("user", {
       this.totpEnabled = totpEnabled;
     },
 
-    async getSeed(auth?: { password: string; totpToken?: string }) {
+    async getSeed(auth?: {password: string; totpToken?: string}) {
       let rawSeed: string[];
 
       //first check if user is registered or not
@@ -105,7 +99,7 @@ export default defineStore("user", {
       if (this.registered && auth?.password) {
         rawSeed = await this.sdkStore.citadel.manager.auth.seed(
           auth.password,
-          auth.totpToken
+          auth.totpToken,
         );
       } else {
         //get a new seed if new user
@@ -131,7 +125,7 @@ export default defineStore("user", {
         const jwt = await this.sdkStore.citadel.manager.auth.register(
           name,
           password,
-          seed
+          seed,
         );
 
         if (jwt) {

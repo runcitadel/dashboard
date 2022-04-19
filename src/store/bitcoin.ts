@@ -1,6 +1,6 @@
-import { toPrecision } from "../helpers/units";
-import { defineStore } from "pinia";
-import useSdkStore from "./sdk";
+import {toPrecision} from '../helpers/units';
+import {defineStore} from 'pinia';
+import useSdkStore from './sdk';
 
 type BasicBlock = {
   hash: string;
@@ -36,13 +36,13 @@ interface Transaction {
 
 type Transaction_extended = Transaction & {
   type:
-    | "CHANNEL_OPEN"
-    | "CHANNEL_CLOSE"
-    | "PENDING_OPEN"
-    | "PENDING_CLOSE"
-    | "UNKNOWN"
-    | "ON_CHAIN_TRANSACTION_SENT"
-    | "ON_CHAIN_TRANSACTION_RECEIVED";
+    | 'CHANNEL_OPEN'
+    | 'CHANNEL_CLOSE'
+    | 'PENDING_OPEN'
+    | 'PENDING_CLOSE'
+    | 'UNKNOWN'
+    | 'ON_CHAIN_TRANSACTION_SENT'
+    | 'ON_CHAIN_TRANSACTION_RECEIVED';
 };
 
 export interface State {
@@ -90,7 +90,7 @@ export interface State {
     confirmed: number;
     pending: number;
   };
-  _transactions: ({ type: "loading" } | Transaction_extended)[];
+  _transactions: ({type: 'loading'} | Transaction_extended)[];
   pending: [];
   price: number;
   fees: Record<
@@ -105,37 +105,37 @@ export interface State {
   sdkStore: ReturnType<typeof useSdkStore>;
 }
 
-export default defineStore("bitcoin", {
+export default defineStore('bitcoin', {
   // Initial state
   state: (): State => ({
     operational: false,
     calibrating: false,
-    version: "",
-    ipAddress: "",
-    onionAddress: "",
+    version: '',
+    ipAddress: '',
+    onionAddress: '',
     p2p: {
-      address: "",
-      port: "",
-      connectionString: "",
+      address: '',
+      port: '',
+      connectionString: '',
     },
     electrum: {
-      address: "",
-      port: "",
-      connectionString: "",
+      address: '',
+      port: '',
+      connectionString: '',
     },
     rpc: {
-      rpcuser: "",
-      rpcpassword: "",
-      address: "",
-      port: "",
-      connectionString: "",
+      rpcuser: '',
+      rpcpassword: '',
+      address: '',
+      port: '',
+      connectionString: '',
     },
     currentBlock: 0,
-    chain: "",
+    chain: '',
     blockHeight: 0,
     blocks: [],
     percent: -1, //for loading state
-    depositAddress: "",
+    depositAddress: '',
     stats: {
       peers: -1,
       mempool: -1,
@@ -153,32 +153,32 @@ export default defineStore("bitcoin", {
       pending: -1,
     },
     _transactions: [
-      { type: "loading" },
-      { type: "loading" },
-      { type: "loading" },
-      { type: "loading" },
+      {type: 'loading'},
+      {type: 'loading'},
+      {type: 'loading'},
+      {type: 'loading'},
     ],
     pending: [],
     price: 0,
     fees: {
       fast: {
-        total: "--",
-        perByte: "--",
+        total: '--',
+        perByte: '--',
         error: false,
       },
       normal: {
-        total: "--",
-        perByte: "--",
+        total: '--',
+        perByte: '--',
         error: false,
       },
       slow: {
-        total: "--",
-        perByte: "--",
+        total: '--',
+        perByte: '--',
         error: false,
       },
       cheapest: {
-        total: "--",
-        perByte: "--",
+        total: '--',
+        perByte: '--',
         error: false,
       },
     },
@@ -237,7 +237,7 @@ export default defineStore("bitcoin", {
 
       if (sync) {
         this.percent = Number(
-          toPrecision(parseFloat(sync.percent.toString()) * 100, 2)
+          toPrecision(parseFloat(sync.percent.toString()) * 100, 2),
         );
         this.currentBlock = sync.currentBlock;
         this.blockHeight = sync.headerCount;
@@ -252,7 +252,7 @@ export default defineStore("bitcoin", {
       const currentBlock = this.currentBlock;
 
       // Don't fetch blocks if no new block has been found
-      if (this.blocks.length && currentBlock === this.blocks[0]["height"]) {
+      if (this.blocks.length && currentBlock === this.blocks[0]['height']) {
         return;
       }
 
@@ -266,7 +266,7 @@ export default defineStore("bitcoin", {
       const latestThreeBlocks =
         await this.sdkStore.citadel.middleware.bitcoin.blocks(
           currentBlock - 2,
-          currentBlock
+          currentBlock,
         );
 
       // Update blocks
@@ -326,7 +326,7 @@ export default defineStore("bitcoin", {
     },
 
     async getPrice() {
-      const price = await this.sdkStore.citadel.manager.external.price("USD");
+      const price = await this.sdkStore.citadel.manager.external.price('USD');
 
       if (price) {
         this.price = price;
@@ -334,7 +334,8 @@ export default defineStore("bitcoin", {
     },
 
     async getDepositAddress() {
-      const { address } = await this.sdkStore.citadel.middleware.lightning.address();
+      const {address} =
+        await this.sdkStore.citadel.middleware.lightning.address();
 
       if (address) {
         this.depositAddress = address;
@@ -354,7 +355,7 @@ export default defineStore("bitcoin", {
         await this.sdkStore.citadel.middleware.lightning.transaction.estimateFeeAll(
           address,
           amt,
-          sweep
+          sweep,
         );
 
       if (fees) {
@@ -370,30 +371,30 @@ export default defineStore("bitcoin", {
   getters: {
     status() {
       const data = {
-        class: "loading",
-        text: "Loading...",
+        class: 'loading',
+        text: 'Loading...',
       };
 
       if (this.operational) {
-        data.class = "active";
-        data.text = "Operational";
+        data.class = 'active';
+        data.text = 'Operational';
       }
 
       return data;
     },
     transactions(): (
       | {
-          type: "incoming" | "outgoing";
+          type: 'incoming' | 'outgoing';
           amount: number | string;
           timestamp: Date;
           description: string;
           hash: string;
           confirmations: string | number;
         }
-      | { type: "loading" }
+      | {type: 'loading'}
     )[] {
       const txs: {
-        type: "incoming" | "outgoing";
+        type: 'incoming' | 'outgoing';
         amount: number | string;
         timestamp: Date;
         description: string;
@@ -405,9 +406,9 @@ export default defineStore("bitcoin", {
       if (
         this._transactions &&
         this._transactions.length &&
-        this._transactions[0]["type"] === "loading"
+        this._transactions[0]['type'] === 'loading'
       ) {
-        return this._transactions as { type: "loading" }[];
+        return this._transactions as {type: 'loading'}[];
       }
 
       if (this._transactions) {
@@ -415,9 +416,9 @@ export default defineStore("bitcoin", {
           (tx: Transaction_extended) => {
             const amount = Number(tx.amount);
 
-            let type: "incoming" | "outgoing" = "incoming";
+            let type: 'incoming' | 'outgoing' = 'incoming';
             if (amount < 0) {
-              type = "outgoing";
+              type = 'outgoing';
             } else if (amount === 0) {
               //skip self incoming txs of change
               return;
@@ -428,19 +429,19 @@ export default defineStore("bitcoin", {
             // }
             // type = "pending";
 
-            let description = "Unknown";
+            let description = 'Unknown';
 
-            if (tx.type === "CHANNEL_OPEN" || tx.type === "PENDING_OPEN") {
-              description = "Lightning Wallet";
+            if (tx.type === 'CHANNEL_OPEN' || tx.type === 'PENDING_OPEN') {
+              description = 'Lightning Wallet';
             } else if (
-              tx.type === "CHANNEL_CLOSE" ||
-              tx.type === "PENDING_CLOSE"
+              tx.type === 'CHANNEL_CLOSE' ||
+              tx.type === 'PENDING_CLOSE'
             ) {
-              description = "Lightning Wallet";
-            } else if (tx.type === "ON_CHAIN_TRANSACTION_SENT") {
-              description = "Withdrawal";
-            } else if (tx.type === "ON_CHAIN_TRANSACTION_RECEIVED") {
-              description = "Deposit";
+              description = 'Lightning Wallet';
+            } else if (tx.type === 'ON_CHAIN_TRANSACTION_SENT') {
+              description = 'Withdrawal';
+            } else if (tx.type === 'ON_CHAIN_TRANSACTION_RECEIVED') {
+              description = 'Deposit';
             }
 
             txs.push({
@@ -451,7 +452,7 @@ export default defineStore("bitcoin", {
               hash: tx.txHash,
               confirmations: tx.numConfirmations,
             });
-          }
+          },
         );
 
         // Sort txs by date

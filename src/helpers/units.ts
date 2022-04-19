@@ -1,7 +1,7 @@
-import { BigNumber } from "bignumber.js";
+import {BigNumber} from 'bignumber.js';
 
 // Never display numbers as exponents
-BigNumber.config({ EXPONENTIAL_AT: 1e9 });
+BigNumber.config({EXPONENTIAL_AT: 1e9});
 
 export function btcToSats(input: number) {
   const btc = new BigNumber(input);

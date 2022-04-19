@@ -6,8 +6,8 @@
     "dev": "vite",
     "serve": "vite preview",
     "build": "vite build",
-    "lint": "eslint --fix src/**/*.vue",
-    "lint:check": "eslint src/**/*.vue",
+    "lint": "eslint --fix src/**/*.{ts,vue}",
+    "lint:check": "eslint src/**/*.{ts,vue}",
     "postinstall": "husky install"
   },
   "dependencies": {
