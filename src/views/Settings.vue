@@ -208,7 +208,7 @@
             <div>
               <span class="d-block">Two-factor authentication</span>
               <small class="d-block" style="opacity: 0.4"
-                >Manage enhanced security measure.</small
+                >Manage enhanced security measure</small
               >
             </div>
 
@@ -771,7 +771,7 @@ export default defineComponent({
       try {
         await this.systemStore.debug();
         while (this.loadingDebug) {
-          await delay(1000);
+          await delay(2000);
           await this.systemStore.getDebugResult();
           if (this.systemStore.debugResult.status === 'success') {
             this.loadingDebug = false;
