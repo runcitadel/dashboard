@@ -773,14 +773,12 @@ export default defineComponent({
         while (this.loadingDebug) {
           await delay(1000);
           await this.systemStore.getDebugResult();
-          if (
-            typeof this.systemStore.debugResult !== 'string' &&
-            this.systemStore.debugResult.status == 'success'
-          ) {
+          if (this.systemStore.debugResult.status === 'success') {
             this.loadingDebug = false;
           }
         }
-      } catch (e) {
+      } catch (error) {
+        console.error(error);
         this.debugFailed = true;
       }
     },
@@ -813,7 +811,8 @@ export default defineComponent({
       try {
         await this.systemStore.shutdown();
         this.toast.success('Shutdown successful');
-      } catch (e) {
+      } catch (error) {
+        console.error(error);
         this.toast.error(
           'Shutdown failed',
           'Something went wrong and Citadel was not able to shutdown',
@@ -830,7 +829,8 @@ export default defineComponent({
         event.preventDefault();
         try {
           await this.systemStore.reboot();
-        } catch (e) {
+        } catch (error) {
+          console.error(error);
           this.toast.error(
             'Reboot failed',
             'Something went wrong and Citadel was not able to reboot',
