@@ -1,10 +1,10 @@
 # Define version & use pinned images
-ARG NODE_VERSION=16
+ARG NODE_VERSION=18
 
 # Build on the host architecture, change this if you're building on arm64
-FROM amd64/node:${NODE_VERSION}-alpine@sha256:425c81a04546a543da824e67c91d4a603af16fbc3d875ee2f276acf8ec2b1577 as node-builder
+FROM amd64/node:${NODE_VERSION}-alpine@sha256:77f86133ced42635d78a2ca2ab27945f8ac9aa06ef092f52c84bb9b2a13055fc as node-builder
 # Use multi-arch image for running the app
-FROM node:${NODE_VERSION}-alpine@sha256:2c6c59cf4d34d4f937ddfcf33bab9d8bbad8658d1b9de7b97622566a52167f2b as node-runner
+FROM node:${NODE_VERSION}-alpine@sha256:469ee26d9e00547ea91202a34ff2542f984c2c60a2edbb4007558ccb76b56df2 as node-runner
 
 
 # DEVELOPMENT
