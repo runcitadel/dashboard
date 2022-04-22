@@ -1005,7 +1005,7 @@ export default defineComponent({
           }
           this.receive.invoiceStatusPollerInprogress = true;
           const invoices =
-            await this.sdkStore.citadel.middleware.lnd.lightning.invoices();
+            await this.sdkStore.citadel.middleware.lightning.lightning.invoices();
           if (invoices && invoices.length) {
             //search for invoice
             const currentInvoice = invoices.filter((inv) => {
@@ -1119,7 +1119,7 @@ export default defineComponent({
       this.error = '';
 
       try {
-        await this.sdkStore.citadel.middleware.lnd.lightning.payInvoice(
+        await this.sdkStore.citadel.middleware.lightning.lightning.payInvoice(
           this.send.paymentRequest,
         );
         // TODO: Fix this
@@ -1154,7 +1154,7 @@ export default defineComponent({
       setTimeout(async () => {
         try {
           const res =
-            await this.sdkStore.citadel.middleware.lnd.lightning.addInvoice(
+            await this.sdkStore.citadel.middleware.lightning.lightning.addInvoice(
               (this.receive.amount as number).toString(),
               this.receive.description,
             );
@@ -1196,7 +1196,7 @@ export default defineComponent({
       this.loading = true;
 
       const fetchedInvoice =
-        await this.sdkStore.citadel.middleware.lnd.lightning.parsePaymentRequest(
+        await this.sdkStore.citadel.middleware.lightning.lightning.parsePaymentRequest(
           this.send.paymentRequest,
         );
 

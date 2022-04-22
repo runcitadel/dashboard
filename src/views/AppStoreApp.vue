@@ -153,13 +153,45 @@
               <span>Version</span>
               <span>{{ app.version }}</span>
             </div>
-            <div v-if="app.repo" class="d-flex justify-content-between mb-3">
+            <div
+              v-if="typeof app.repo == 'string'"
+              class="d-flex justify-content-between mb-3"
+            >
               <span>Source Code</span>
               <a :href="app.repo" target="_blank">Public</a>
             </div>
-            <div class="d-flex justify-content-between mb-3">
+            <div
+              v-for="repo in app.repo"
+              v-else
+              :key="repo"
+              class="d-flex justify-content-between mb-3"
+            >
+              <span>{{ repo }} Source Code</span>
+              <a :href="app.repo[repo]" target="_blank">Public</a>
+            </div>
+            <div
+              v-if="app.developer"
+              class="d-flex justify-content-between mb-3"
+            >
               <span>Developer</span>
-              <a :href="app.website" target="_blank">{{ app.developer }}</a>
+              <a
+                :href="(app as unknown as { website: string}).website"
+                target="_blank"
+                >{{ app.developer }}</a
+              >
+            </div>
+            <div
+              v-if="app.developers"
+              class="d-flex justify-content-between mb-3"
+            >
+              <span>Developers</span>
+              <a
+                v-for="developer in app.developers"
+                :key="developer"
+                :href="developer"
+                target="_blank"
+                >{{ app.developers[developer] }}</a
+              >
             </div>
             <!-- We don't need to show this until there are incompatible apps -->
             <div class="d-flex justify-content-between mb-3">
@@ -173,54 +205,109 @@
               <span class="d-block mb-3">Requires</span>
               <div
                 v-for="dependency in app.dependencies"
-                :key="dependency"
+                :key="dependency.toString()"
                 class="d-flex align-items-center justify-content-between mb-3"
               >
-                <div class="d-flex align-items-center">
-                  <img
-                    :src="src(dependency)"
-                    style="width: 50px; height: 50px; border-radius: 12px"
-                    class="me-2"
-                  />
-                  <span class="text-muted my-0">{{
-                    formatDependency(dependency)
-                  }}</span>
-                </div>
-                <div v-if="isDependencyInstalled(dependency)">
-                  <svg
-                    width="30"
-                    height="30"
-                    viewBox="0 0 30 30"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M19.3035 10.7643C19.5718 10.4486 20.0451 10.4103 20.3607 10.6785C20.6763 10.9468 20.7147 11.4201 20.4464 11.7357L14.0714 19.2357C13.799 19.5563 13.3162 19.5901 13.0017 19.3105L9.62671 16.3105C9.31712 16.0354 9.28924 15.5613 9.56443 15.2517C9.83962 14.9421 10.3137 14.9142 10.6233 15.1894L13.4251 17.68L19.3035 10.7643Z"
-                      fill="#00CD98"
+                <div v-if="typeof dependency === 'string'">
+                  <div class="d-flex align-items-center">
+                    <img
+                      :src="src(dependency)"
+                      style="width: 50px; height: 50px; border-radius: 12px"
+                      class="me-2"
                     />
-                  </svg>
-                  <small class="text-success">Installed</small>
+                    <span class="text-muted my-0">{{
+                      formatDependency(dependency)
+                    }}</span>
+                  </div>
+                  <div v-if="isDependencyInstalled(dependency)">
+                    <svg
+                      width="30"
+                      height="30"
+                      viewBox="0 0 30 30"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M19.3035 10.7643C19.5718 10.4486 20.0451 10.4103 20.3607 10.6785C20.6763 10.9468 20.7147 11.4201 20.4464 11.7357L14.0714 19.2357C13.799 19.5563 13.3162 19.5901 13.0017 19.3105L9.62671 16.3105C9.31712 16.0354 9.28924 15.5613 9.56443 15.2517C9.83962 14.9421 10.3137 14.9142 10.6233 15.1894L13.4251 17.68L19.3035 10.7643Z"
+                        fill="#00CD98"
+                      />
+                    </svg>
+                    <small class="text-success">Installed</small>
+                  </div>
+                  <div v-else>
+                    <svg
+                      width="16"
+                      height="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="#cc3444"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M5.47 5.47a.75.75 0 011.06 0l12 12a.75.75 0 11-1.06 1.06l-12-12a.75.75 0 010-1.06z"
+                        clip-rule="evenodd"
+                      ></path>
+                      <path
+                        fill-rule="evenodd"
+                        d="M18.53 5.47a.75.75 0 010 1.06l-12 12a.75.75 0 01-1.06-1.06l12-12a.75.75 0 011.06 0z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    <small class="text-danger">Not installed</small>
+                  </div>
                 </div>
-                <div v-else>
-                  <svg
-                    width="16"
-                    height="16"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="#cc3444"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M5.47 5.47a.75.75 0 011.06 0l12 12a.75.75 0 11-1.06 1.06l-12-12a.75.75 0 010-1.06z"
-                      clip-rule="evenodd"
-                    ></path>
-                    <path
-                      fill-rule="evenodd"
-                      d="M18.53 5.47a.75.75 0 010 1.06l-12 12a.75.75 0 01-1.06-1.06l12-12a.75.75 0 011.06 0z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                  <small class="text-danger">Not installed</small>
+                <div
+                  v-for="realDependency in dependency"
+                  v-else
+                  :key="realDependency.toString()"
+                  class="d-flex align-items-center justify-content-between mb-3"
+                >
+                  <div class="d-flex align-items-center">
+                    <img
+                      :src="src(realDependency)"
+                      style="width: 50px; height: 50px; border-radius: 12px"
+                      class="me-2"
+                    />
+                    <span class="text-muted my-0">{{
+                      formatDependency(realDependency)
+                    }}</span>
+                  </div>
+                  <div v-if="isDependencyInstalled(realDependency)">
+                    <svg
+                      width="30"
+                      height="30"
+                      viewBox="0 0 30 30"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M19.3035 10.7643C19.5718 10.4486 20.0451 10.4103 20.3607 10.6785C20.6763 10.9468 20.7147 11.4201 20.4464 11.7357L14.0714 19.2357C13.799 19.5563 13.3162 19.5901 13.0017 19.3105L9.62671 16.3105C9.31712 16.0354 9.28924 15.5613 9.56443 15.2517C9.83962 14.9421 10.3137 14.9142 10.6233 15.1894L13.4251 17.68L19.3035 10.7643Z"
+                        fill="#00CD98"
+                      />
+                    </svg>
+                    <small class="text-success">Installed</small>
+                  </div>
+                  <div v-else>
+                    <svg
+                      width="16"
+                      height="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="#cc3444"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M5.47 5.47a.75.75 0 011.06 0l12 12a.75.75 0 11-1.06 1.06l-12-12a.75.75 0 010-1.06z"
+                        clip-rule="evenodd"
+                      ></path>
+                      <path
+                        fill-rule="evenodd"
+                        d="M18.53 5.47a.75.75 0 010 1.06l-12 12a.75.75 0 01-1.06-1.06l12-12a.75.75 0 011.06 0z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    <small class="text-danger">Not installed</small>
+                  </div>
                 </div>
               </div>
             </div>

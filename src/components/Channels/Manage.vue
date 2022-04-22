@@ -236,7 +236,7 @@ export default defineComponent({
       this.isClosing = true;
 
       try {
-        await this.sdkStore.citadel.middleware.lnd.channel.closeChannel(
+        await this.sdkStore.citadel.middleware.lightning.channel.closeChannel(
           this.channel.channelPoint,
           !this.channel.active, // Avoids force closing if channel is active
         );

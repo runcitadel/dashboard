@@ -1001,7 +1001,7 @@ export default defineComponent({
 
       try {
         const res =
-          await this.sdkStore.citadel.middleware.lnd.transaction.sendCoins(
+          await this.sdkStore.citadel.middleware.lightning.transaction.sendCoins(
             payload.addr,
             payload.amt as number,
             payload.satPerByte,

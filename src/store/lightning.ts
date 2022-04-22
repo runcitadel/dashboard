@@ -145,7 +145,7 @@ export default defineStore("lightning", {
   actions: {
     async getStatus() {
       const status =
-        await this.sdkStore.citadel.middleware.lnd.info.getStatus();
+        await this.sdkStore.citadel.middleware.lightning.info.getStatus();
       if (status) {
         this.operational = status.operational;
         this.unlocked = status.unlocked;
@@ -153,7 +153,7 @@ export default defineStore("lightning", {
     },
 
     async getSync() {
-      const sync = await this.sdkStore.citadel.middleware.lnd.info.syncStatus();
+      const sync = await this.sdkStore.citadel.middleware.lightning.info.syncStatus();
       if (sync && sync.percent) {
         this.percent = Number(toPrecision(parseFloat(sync.percent) * 100, 2));
         this.blockHeight = sync.knownBlockCount;
@@ -165,7 +165,7 @@ export default defineStore("lightning", {
     async getLndPageData() {
       const data = await this.sdkStore.citadel.middleware.pages.lightning();
       const versionInfo =
-        await this.sdkStore.citadel.middleware.lnd.info.version();
+        await this.sdkStore.citadel.middleware.lightning.info.version();
 
       if (data) {
         const channels = data.channels || [];
@@ -191,7 +191,7 @@ export default defineStore("lightning", {
 
     async getVersionInfo() {
       const versionInfo =
-        await this.sdkStore.citadel.middleware.lnd.info.version();
+        await this.sdkStore.citadel.middleware.lightning.info.version();
 
       if (versionInfo) {
         this.version = versionInfo.version;
@@ -200,7 +200,7 @@ export default defineStore("lightning", {
     },
 
     async getConnectionCode() {
-      const uris = await this.sdkStore.citadel.middleware.lnd.info.publicUris();
+      const uris = await this.sdkStore.citadel.middleware.lightning.info.publicUris();
 
       if (uris && uris.length > 0) {
         this.connectionCode = uris[0];
@@ -228,7 +228,7 @@ export default defineStore("lightning", {
         //eg when used by lnd page
         rawChannels = preFetchedChannels;
       } else {
-        rawChannels = await this.sdkStore.citadel.middleware.lnd.channel.list();
+        rawChannels = await this.sdkStore.citadel.middleware.lightning.channel.list();
       }
 
       const channels: ParsedChannel[] = [];
@@ -302,9 +302,9 @@ export default defineStore("lightning", {
     async getTransactions() {
       // Get invoices and payments
       const invoices =
-        await this.sdkStore.citadel.middleware.lnd.lightning.invoices();
+        await this.sdkStore.citadel.middleware.lightning.lightning.invoices();
       const payments =
-        await this.sdkStore.citadel.middleware.lnd.lightning.getPayments();
+        await this.sdkStore.citadel.middleware.lightning.lightning.getPayments();
 
       if (!invoices || !payments) {
         return;
@@ -390,7 +390,7 @@ export default defineStore("lightning", {
 
         try {
           const invoiceDetails =
-            await this.sdkStore.citadel.middleware.lnd.lightning.parsePaymentRequest(
+            await this.sdkStore.citadel.middleware.lightning.lightning.parsePaymentRequest(
               tx.paymentRequest
             );
           if (invoiceDetails) {

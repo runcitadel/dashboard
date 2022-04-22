@@ -1,9 +1,11 @@
-import { defineStore } from "pinia";
-import useSdkStore from "./sdk";
+import {defineStore} from 'pinia';
+import useSdkStore from './sdk';
 
 /** A dependency an app could have */
-type Dependency = "bitcoind" | "electrum" | "lnd";
-
+export type Dependency = 'bitcoind' | 'electrum' | 'lnd' | 'c-lightning';
+/**
+ * Defines an app
+ */
 export type app = {
   /** The id of the app, the name as a simple string without spaces */
   id: string;
@@ -18,13 +20,13 @@ export type app = {
   /** A longer description of the app (50 to 200 words) */
   description: string;
   /** The person(s) who created the app */
-  developer: string;
-  /** The url to the app's website */
-  website: string;
+  developer?: string;
+  /** The person(s) who created the app */
+  developers?: Record<string, string>;
   /** The dependencies of the app */
-  dependencies: Dependency[];
+  dependencies: (Dependency | Dependency[])[];
   /** The url to the app's Git repository */
-  repo: string;
+  repo: string | Record<string, string>;
   /** The url to the app's support website/chat */
   support: string;
   /** The port the app's web UI uses */
@@ -35,13 +37,13 @@ export type app = {
   path: string;
   /** The app's default password */
   defaultPassword: string;
+  torOnly?: boolean;
   /** Automatically added */
   hiddenService?: string;
   /** Automatically added */
   installed?: boolean;
   /** Automatically added */
   compatible: boolean;
-  torOnly?: boolean;
   icon?: string;
 };
 
@@ -54,7 +56,7 @@ export interface State {
   sdkStore: ReturnType<typeof useSdkStore>;
 }
 
-export default defineStore("apps", {
+export default defineStore('apps', {
   // Initial state
   state: (): State => ({
     installed: [],

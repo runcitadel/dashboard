@@ -110,7 +110,7 @@ export default defineStore("user", {
       } else {
         //get a new seed if new user
         rawSeed =
-          await this.sdkStore.citadel.middleware.lnd.wallet.generateSeed();
+          await this.sdkStore.citadel.middleware.lightning.wallet.generateSeed();
       }
 
       if (rawSeed) {

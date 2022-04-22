@@ -310,7 +310,7 @@ export default defineStore("bitcoin", {
 
     async getBalance() {
       const balance =
-        await this.sdkStore.citadel.middleware.lnd.wallet.onChainBalance();
+        await this.sdkStore.citadel.middleware.lightning.wallet.onChainBalance();
 
       this.balance = {
         total: parseInt(balance.totalBalance.toString()),
@@ -321,7 +321,7 @@ export default defineStore("bitcoin", {
 
     async getTransactions() {
       const transactions =
-        await this.sdkStore.citadel.middleware.lnd.transaction.getOnChainTransactions();
+        await this.sdkStore.citadel.middleware.lightning.transaction.getOnChainTransactions();
       this._transactions = transactions;
     },
 
@@ -334,7 +334,7 @@ export default defineStore("bitcoin", {
     },
 
     async getDepositAddress() {
-      const { address } = await this.sdkStore.citadel.middleware.lnd.address();
+      const { address } = await this.sdkStore.citadel.middleware.lightning.address();
 
       if (address) {
         this.depositAddress = address;
@@ -351,7 +351,7 @@ export default defineStore("bitcoin", {
       sweep: boolean;
     }) {
       const fees =
-        await this.sdkStore.citadel.middleware.lnd.transaction.estimateFeeAll(
+        await this.sdkStore.citadel.middleware.lightning.transaction.estimateFeeAll(
           address,
           amt,
           sweep
