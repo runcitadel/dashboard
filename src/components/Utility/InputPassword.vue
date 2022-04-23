@@ -22,9 +22,8 @@
 import {
   HiddenIcon,
   VisibleIcon,
-  // @ts-expect-error No type definitions for this yet
 } from '@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js';
-import {defineComponent, type PropType} from 'vue';
+import {defineComponent, PropType} from 'vue';
 
 export default defineComponent({
   components: {

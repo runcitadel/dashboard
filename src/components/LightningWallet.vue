@@ -839,9 +839,7 @@
 import useSystemStore from '../store/system';
 import useUserStore from '../store/user';
 import useBitcoinStore from '../store/bitcoin';
-import useLightningStore, {
-  type CustomTransactionType,
-} from '../store/lightning';
+import useLightningStore, {CustomTransactionType} from '../store/lightning';
 import useAppsStore from '../store/apps';
 import useSdkStore from '../store/sdk';
 

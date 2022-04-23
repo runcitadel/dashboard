@@ -88,7 +88,7 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-import useAppsStore, {type app} from '../store/apps';
+import useAppsStore, {app} from '../store/apps';
 
 import CardWidget from '../components/CardWidget.vue';
 

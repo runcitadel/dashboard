@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, type PropType} from 'vue';
+import {defineComponent, PropType} from 'vue';
 import QrcodeVue from 'qrcode.vue';
 
 export default defineComponent({

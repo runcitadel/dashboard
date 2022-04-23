@@ -352,7 +352,7 @@ import ChannelOpen from '../components/Channels/Open.vue';
 import ChannelManage from '../components/Channels/Manage.vue';
 
 import useBitcoinStore from '../store/bitcoin';
-import useLightningStore, {type ParsedChannel} from '../store/lightning';
+import useLightningStore, {ParsedChannel} from '../store/lightning';
 import useSystemStore from '../store/system';
 
 export default defineComponent({

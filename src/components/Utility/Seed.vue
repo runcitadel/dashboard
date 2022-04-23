@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, type PropType} from 'vue';
+import {defineComponent, PropType} from 'vue';
 import ScrambledText from './ScrambledText.vue';
 
 export default defineComponent({

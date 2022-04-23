@@ -386,6 +386,7 @@ const routes = [
 const router = createRouter({
   routes,
   history: createWebHistory(),
+  // @ts-expect-error lib type wrong
   scrollBehavior: (to, from, savedPosition) => {
     // Exists when Browser's back/forward pressed
     if (savedPosition) {

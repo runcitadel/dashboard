@@ -7,8 +7,8 @@
 </template>
 
 <script lang="ts">
-import {CountUp, type CountUpOptions} from 'countup.js';
-import {defineComponent, type PropType} from 'vue';
+import {CountUp, CountUpOptions} from 'countup.js';
+import {defineComponent, PropType} from 'vue';
 
 const typeOf = (type: string) => (object: unknown) =>
   Object.prototype.toString.call(object) === `[object ${type}]`;
