@@ -18,7 +18,7 @@
         class="mb-2 logo"
       />
       <h1 class="text-center mb-2">welcome back</h1>
-      <p v-if="!showOtpInput" class="text-muted w-75 text-center">
+      <p v-if="!showTotpInput" class="text-muted w-75 text-center">
         Enter the password to login to your Citadel
       </p>
 
@@ -27,7 +27,7 @@
       </p>
 
       <form
-        v-if="!showOtpInput"
+        v-if="!showTotpInput"
         class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center"
         @submit.prevent="authenticateUser"
       >
@@ -70,14 +70,14 @@
         <input-otp-token
           autofocus
           :disabled="isLoggingIn"
-          :success="isCorrectOtp"
-          :error="isIncorrectOtp"
-          @otp-token="authenticateUserWithOtp"
-          @keyup="hideOtpError"
+          :success="isCorrectTotp"
+          :error="isIncorrectTotp"
+          @otp-token="authenticateUserWithTotp"
+          @keyup="hideTotpError"
         />
         <div class="login-button-container">
           <transition name="fade">
-            <small v-show="isIncorrectOtp" class="mt-2 text-danger error"
+            <small v-show="isIncorrectTotp" class="mt-2 text-danger error"
               >Incorrect code</small
             >
           </transition>
@@ -110,25 +110,25 @@ export default defineComponent({
       isIncorrectPassword: false,
       isIncorrectToken: false,
       isLoggingIn: false,
-      otpToken: '',
-      showOtpInput: false,
-      isCorrectOtp: false,
-      isIncorrectOtp: false,
+      totpToken: '',
+      showTotpInput: false,
+      isCorrectTotp: false,
+      isIncorrectTotp: false,
     };
   },
   watch: {
     password: function () {
-      //bring up log in button after user retries new password after failed attempt
+      // bring up log in button after user retries new password after failed attempt
       this.isIncorrectPassword = false;
     },
   },
   async created() {
-    //redirect to dashboard if already logged in
+    // redirect to dashboard if already logged in
     if (this.userStore.jwt) {
       this.$router.push('/dashboard');
     }
 
-    //redirect to onboarding if the user is not registered
+    // redirect to onboarding if the user is not registered
     await this.userStore.getRegistered();
     if (!this.userStore.registered) {
       return this.$router.push('/start');
@@ -142,39 +142,55 @@ export default defineComponent({
     async authenticateUser() {
       this.isLoggingIn = true;
 
-      if (this.userStore.totpEnabled) {
-        this.showOtpInput = true;
-      }
       try {
         await this.userStore.login({
           password: this.password,
-          totpToken: this.otpToken,
+          totpToken: this.totpToken,
         });
+
+        if (this.totpToken) {
+          // show ripple animation
+          this.isCorrectTotp = true;
+          await delay(1000);
+        }
+
+        // redirect to dashboard
+        return this.$router.push(
+          new URL(window.location as unknown as URL).searchParams.get(
+            'redirect',
+          ) || '/dashboard',
+        );
       } catch (error) {
-        this.isIncorrectPassword = true;
+        console.error(error);
+        const errorString = String(error);
+        const isIncorrectPassword = errorString.includes('Incorrect password');
+        const isIncorrectTotp = errorString.includes('Incorrect 2FA code');
+
+        this.isIncorrectPassword = isIncorrectPassword;
         this.isLoggingIn = false;
-      }
 
-      if (this.otpToken) {
-        // show ripple animation
-        this.isCorrectOtp = true;
-        await delay(1000);
-      }
+        if (this.userStore.totpEnabled) {
+          if (!isIncorrectPassword) {
+            this.showTotpInput = true;
+          }
 
-      //redirect to dashboard
-      return this.$router.push(
-        new URL(window.location as unknown as URL).searchParams.get(
-          'redirect',
-        ) || '/dashboard',
-      );
+          if (this.totpToken) {
+            this.isIncorrectTotp = isIncorrectTotp;
+          }
+        }
+
+        // hide error message after interval
+        await delay(3000);
+        this.isIncorrectPassword = false;
+      }
     },
 
-    authenticateUserWithOtp(otpToken: string) {
-      this.otpToken = otpToken;
+    authenticateUserWithTotp(totpToken: string) {
+      this.totpToken = totpToken;
       this.authenticateUser();
     },
-    hideOtpError() {
-      this.isIncorrectOtp = false;
+    hideTotpError() {
+      this.isIncorrectTotp = false;
     },
   },
 });
