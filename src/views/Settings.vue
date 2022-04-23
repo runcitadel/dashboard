@@ -179,6 +179,16 @@
                   input-class="form-control form-control-lg neu-input w-100"
                   :disabled="isChangingPassword"
                 />
+
+                <div v-if="userStore.totpEnabled">
+                  <input-otp-token
+                    :disabled="isChangingPassword"
+                    :success="isCorrectOtp"
+                    :error="isIncorrectOtp"
+                    @otp-token="setTotpToken"
+                    @keyup="hideOtpError"
+                  />
+                </div>
                 <div class="py-2"></div>
                 <b-alert variant="warning" show>
                   <small>
@@ -187,6 +197,15 @@
                     using your 24 secret words and channel backup.
                   </small>
                 </b-alert>
+
+                <div v-show="isIncorrectPassword" class="my-2 text-center">
+                  <small class="text-danger error">Incorrect password</small>
+                </div>
+
+                <div v-show="isIncorrectTotp" class="my-2 text-center">
+                  <small class="text-danger error">Incorrect code</small>
+                </div>
+
                 <b-button
                   class="w-100"
                   variant="success"
@@ -546,13 +565,13 @@ import TemperatureWidget from '../components/Widgets/TemperatureWidget.vue';
 import Seed from '../components/Seed.vue';
 import InputPassword from '../components/Utility/InputPassword.vue';
 import InputCopy from '../components/Utility/InputCopy.vue';
+import InputOtpToken from '../components/Utility/InputOtpToken.vue';
 import QrCode from '../components/Utility/QrCode.vue';
 import {
   BellIcon,
   ReceiveIcon,
   FlipHorizontalIcon,
   RefreshIcon,
-  // @ts-expect-error No type definitions for this  yet
 } from '@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js';
 import {BIconCheckCircleFill} from 'bootstrap-vue/src/index.js';
 import useSdkStore from '../store/sdk';
@@ -569,6 +588,7 @@ export default defineComponent({
     TemperatureWidget,
     InputPassword,
     InputCopy,
+    InputOtpToken,
     Seed,
     QrCode,
     ReceiveIcon: ReceiveIcon as DefineComponent,
@@ -590,6 +610,7 @@ export default defineComponent({
       isIncorrectPassword: false,
       newPassword: '',
       confirmNewPassword: '',
+      totpToken: '',
       isChangingPassword: false,
       isCheckingForUpdate: false,
       isEnablingTwoFactorAuth: false,
@@ -604,6 +625,7 @@ export default defineComponent({
       isIncorrectPassword: boolean;
       newPassword: string;
       confirmNewPassword: string;
+      totpToken: string;
       isChangingPassword: boolean;
       isCheckingForUpdate: boolean;
       isEnablingTwoFactorAuth: boolean;
@@ -673,6 +695,9 @@ export default defineComponent({
     }
   },
   methods: {
+    setTotpToken(totpToken) {
+      this.totpToken = totpToken;
+    },
     async enableTwoFactorAuth() {
       this.isEnablingTwoFactorAuth = true;
 
@@ -712,36 +737,35 @@ export default defineComponent({
         this.isDisablingTwoFactorAuth = false;
         return;
       }
-
-      this.toast.success(
-        '2FA disabled',
-        "You've successfully disabled two-factor authentication",
-      );
-
-      this.userStore.getTotpEnabledStatus();
-      this.$bvModal.hide('two-factor-auth-modal');
     },
     async changePassword() {
       this.isChangingPassword = true;
+      this.isIncorrectPassword = false;
+      this.isIncorrectTotp = false;
 
       try {
         await this.sdkStore.citadel.manager.auth.changePassword(
           this.currentPassword,
           this.newPassword,
+          this.totpToken,
+        );
+
+        this.toast.success(
+          'Password Changed',
+          "You've successfully changed your Citadel's password",
         );
       } catch (error) {
-        if (error) {
-          this.isIncorrectPassword = true;
-          console.error(error);
-        }
+        console.error(error);
+        const errorString = String(error);
+        const isIncorrectPassword = errorString.includes('Incorrect password');
+        const isIncorrectTotp = errorString.includes('Incorrect 2FA code');
+
+        this.isIncorrectPassword = isIncorrectPassword;
+        this.isIncorrectTotp = isIncorrectTotp;
+
         this.isChangingPassword = false;
         return;
       }
-
-      this.toast.success(
-        'Password Changed',
-        "You've successfully changed your Citadel's password",
-      );
 
       this.isChangingPassword = false;
       this.$bvModal.hide('change-password-modal');
@@ -750,6 +774,7 @@ export default defineComponent({
       this.currentPassword = '';
       this.newPassword = '';
       this.confirmNewPassword = '';
+      this.totpToken = '';
     },
     confirmUpdate() {
       this.systemStore.confirmUpdate();
