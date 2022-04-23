@@ -306,6 +306,7 @@
                   v-model="authenticatorToken"
                   class="mb-4 neu-input"
                   size="lg"
+                  placeholder="6-digit-code"
                 ></b-input>
                 <b-button
                   v-if="!userStore.totpEnabled"
@@ -705,22 +706,30 @@ export default defineComponent({
         await this.sdkStore.citadel.manager.auth.enableTotp(
           this.authenticatorToken,
         );
+
+        this.toast.success(
+          '2FA enabled',
+          "You've successfully enabled two-factor authentication",
+        );
+
+        this.$bvModal.hide('two-factor-auth-modal');
+
+        // set optimistic
+        this.userStore.totpEnabled = true;
+        // wait for file to be finished writing
+        await delay(500);
+        // update with real status
+        this.userStore.getTotpEnabledStatus();
+
         this.isEnablingTwoFactorAuth = false;
+        this.authenticatorToken = '';
       } catch (error) {
-        if (error) {
-          this.toast.error('Error', JSON.stringify(error));
+        if (error && (error as Error).message) {
+          this.toast.error('Error', (error as Error).message);
         }
         this.isEnablingTwoFactorAuth = false;
         return;
       }
-
-      this.toast.success(
-        '2FA enabled',
-        "You've successfully enabled two-factor authentication",
-      );
-
-      this.userStore.getTotpEnabledStatus();
-      this.$bvModal.hide('two-factor-auth-modal');
     },
     async disableTwoFactorAuth() {
       this.isDisablingTwoFactorAuth = true;
@@ -729,7 +738,23 @@ export default defineComponent({
         await this.sdkStore.citadel.manager.auth.disableTotp(
           this.authenticatorToken,
         );
+
+        this.toast.success(
+          '2FA disabled',
+          "You've successfully disabled two-factor authentication",
+        );
+
+        this.$bvModal.hide('two-factor-auth-modal');
+
+        // set optimistic
+        this.userStore.totpEnabled = false;
+        // wait for file to be finished writing
+        await delay(500);
+        // update with real status
+        this.userStore.getTotpEnabledStatus();
+
         this.isDisablingTwoFactorAuth = false;
+        this.authenticatorToken = '';
       } catch (error) {
         if (error && (error as Error).message) {
           this.toast.error('Error', (error as Error).message);
