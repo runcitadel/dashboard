@@ -626,12 +626,12 @@ export default defineComponent({
       return prettifySeconds(this.systemStore.uptime as number);
     },
     debugContents(): string {
-      if (typeof this.systemStore.debugResult === 'string') {
+      if (typeof this.systemStore.debugStatus === 'string') {
         return 'Error loading data!';
       }
       return this.showDmesg
-        ? this.systemStore.debugResult.dmesg
-        : this.systemStore.debugResult.debug;
+        ? this.systemStore.debugStatus.dmesg
+        : this.systemStore.debugStatus.debug;
     },
     debugFilename(): string {
       const type: string = this.showDmesg ? 'dmesg' : 'debug';
@@ -773,7 +773,7 @@ export default defineComponent({
         while (this.loadingDebug) {
           await delay(2000);
           await this.systemStore.getDebugResult();
-          if (this.systemStore.debugResult.status === 'success') {
+          if (this.systemStore.debugStatus.status === 'success') {
             this.loadingDebug = false;
           }
         }
