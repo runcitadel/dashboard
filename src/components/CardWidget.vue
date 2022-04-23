@@ -84,7 +84,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, type PropType} from 'vue';
+import {defineComponent, PropType} from 'vue';
 import Status from './Utility/Status.vue';
 
 export default defineComponent({

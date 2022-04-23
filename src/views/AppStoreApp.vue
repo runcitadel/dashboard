@@ -331,7 +331,7 @@ import {defineComponent} from 'vue';
 
 import delay from '../helpers/delay';
 
-import useAppsStore, {type app} from '../store/apps';
+import useAppsStore, {app} from '../store/apps';
 import useLightningStore from '../store/lightning';
 
 import CardWidget from '../components/CardWidget.vue';

@@ -33,17 +33,19 @@
   </transition>
 </template>
 
-<script setup lang="ts">
-defineProps({
-  success: {
-    type: Boolean,
-    default: false,
+<script lang="ts">
+export default {
+  props: {
+    success: {
+      type: Boolean,
+      default: false,
+    },
+    danger: {
+      type: Boolean,
+      default: false,
+    },
   },
-  danger: {
-    type: Boolean,
-    default: false,
-  },
-});
+};
 </script>
 
 <style lang="scss" scoped>

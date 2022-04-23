@@ -24,6 +24,7 @@ const useCustomToast = () => {
     warning: createMyToastMethod('warning'),
     error: createMyToastMethod('error'),
   };
+
   return toastInterface;
 };
 

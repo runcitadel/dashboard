@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, type PropType} from 'vue';
+import {defineComponent, PropType} from 'vue';
 
 export default defineComponent({
   props: {
