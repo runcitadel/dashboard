@@ -29,12 +29,12 @@ export interface State {
     status: '' | 'success' | 'failed';
     timestamp: null | number;
   };
-  debugResult: {
+  debugStatus: {
     status: '' | 'requested' | 'processing' | 'success';
     debug: string | null;
     dmesg: string | null;
   };
-  systemResult: {
+  systemStatus: {
     type: '' | 'reboot' | 'shutdown';
     status: '' | 'requested';
   };
@@ -90,10 +90,14 @@ export default defineStore('system', {
       status: '', //success, failed
       timestamp: null,
     },
-    debugResult: {
+    debugStatus: {
       status: '', //success, processing
       debug: '',
       dmesg: '',
+    },
+    systemStatus: {
+      type: '',
+      status: '',
     },
     showUpdateConfirmationModal: false,
     loading: true,
@@ -205,10 +209,10 @@ export default defineStore('system', {
         throw new Error('Get debug request failed');
       }
 
-      this.debugResult = result;
+      this.debugStatus = result;
     },
     async debug() {
-      this.debugResult = await this.sdkStore.citadel.manager.system.debug();
+      this.debugStatus = await this.sdkStore.citadel.manager.system.debug();
     },
     async shutdown() {
       // Reset any cached hasShutdown value from previous shutdown
