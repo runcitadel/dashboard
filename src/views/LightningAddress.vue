@@ -21,18 +21,21 @@
             <input-copy class="my-1" :value="lnAddress"></input-copy>
           </step>
           <step>
-            The following steps are optional, but if this Lightning address is
-            too long for you (and .onion addresses don't work everywhere), you
-            can get a free @ln.runcitadel.space address and tipping page if
-            you're on Twitter.
+            The following steps are optional, but if you want a shorter
+            Lightning address, a tipping page and a LNUrl, you can also set that
+            up.
           </step>
-          <step> First, you need a Twitter account. </step>
-          <step> Add a 🏰 emoji to your Twitter name.</step>
+          <step> First, you need at least one open lightning channel. </step>
           <step>
-            DM <a href="https://twitter.com/runcitadel">@runcitadel</a> on
-            Twitter with your "long" Lightning address and the name you want to
-            have for your new one. The address you'll get will end with
-            @ln.runcitadel.space.
+            Then, you need to set up the
+            <a href="https://getalby.com/">Alby</a> extension and connect it to
+            your node</step
+          >
+          <step>
+            Now, you can visit <a href="https://sats4.me/">sats4me</a> and sign
+            up there. As LnMe onion URL, please enter this:
+
+            <input-copy class="my-1" :value="lnmeAddress" />
           </step>
           <step>
             We'll get back to you with a new Lightning address soon.
@@ -43,41 +46,40 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import StepList from '../components/ConnectWallet/StepList.vue';
 import Step from '../components/ConnectWallet/Step.vue';
 import InputCopy from '../components/Utility/InputCopy.vue';
 import useAppsStore from '../store/apps';
-import {defineComponent} from 'vue';
+import {computed, onMounted} from 'vue';
 
-export default defineComponent({
-  components: {
-    StepList,
-    Step,
-    InputCopy,
-  },
-  setup() {
-    const appsStore = useAppsStore();
-    return {
-      appsStore,
-    };
-  },
-  computed: {
-    lnAddress(): string {
-      try {
-        // Get the app from state.apps.installed where the ID is lnme
-        return (
-          'tips@' +
-            this.appsStore.installed.find((app) => app.id === 'lnme')
-              ?.hiddenService || 'None yet, please install LnMe first.'
-        );
-      } catch {
-        return 'None yet, please install LnMe first.';
-      }
-    },
-  },
-  created() {
-    this.appsStore.getInstalledApps();
-  },
+const appsStore = useAppsStore();
+const lnAddress = computed(() => {
+  try {
+    // Get the app from state.apps.installed where the ID is lnme
+    return (
+      'tips@' +
+        appsStore.installed.find((app) => app.id === 'lnme')?.hiddenService ||
+      'None yet, please install LnMe first.'
+    );
+  } catch {
+    return 'None yet, please install LnMe first.';
+  }
+});
+
+const lnmeAddress = computed(() => {
+  try {
+    // Get the app from state.apps.installed where the ID is lnme
+    return (
+      appsStore.installed.find((app) => app.id === 'lnme')?.hiddenService ||
+      'None yet, please install LnMe first.'
+    );
+  } catch {
+    return 'None yet, please install LnMe first.';
+  }
+});
+
+onMounted(() => {
+  appsStore.getInstalledApps();
 });
 </script>
