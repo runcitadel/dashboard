@@ -15,23 +15,16 @@
         To make it possible for us to spend more time on Citadel, build more
         features and to make it better, we need your support.<br />
         Your support also helps us to continue offering other services to you
-        for free, like Lightning addresses @ln.runcitadel.space and automated
+        for free, like <a href="https://sats4.me">sats4.me</a> and automated
         backups of your Lightning channels.<br />
         <br />
-        If you want to donate to us over Lightning or on-chain, please visit
-        <a href="https://donate.runcitadel.space">donate.runcitadel.space</a>.
+        If you want to support us, please consider sending us some sats
+        <a href="https://c.lnbits.rocks/tipjar/1">here</a>.
       </div>
     </card-widget>
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script lang="ts" setup>
 import CardWidget from '../components/CardWidget.vue';
-
-export default defineComponent({
-  components: {
-    CardWidget,
-  },
-});
 </script>
