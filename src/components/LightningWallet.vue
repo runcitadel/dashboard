@@ -424,7 +424,12 @@
               class="text-muted mt-2 d-block text-end mb-0"
               :style="{opacity: (receive.amount || 0) > 0 ? 1 : 0}"
               >~
-              {{ $filters.satsToUSD(receive.amount?.toString() as string, bitcoinStore) }}</small
+              {{
+                $filters.satsToUSD(
+                  receive.amount?.toString() ?? 0,
+                  bitcoinStore,
+                )
+              }}</small
             >
           </div>
 
