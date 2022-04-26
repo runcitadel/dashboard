@@ -195,10 +195,10 @@ export default defineComponent({
   },*/
   computed: {
     coreVersion(): string {
-      return this.bitcoinStore.version.split('/')[1].split(':')[1];
+      return this.bitcoinStore.version.split('/')[1]?.split(':')[1];
     },
     knotsVersion(): string {
-      return this.bitcoinStore.version.split('/')[2].split(':')[1];
+      return this.bitcoinStore.version.split('/')[2]?.split(':')[1];
     },
   },
   created() {
