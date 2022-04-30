@@ -82,8 +82,10 @@ export default defineComponent({
       if (this.isUpdating) return;
       this.appsStore.updateApps();
       this.isUpdating = true;
+      this.systemStore.getUpdateStatus();
       window.setTimeout(() => {
         this.isUpdating = false;
+        this.systemStore.getUpdateStatus();
       }, 2000);
     },
   },
