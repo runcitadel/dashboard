@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, defineEmits, onMounted} from 'vue';
+import {ref, onMounted} from 'vue';
 
 const isOn = ref(false);
 const emit = defineEmits(['toggleOn', 'toggleOff']);

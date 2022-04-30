@@ -1,17 +1,13 @@
 <template>
   <span class="d-flex">
-    <span ref="number"></span>
+    <span ref="numberSpan"></span>
     {{ suffix }}
   </span>
 </template>
 
 <script lang="ts" setup>
-import {CountUp, CountUpOptions} from 'countup.js';
-import {PropType, ref, watchEffect} from 'vue';
-
-const typeOf = (type: string) => (object: unknown) =>
-  Object.prototype.toString.call(object) === `[object ${type}]`;
-const isFunction = typeOf('Function');
+import {CountUp, type CountUpOptions} from 'countup.js';
+import {PropType, ref, watch} from 'vue';
 
 const props = defineProps({
   delay: {
@@ -48,27 +44,26 @@ const instance = ref<CountUp | null>(null);
 // Used to decide if animate/count on the first mount
 const firstLoad = ref(true);
 const previousValue = ref<{decimalPlaces: number; endVal: number} | null>(null);
-const number = ref<HTMLSpanElement | null>(null);
+const numberSpan = ref<HTMLSpanElement | null>(null);
 
-watchEffect(() => {
+watch([props], () => {
   if (previousValue.value?.decimalPlaces !== props.value.decimalPlaces) {
     destroy();
     startVal.value = 0;
     create();
-    previousValue.value = props.value;
   } else {
     if (previousValue.value.endVal !== props.value.endVal) {
       update(props.value.endVal);
-      previousValue.value = props.value;
     }
   }
+  previousValue.value = props.value;
 });
 
 function create() {
   if (instance.value) {
     return;
   }
-  const dom = number.value as HTMLSpanElement;
+  const dom = numberSpan.value as HTMLSpanElement;
   const options = props.options || {};
 
   if (firstLoad.value) {
@@ -82,12 +77,12 @@ function create() {
 
   options.startVal = startVal.value;
 
-  const _instance = new CountUp(dom, props.value.endVal, options);
-  if (_instance.error) {
+  instance.value = new CountUp(dom, props.value.endVal, options);
+
+  if (instance.value.error) {
     // error
     return;
   }
-  instance.value = _instance;
   if (props.delay < 0) {
     emit('ready', instance, CountUp);
     return;
@@ -103,7 +98,7 @@ function destroy() {
 }
 
 function update(newEndVal: number) {
-  if (instance.value && isFunction(instance.value.update)) {
+  if (instance.value) {
     return instance.value.update(newEndVal);
   }
 }
