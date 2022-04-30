@@ -112,6 +112,10 @@ export default defineComponent({
             return 'https://ln-terminal.runcitadel.space';
           case 'btc-rpc-explorer-public-fast':
             return 'https://rpc-explorer.runcitadel.space';
+          case 'supabase':
+            return 'https://supabase-ln.runcitadel.space';
+          case 'lightning-addresses':
+            return 'https://sats4.me';
         }
         return `https://${this.id}.runcitadel.space`;
       }
