@@ -2,145 +2,111 @@
   <span class="d-flex">
     <span ref="number"></span>
     {{ suffix }}
-    <!-- <small>{{ endVal }}</small> -->
   </span>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import {CountUp, CountUpOptions} from 'countup.js';
-import {defineComponent, PropType} from 'vue';
+import {PropType, ref, watchEffect} from 'vue';
 
 const typeOf = (type: string) => (object: unknown) =>
   Object.prototype.toString.call(object) === `[object ${type}]`;
 const isFunction = typeOf('Function');
 
-export default defineComponent({
-  components: {},
-  props: {
-    delay: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
-    value: {
-      type: Object,
-      required: true,
-    },
-    options: {
-      type: Object as PropType<CountUpOptions>,
-      required: false,
-      default: () => {
-        return {};
-      },
-    },
-    suffix: {
-      type: String,
-      required: false,
-      default: '',
-    },
-    countOnLoad: {
-      type: Boolean,
-      default: false,
+const props = defineProps({
+  delay: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
+  value: {
+    type: Object as PropType<{decimalPlaces: number; endVal: number}>,
+    required: true,
+  },
+  options: {
+    type: Object as PropType<CountUpOptions>,
+    required: false,
+    default: () => {
+      return {};
     },
   },
-  emits: ['ready'],
-  data() {
-    return {
-      startVal: 0,
-      instance: null,
-      firstLoad: true, //used to decide if animate/count on the first mount
-    } as {
-      startVal: number;
-      instance: null | CountUp;
-      firstLoad: boolean;
-    };
+  suffix: {
+    type: String,
+    required: false,
+    default: '',
   },
-  watch: {
-    value: {
-      handler(newVal, oldVal) {
-        if (newVal.decimalPlaces !== oldVal.decimalPlaces) {
-          this.destroy();
-          this.startVal = 0;
-          this.create();
-        } else {
-          if (newVal.endVal !== oldVal.endVal) {
-            this.update(newVal.endVal);
-          }
-        }
-      },
-      deep: true,
-    },
-  },
-  mounted() {
-    this.create();
-  },
-  beforeUnmount() {
-    this.destroy();
-  },
-  methods: {
-    create() {
-      if (this.instance) {
-        return;
-      }
-      const dom = this.$refs.number as HTMLElement;
-      const options = this.options || {};
-
-      if (this.firstLoad) {
-        if (this.countOnLoad) {
-          this.startVal = 0;
-        } else {
-          this.startVal = this.value.endVal;
-        }
-      }
-      options.decimalPlaces = this.value.decimalPlaces || 0;
-
-      options.startVal = this.startVal;
-
-      const instance = new CountUp(dom, this.value.endVal, options);
-      if (instance.error) {
-        // error
-        return;
-      }
-      this.instance = instance;
-      if (this.delay < 0) {
-        this.$emit('ready', instance, CountUp);
-        return;
-      }
-      setTimeout(() => {
-        instance.start(() => this.$emit('ready', instance, CountUp));
-        this.firstLoad = false;
-      }, this.delay);
-    },
-    destroy() {
-      this.instance = null;
-    },
-    printValue(value: number) {
-      if (this.instance && isFunction(this.instance.printValue)) {
-        return this.instance.printValue(value);
-      }
-    },
-    start(callback?: (...args: unknown[]) => unknown) {
-      if (this.instance && isFunction(this.instance.start)) {
-        return this.instance.start(callback);
-      }
-    },
-    pauseResume() {
-      if (this.instance && isFunction(this.instance.pauseResume)) {
-        return this.instance.pauseResume();
-      }
-    },
-    reset() {
-      if (this.instance && isFunction(this.instance.reset)) {
-        return this.instance.reset();
-      }
-    },
-    update(newEndVal: number) {
-      if (this.instance && isFunction(this.instance.update)) {
-        return this.instance.update(newEndVal);
-      }
-    },
+  countOnLoad: {
+    type: Boolean,
+    default: false,
   },
 });
+
+const emit = defineEmits(['ready']);
+
+const startVal = ref(0);
+const instance = ref<CountUp | null>(null);
+// Used to decide if animate/count on the first mount
+const firstLoad = ref(true);
+const previousValue = ref<{decimalPlaces: number; endVal: number} | null>(null);
+const number = ref<HTMLSpanElement | null>(null);
+
+watchEffect(() => {
+  if (previousValue.value?.decimalPlaces !== props.value.decimalPlaces) {
+    destroy();
+    startVal.value = 0;
+    create();
+    previousValue.value = props.value;
+  } else {
+    if (previousValue.value.endVal !== props.value.endVal) {
+      update(props.value.endVal);
+      previousValue.value = props.value;
+    }
+  }
+});
+
+function create() {
+  if (instance.value) {
+    return;
+  }
+  const dom = number.value as HTMLSpanElement;
+  const options = props.options || {};
+
+  if (firstLoad.value) {
+    if (props.countOnLoad) {
+      startVal.value = 0;
+    } else {
+      startVal.value = props.value.endVal;
+    }
+  }
+  options.decimalPlaces = props.value.decimalPlaces || 0;
+
+  options.startVal = startVal.value;
+
+  const _instance = new CountUp(dom, props.value.endVal, options);
+  if (_instance.error) {
+    // error
+    return;
+  }
+  instance.value = _instance;
+  if (props.delay < 0) {
+    emit('ready', instance, CountUp);
+    return;
+  }
+  setTimeout(() => {
+    instance.value?.start(() => emit('ready', instance, CountUp));
+    firstLoad.value = false;
+  }, props.delay);
+}
+
+function destroy() {
+  instance.value = null;
+}
+
+function update(newEndVal: number) {
+  if (instance.value && isFunction(instance.value.update)) {
+    return instance.value.update(newEndVal);
+  }
+}
 </script>
 
 <style lang="scss" scoped>

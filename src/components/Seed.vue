@@ -101,7 +101,7 @@ export default defineComponent({
     },
   },
   methods: {
-    setTotpToken(totpToken) {
+    setTotpToken(totpToken: string) {
       this.totpToken = totpToken;
     },
     showSeed() {

@@ -16,12 +16,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
-
-export default defineComponent({
-  props: {progress: {type: Number, default: 0}},
-});
+<script lang="ts" setup>
+defineProps({progress: {type: Number, default: 0}});
 </script>
 
 <style lang="scss">

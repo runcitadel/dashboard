@@ -25,15 +25,11 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
-
-export default defineComponent({
-  props: {
-    hasShutdown: Boolean,
-    shuttingDown: Boolean,
-    rebooting: Boolean,
-  },
+<script lang="ts" setup>
+defineProps({
+  hasShutdown: Boolean,
+  shuttingDown: Boolean,
+  rebooting: Boolean,
 });
 </script>
 

@@ -6,7 +6,8 @@
 </template>
 
 <script lang="ts">
-export default {
+import {defineComponent} from 'vue';
+export default defineComponent({
   props: {
     title: {
       required: true,
@@ -18,7 +19,7 @@ export default {
       default: '',
     },
   },
-};
+});
 </script>
 
 <style scoped lang="scss">
