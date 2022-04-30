@@ -56,6 +56,7 @@ import {defineComponent} from 'vue';
 
 import InstalledApp from '../components/InstalledApp.vue';
 import useAppsStore from '../store/apps';
+import useSystemStore from '../store/system';
 
 export default defineComponent({
   components: {
@@ -63,7 +64,8 @@ export default defineComponent({
   },
   setup() {
     const appsStore = useAppsStore();
-    return {appsStore};
+    const systemStore = useSystemStore();
+    return {appsStore, systemStore};
   },
   data() {
     return {
