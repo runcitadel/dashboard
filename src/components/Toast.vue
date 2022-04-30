@@ -5,19 +5,16 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
-export default defineComponent({
-  props: {
-    title: {
-      required: true,
-      type: String,
-    },
-    body: {
-      required: false,
-      type: String,
-      default: '',
-    },
+<script lang="ts" setup>
+defineProps({
+  title: {
+    required: true,
+    type: String,
+  },
+  body: {
+    required: false,
+    type: String,
+    default: '',
   },
 });
 </script>

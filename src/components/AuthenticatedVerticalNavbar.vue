@@ -7,17 +7,17 @@
           <span
             class="icon-container"
             style="cursor: pointer"
-            @click="toggleBalance"
+            @click="uiStore.toggleBalance"
           >
             <HiddenIcon
-              v-if="state.showBalance"
+              v-if="uiStore.showBalance"
               style="width: 24px; height: 24px"
             />
             <VisibleIcon v-else style="width: 24px; height: 24px" />
           </span>
         </p>
 
-        <span v-if="state.showBalance">
+        <span v-if="uiStore.showBalance">
           <div v-if="balanceLoaded">
             <h3 class="mb-1">
               <CountUp
@@ -39,7 +39,10 @@
             class="loading-placeholder loading-placeholder-lg w-75"
           ></span>
         </span>
-        <h3 v-else>***,***</h3>
+        <div v-else>
+          <h3>***,***</h3>
+          <small class="text-muted">~ $***</small>
+        </div>
         <sats-btc-switch class="mt-3" size="md"></sats-btc-switch>
       </div>
       <!-- <div class="py-2"></div> -->
@@ -99,7 +102,7 @@
           v-if="isMobileMenu"
           class="my-1"
           active-class="active"
-          @click="logout"
+          @click="userStore.logout"
         >
           <svg
             width="24"
@@ -138,7 +141,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import {satsToBtc} from '../helpers/units';
 import CountUp from './Utility/CountUp.vue';
 import SatsBtcSwitch from './Utility/SatsBtcSwitch.vue';
@@ -147,7 +150,7 @@ import useUserStore from '../store/user';
 import useBitcoinStore from '../store/bitcoin';
 import useLightningStore from '../store/lightning';
 import useAppsStore from '../store/apps';
-import {defineComponent} from 'vue';
+import useUiStore from '../store/ui';
 
 import {
   BitcoinIcon,
@@ -163,68 +166,32 @@ import {
   ContactsIcon,
   // @ts-expect-error No type definitions for this yet
 } from '@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js';
+import {computed} from 'vue';
 
-export default defineComponent({
-  components: {
-    CountUp,
-    SatsBtcSwitch,
-    BitcoinIcon,
-    GearIcon,
-    LightningIcon,
-    ShareIcon,
-    GridIcon,
-    HomeIcon,
-    CartIcon,
-    SharedWalletIcon,
-    VisibleIcon,
-    HiddenIcon,
-    ContactsIcon,
-  },
-  props: {
-    isMobileMenu: Boolean,
-  },
-  setup() {
-    const systemStore = useSystemStore();
-    const userStore = useUserStore();
-    const bitcoinStore = useBitcoinStore();
-    const lightningStore = useLightningStore();
-    const appsStore = useAppsStore();
-    return {appsStore, userStore, systemStore, bitcoinStore, lightningStore};
-  },
-  data() {
-    return {
-      state: {
-        showBalance: true,
-      },
-    };
-  },
-  computed: {
-    btcBalance() {
-      return this.bitcoinStore.balance.total;
-    },
-    lightningBalance() {
-      return this.lightningStore.balance.total;
-    },
-    walletBalance() {
-      return this.systemStore.unit === 'sats'
-        ? this.btcBalance + this.lightningBalance
-        : satsToBtc(this.btcBalance + this.lightningBalance);
-    },
-    balanceLoaded() {
-      return this.btcBalance >= 0 && this.lightningBalance >= 0;
-    },
-  },
-  created() {
-    this.appsStore.getInstalledApps();
-    this.appsStore.getAppStore();
-  },
-  methods: {
-    logout() {
-      this.userStore.logout();
-    },
-    toggleBalance() {
-      return (this.state.showBalance = !this.state.showBalance);
-    },
-  },
+defineProps({
+  isMobileMenu: Boolean,
+});
+const systemStore = useSystemStore();
+const userStore = useUserStore();
+const bitcoinStore = useBitcoinStore();
+const lightningStore = useLightningStore();
+const appsStore = useAppsStore();
+const uiStore = useUiStore();
+appsStore.getInstalledApps();
+appsStore.getAppStore();
+
+const btcBalance = computed(() => {
+  return bitcoinStore.balance.total;
+});
+const lightningBalance = computed(() => {
+  return lightningStore.balance.total;
+});
+const walletBalance = computed(() => {
+  return systemStore.unit === 'sats'
+    ? btcBalance.value + lightningBalance.value
+    : satsToBtc(btcBalance.value + lightningBalance.value);
+});
+const balanceLoaded = computed(() => {
+  return btcBalance.value >= 0 && lightningBalance.value >= 0;
 });
 </script>

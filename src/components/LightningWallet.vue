@@ -17,7 +17,7 @@
   >
     <template #title>
       <div
-        v-if="walletBalance !== -1"
+        v-if="walletBalance !== -1 && uiStore.showBalance"
         v-b-tooltip.hover.right
         :title="
           $filters
@@ -31,6 +31,9 @@
             decimalPlaces: systemStore.unit === 'sats' ? 0 : 5,
           }"
         />
+      </div>
+      <div v-else-if="!uiStore.showBalance">
+        <span class="d-flex"> ***,*** </span>
       </div>
       <span
         v-else
@@ -847,6 +850,7 @@ import useBitcoinStore from '../store/bitcoin';
 import useLightningStore, {CustomTransactionType} from '../store/lightning';
 import useAppsStore from '../store/apps';
 import useSdkStore from '../store/sdk';
+import useUiStore from '../store/ui';
 
 import {
   formatDistance,
@@ -931,6 +935,7 @@ export default defineComponent({
     const lightningStore = useLightningStore();
     const appsStore = useAppsStore();
     const sdkStore = useSdkStore();
+    const uiStore = useUiStore();
     return {
       sdkStore,
       appsStore,
@@ -938,6 +943,7 @@ export default defineComponent({
       systemStore,
       bitcoinStore,
       lightningStore,
+      uiStore,
     };
   },
   data(): data {

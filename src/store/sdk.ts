@@ -8,12 +8,12 @@ export interface State {
 export default defineStore('sdk', {
   state: (): State => {
     const state: State = {
-      citadel: new Citadel(
+      /*citadel: new Citadel(
         process.env.NODE_ENV === 'development'
           ? 'http://citadel-dev.local'
           : window.location.origin,
-      ),
-      //citadel: new Citadel("https://node.runcitadel.space"),
+      ),*/
+      citadel: new Citadel('https://node.runcitadel.space'),
     };
     state.citadel.jwt = window.localStorage.getItem('jwt') || '';
     return state;

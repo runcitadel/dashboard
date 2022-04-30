@@ -125,91 +125,72 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
+import {onBeforeUnmount, ref, watch} from 'vue';
+
 import useBitcoinStore from '../store/bitcoin';
 import {
   formatDistance,
   format,
   getDateFormatWithSeconds,
 } from '../helpers/date';
-import {defineComponent} from 'vue';
 
-export default defineComponent({
-  components: {},
-  props: {
-    numBlocks: {
-      type: Number,
-      default: 3,
-    },
-  },
-  setup() {
-    const bitcoinStore = useBitcoinStore();
-    return {
-      bitcoinStore,
-    };
-  },
-  data() {
-    return {
-      polling: null,
-      pollInProgress: false,
-    } as {
-      polling: null | number;
-      pollInProgress: boolean;
-    };
-  },
-  watch: {
-    syncPercent(newPercent) {
-      // reset polling time depending upon sync %
-      this.poller(newPercent);
-    },
-  },
-  created() {
-    //immediately fetch blocks on first load
-    this.fetchBlocks();
-
-    //then start polling
-    this.poller(this.bitcoinStore.percent);
-  },
-  beforeUnmount() {
-    window.clearInterval(this.polling as number);
-  },
-  methods: {
-    async fetchBlocks() {
-      //prevent multiple polls if previous poll already in progress
-      if (this.pollInProgress) {
-        return;
-      }
-      this.pollInProgress = true;
-      //TODO: remove this timeout added so bitcoin can get fetch status first
-      setTimeout(async () => {
-        await this.bitcoinStore.getBlocks();
-        this.pollInProgress = false;
-      }, 1000);
-    },
-    poller(syncPercent: string | number) {
-      window.clearInterval(this.polling as number);
-      //if syncing, fetch blocks every second
-      if (Number(syncPercent) !== 100) {
-        this.polling = window.setInterval(this.fetchBlocks, 1000);
-      } else {
-        //else, slow down and fetch blocks every minute
-        this.polling = window.setInterval(this.fetchBlocks, 60 * 1000);
-      }
-    },
-    blockTime(timestamp: number) {
-      const minedAt = timestamp * 1000;
-      //sometimes the block can have a timestamp with a few seconds in the future compared to browser's time
-      if (new Date(minedAt) < new Date()) {
-        return formatDistance(new Date(minedAt), new Date());
-      } else {
-        return 'just now';
-      }
-    },
-    blockReadableTime(timestamp: number) {
-      return format(new Date(timestamp * 1000), getDateFormatWithSeconds());
-    },
+defineProps({
+  numBlocks: {
+    type: Number,
+    default: 3,
   },
 });
+const bitcoinStore = useBitcoinStore();
+const pollInProgress = ref(false);
+const polling = ref<null | number>(null);
+
+//immediately fetch blocks on first load
+fetchBlocks();
+
+//then start polling
+poller(bitcoinStore.percent);
+
+watch([bitcoinStore], () => {
+  poller(bitcoinStore.percent);
+});
+onBeforeUnmount(() => {
+  window.clearInterval(polling.value as number);
+});
+async function fetchBlocks() {
+  //prevent multiple polls if previous poll already in progress
+  if (pollInProgress.value) {
+    return;
+  }
+  pollInProgress.value = true;
+  //TODO: remove this timeout added so bitcoin can get fetch status first
+  setTimeout(async () => {
+    await bitcoinStore.getBlocks();
+    pollInProgress.value = false;
+  }, 1000);
+}
+function poller(syncPercent: number) {
+  window.clearInterval(polling.value as number);
+  //if syncing, fetch blocks every second
+  if (Number(syncPercent) !== 100) {
+    polling.value = window.setInterval(fetchBlocks, 1000);
+  } else {
+    //else, slow down and fetch blocks every minute
+    polling.value = window.setInterval(fetchBlocks, 60 * 1000);
+  }
+}
+function blockTime(timestamp: number) {
+  const minedAt = timestamp * 1000;
+  //sometimes the block can have a timestamp with a few seconds in the future compared to browser's time
+  if (new Date(minedAt) < new Date()) {
+    return formatDistance(new Date(minedAt), new Date());
+  } else {
+    return 'just now';
+  }
+}
+function blockReadableTime(timestamp: number) {
+  return format(new Date(timestamp * 1000), getDateFormatWithSeconds());
+}
 </script>
 
 <style lang="scss" scoped>

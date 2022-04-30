@@ -10,7 +10,7 @@
           "
         >
           {{ $filters.localize($filters.unit(channel.localBalance, systemStore) as number) }}
-          {{ $filters.formatUnit(unit) }}
+          {{ $filters.formatUnit(systemStore.unit) }}
         </h4>
         <h4
           v-b-tooltip.hover.left
@@ -20,7 +20,7 @@
           "
         >
           {{ $filters.localize($filters.unit(channel.remoteBalance, systemStore) as number) }}
-          {{ $filters.formatUnit(unit) }}
+          {{ $filters.formatUnit(systemStore.unit) }}
         </h4>
       </div>
       <bar
@@ -82,7 +82,7 @@
             class="text-capitalize font-weight-bold"
           >
             {{ $filters.localize($filters.unit(channel.localBalance, systemStore) as number) }}
-            {{ $filters.formatUnit(unit) }}
+            {{ $filters.formatUnit(systemStore.unit) }}
           </span>
         </div>
 
@@ -96,7 +96,7 @@
             class="text-capitalize font-weight-bold"
           >
             {{ $filters.localize($filters.unit(channel.remoteBalance, systemStore) as number) }}
-            {{ $filters.formatUnit(unit) }}
+            {{ $filters.formatUnit(systemStore.unit) }}
           </span>
         </div>
 
@@ -112,7 +112,7 @@
             {{
               $filters.localize($filters.unit(channel.capacity, systemStore) as number)
             }}
-            {{ $filters.formatUnit(unit) }}
+            {{ $filters.formatUnit(systemStore.unit) }}
           </span>
         </div>
 
@@ -133,7 +133,7 @@
           <span class="text-muted">Commit Fee</span>
           <span class="text-capitalize font-weight-bold">
             {{ $filters.localize($filters.unit(channel.commitFee, systemStore) as number) }}
-            {{ $filters.formatUnit(unit) }}
+            {{ $filters.formatUnit(systemStore.unit) }}
           </span>
         </div>
 
@@ -181,8 +181,9 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script lang="ts" setup>
+import {ref, computed} from 'vue';
+
 import useBitcoinStore from '../../store/bitcoin';
 import useSdkStore from '../../store/sdk';
 import useSystemStore from '../../store/system';
@@ -190,67 +191,49 @@ import useToast from '../../utils/toast';
 
 import Bar from '../Channels/Bar.vue';
 
-export default defineComponent({
-  components: {
-    Bar,
-  },
-  props: {
-    channel: {
-      type: Object,
-      required: true,
-    },
-  },
-  emits: ['channelclose'],
-  setup() {
-    const bitcoinStore = useBitcoinStore();
-    const sdkStore = useSdkStore();
-    const systemStore = useSystemStore();
-    const toast = useToast();
-    return {bitcoinStore, sdkStore, systemStore, toast};
-  },
-  data() {
-    return {
-      isReviewingChannelClose: false,
-      isClosing: false,
-    };
-  },
-  computed: {
-    unit() {
-      return this.systemStore.unit;
-    },
-    canCloseChannel() {
-      if (
-        this.channel.status === 'Opening' ||
-        this.channel.status === 'Closing'
-      ) {
-        return false;
-      }
-      return true;
-    },
-  },
-  methods: {
-    reviewChannelClose() {
-      this.isReviewingChannelClose = true;
-    },
-    async confirmChannelClose() {
-      this.isClosing = true;
-
-      try {
-        await this.sdkStore.citadel.middleware.lightning.channel.closeChannel(
-          this.channel.channelPoint,
-          !this.channel.active, // Avoids force closing if channel is active
-        );
-        this.$emit('channelclose');
-        setTimeout(() => {
-          this.toast.success('Lightning Network', 'Channel closed');
-        }, 200);
-      } catch (err: unknown) {
-        this.toast.error('Error', JSON.stringify(err));
-      }
-      this.isClosing = false;
-    },
+const props = defineProps({
+  channel: {
+    type: Object,
+    required: true,
   },
 });
+const emit = defineEmits(['channelclose']);
+const bitcoinStore = useBitcoinStore();
+const sdkStore = useSdkStore();
+const systemStore = useSystemStore();
+const toast = useToast();
+const isReviewingChannelClose = ref(false);
+const isClosing = ref(false);
+
+const canCloseChannel = computed(() => {
+  if (
+    props.channel.status === 'Opening' ||
+    props.channel.status === 'Closing'
+  ) {
+    return false;
+  }
+  return true;
+});
+function reviewChannelClose() {
+  isReviewingChannelClose.value = true;
+}
+async function confirmChannelClose() {
+  isClosing.value = true;
+
+  try {
+    await sdkStore.citadel.middleware.lightning.channel.closeChannel(
+      props.channel.channelPoint,
+      !props.channel.active, // Avoids force closing if channel is active
+    );
+    emit('channelclose');
+    setTimeout(() => {
+      toast.success('Lightning Network', 'Channel closed');
+    }, 200);
+  } catch (err: unknown) {
+    toast.error('Error', JSON.stringify(err));
+  }
+  isClosing.value = false;
+}
 </script>
 
 <style lang="scss" scoped>

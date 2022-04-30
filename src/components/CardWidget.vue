@@ -83,55 +83,45 @@
   </b-card>
 </template>
 
-<script lang="ts">
-import {defineComponent, PropType} from 'vue';
-import Status from './Utility/Status.vue';
+<script lang="ts" setup>
+import {PropType} from 'vue';
+import status from './Utility/Status.vue';
 
-export default defineComponent({
-  components: {
-    Status,
+defineProps({
+  header: {
+    type: String,
+    default: '',
   },
-  props: {
-    header: {
-      type: String,
-      default: '',
-    },
-    status: {
-      type: Object as PropType<
-        | {
-            text: string;
-            variant: 'success' | 'primary' | 'muted' | 'danger' | 'warning';
-            blink: boolean;
-          }
-        | Record<string, never>
-      >, // {text, variant, blink}
-      required: false,
-      default: () => {
-        return undefined;
-      },
-    },
-    title: {
-      type: String,
-      default: '',
-    },
-    subTitle: {
-      type: String,
-      default: '',
-    },
-    icon: {
-      type: String,
-      default: '',
-    },
-    loading: Boolean,
-  },
-  data() {
-    return {};
-  },
-  computed: {},
-  methods: {
-    src: (icon: string) => {
-      return new URL(`../assets/${icon}`, import.meta.url).href;
+  status: {
+    type: Object as PropType<
+      | {
+          text: string;
+          variant: 'success' | 'primary' | 'muted' | 'danger' | 'warning';
+          blink: boolean;
+        }
+      | Record<string, never>
+    >, // {text, variant, blink}
+    required: false,
+    default: () => {
+      return undefined;
     },
   },
+  title: {
+    type: String,
+    default: '',
+  },
+  subTitle: {
+    type: String,
+    default: '',
+  },
+  icon: {
+    type: String,
+    default: '',
+  },
+  loading: Boolean,
 });
+
+function src(icon: string) {
+  return new URL(`../assets/${icon}`, import.meta.url).href;
+}
 </script>

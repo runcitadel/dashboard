@@ -60,17 +60,22 @@ const props = defineProps({
   },
 });
 
-const copyInputField = ref(null);
+const copyInputField = ref<HTMLInputElement | null>(null);
 const isCopied = ref(false);
 
-function copyText() {
+async function copyText() {
   //copy generated invoice's text to clipboard
-  const copyText = copyInputField.value as unknown as HTMLInputElement;
+  const copyText = copyInputField.value as HTMLInputElement;
   // There is no need to select the text with the clipboard API, but we'll leave it
   // As visual feedback
   copyText.select();
   copyText.setSelectionRange(0, 99999); /* For mobile devices */
-  navigator.clipboard.writeText(props.value);
+  try {
+    await navigator.clipboard.writeText(props.value);
+  } catch {
+    document.execCommand('copy');
+  }
+
   window.setTimeout(() => {
     copyText.blur();
     window.getSelection()?.removeAllRanges();

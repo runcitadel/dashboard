@@ -17,7 +17,7 @@
   >
     <template #title>
       <div
-        v-if="bitcoinStore.balance.total !== -1"
+        v-if="bitcoinStore.balance.total !== -1 && uiStore.showBalance"
         v-b-tooltip.hover.right
         :title="
           $filters
@@ -31,6 +31,9 @@
             decimalPlaces: systemStore.unit === 'sats' ? 0 : 5,
           }"
         />
+      </div>
+      <div v-else-if="!uiStore.showBalance">
+        <span class="d-flex"> ***,*** </span>
       </div>
       <span
         v-else
@@ -717,6 +720,7 @@ import useSystemStore from '../store/system';
 import useUserStore from '../store/user';
 import useBitcoinStore from '../store/bitcoin';
 import useAppsStore from '../store/apps';
+import useUiStore from '../store/ui';
 import useSdkStore from '../store/sdk';
 
 export default defineComponent({
@@ -735,12 +739,14 @@ export default defineComponent({
     const bitcoinStore = useBitcoinStore();
     const appsStore = useAppsStore();
     const sdkStore = useSdkStore();
+    const uiStore = useUiStore();
     return {
       appsStore,
       userStore,
       systemStore,
       bitcoinStore,
       sdkStore,
+      uiStore,
     };
   },
   data() {

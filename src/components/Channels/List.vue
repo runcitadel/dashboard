@@ -35,29 +35,12 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
-
+<script lang="ts" setup>
 import useLightningStore from '../../store/lightning';
 import Channel from './Channel.vue';
 
-export default defineComponent({
-  components: {
-    Channel,
-  },
-  props: {},
-  emits: ['selectchannel'],
-  setup() {
-    const lightningStore = useLightningStore();
-    return {lightningStore};
-  },
-  data() {
-    return {
-      state: {},
-    };
-  },
-  methods: {},
-});
+defineEmits(['selectchannel']);
+const lightningStore = useLightningStore();
 </script>
 
 <style lang="scss" scoped>

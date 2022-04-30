@@ -71,7 +71,7 @@
             >
               <template #title>
                 <div
-                  v-if="btcBalance !== -1"
+                  v-if="btcBalance !== -1 && uiStore.showBalance"
                   v-b-tooltip.hover.right
                   :title="
                     $filters
@@ -85,6 +85,9 @@
                       decimalPlaces: systemStore.unit === 'sats' ? 0 : 5,
                     }"
                   />
+                </div>
+                <div v-else-if="!uiStore.showBalance">
+                  <span class="d-flex"> ***,*** </span>
                 </div>
 
                 <span
@@ -114,6 +117,7 @@ import useSystemStore from '../store/system';
 import useUserStore from '../store/user';
 import useBitcoinStore from '../store/bitcoin';
 import useLightningStore from '../store/lightning';
+import useUiStore from '../store/ui';
 
 import {defineComponent} from 'vue';
 import {satsToBtc} from '../helpers/units';
@@ -137,11 +141,14 @@ export default defineComponent({
     const userStore = useUserStore();
     const bitcoinStore = useBitcoinStore();
     const lightningStore = useLightningStore();
+    const uiStore = useUiStore();
+
     return {
       userStore,
       systemStore,
       bitcoinStore,
       lightningStore,
+      uiStore,
     };
   },
   data() {

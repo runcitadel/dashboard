@@ -45,7 +45,7 @@
                   $filters.unit(channel.localBalance, systemStore) as number
                 )
               }}
-              {{ $filters.formatUnit(unit) }}</span
+              {{ $filters.formatUnit(systemStore.unit) }}</span
             >
             <span
               v-b-tooltip.hover.left
@@ -60,7 +60,7 @@
                   $filters.unit(channel.remoteBalance, systemStore) as number
                 )
               }}
-              {{ $filters.formatUnit(unit) }}</span
+              {{ $filters.formatUnit(systemStore.unit) }}</span
             >
           </div>
           <bar
@@ -80,49 +80,35 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script lang="ts" setup>
+import {computed} from 'vue';
 
-import Status from '../Utility/Status.vue';
+import status from '../Utility/Status.vue';
 import Bar from './Bar.vue';
 import useSystemStore from '../../store/system';
 import useBitcoinStore from '../../store/bitcoin';
 
-export default defineComponent({
-  components: {
-    Status,
-    Bar,
+const props = defineProps({
+  channel: {
+    type: Object,
+    required: true,
   },
-  props: {
-    channel: {
-      type: Object,
-      required: true,
-    },
-  },
-  setup() {
-    const systemStore = useSystemStore();
-    const bitcoinStore = useBitcoinStore();
-    return {systemStore, bitcoinStore};
-  },
-  computed: {
-    unit() {
-      return this.systemStore.unit;
-    },
-    statusVariant() {
-      switch (this.channel.status) {
-        case 'Online':
-          return 'success';
-        case 'Opening':
-          return 'warning';
-        case 'Closing':
-        case 'unknown':
-          return 'danger';
-        case 'Offline':
-        default:
-          return 'default';
-      }
-    },
-  },
+});
+const bitcoinStore = useBitcoinStore();
+const systemStore = useSystemStore();
+const statusVariant = computed(() => {
+  switch (props.channel.status) {
+    case 'Online':
+      return 'success';
+    case 'Opening':
+      return 'warning';
+    case 'Closing':
+    case 'unknown':
+      return 'danger';
+    case 'Offline':
+    default:
+      return 'default';
+  }
 });
 </script>
 

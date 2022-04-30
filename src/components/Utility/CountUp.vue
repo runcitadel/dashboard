@@ -7,7 +7,7 @@
 
 <script lang="ts" setup>
 import {CountUp, type CountUpOptions} from 'countup.js';
-import {PropType, ref, watch} from 'vue';
+import {PropType, ref, watch, onMounted} from 'vue';
 
 const props = defineProps({
   delay: {
@@ -57,6 +57,12 @@ watch([props], () => {
     }
   }
   previousValue.value = props.value;
+});
+
+onMounted(() => {
+  instance.value = null;
+  firstLoad.value = true;
+  create();
 });
 
 function create() {
