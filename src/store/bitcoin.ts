@@ -349,7 +349,7 @@ export default defineStore('bitcoin', {
     }: {
       address: string;
       amt: number;
-      sweep: boolean;
+      sweep?: boolean;
     }) {
       const fees =
         await this.sdkStore.citadel.middleware.lightning.transaction.estimateFeeAll(

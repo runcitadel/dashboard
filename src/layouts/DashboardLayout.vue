@@ -251,11 +251,12 @@ import useAppsStore from '../store/apps';
 import {readableSize} from '../helpers/size';
 import useToast from '../utils/toast';
 import AuthenticatedVerticalNavbar from '../components/AuthenticatedVerticalNavbar.vue';
-// @ts-expect-error No type definitions for this yet
+
 import {
   BellIcon,
   SunIcon,
   MoonIcon,
+  // @ts-expect-error No type definitions for this yet
 } from '@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js';
 import {BIconExclamationCircle} from 'bootstrap-vue/src/index.js';
 import {defineComponent} from 'vue';
