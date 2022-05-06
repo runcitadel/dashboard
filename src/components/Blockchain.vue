@@ -353,7 +353,7 @@ html[data-theme='dark'] {
       left: $cube-size * 0.1;
       width: $cube-size * 0.8;
       height: $cube-size * 0.8;
-      background: #5351fb;
+      background: #6891aa;
       border-radius: $cube-size * 0.2;
     }
     &.top {
@@ -412,7 +412,7 @@ html[data-theme='dark'] {
   .blockchain-block-icon {
     .blockchain-block-icon-bg {
       transform: scale(0);
-      background: #5351fb;
+      background: #6891aa;
     }
   }
 }

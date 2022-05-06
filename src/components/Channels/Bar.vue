@@ -27,11 +27,11 @@ const style = computed(() => {
 
   let background;
   if (leftPercent === 100) {
-    background = `#5351FB`;
+    background = `#6891aa`;
   } else if (leftPercent === 0) {
     background = `#00CD98`;
   } else {
-    background = `linear-gradient(90deg, #5351FB 0%, #5351FB ${
+    background = `linear-gradient(90deg, #6891aa 0%, #6891aa ${
       leftPercent - 7
     }%, #00CD98 ${leftPercent + 7}%, #00CD98 100%)`;
   }
