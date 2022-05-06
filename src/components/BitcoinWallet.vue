@@ -27,7 +27,7 @@
       >
         <CountUp
           :value="{
-            endVal: bitcoinStore.balance.total,
+            endVal: walletBalance,
             decimalPlaces: systemStore.unit === 'sats' ? 0 : 5,
           }"
         />
@@ -769,6 +769,11 @@ export default defineComponent({
     } as data;
   },
   computed: {
+    walletBalance(): number {
+      return this.systemStore.unit === 'sats'
+        ? this.bitcoinStore.balance.total
+        : satsToBtc(this.bitcoinStore.balance.total);
+    },
     projectedBalanceInSats(): number {
       if (this.withdraw.sweep) {
         return 0;
