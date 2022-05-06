@@ -842,16 +842,19 @@ html[data-theme="dark"] {
   .nav-item {
     .nav-link {
       color: #141821;
+      display: flex;
+      align-items: center;
       opacity: 0.5;
       transition: opacity 0.2s ease;
+
       svg {
+        margin-right: 0.4rem;
+        width: 24px;
+
         path,
         rect {
           fill: #141821;
         }
-      }
-      svg {
-        width: 24px;
       }
       &:hover,
       &:active,
