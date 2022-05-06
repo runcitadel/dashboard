@@ -10,6 +10,7 @@
     "tsc:check": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint --fix src/**/*.{ts,vue}",
     "lint:check": "eslint src/**/*.{ts,vue}",
+    "format": "prettier --write '**/*.{ts,vue,json,scss,css,md}' '!package.json|yarn*|node_modules|build|coverage'",
     "postinstall": "husky install"
   },
   "dependencies": {
