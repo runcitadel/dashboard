@@ -11,6 +11,7 @@ const Start = () => import('../views/Start.vue');
 const Login = () => import('../views/Login.vue');
 const Dashboard = () => import('../views/Dashboard.vue');
 const Bitcoin = () => import('../views/Bitcoin.vue');
+const Liquid = () => import('../views/Liquid.vue');
 const Lightning = () => import('../views/Lightning.vue');
 const Apps = () => import('../views/Apps.vue');
 const AppStore = () => import('../views/AppStore.vue');
@@ -129,6 +130,18 @@ const routes = [
             path: '',
             name: 'lightning',
             component: Lightning,
+          },
+        ],
+      },
+      {
+        path: '/liquid',
+        component: DashboardLayout,
+        meta: {requiresAuth: true},
+        children: [
+          {
+            path: '',
+            name: 'liquid',
+            component: Liquid,
           },
         ],
       },
