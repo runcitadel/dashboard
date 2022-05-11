@@ -7,7 +7,7 @@ body {
 }
 
 // Get bootstrap to use dark mode
-html[data-theme="dark"] {
+html[data-theme='dark'] {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
   --bs-purple: #6f42c1;
@@ -32,7 +32,7 @@ html[data-theme="dark"] {
   --bs-gray-900: #212529;
   --bs-primary: #0d6efd;
   --bs-secondary: #6c757d;
-  --bs-success: #00CD98;
+  --bs-success: #00cd98;
   --bs-info: #0dcaf0;
   --bs-warning: #ffc107;
   --bs-danger: #dc3545;
@@ -146,7 +146,7 @@ html[data-theme="dark"] {
   color: white !important;
 }
 
-html[data-theme="dark"] {
+html[data-theme='dark'] {
   color: #fff !important;
   background: #1c1c26 !important;
   --card-bg: #2a3244;
@@ -556,7 +556,7 @@ svg.icon-clock {
   //bottom fade
   &:before {
     //nice faded white so the discarded blocks don't abruptly cut off
-    content: "";
+    content: '';
     position: absolute;
     height: 2rem;
     width: 100%;
@@ -573,7 +573,7 @@ svg.icon-clock {
   //top fade
   &:after {
     //nice faded white so the discarded blocks don't abruptly cut off
-    content: "";
+    content: '';
     position: absolute;
     height: 2rem;
     width: 100%;
@@ -799,7 +799,7 @@ body {
   }
 }
 
-html[data-theme="dark"] {
+html[data-theme='dark'] {
   .nav-vertical {
     background: transparent !important;
     .nav-item {
@@ -818,16 +818,20 @@ html[data-theme="dark"] {
         }
         &.active {
           opacity: 1 !important;
-          color: #5351fb !important;
+          color: #6891aa !important;
           svg {
             path,
             rect {
-              fill: #5351fb !important;
+              fill: #6891aa !important;
             }
           }
         }
       }
     }
+  }
+
+  .text-dark {
+    color: #fff !important;
   }
 }
 
@@ -842,16 +846,19 @@ html[data-theme="dark"] {
   .nav-item {
     .nav-link {
       color: #141821;
+      display: flex;
+      align-items: center;
       opacity: 0.5;
       transition: opacity 0.2s ease;
+
       svg {
+        margin-right: 0.4rem;
+        width: 24px;
+
         path,
         rect {
           fill: #141821;
         }
-      }
-      svg {
-        width: 24px;
       }
       &:hover,
       &:active,
@@ -861,11 +868,11 @@ html[data-theme="dark"] {
       }
       &.active {
         opacity: 1;
-        color: #5351fb;
+        color: #6891aa;
         svg {
           path,
           rect {
-            fill: #5351fb;
+            fill: #6891aa;
           }
         }
       }

@@ -49,6 +49,7 @@
 <script lang="ts" setup>
 import StepList from '../components/ConnectWallet/StepList.vue';
 import Step from '../components/ConnectWallet/Step.vue';
+import CardWidget from '../components/CardWidget.vue';
 import InputCopy from '../components/Utility/InputCopy.vue';
 import useAppsStore from '../store/apps';
 import {computed, onMounted} from 'vue';
@@ -57,11 +58,11 @@ const appsStore = useAppsStore();
 const lnAddress = computed(() => {
   try {
     // Get the app from state.apps.installed where the ID is lnme
-    return (
-      'tips@' +
-        appsStore.installed.find((app) => app.id === 'lnme')?.hiddenService ||
-      'None yet, please install LnMe first.'
-    );
+    const address = appsStore.installed.find(
+      (app) => app.id === 'lnme',
+    )?.hiddenService;
+
+    return address ? `tips@${address}` : 'None yet, please install LnMe first.';
   } catch {
     return 'None yet, please install LnMe first.';
   }
