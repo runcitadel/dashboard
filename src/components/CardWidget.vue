@@ -12,10 +12,10 @@
         <div class="d-flex w-100 justify-content-between align-items-center">
           <h6 class="mb-0 font-weight-normal text-muted">{{ header }}</h6>
           <status
-            v-if="status"
-            :variant="status.variant"
-            :blink="!!status.blink"
-            >{{ status.text }}</status
+            v-if="props.status"
+            :variant="props.status.variant"
+            :blink="!!props.status.blink"
+            >{{ props.status.text }}</status
           >
           <!-- Only render this div if either there's a menu or a  -->
           <!-- header on the right, else it causes spacing issues -->
@@ -87,7 +87,7 @@
 import {PropType} from 'vue';
 import status from './Utility/Status.vue';
 
-defineProps({
+const props = defineProps({
   header: {
     type: String,
     default: '',
@@ -103,7 +103,7 @@ defineProps({
     >, // {text, variant, blink}
     required: false,
     default: () => {
-      return undefined;
+      return false;
     },
   },
   title: {

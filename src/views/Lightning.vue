@@ -32,11 +32,7 @@
             <small class="ms-1 text-success">{{ status }}</small>
             <h3 class="d-block font-weight-bold mb-1">Lightning Network</h3>
             <span class="d-block text-muted">
-              {{
-                lightningStore.version
-                  ? `v${lightningStore.version.split(' commit')[0]}`
-                  : '...'
-              }}
+              {{ lightningVersion }}
             </span>
           </div>
         </div>
@@ -76,7 +72,7 @@
               </svg>
             </template>
             <b-dropdown-item v-b-modal.lightning-address-modal href="#"
-              >Lightning Address</b-dropdown-item
+              >Lightning Node Address</b-dropdown-item
             >
             <!-- <b-dropdown-divider /> -->
             <!-- <b-dropdown-item variant="danger" href="#" disabled>Stop LND</b-dropdown-item> -->
@@ -382,6 +378,15 @@ export default defineComponent({
       selectedChannel: ParsedChannel;
       interval?: number;
     };
+  },
+  computed: {
+    lightningVersion(): string {
+      let version = this.lightningStore.version || '...';
+      if (!version.startsWith('v') && version !== '...') {
+        version = 'v' + version;
+      }
+      return version;
+    },
   },
   created() {
     this.fetchPageData();

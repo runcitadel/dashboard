@@ -202,13 +202,15 @@
               <span v-else class="text-success">Compatible</span>
             </div>
             <div v-if="app.dependencies.length" class="mb-4">
-              <span class="d-block mb-3">Requires</span>
+              <span class="d-block mb-3">Utilizes</span>
               <div
                 v-for="dependency in app.dependencies"
                 :key="dependency.toString()"
-                class="d-flex align-items-center justify-content-between mb-3"
               >
-                <div v-if="typeof dependency === 'string'">
+                <div
+                  v-if="typeof dependency === 'string'"
+                  class="d-flex align-items-center justify-content-between w-100 mb-3"
+                >
                   <div class="d-flex align-items-center">
                     <img
                       :src="src(dependency)"
@@ -260,7 +262,7 @@
                   v-for="realDependency in dependency"
                   v-else
                   :key="realDependency.toString()"
-                  class="d-flex align-items-center justify-content-between mb-3"
+                  class="d-flex align-items-center justify-content-between mb-3 w-100"
                 >
                   <div class="d-flex align-items-center">
                     <img
@@ -399,7 +401,7 @@ export default defineComponent({
     },
   },
   async created() {
-    this.appsStore.getAppStore();
+    await this.appsStore.getAppStore();
     if (this.isInstalled) {
       this.pollOfflineApp();
     }
