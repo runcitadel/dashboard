@@ -51,47 +51,30 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
-
+<script lang="ts" setup>
+import {ref} from 'vue';
 import InstalledApp from '../components/InstalledApp.vue';
 import useAppsStore from '../store/apps';
 import useSystemStore from '../store/system';
 
-export default defineComponent({
-  components: {
-    InstalledApp,
-  },
-  setup() {
-    const appsStore = useAppsStore();
-    const systemStore = useSystemStore();
-    return {appsStore, systemStore};
-  },
-  data() {
-    return {
-      isEditing: false,
-      isUpdating: false,
-    };
-  },
-  created() {
-    this.appsStore.getInstalledApps();
-  },
-  methods: {
-    toggleEdit() {
-      this.isEditing = !this.isEditing;
-    },
-    startUpdate() {
-      if (this.isUpdating) return;
-      this.appsStore.updateApps();
-      this.isUpdating = true;
-      this.systemStore.getUpdateStatus();
-      window.setTimeout(() => {
-        this.isUpdating = false;
-        this.systemStore.getUpdateStatus();
-      }, 2000);
-    },
-  },
-});
+const appsStore = useAppsStore();
+const systemStore = useSystemStore();
+const isEditing = ref(false);
+const isUpdating = ref(false);
+appsStore.getInstalledApps();
+function toggleEdit() {
+  isEditing.value = !isEditing.value;
+}
+function startUpdate() {
+  if (isUpdating.value) return;
+  appsStore.updateApps();
+  isUpdating.value = true;
+  systemStore.getUpdateStatus();
+  window.setTimeout(() => {
+    isUpdating.value = false;
+    systemStore.getUpdateStatus();
+  }, 2000);
+}
 </script>
 
 <style lang="scss" scoped>

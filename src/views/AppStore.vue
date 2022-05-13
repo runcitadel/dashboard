@@ -86,36 +86,21 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
-import useAppsStore, {app} from '../store/apps';
+<script lang="ts" setup>
+import {computed} from 'vue';
+import useAppsStore, {app as appType} from '../store/apps';
 
 import CardWidget from '../components/CardWidget.vue';
 
-export default defineComponent({
-  components: {
-    CardWidget,
-  },
-  setup() {
-    const appsStore = useAppsStore();
-    return {appsStore};
-  },
-  computed: {
-    categorizedAppStore(): Record<string, app[]> {
-      let group = this.appsStore.store.reduce(
-        (r: Record<string, app[]>, app) => {
-          r[app.category] = [...(r[app.category] || []), app];
-          return r;
-        },
-        {},
-      );
-      return group;
-    },
-  },
-  created() {
-    this.appsStore.getAppStore();
-  },
+const appsStore = useAppsStore();
+const categorizedAppStore = computed((): Record<string, appType[]> => {
+  let group = appsStore.store.reduce((r: Record<string, appType[]>, app) => {
+    r[app.category] = [...(r[app.category] || []), app];
+    return r;
+  }, {});
+  return group;
 });
+appsStore.getAppStore();
 </script>
 
 <style lang="scss" scoped>
