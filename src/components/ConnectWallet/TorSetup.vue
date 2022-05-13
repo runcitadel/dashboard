@@ -56,18 +56,10 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script lang="ts" setup>
+import {ref} from 'vue';
+
 import InputCopy from '../Utility/InputCopy.vue';
 
-export default defineComponent({
-  components: {
-    InputCopy,
-  },
-  data() {
-    return {
-      selectedOS: null,
-    };
-  },
-});
+const selectedOS = ref(null);
 </script>
