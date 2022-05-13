@@ -9,43 +9,29 @@
     <div
       class="toggle-switch justify-content-center d-flex align-items-center"
       :class="{
-        'toggle-left': unit === 'sats',
-        'toggle-right': unit === 'btc',
+        'toggle-left': systemStore.unit === 'sats',
+        'toggle-right': systemStore.unit === 'btc',
       }"
     >
-      <span v-if="unit === 'sats'" class="text-muted">Sats</span>
-      <span v-else-if="unit === 'btc'" class="text-muted">BTC</span>
+      <span v-if="systemStore.unit === 'sats'" class="text-muted">Sats</span>
+      <span v-else-if="systemStore.unit === 'btc'" class="text-muted">BTC</span>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script lang="ts" setup>
+import {PropType} from 'vue';
 import useSystemStore from '../../store/system';
 
-export default defineComponent({
-  props: {
-    size: {
-      type: String, //sm, md, lg
-      default: 'md',
-    },
-  },
-  setup() {
-    const systemStore = useSystemStore();
-    return {systemStore};
-  },
-  data() {
-    return {};
-  },
-  computed: {
-    unit() {
-      return this.systemStore.unit;
-    },
-  },
-  methods: {
-    toggleUnit() {
-      this.systemStore.changeUnit(this.unit === 'sats' ? 'btc' : 'sats');
-    },
+defineProps({
+  size: {
+    type: String as PropType<'sm' | 'md' | 'lg'>,
+    default: 'md',
   },
 });
+const systemStore = useSystemStore();
+
+function toggleUnit() {
+  systemStore.changeUnit(systemStore.unit === 'sats' ? 'btc' : 'sats');
+}
 </script>

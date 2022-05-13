@@ -25,37 +25,29 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent, PropType} from 'vue';
+<script lang="ts" setup>
+import {PropType} from 'vue';
 import QrcodeVue from 'qrcode.vue';
 
-export default defineComponent({
-  components: {
-    QrcodeVue,
+defineProps({
+  size: {
+    type: Number,
+    default: 200,
   },
-  props: {
-    size: {
-      type: Number,
-      default: 200,
-    },
-    level: {
-      type: String as PropType<'L' | 'M' | 'Q' | 'H'>,
-      default: 'H',
-    },
-    value: {
-      required: true,
-      type: String,
-    },
-    showLogo: {
-      type: Boolean,
-      default: true,
-    },
+  level: {
+    type: String as PropType<'L' | 'M' | 'Q' | 'H'>,
+    default: 'H',
   },
-  emits: ['click'],
-  data() {
-    return {};
+  value: {
+    required: true,
+    type: String,
+  },
+  showLogo: {
+    type: Boolean,
+    default: true,
   },
 });
+defineEmits(['click']);
 </script>
 
 <style lang="scss" scoped>

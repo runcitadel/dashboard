@@ -27,34 +27,23 @@
   </card-widget>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script lang="ts" setup>
+import {PropType} from 'vue';
+
 import useBitcoinStore from '../../store/bitcoin';
 import CardWidget from '../CardWidget.vue';
 
-export default defineComponent({
-  components: {
-    CardWidget,
+defineProps({
+  name: {
+    type: String,
+    required: true,
   },
-  props: {
-    name: {
-      type: String,
-      required: true,
-    },
-    requires: {
-      type: String,
-      default: '', //electrum, bitcoin-core, lnd, or empty if no specific protocol required
-    },
+  requires: {
+    type: String as PropType<'' | 'electrum' | 'bitcoind' | 'lnd'>,
+    default: '',
   },
-  setup() {
-    const bitcoinStore = useBitcoinStore();
-    return {bitcoinStore};
-  },
-  data() {
-    return {};
-  },
-  methods: {},
 });
+const bitcoinStore = useBitcoinStore();
 </script>
 
 <style lang="scss" scoped></style>

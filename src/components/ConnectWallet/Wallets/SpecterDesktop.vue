@@ -74,30 +74,20 @@
   </connection-details>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
-
+<script lang="ts" setup>
 import ConnectionDetails from '../ConnectionDetails.vue';
 import StepList from '../StepList.vue';
 import Step from '../Step.vue';
-import TorSetup from '../TorSetup.vue';
 import InputCopy from '../../Utility/InputCopy.vue';
+import TorSetup from '../TorSetup.vue';
 
-export default defineComponent({
-  components: {
-    ConnectionDetails,
-    StepList,
-    Step,
-    InputCopy,
-    TorSetup,
+defineProps({
+  urls: {
+    type: Object,
+    required: true,
   },
-  props: {
-    urls: {
-      type: Object,
-      required: true,
-    },
-  },
-  emits: ['showQrModal'],
 });
+
+defineEmits(['showQrModal']);
 </script>
 <style lang="scss" scoped></style>

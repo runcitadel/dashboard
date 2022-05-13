@@ -70,43 +70,32 @@
   </connection-details>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
-
+<script lang="ts" setup>
+import {computed} from 'vue';
 import ConnectionDetails from '../ConnectionDetails.vue';
 import StepList from '../StepList.vue';
 import Step from '../Step.vue';
-import InputCopy from '../../Utility/InputCopy.vue';
 import QrCode from '../../Utility/QrCode.vue';
 // @ts-expect-error TypeScript and Vite understand this module differently
 import BufferModule from 'buffer/index.js';
 const {Buffer} = BufferModule;
 
-export default defineComponent({
-  components: {
-    ConnectionDetails,
-    StepList,
-    Step,
-    InputCopy,
-    QrCode,
+const props = defineProps({
+  urls: {
+    type: Object,
+    required: true,
   },
-  props: {
-    urls: {
-      type: Object,
-      required: true,
-    },
-  },
-  emits: ['showQrModal'],
-  computed: {
-    macaroonHex() {
-      return Buffer.from(
-        Array.from(
-          this.urls.lnd.restTor.matchAll(/macaroon=(.*)/gm),
-          (m: string[]) => m[1],
-        )[0],
-        'base64',
-      ).toString('hex');
-    },
-  },
+});
+
+defineEmits(['showQrModal']);
+
+const macaroonHex = computed(() => {
+  return Buffer.from(
+    Array.from(
+      props.urls.lnd.restLocal.matchAll(/macaroon=(.*)/gm),
+      (m: string[]) => m[1],
+    )[0],
+    'base64',
+  ).toString('hex');
 });
 </script>

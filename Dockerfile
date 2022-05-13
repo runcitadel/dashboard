@@ -9,6 +9,9 @@ FROM node:${NODE_VERSION}-alpine@sha256:469ee26d9e00547ea91202a34ff2542f984c2c60
 
 # DEVELOPMENT
 FROM node-builder AS development
+
+RUN apk add git
+
 # Create app directory
 WORKDIR /app
 # NOTE: Using project files from mounted volumes
@@ -21,11 +24,14 @@ CMD yarn install && yarn dev
 
 # DEPENDENCIES (production)
 FROM node-builder AS dependencies
+RUN apk add git
+
 # Create app directory
 WORKDIR /app
 
 # Copy dependency management files
-COPY .yarnrc.yml package.json yarn.lock ./
+# Ignore yarn.lock for now because it breaks with bootstrap-vue
+COPY .yarnrc.yml package.json ./
 COPY .yarn/releases/yarn-3.2.0.cjs /app/.yarn/releases/yarn-3.2.0.cjs
 # Install dependencies
 RUN yarn install
@@ -33,10 +39,14 @@ RUN yarn install
 
 # BUILD (production)
 FROM dependencies AS builder
+
+WORKDIR /app
+
 # Copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
+
 # Build app for production
-RUN yarn build
+RUN ./node_modules/.bin/vite build
 
 
 # PRODUCTION

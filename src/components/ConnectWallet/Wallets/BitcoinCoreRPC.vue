@@ -67,25 +67,17 @@
   </connection-details>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
-
+<script lang="ts" setup>
 import ConnectionDetails from '../ConnectionDetails.vue';
 import InputCopy from '../../Utility/InputCopy.vue';
 import QrCode from '../../Utility/QrCode.vue';
 
-export default defineComponent({
-  components: {
-    ConnectionDetails,
-    InputCopy,
-    QrCode,
+defineProps({
+  urls: {
+    type: Object,
+    required: true,
   },
-  props: {
-    urls: {
-      type: Object,
-      required: true,
-    },
-  },
-  emits: ['showQrModal'],
 });
+
+defineEmits(['showQrModal']);
 </script>

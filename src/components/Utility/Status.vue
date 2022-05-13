@@ -31,25 +31,23 @@
   </small>
 </template>
 
-<script lang="ts">
-import {defineComponent, PropType} from 'vue';
+<script lang="ts" setup>
+import {PropType} from 'vue';
 
-export default defineComponent({
-  props: {
-    variant: {
-      type: String as PropType<
-        'success' | 'primary' | 'muted' | 'danger' | 'warning' | 'default'
-      >,
-      default: 'success',
-    },
-    blink: {
-      type: Boolean,
-      default: false,
-    },
-    size: {
-      type: String as PropType<'sm' | 'md'>,
-      default: 'md', //sm or md
-    },
+defineProps({
+  variant: {
+    type: String as PropType<
+      'success' | 'primary' | 'muted' | 'danger' | 'warning' | 'default'
+    >,
+    default: 'success',
+  },
+  blink: {
+    type: Boolean,
+    default: false,
+  },
+  size: {
+    type: String as PropType<'sm' | 'md'>,
+    default: 'md', //sm or md
   },
 });
 </script>
