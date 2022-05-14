@@ -30,8 +30,7 @@ RUN apk add git
 WORKDIR /app
 
 # Copy dependency management files
-# Ignore yarn.lock for now because it breaks with bootstrap-vue
-COPY .yarnrc.yml package.json ./
+COPY .yarnrc.yml yarn.lock package.json ./
 COPY .yarn/releases/yarn-3.2.0.cjs /app/.yarn/releases/yarn-3.2.0.cjs
 # Install dependencies
 RUN yarn install
