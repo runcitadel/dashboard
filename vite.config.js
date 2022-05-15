@@ -10,10 +10,7 @@ export default defineConfig(() => {
     hmr: {
       // change this if you are not on the default host
       host: process.env.DEVICE_HOSTNAME,
-      port: 80,
-    },
-    watch: {
-      usePolling: true,
+      clientPort: 80,
     },
   };
 
