@@ -13,7 +13,7 @@
       <p class="text-muted w-75 text-center">{{ text }}</p>
 
       <div
-        class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center"
+        class="form-container mt-3 d-flex flex-column w-100 align-items-center"
       >
         <b-form-input
           v-show="currentStep === 1"
@@ -152,15 +152,12 @@
   </div>
 </template>
 
-<script lang="ts">
-/* eslint-disable */
-import {DefineComponent, defineComponent} from 'vue';
+<script lang="ts" setup>
+import {useRouter} from 'vue-router';
+import {ref, computed, onBeforeUnmount} from 'vue';
 import useSystemStore from '../store/system';
 import useUserStore from '../store/user';
-import useBitcoinStore from '../store/bitcoin';
 import useLightningStore from '../store/lightning';
-import useAppsStore from '../store/apps';
-import useSdkStore from '../store/sdk';
 import useToast from '../utils/toast';
 
 import delay from '../helpers/delay';
@@ -214,179 +211,139 @@ const steps: Step[] = [
   },
 ];
 
-export default defineComponent({
-  components: {
-    InputPassword,
-    Seed,
-    InputCopy,
-    BIconExclamationCircleFill: BIconExclamationCircleFill as DefineComponent,
-  },
-  setup() {
-    const systemStore = useSystemStore();
-    const userStore = useUserStore();
-    const bitcoinStore = useBitcoinStore();
-    const lightningStore = useLightningStore();
-    const appsStore = useAppsStore();
-    const sdkStore = useSdkStore();
-    const toast = useToast();
+const systemStore = useSystemStore();
+const userStore = useUserStore();
+const lightningStore = useLightningStore();
+const toast = useToast();
+const router = useRouter();
 
-    return {
-      sdkStore,
-      appsStore,
-      userStore,
-      systemStore,
-      bitcoinStore,
-      lightningStore,
-      toast,
-    };
-  },
-  data(): {
-    name: string;
-    password: string;
-    confirmPassword: string;
-    currentStep: number;
-    notedSeed: boolean;
-    isRegistering: boolean;
-    recover: boolean;
-    recoverySeed: string[];
-    lndUnlockInterval: undefined | number;
-  } {
-    return {
-      name: '',
-      password: '',
-      confirmPassword: '',
-      currentStep: 0,
-      notedSeed: false,
-      isRegistering: false,
-      recover: false,
-      recoverySeed: [],
-      lndUnlockInterval: undefined,
-    };
-  },
-  computed: {
-    /*...mapState({
-      isLndOperational: (state) => state.lightning.operational,
-      registered: (state) => state.user.registered,
-      seed: (state) => state.user.seed,
-      unlocked: (state) => state.lightning.unlocked,
-      onionAddress: (state) => state.system.onionAddress,
-    }),*/
-    heading(): string {
-      if (this.currentStep === 5 && this.recover) {
-        return 'recover your citadel';
-      }
-      return steps[this.currentStep]['heading'];
-    },
-    text(): string {
-      if (this.currentStep === 5 && this.recover) {
-        return 'Enter your 24 secret words in the exact order to recover your Citadel.';
-      }
-      return steps[this.currentStep]['text'];
-    },
-    nextButtonText(): string {
-      if (this.currentStep === 0) {
-        return 'Start';
-      }
-      if (this.currentStep === 8) {
-        return 'Go to dashboard';
-      }
-      return 'Next';
-    },
-    isStepValid(): boolean {
-      if (this.currentStep === 1) {
-        return this.name.length > 0;
-      }
+const name = ref('');
+const password = ref('');
+const confirmPassword = ref('');
+const currentStep = ref(0);
+const notedSeed = ref(false);
+const isRegistering = ref(false);
+const recover = ref(false);
+const recoverySeed = ref<string[]>([]);
+const lndUnlockInterval = ref<number | undefined>(undefined);
 
-      if (this.currentStep === 2) {
-        return this.password.length > 11;
-      }
+const heading = computed(() => {
+  if (currentStep.value === 5 && recover.value) {
+    return 'recover your citadel';
+  }
+  return steps[currentStep.value]['heading'];
+});
 
-      if (this.currentStep === 3) {
-        if (this.confirmPassword !== this.password) {
-          return false;
-        }
-      }
+const text = computed(() => {
+  if (currentStep.value === 5 && recover.value) {
+    return 'Enter your 24 secret words in the exact order to recover your Citadel.';
+  }
+  return steps[currentStep.value]['text'];
+});
+const nextButtonText = computed(() => {
+  if (currentStep.value === 0) {
+    return 'Start';
+  }
+  if (currentStep.value === 8) {
+    return 'Go to dashboard';
+  }
+  return 'Next';
+});
+const isStepValid = computed(() => {
+  if (currentStep.value === 1) {
+    return name.value.length > 0;
+  }
 
-      if (this.currentStep === 5) {
-        return this.notedSeed;
-      }
+  if (currentStep.value === 2) {
+    return password.value.length > 11;
+  }
 
-      if (this.currentStep === 8) {
-        return this.lightningStore.unlocked;
-      }
+  if (currentStep.value === 3) {
+    if (confirmPassword.value !== password.value) {
+      return false;
+    }
+  }
 
-      return true;
-    },
-    progress(): number {
-      return this.currentStep === 0
-        ? 0
-        : Math.round((this.currentStep * 100) / (steps.length - 1));
-    },
-  },
-  async created() {
-    //redirect to home if the user is already registered
-    if (this.userStore.registered) {
-      return this.$router.push('/');
+  if (currentStep.value === 5) {
+    return notedSeed.value;
+  }
+
+  if (currentStep.value === 8) {
+    return lightningStore.unlocked;
+  }
+
+  return true;
+});
+const progress = computed(() => {
+  return currentStep.value === 0
+    ? 0
+    : Math.round((currentStep.value * 100) / (steps.length - 1));
+});
+//redirect to home if the user is already registered
+if (userStore.registered) {
+  router.push('/');
+}
+
+// Wait for LND
+while (!lightningStore.operational) {
+  await lightningStore.getStatus();
+  await delay(1000);
+}
+
+//generate a new seed on load
+userStore.getSeed();
+
+onBeforeUnmount(() => {
+  window.clearInterval(lndUnlockInterval.value);
+});
+
+function skipSeed() {
+  if (currentStep.value === 4) {
+    currentStep.value = 5;
+  }
+  nextStep();
+}
+
+function recoverFromSeed() {
+  recover.value = true;
+  currentStep.value++;
+}
+
+function inputRecoverySeed(seed: string[]) {
+  recoverySeed.value = seed;
+}
+
+async function nextStep() {
+  if (currentStep.value === 4) {
+    recover.value = false;
+  }
+
+  //Register user and initialize wallet at the end
+  if (currentStep.value === 5) {
+    isRegistering.value = true;
+    const seed = recover.value ? recoverySeed.value : userStore.seed;
+    try {
+      await userStore.register({
+        name: name.value,
+        password: password.value,
+        seed,
+      });
+    } catch (error) {
+      isRegistering.value = false;
+      if (error) {
+        toast.error('Error', JSON.stringify(error));
+      }
     }
 
-    // Wait for LND
-    while (!this.lightningStore.operational) {
-      await this.lightningStore.getStatus();
-      await delay(1000);
-    }
+    isRegistering.value = false;
 
-    //generate a new seed on load
-    this.userStore.getSeed();
-  },
-  beforeUnmount() {
-    window.clearInterval(this.lndUnlockInterval);
-  },
-  methods: {
-    skipSeed(): void {
-      if (this.currentStep === 4) {
-        this.currentStep = 5;
-      }
-      this.nextStep();
-    },
-    recoverFromSeed() {
-      this.recover = true;
-      this.currentStep++;
-    },
-    inputRecoverySeed(seed: string[]) {
-      this.recoverySeed = seed;
-    },
-    async nextStep() {
-      if (this.currentStep === 4) {
-        this.recover = false;
-      }
+    // fetch onion address for the next step
+    systemStore.getOnionAddress();
+  }
 
-      //Register user and initialize wallet at the end
-      if (this.currentStep === 5) {
-        this.isRegistering = true;
-        const seed = this.recover ? this.recoverySeed : this.userStore.seed;
-        try {
-          await this.userStore.register({
-            name: this.name,
-            password: this.password,
-            seed,
-          });
-        } catch (error) {
-          this.isRegistering = false;
-          if (error) {
-            this.toast.error('Error', JSON.stringify(error));
-          }
-          //return;
-        }
-
-        this.isRegistering = false;
-
-        // fetch onion address for the next step
-        this.systemStore.getOnionAddress();
-      }
-
-      if (this.currentStep === 7) {
-        //Wohoo! Time to celebrate!
-        /*this.$confetti.start({
+  if (currentStep.value === 7) {
+    //Wohoo! Time to celebrate!
+    /*this.$confetti.start({
           particles: [
             {
               type: "rect",
@@ -394,48 +351,48 @@ export default defineComponent({
           ],
         });*/
 
-        this.lndUnlockInterval = window.setInterval(async () => {
-          this.lightningStore.getStatus();
-          if (this.lightningStore.unlocked) {
-            return window.clearInterval(this.lndUnlockInterval);
-          }
-        }, 1000);
+    lndUnlockInterval.value = window.setInterval(async () => {
+      lightningStore.getStatus();
+      if (lightningStore.unlocked) {
+        return window.clearInterval(lndUnlockInterval.value);
+      }
+    }, 1000);
 
-        // TODO: Find the root problem and fix it
-        // Refresh page after 60s if LND still hasn't unlocked
-        window.setTimeout(() => {
-          if (!this.lightningStore.unlocked) {
-            window.location.reload();
-          }
-        }, 60 * 1000);
+    // TODO: Find the root problem and fix it
+    // Refresh page after 60s if LND still hasn't unlocked
+    window.setTimeout(() => {
+      if (!lightningStore.unlocked) {
+        window.location.reload();
+      }
+    }, 60 * 1000);
 
-        //Ok. 3s is more than enough to celebrate.
-        /*window.setTimeout(() => {
+    //Ok. 3s is more than enough to celebrate.
+    /*window.setTimeout(() => {
           this.$confetti.stop();
         }, 3000);*/
-      }
+  }
 
-      if (this.currentStep === 8) {
-        return this.$router.push('/dashboard');
-      }
+  if (currentStep.value === 8) {
+    return router.push('/dashboard');
+  }
 
-      return (this.currentStep = this.currentStep + 1);
-    },
-    prevStep() {
-      if (this.currentStep === 5) {
-        this.notedSeed = false;
-      }
+  currentStep.value = currentStep.value + 1;
+}
 
-      this.currentStep = this.currentStep - 1;
-    },
-    finishedSeed() {
-      this.notedSeed = true;
-    },
-    incompleteRecoverySeed() {
-      this.notedSeed = false;
-    },
-  },
-});
+function prevStep() {
+  if (currentStep.value === 5) {
+    notedSeed.value = false;
+  }
+
+  currentStep.value = currentStep.value - 1;
+}
+
+function finishedSeed() {
+  notedSeed.value = true;
+}
+function incompleteRecoverySeed() {
+  notedSeed.value = false;
+}
 </script>
 
 <style lang="scss" scoped>
