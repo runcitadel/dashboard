@@ -16,16 +16,16 @@
             <b-link to="/app-store/lnme">LnMe</b-link> app on your Citadel.
           </step>
           <step>
-            You can now sent tips to this address:
+            You can now send tips to this address:
 
             <input-copy class="my-1" :value="lnAddress"></input-copy>
           </step>
           <step>
             The following steps are optional, but if you want a shorter
-            Lightning address, a tipping page and a LNUrl, you can also set that
+            Lightning address, a tipping page and a LNURL, you can also set that
             up.
           </step>
-          <step> First, you need at least one open lightning channel. </step>
+          <step> First, you need at least one open Lightning channel. </step>
           <step>
             Then, you need to set up the
             <a href="https://getalby.com/">Alby</a> extension and connect it to
