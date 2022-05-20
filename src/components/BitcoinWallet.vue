@@ -265,6 +265,7 @@
                   id="input-withdrawal-amount"
                   v-model="withdraw.amountInput"
                   class="neu-input"
+                  placeholder="Amount"
                   type="text"
                   size="lg"
                   autofocus
@@ -299,6 +300,7 @@
               id="input-withdrawal-address"
               v-model="withdraw.address"
               class="mb-2 neu-input"
+              placeholder="Address"
               type="text"
               size="lg"
               min="1"

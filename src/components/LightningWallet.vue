@@ -413,6 +413,7 @@
                 id="input-sats"
                 v-model.number="receive.amountInput"
                 class="neu-input"
+                placeholder="Amount"
                 type="text"
                 size="lg"
                 autofocus
@@ -447,6 +448,7 @@
             id="input-description"
             v-model="receive.description"
             class="mb-4 neu-input"
+            placeholder="Description (optional)"
             size="lg"
             :disabled="receive.isGeneratingInvoice"
           ></b-input>
