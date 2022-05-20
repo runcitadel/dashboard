@@ -36,7 +36,9 @@ app.config.globalProperties.$filters = {
   satsToUSD: (
     value: string | number,
     store: ReturnType<typeof useBitcoinStore>,
+    logMsg: unknown,
   ) => {
+    console.log(logMsg);
     if (isNaN(parseInt(value.toString()))) {
       return value;
     } else {

@@ -60,19 +60,22 @@
         v-model="chosenFee"
         absorb
         marks
-        :vdata="recommendedFees"
+        :v-data="recommendedFees"
         :dot-size="[22, 22]"
         contained
         :tooltip="isDisabled ? 'none' : 'always'"
         :disabled="isDisabled"
         @change="emitValue"
       >
-        <template #label="{active, value}">
+        <template #label="{active}">
           <div :class="['vue-slider-mark-label', 'text-center', {active}]">
-            <span class="text-muted">~ {{ timeToConfirm(value) }}</span>
+            <span class="text-muted"
+              >~
+              {{ timeToConfirm(chosenFee as "normal" | "fast" | "slow" | "cheapest") }}</span
+            >
           </div>
         </template>
-        <template #tooltip="{value, focus}">
+        <template #tooltip="{focus}">
           <div
             :class="[
               'vue-slider-dot-tooltip-inner vue-slider-dot-tooltip-inner-top',
@@ -80,10 +83,17 @@
             ]"
           >
             <span class="vue-slider-dot-tooltip-text d-block mb-0"
-              >{{ fee[value].perByte }} sat/vB
+              >{{ fee[chosenFee].perByte }} sat/vB
             </span>
             <small class="text-muted"
-              >≈ {{ $filters.satsToUSD(fee[value].total, bitcoinStore) }}</small
+              >≈
+              {{
+                $filters.satsToUSD(
+                  fee[chosenFee].total,
+                  bitcoinStore,
+                  chosenFee,
+                )
+              }}</small
             >
           </div>
         </template>
@@ -127,7 +137,7 @@ export default defineComponent({
   },
   data() {
     return {
-      chosenFee: 'normal',
+      chosenFee: 'fast',
       useCustomFee: false,
       customFee: 30,
     };

@@ -14,7 +14,7 @@
     "postinstall": "husky install"
   },
   "dependencies": {
-    "@aarondewes/vue-slider-component": "^3.2.16",
+    "@aarondewes/vue-slider-component": "^4.0.0-beta.5",
     "@bitcoin-design/bitcoin-icons-vue": "^0.1.9",
     "@runcitadel/sdk": "^0.4.0-beta.3",
     "@vue/compat": "^3.2.31",

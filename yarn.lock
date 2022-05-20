@@ -5,13 +5,10 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@aarondewes/vue-slider-component@npm:^3.2.16":
-  version: 3.2.16
-  resolution: "@aarondewes/vue-slider-component@npm:3.2.16"
-  dependencies:
-    core-js: ^3.20.3
-    vue-property-decorator: ^10.0.0-rc.3
-  checksum: e96122e20c701ea93d19826f82121ed7a57c3394602aa413904d73cf1b3d2e6f625e8559407011b272e02f500846d5be1b61d56910d1182009c06f86e95ef86b
+"@aarondewes/vue-slider-component@npm:^4.0.0-beta.5":
+  version: 4.0.0-beta.5
+  resolution: "@aarondewes/vue-slider-component@npm:4.0.0-beta.5"
+  checksum: aa16215300f8b9810d8818eadc88fc28f3fd83ba6a26adb8391617a1033e20e2cbd1bdb4ccd75aff48b457060f26810363fbabb86b3964e8a2fa5dc9853a26ac
   languageName: node
   linkType: hard
 
@@ -156,7 +153,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@runcitadel/dashboard@workspace:."
   dependencies:
-    "@aarondewes/vue-slider-component": ^3.2.16
+    "@aarondewes/vue-slider-component": ^4.0.0-beta.5
     "@bitcoin-design/bitcoin-icons-vue": ^0.1.9
     "@runcitadel/sdk": ^0.4.0-beta.3
     "@types/node": ^17.0.21
@@ -836,13 +833,6 @@ __metadata:
   version: 1.1.0
   resolution: "console-control-strings@npm:1.1.0"
   checksum: 8755d76787f94e6cf79ce4666f0c5519906d7f5b02d4b884cf41e11dcd759ed69c57da0670afd9236d229a46e0f9cf519db0cd829c6dca820bb5a5c3def584ed
-  languageName: node
-  linkType: hard
-
-"core-js@npm:^3.20.3":
-  version: 3.22.5
-  resolution: "core-js@npm:3.22.5"
-  checksum: d3d7495d7cdde01cf9ac3debc5087afc3c8dd56baa4953d9ccbb46b1a80872c79d14c1e6343c664c9c0fade288ab44c70b54dd34f879a71e6eff6fffeab84e00
   languageName: node
   linkType: hard
 
@@ -2847,16 +2837,6 @@ __metadata:
   version: 3.1.0
   resolution: "vue-functional-data-merge@npm:3.1.0"
   checksum: 6f1db64050b364e3c80b8cbd83e1eac69804fa9ca84a324b05fa437f451ad5176955731e946ec8dda5e50d224d03b6f2bc7c7254c62967ecc711d1453bb99a93
-  languageName: node
-  linkType: hard
-
-"vue-property-decorator@npm:^10.0.0-rc.3":
-  version: 10.0.0-rc.3
-  resolution: "vue-property-decorator@npm:10.0.0-rc.3"
-  peerDependencies:
-    vue: "*"
-    vue-class-component: "*"
-  checksum: 50a20cb6cfe54c689ca23f342250b09781f6f138513d6a4418ef0090fafb2661085eadf43832044bdede26a968523abf8c6a913e1eb2f5b3e6e73056d8af6aa9
   languageName: node
   linkType: hard
 
