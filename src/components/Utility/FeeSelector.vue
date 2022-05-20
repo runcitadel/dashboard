@@ -4,12 +4,12 @@
       <small class="text-muted d-block mb-0">Transaction Fee</small>
       <b-form-checkbox
         v-model="useCustomFee"
-        class=""
+        class="d-flex align-items-center"
         size="sm"
         switch
         :disabled="isDisabled"
       >
-        <small class="text-muted">Custom</small>
+        <small class="text-muted ms-1">Custom</small>
       </b-form-checkbox>
     </div>
     <div v-if="useCustomFee" class="vue-slider-container">
