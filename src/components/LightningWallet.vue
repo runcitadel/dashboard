@@ -272,10 +272,11 @@
           <div class="pb-3">
             <a
               href="#"
-              class="card-link text-muted"
+              class="card-link text-muted d-flex align-items-center"
               @click.stop.prevent="reset"
             >
               <svg
+                class="me-1"
                 width="7"
                 height="13"
                 viewBox="0 0 7 13"
@@ -339,10 +340,11 @@
           <div class="pb-3">
             <a
               href="#"
-              class="card-link text-muted"
+              class="card-link text-muted d-flex align-items-center"
               @click.stop.prevent="reset"
             >
               <svg
+                class="me-1"
                 width="7"
                 height="13"
                 viewBox="0 0 7 13"
@@ -384,10 +386,11 @@
           <div class="pb-3">
             <a
               href="#"
-              class="card-link text-muted"
+              class="card-link text-muted d-flex align-items-center"
               @click.stop.prevent="reset"
             >
               <svg
+                class="me-1"
                 width="7"
                 height="13"
                 viewBox="0 0 7 13"
@@ -410,6 +413,7 @@
                 id="input-sats"
                 v-model.number="receive.amountInput"
                 class="neu-input"
+                placeholder="Amount"
                 type="text"
                 size="lg"
                 autofocus
@@ -444,6 +448,7 @@
             id="input-description"
             v-model="receive.description"
             class="mb-4 neu-input"
+            placeholder="Description (optional)"
             size="lg"
             :disabled="receive.isGeneratingInvoice"
           ></b-input>
@@ -458,10 +463,11 @@
           <div class="pb-3">
             <a
               href="#"
-              class="card-link text-muted"
+              class="card-link text-muted d-flex align-items-center"
               @click.stop.prevent="reset"
             >
               <svg
+                class="me-1"
                 width="7"
                 height="13"
                 viewBox="0 0 7 13"
@@ -530,10 +536,11 @@
           <div class="pb-3">
             <a
               href="#"
-              class="card-link text-muted"
+              class="card-link text-muted d-flex align-items-center"
               @click.stop.prevent="reset"
             >
               <svg
+                class="me-1"
                 width="7"
                 height="13"
                 viewBox="0 0 7 13"
@@ -581,10 +588,11 @@
           <div class="pb-3">
             <a
               href="#"
-              class="card-link text-muted"
+              class="card-link text-muted d-flex align-items-center"
               @click.stop.prevent="reset"
             >
               <svg
+                class="me-1"
                 width="7"
                 height="13"
                 viewBox="0 0 7 13"
@@ -648,10 +656,11 @@
           <div class="pb-3">
             <a
               href="#"
-              class="card-link text-muted"
+              class="card-link text-muted d-flex align-items-center"
               @click.stop.prevent="reset"
             >
               <svg
+                class="me-1"
                 width="7"
                 height="13"
                 viewBox="0 0 7 13"

@@ -232,10 +232,11 @@
             <div class="pb-3">
               <a
                 href="#"
-                class="card-link text-muted"
+                class="card-link text-muted d-flex align-items-center"
                 @click.stop.prevent="reset"
               >
                 <svg
+                  class="me-1"
                   width="7"
                   height="13"
                   viewBox="0 0 7 13"
@@ -264,6 +265,7 @@
                   id="input-withdrawal-amount"
                   v-model="withdraw.amountInput"
                   class="neu-input"
+                  placeholder="Amount"
                   type="text"
                   size="lg"
                   autofocus
@@ -298,6 +300,7 @@
               id="input-withdrawal-address"
               v-model="withdraw.address"
               class="mb-2 neu-input"
+              placeholder="Address"
               type="text"
               size="lg"
               min="1"
@@ -320,10 +323,11 @@
             <div class="pt-2 pb-3">
               <a
                 href="#"
-                class="card-link text-muted"
+                class="card-link text-muted d-flex align-items-center"
                 @click.stop.prevent="reset"
               >
                 <svg
+                  class="me-1"
                   width="7"
                   height="13"
                   viewBox="0 0 7 13"
@@ -459,10 +463,11 @@
             <div class="pt-2 pb-3">
               <a
                 href="#"
-                class="card-link text-muted"
+                class="card-link text-muted d-flex align-items-center"
                 @click.stop.prevent="reset"
               >
                 <svg
+                  class="me-1"
                   width="7"
                   height="13"
                   viewBox="0 0 7 13"
@@ -507,10 +512,11 @@
             <div class="pt-2 pb-3">
               <a
                 href="#"
-                class="card-link text-muted"
+                class="card-link text-muted d-flex align-items-center"
                 @click.stop.prevent="reset"
               >
                 <svg
+                  class="me-1"
                   width="7"
                   height="13"
                   viewBox="0 0 7 13"
