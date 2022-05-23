@@ -222,8 +222,16 @@ export default defineComponent({
       // First check if manager api is up
       if (this.loadingProgress <= 50) {
         this.loadingProgress = 50;
-        await this.systemStore.getManagerApi();
-        if (!this.systemStore.managerApi.operational) {
+
+        try {
+          await this.systemStore.getManagerApi();
+          if (!this.systemStore.managerApi.operational) {
+            this.loading = true;
+            this.loadingPollInProgress = false;
+            return;
+          }
+        } catch (error) {
+          console.error(error);
           this.loading = true;
           this.loadingPollInProgress = false;
           return;
