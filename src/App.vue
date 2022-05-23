@@ -107,6 +107,11 @@ export default defineComponent({
       updateStatusInterval: number;
     };
   },
+  computed: {
+    updating() {
+      return this.systemStore.updateStatus.state === 'installing';
+    },
+  },
   watch: {
     loading: {
       handler: function (isLoading) {
