@@ -186,7 +186,7 @@ export default defineStore('system', {
     },
     async getUpdateStatus() {
       const status = await this.sdkStore.citadel.manager.system.updateStatus();
-      if (status && status.progress) {
+      if (status?.progress) {
         this.updateStatus = status;
       }
     },
