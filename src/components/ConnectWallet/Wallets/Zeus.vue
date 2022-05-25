@@ -74,6 +74,7 @@
 import {computed} from 'vue';
 import ConnectionDetails from '../ConnectionDetails.vue';
 import StepList from '../StepList.vue';
+import InputCopy from '../../Utility/InputCopy.vue';
 import Step from '../Step.vue';
 import QrCode from '../../Utility/QrCode.vue';
 // @ts-expect-error TypeScript and Vite understand this module differently
