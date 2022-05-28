@@ -860,7 +860,6 @@ export default defineComponent({
       // Shutdown request
       try {
         await this.systemStore.shutdown();
-        this.toast.success('Shutdown successful');
       } catch (error) {
         console.error(error);
         this.toast.error(
