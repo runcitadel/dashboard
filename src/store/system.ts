@@ -264,7 +264,9 @@ export default defineStore('system', {
           // System is online again
           this.rebooting = false;
           this.hasRebooted = true;
-          return window.clearInterval(pollIfUp);
+
+          // user has to re-login
+          window.location.reload();
         }
       };
       // Poll to check if system has shut down
@@ -280,7 +282,13 @@ export default defineStore('system', {
             return;
           }
         } catch {
+          // System shut down successfully
+          window.clearInterval(pollIfDown);
+          window.clearInterval(pollIfUp);
+
+          // Now we'll poll to check if it's up
           pollIfUp = window.setInterval(pollIfUpFunction, 2000);
+          return;
         }
       }, 2000);
     },
