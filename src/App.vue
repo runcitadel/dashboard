@@ -108,7 +108,7 @@ export default defineComponent({
     };
   },
   computed: {
-    updating() {
+    updating(): boolean {
       return this.systemStore.updateStatus.state === 'installing';
     },
   },
