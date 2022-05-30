@@ -168,8 +168,15 @@ export default defineComponent({
           await window.fetch(this.url, {mode: 'no-cors'});
           this.isOffline = false;
           this.checkIfAppIsOffline = false;
-        } catch (error) {
-          this.isOffline = true;
+        } catch {
+          await delay(1000);
+          try {
+            await window.fetch(this.url);
+            this.isOffline = false;
+            this.checkIfAppIsOffline = false;
+          } catch {
+            this.isOffline = true;
+          }
         }
         await delay(1000);
       }
