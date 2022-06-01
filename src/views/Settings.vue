@@ -186,7 +186,6 @@
                     :success="isCorrectOtp"
                     :error="isIncorrectOtp"
                     @otp-token="setTotpToken"
-                    @keyup="hideOtpError"
                   />
                 </div>
                 <div class="py-2"></div>
@@ -202,7 +201,7 @@
                   <small class="text-danger error">Incorrect password</small>
                 </div>
 
-                <div v-show="isIncorrectTotp" class="my-2 text-center">
+                <div v-show="isIncorrectOtp" class="my-2 text-center">
                   <small class="text-danger error">Incorrect code</small>
                 </div>
 
@@ -637,6 +636,8 @@ export default defineComponent({
       showDmesg: boolean;
       authenticatorToken: string;
       pollUpdateStatus?: number;
+      isCorrectOtp: boolean;
+      isIncorrectOtp: boolean;
     };
   },
   computed: {
@@ -652,9 +653,11 @@ export default defineComponent({
       if (typeof this.systemStore.debugStatus === 'string') {
         return 'Error loading data!';
       }
-      return this.showDmesg
-        ? this.systemStore.debugStatus.dmesg
-        : this.systemStore.debugStatus.debug;
+      return (
+        this.showDmesg
+          ? this.systemStore.debugStatus.dmesg
+          : this.systemStore.debugStatus.debug
+      ) as string;
     },
     debugFilename(): string {
       const type: string = this.showDmesg ? 'dmesg' : 'debug';
@@ -696,7 +699,7 @@ export default defineComponent({
     }
   },
   methods: {
-    setTotpToken(totpToken) {
+    setTotpToken(totpToken: string) {
       this.totpToken = totpToken;
     },
     async enableTwoFactorAuth() {
@@ -766,7 +769,7 @@ export default defineComponent({
     async changePassword() {
       this.isChangingPassword = true;
       this.isIncorrectPassword = false;
-      this.isIncorrectTotp = false;
+      this.isIncorrectOtp = false;
 
       try {
         await this.sdkStore.citadel.manager.auth.changePassword(
@@ -786,7 +789,7 @@ export default defineComponent({
         const isIncorrectTotp = errorString.includes('Incorrect 2FA code');
 
         this.isIncorrectPassword = isIncorrectPassword;
-        this.isIncorrectTotp = isIncorrectTotp;
+        this.isIncorrectOtp = isIncorrectTotp;
 
         this.isChangingPassword = false;
         return;
