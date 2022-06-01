@@ -229,6 +229,12 @@ button {
   &:hover {
     box-shadow: var(--card-shadow-hover);
   }
+  &.highlight {
+    box-shadow: var(--card-shadow), 0 0 0 3px var(--bs-primary);
+    &:hover {
+      box-shadow: var(--card-shadow-hover), 0 0 0 3px var(--bs-primary);
+    }
+  }
   border: none !important;
   outline: 0 !important;
   // Loading bar safari bug https://gist.github.com/ayamflow/b602ab436ac9f05660d9c15190f4fd7b
@@ -909,4 +915,9 @@ html[data-theme='dark'] {
 
 .btn svg {
   width: 24px;
+}
+
+.card-grid {
+  display: grid;
+  grid-column-gap: 1rem;
 }

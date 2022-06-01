@@ -497,6 +497,28 @@
             </b-modal>
           </div>
         </div>
+        <div class="pt-0">
+          <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+            <div>
+              <span class="d-block">Features</span>
+              <small class="d-block" style="opacity: 0.4"
+                >Manage features you want</small
+              >
+            </div>
+            <b-button
+              variant="outline-primary"
+              size="sm"
+              @click="openChannelModal"
+              >Manage</b-button
+            >
+            <channel-selector
+              ref="channel-selector-modal"
+              size="xl"
+              :show-modal="showChannelSelectorModal"
+              @close="closeChannelModal"
+            />
+          </div>
+        </div>
         <div class="px-3 px-lg-4 pb-4">
           <div class="w-100 d-flex justify-content-between mb-1">
             <span class="align-self-end">Citadel Version</span>
@@ -579,6 +601,7 @@ import useSystemStore from '../store/system';
 import useUserStore from '../store/user';
 import {defineComponent, DefineComponent} from 'vue';
 import useToast from '../utils/toast';
+import ChannelSelector from '../components/ChannelSelector.vue';
 
 export default defineComponent({
   components: {
@@ -596,6 +619,7 @@ export default defineComponent({
     BIconCheckCircleFill,
     BellIcon: BellIcon as DefineComponent,
     RefreshIcon: RefreshIcon as DefineComponent,
+    ChannelSelector,
   },
   setup() {
     const sdkStore = useSdkStore();
@@ -619,6 +643,7 @@ export default defineComponent({
       loadingDebug: false,
       debugFailed: false,
       showDmesg: false,
+      showChannelSelectorModal: false,
       authenticatorToken: '',
     } as {
       currentPassword: string;
@@ -638,6 +663,7 @@ export default defineComponent({
       pollUpdateStatus?: number;
       isCorrectOtp: boolean;
       isIncorrectOtp: boolean;
+      showChannelSelectorModal: boolean;
     };
   },
   computed: {
@@ -838,6 +864,12 @@ export default defineComponent({
     closeDebugModal() {
       this.loadingDebug = false;
       (this.$refs['debug-modal'] as {hide: () => void}).hide();
+    },
+    async openChannelModal() {
+      this.showChannelSelectorModal = true;
+    },
+    closeChannelModal() {
+      this.showChannelSelectorModal = false;
     },
     downloadTextFile(contents: string, fileName: string) {
       const blob = new Blob([contents], {

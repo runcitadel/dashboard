@@ -4,6 +4,7 @@
     footer-tag="footer"
     no-body
     class="mb-4 card-custom"
+    :class="highlighted ? 'highlight' : ''"
   >
     <div v-if="loading" class="card-custom-loading-bar"></div>
     <!-- <template v-slot:header></template> -->
@@ -91,6 +92,10 @@ const props = defineProps({
   header: {
     type: String,
     default: '',
+  },
+  highlighted: {
+    type: Boolean,
+    default: false,
   },
   status: {
     type: Object as PropType<
