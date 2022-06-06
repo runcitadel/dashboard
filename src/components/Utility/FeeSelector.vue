@@ -2,72 +2,30 @@
   <div>
     <div class="d-flex w-100 justify-content-between">
       <small class="text-muted d-block mb-0">Transaction Fee</small>
-      <b-form-checkbox
-        v-model="useCustomFee"
-        class="d-flex align-items-center"
-        size="sm"
-        switch
-        :disabled="isDisabled"
-      >
-        <small class="text-muted ms-1">Custom</small>
-      </b-form-checkbox>
-    </div>
-    <div v-if="useCustomFee" class="vue-slider-container">
-      <vue-slider
-        v-model="customFee"
-        :marks="false"
-        hide-label
-        :min="customMinFee"
-        :max="customMaxFee"
-        :interval="1"
-        :dot-size="[22, 22]"
-        contained
-        :tooltip="isDisabled ? 'none' : 'always'"
-        :disabled="isDisabled"
-        @change="emitValue"
-      >
-        <template #tooltip="{value, focus}">
-          <div
-            :class="[
-              'vue-slider-dot-tooltip-inner vue-slider-dot-tooltip-inner-top',
-              {focus},
-            ]"
-          >
-            <span class="vue-slider-dot-tooltip-text d-block"
-              >{{ value }} sat/vB
-            </span>
-            <small class="text-muted"
-              >≈
-              {{
-                $filters.satsToUSD(
-                  (parseInt(fee.fast.total, 10) /
-                    parseInt(fee.fast.perByte, 10)) *
-                    value,
-                  bitcoinStore,
-                )
-              }}</small
-            >
-          </div>
-        </template>
-      </vue-slider>
-      <div class="d-flex w-100 justify-content-between custom-fee-labels">
-        <small class="text-muted mb-0">Slow</small>
-        <small class="text-muted mb-0">Fast</small>
-      </div>
-    </div>
-    <div v-else class="vue-slider-container">
-      <vue-slider
-        v-model="chosenFee"
-        absorb
-        marks
-        :vdata="recommendedFees"
-        :dot-size="[22, 22]"
-        contained
-        :tooltip="isDisabled ? 'none' : 'always'"
-        :disabled="isDisabled"
-        @change="emitValue"
-      >
-        <template #label="{active, value}">
+      <select v-model="chosenFee">
+        <option value="fast">
+          fast ~ {{ timeToConfirm('fast') }} ({{ fee['fast'].perByte }} sat/vB ≈
+          {{ $filters.satsToUSD(fee['fast'].total, bitcoinStore) }})
+        </option>
+        <option value="normal">
+          normal ~ {{ timeToConfirm('normal') }} ({{
+            fee['normal'].perByte
+          }}
+          sat/vB ≈ {{ $filters.satsToUSD(fee['normal'].total, bitcoinStore) }})
+        </option>
+        <option value="slow">
+          slow ~ {{ timeToConfirm('slow') }} ({{ fee['slow'].perByte }} sat/vB ≈
+          {{ $filters.satsToUSD(fee['slow'].total, bitcoinStore) }})
+        </option>
+        <option value="cheapest">
+          cheapest ~ {{ timeToConfirm('cheapest') }} ({{
+            fee['cheapest'].perByte
+          }}
+          sat/vB ≈
+          {{ $filters.satsToUSD(fee['cheapest'].total, bitcoinStore) }})
+        </option>
+      </select>
+      <!--<template #label="{active, value}">
           <div :class="['vue-slider-mark-label', 'text-center', {active}]">
             <span class="text-muted">~ {{ timeToConfirm(value) }}</span>
           </div>
@@ -85,23 +43,21 @@
             <small class="text-muted"
               >≈ {{ $filters.satsToUSD(fee[value].total, bitcoinStore) }}</small
             >
-          </div>
-        </template>
-      </vue-slider>
+          </div>-->
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import VueSlider from '@aarondewes/vue-slider-component';
-import '@aarondewes/vue-slider-component/theme/default.css';
+//import VueSlider from '@aarondewes/vue-slider-component';
+//import '@aarondewes/vue-slider-component/theme/default.css';
 import {defineComponent} from 'vue';
 import useBitcoinStore from '../../store/bitcoin';
 
 export default defineComponent({
-  components: {
+  /*components: {
     VueSlider,
-  },
+  },*/
   props: {
     fee: {
       type: Object,
