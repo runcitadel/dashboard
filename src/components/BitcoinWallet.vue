@@ -864,6 +864,7 @@ export default defineComponent({
     },
   },
   async created() {
+    await this.bitcoinStore.getInstalled();
     await this.bitcoinStore.getStatus();
 
     // to fetch any installed explorers

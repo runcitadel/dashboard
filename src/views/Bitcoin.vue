@@ -19,10 +19,20 @@
               <circle cx="4" cy="4" r="4" fill="#00CD98" />
             </svg>
             <small class="ms-1 text-success">Running</small>
-            <h3 class="d-block font-weight-bold mb-1">Bitcoin Core</h3>
-            <span class="d-block text-muted"
+            <h3 class="d-block font-weight-bold mb-1">Bitcoin</h3>
+            <span
+              v-if="bitcoinStore.isInstalled && knotsVersion.length > 0"
+              class="d-block text-muted"
               >Bitcoin Knots {{ knotsVersion }} (Based on Bitcoin Core
               {{ coreVersion }})</span
+            >
+            <span
+              v-else-if="bitcoinStore.isInstalled"
+              class="d-block text-muted"
+              >Bitcoin Core {{ coreVersion }}</span
+            >
+            <span v-else class="d-block text-muted"
+              >Lightweight client only</span
             >
           </div>
         </div>
@@ -33,7 +43,7 @@
       <b-col col cols="12" md="6" xl="4">
         <bitcoin-wallet></bitcoin-wallet>
       </b-col>
-      <b-col col cols="12" md="6" xl="4">
+      <b-col v-if="bitcoinStore.isInstalled" col cols="12" md="6" xl="4">
         <card-widget
           header="Blockchain"
           :loading="
@@ -92,7 +102,7 @@
           </div>
         </card-widget>
       </b-col>
-      <b-col col cols="12" xl="4">
+      <b-col v-if="bitcoinStore.isInstalled" col cols="12" xl="4">
         <card-widget header="Network">
           <div class>
             <div class="px-3 px-lg-4 pb-2">
@@ -178,21 +188,6 @@ export default defineComponent({
       interval?: number;
     };
   },
-  /*computed: {
-    ...mapState<RootState>({
-      syncPercent: (state: RootState) => state.bitcoin.percent,
-      blocks: (state: RootState) => state.bitcoin.blocks,
-      coreVersion: (state: RootState) =>
-        state.bitcoin.version.split("/")[1].split(":")[1],
-      knotsVersion: (state: RootState) =>
-        state.bitcoin.version.split("/")[2].split(":")[1],
-      currentBlock: (state: RootState) => state.bitcoin.currentBlock,
-      blockHeight: (state: RootState) => state.bitcoin.blockHeight,
-      stats: (state: RootState) => state.bitcoin.stats,
-      onionAddress: (state: RootState) => state.bitcoin.onionAddress,
-      rpc: (state: RootState) => state.bitcoin.rpc,
-    }),
-  },*/
   computed: {
     coreVersion(): string {
       return this.bitcoinStore.version.split('/')[1]?.split(':')[1];

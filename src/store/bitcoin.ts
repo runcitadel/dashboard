@@ -102,6 +102,7 @@ export interface State {
       error?: boolean;
     }
   >;
+  isInstalled: boolean;
   sdkStore: ReturnType<typeof useSdkStore>;
 }
 
@@ -131,7 +132,7 @@ export default defineStore('bitcoin', {
       connectionString: '',
     },
     currentBlock: 0,
-    chain: '',
+    chain: 'main',
     blockHeight: 0,
     blocks: [],
     percent: -1, //for loading state
@@ -182,12 +183,18 @@ export default defineStore('bitcoin', {
         error: false,
       },
     },
+    isInstalled: true,
     sdkStore: useSdkStore(),
   }),
 
   // Functions to get data from the API
   actions: {
+    async getInstalled() {
+      this.isInstalled =
+        await this.sdkStore.citadel.middleware.bitcoin.isInstalled();
+    },
     async getStatus() {
+      if (!this.isInstalled) return;
       const status =
         await this.sdkStore.citadel.middleware.bitcoin.isOperational();
 
@@ -197,6 +204,7 @@ export default defineStore('bitcoin', {
     },
 
     async getP2PInfo() {
+      if (!this.isInstalled) return;
       const p2pInfo =
         await this.sdkStore.citadel.manager.system.getBitcoinP2PConnectionDetails();
 
@@ -209,6 +217,7 @@ export default defineStore('bitcoin', {
     },
 
     async getElectrumInfo() {
+      if (!this.isInstalled) return;
       const electrumInfo =
         await this.sdkStore.citadel.manager.system.getElectrumConnectionDetails();
 
@@ -221,6 +230,7 @@ export default defineStore('bitcoin', {
     },
 
     async getRpcInfo() {
+      if (!this.isInstalled) return;
       const rpcInfo =
         await this.sdkStore.citadel.manager.system.getBitcoinRPConnectionDetails();
 
@@ -233,6 +243,7 @@ export default defineStore('bitcoin', {
     },
 
     async getSync() {
+      if (!this.isInstalled) return;
       const sync = await this.sdkStore.citadel.middleware.bitcoin.syncStatus();
 
       if (sync) {
@@ -246,6 +257,7 @@ export default defineStore('bitcoin', {
     },
 
     async getBlocks() {
+      if (!this.isInstalled) return;
       await this.getSync();
 
       // Cache block height array of latest 3 blocks for loading view
@@ -274,6 +286,7 @@ export default defineStore('bitcoin', {
     },
 
     async getVersion() {
+      if (!this.isInstalled) return;
       const version = await this.sdkStore.citadel.middleware.bitcoin.version();
 
       if (version) {
@@ -282,6 +295,7 @@ export default defineStore('bitcoin', {
     },
 
     async getPeers() {
+      if (!this.isInstalled) return;
       const peers =
         await this.sdkStore.citadel.middleware.bitcoin.connections();
 
@@ -291,6 +305,7 @@ export default defineStore('bitcoin', {
     },
 
     async getStats() {
+      if (!this.isInstalled) return;
       const stats = await this.sdkStore.citadel.middleware.bitcoin.stats();
 
       if (stats) {
@@ -320,6 +335,7 @@ export default defineStore('bitcoin', {
     },
 
     async getTransactions() {
+      if (!this.isInstalled) return;
       const transactions =
         await this.sdkStore.citadel.middleware.lightning.transaction.getOnChainTransactions();
       this._transactions = transactions;
