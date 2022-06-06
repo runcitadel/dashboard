@@ -46,6 +46,8 @@ import {TrashIcon} from '@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js';
 
 import delay from '../helpers/delay';
 
+const skipCheckApps = ['bluewallet', 'ringtools'];
+
 export default defineComponent({
   components: {
     TrashIcon,
@@ -162,7 +164,7 @@ export default defineComponent({
     },
     async pollOfflineApp() {
       this.checkIfAppIsOffline = true;
-      if (this.id === 'bluewallet') this.checkIfAppIsOffline = false;
+      if (skipCheckApps.includes(this.id)) this.checkIfAppIsOffline = false;
       while (this.checkIfAppIsOffline) {
         try {
           await window.fetch(this.url, {mode: 'no-cors'});
