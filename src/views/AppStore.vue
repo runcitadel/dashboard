@@ -87,19 +87,27 @@
 </template>
 
 <script lang="ts" setup>
-import {computed} from 'vue';
+import {computed, ref} from 'vue';
 import useAppsStore, {app as appType} from '../store/apps';
 
 import CardWidget from '../components/CardWidget.vue';
 
 const appsStore = useAppsStore();
+
+const showIncompatible = ref(false);
+const compatibleApps = computed(() => {
+  return appsStore.store.filter((app) => app.compatible);
+});
+
 const categorizedAppStore = computed((): Record<string, appType[]> => {
-  let group = appsStore.store.reduce((r: Record<string, appType[]>, app) => {
+  let store = showIncompatible.value ? appsStore.store : compatibleApps.value;
+  let group = store.reduce((r: Record<string, appType[]>, app) => {
     r[app.category] = [...(r[app.category] || []), app];
     return r;
   }, {});
   return group;
 });
+
 appsStore.getAppStore();
 </script>
 
