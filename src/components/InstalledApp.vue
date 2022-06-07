@@ -192,7 +192,7 @@ export default defineComponent({
   .installed-app-link {
     text-decoration: none;
     .installed-app-icon {
-      box-shadow: 0px 10px 30px rgba(209, 213, 223, 0.5);
+      box-shadow: var(--card-shadow);
     }
   }
   .uninstall-btn {
