@@ -65,7 +65,7 @@ defineProps({
     transform: translate3d(-50%, -50%, 0) scale(1); //animated
     transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     background: #00cd98;
-    box-shadow: 0px 10px 30px rgba(209, 213, 223, 0.5);
+    box-shadow: var(--card-shadow);
     border-radius: 50%;
     z-index: 0;
   }
