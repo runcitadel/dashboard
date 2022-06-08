@@ -161,6 +161,10 @@ onUpdated(() => {
 });
 </script>
 <style lang="scss" scoped>
+.card-grid {
+  display: grid;
+}
+
 .grid-1-column {
   grid-template-columns: 1fr;
 }
