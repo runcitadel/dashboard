@@ -513,21 +513,23 @@
               >
             </span>
             <div v-show="systemStore.availableUpdate.version">
-              <span class="d-block">
-                <div class="icon-16px"><BellIcon /></div>
+              <span class="d-flex align-items-center">
+                <div class="d-flex align-items-center icon-16px">
+                  <BellIcon />
+                </div>
                 <small class="text-muted ms-1"
                   >{{ systemStore.availableUpdate.name }} is now available to
                   install</small
                 >
+                <b-button
+                  class="ms-auto"
+                  variant="primary"
+                  size="sm"
+                  :disabled="isUpdating"
+                  @click.prevent="confirmUpdate"
+                  >Install now</b-button
+                >
               </span>
-              <b-button
-                class="mt-2"
-                variant="primary"
-                size="sm"
-                :disabled="isUpdating"
-                @click.prevent="confirmUpdate"
-                >Install now</b-button
-              >
             </div>
           </div>
         </div>
