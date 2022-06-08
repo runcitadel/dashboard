@@ -10,7 +10,7 @@
     </div>
     <b-input
       v-model="searchQuery"
-      class="neu-input"
+      class="neu-input my-4"
       placeholder="Search for apps"
       type="text"
       size="lg"
