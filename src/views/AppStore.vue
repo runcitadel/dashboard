@@ -9,6 +9,7 @@
       </div>
     </div>
     <b-input
+      v-if="systemStore.updateChannel !== 'stable'"
       v-model="searchQuery"
       class="neu-input my-4"
       placeholder="Search for apps"
@@ -97,11 +98,13 @@
 <script lang="ts" setup>
 import {computed, ref} from 'vue';
 import useAppsStore, {app as appType} from '../store/apps';
+import useSystemStore from '../store/system';
 import Fuse from 'fuse.js';
 
 import CardWidget from '../components/CardWidget.vue';
 
 const appsStore = useAppsStore();
+const systemStore = useSystemStore();
 
 const showIncompatible = ref(false);
 const searchQuery = ref('');
@@ -134,6 +137,7 @@ const categorizedAppStore = computed((): Record<string, appType[]> => {
 });
 
 appsStore.getAppStore();
+systemStore.getUpdateChannel();
 </script>
 
 <style lang="scss" scoped>

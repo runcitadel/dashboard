@@ -69,6 +69,8 @@ export interface State {
   cpuTemperatureUnit: 'celsius' | 'fahrenheit';
   uptime: null | number;
   isNvme: boolean;
+  // It can be anything, but these are the most likely
+  updateChannel: 'stable' | 'beta' | 'c-lightning' | string;
   sdkStore: ReturnType<typeof useSdkStore>;
 }
 
@@ -130,6 +132,7 @@ export default defineStore('system', {
     cpuTemperatureUnit: 'celsius',
     uptime: null,
     isNvme: false,
+    updateChannel: 'stable',
     sdkStore: useSdkStore(),
   }),
   actions: {
@@ -139,6 +142,13 @@ export default defineStore('system', {
         const {version} = data;
         this.version = version;
       }
+    },
+    async getUpdateChannel() {
+      // TODO: Implement after the next SDK release
+    },
+    async setUpdateChannel(channel: string) {
+      // TODO: Implement after the next SDK release
+      console.log(`Setting update channel to ${channel}`);
     },
     getUnit() {
       if (window.localStorage.getItem('unit')) {
