@@ -144,11 +144,16 @@ export default defineStore('system', {
       }
     },
     async getUpdateChannel() {
-      // TODO: Implement after the next SDK release
+      const data = await this.sdkStore.citadel.manager.system.getUpdateChannel(
+        '',
+      );
+      if (data) {
+        this.updateChannel = data;
+      }
     },
     async setUpdateChannel(channel: string) {
-      // TODO: Implement after the next SDK release
-      console.log(`Setting update channel to ${channel}`);
+      await this.sdkStore.citadel.manager.system.setUpdateChannel(channel);
+      this.updateChannel = channel;
     },
     getUnit() {
       if (window.localStorage.getItem('unit')) {
