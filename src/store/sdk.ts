@@ -1,4 +1,4 @@
-import Citadel from '@runcitadel/sdk/dist/index.js';
+import Citadel from '../../node_modules/@runcitadel/sdk/dist/index.js';
 import {defineStore} from 'pinia';
 
 export interface State {
