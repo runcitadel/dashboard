@@ -114,6 +114,9 @@
 <script lang="ts" setup>
 import {watch, ref, nextTick, onUpdated} from 'vue';
 import CardWidget from './CardWidget.vue';
+import useSystemStore from '../store/system';
+
+const systemStore = useSystemStore();
 
 const mainModal = ref<null | {show: () => void; hide: () => void}>();
 const selected = ref<'stable' | 'beta' | 'core-ln'>('stable');
@@ -154,7 +157,14 @@ watch([props], async () => {
 
 function selectChannel(channel: 'stable' | 'beta' | 'core-ln') {
   selected.value = channel;
+  systemStore.setUpdateChannel(channel);
 }
+
+systemStore.getUpdateChannel().then(() => {
+  if (['stable', 'beta', 'core-ln'].includes(systemStore.updateChannel)) {
+    selected.value = systemStore.updateChannel as 'stable' | 'beta' | 'core-ln';
+  }
+});
 
 onUpdated(() => {
   getCorrectSize();
