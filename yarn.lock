@@ -158,7 +158,7 @@ __metadata:
   dependencies:
     "@aarondewes/vue-slider-component": ^3.2.16
     "@bitcoin-design/bitcoin-icons-vue": ^0.1.9
-    "@runcitadel/sdk": ^0.4.0-beta.3
+    "@runcitadel/sdk": ^0.5.0
     "@types/node": ^17.0.21
     "@typescript-eslint/eslint-plugin": ^5.13.0
     "@typescript-eslint/parser": ^5.13.0
@@ -175,6 +175,7 @@ __metadata:
     eslint-config-prettier: ^8.5.0
     eslint-plugin-prettier: ^4.0.0
     eslint-plugin-vue: ^8.5.0
+    fuse.js: ^6.6.2
     husky: ^7.0.0
     pinia: ^2.0.11
     prettier: ^2.5.1
@@ -189,13 +190,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@runcitadel/sdk@npm:^0.4.0-beta.3":
-  version: 0.4.0
-  resolution: "@runcitadel/sdk@npm:0.4.0"
+"@runcitadel/sdk@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "@runcitadel/sdk@npm:0.5.0"
   peerDependencies:
     "@types/react": ^18.0.5
     react: ^18.0.0
-  checksum: a5bfb7a4cd7003bcb3117185e0ff008bef7fa8f63a5798afe7a5021bc18522a5ddd4277441838a145731238be42dcc43be102b9c336b806ed63ec4c43da2a341
+  checksum: 5b51e783c59d5e759acaae89ed9902e8fb3a22e92e96a455a0cffa08d9debe0a81095ba253784f42cfa7178dc3ff2f9a432e8191290915406c39fc1ffedfaed0
   languageName: node
   linkType: hard
 
@@ -1506,6 +1507,13 @@ __metadata:
   version: 1.0.1
   resolution: "functional-red-black-tree@npm:1.0.1"
   checksum: ca6c170f37640e2d94297da8bb4bf27a1d12bea3e00e6a3e007fd7aa32e37e000f5772acf941b4e4f3cf1c95c3752033d0c509af157ad8f526e7f00723b9eb9f
+  languageName: node
+  linkType: hard
+
+"fuse.js@npm:^6.6.2":
+  version: 6.6.2
+  resolution: "fuse.js@npm:6.6.2"
+  checksum: 17ae758ce205276ebd88bd9c9f088a100be0b4896abac9f6b09847151269d1690f41d7f98ff5813d4a58973162dbd99d0072ce807020fee6f9de60170f6b08eb
   languageName: node
   linkType: hard
 

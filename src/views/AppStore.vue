@@ -8,6 +8,15 @@
         </p>
       </div>
     </div>
+    <b-input
+      v-if="systemStore.updateChannel !== 'stable'"
+      v-model="searchQuery"
+      class="neu-input my-4"
+      placeholder="Search for apps"
+      type="text"
+      size="lg"
+      autofocus
+    ></b-input>
     <div class="app-store-card-columns card-columns">
       <card-widget
         v-for="categorizedApps in categorizedAppStore"
@@ -87,20 +96,48 @@
 </template>
 
 <script lang="ts" setup>
-import {computed} from 'vue';
+import {computed, ref} from 'vue';
 import useAppsStore, {app as appType} from '../store/apps';
+import useSystemStore from '../store/system';
+import Fuse from 'fuse.js';
 
 import CardWidget from '../components/CardWidget.vue';
 
 const appsStore = useAppsStore();
+const systemStore = useSystemStore();
+
+const showIncompatible = ref(false);
+const searchQuery = ref('');
+
+const compatibleApps = computed(() => {
+  return appsStore.store.filter((app) => app.compatible);
+});
+
+const appsToShow = computed(() => {
+  return showIncompatible.value ? appsStore.store : compatibleApps.value;
+});
+
+const fuse = computed(() => {
+  return new Fuse(appsToShow.value, {keys: ['name', 'tagline']});
+});
+
+const foundApps = computed(() => {
+  if (!searchQuery.value) return appsToShow.value;
+  let result = fuse.value.search(searchQuery.value).map((val) => val.item);
+  return result ? result : appsToShow.value;
+});
+
 const categorizedAppStore = computed((): Record<string, appType[]> => {
-  let group = appsStore.store.reduce((r: Record<string, appType[]>, app) => {
+  let store = foundApps.value as appType[];
+  let group = store.reduce((r: Record<string, appType[]>, app) => {
     r[app.category] = [...(r[app.category] || []), app];
     return r;
   }, {});
   return group;
 });
+
 appsStore.getAppStore();
+systemStore.getUpdateChannel();
 </script>
 
 <style lang="scss" scoped>

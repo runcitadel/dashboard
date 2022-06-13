@@ -297,6 +297,7 @@
             id="input-sats"
             v-model="send.paymentRequest"
             class="mb-4 neu-input"
+            placeholder="Paste Invoice"
             type="text"
             size="lg"
             min="1"
@@ -1137,19 +1138,26 @@ export default defineComponent({
       this.error = '';
 
       try {
-        await this.sdkStore.citadel.middleware.lightning.lightning.payInvoice(
-          this.send.paymentRequest,
-        );
-        // TODO: Fix this
-        /*if (res.data.paymentError) {
-          return (this.error = res.data.paymentError);
-        }*/
+        const response =
+          await this.sdkStore.citadel.middleware.lightning.lightning.payInvoice(
+            this.send.paymentRequest,
+          );
+
+        if (response.paymentError) {
+          this.error = response.paymentError;
+          this.loading = false;
+          this.send.isSending = false;
+
+          return false;
+        }
+
         this.mode = 'sent';
 
         //refresh
         this.lightningStore.getTransactions();
         this.lightningStore.getChannels();
       } catch (error) {
+        console.error(error);
         this.error = JSON.stringify(error) || 'Error sending payment';
       }
 
