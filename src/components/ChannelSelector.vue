@@ -28,6 +28,11 @@
         </a>
       </div>
     </template>
+    <p v-if="!supportedChannels.includes(selected)">
+      You are currently on this update channel: {{ selected }}. If you choose
+      another one, you can not go back to your current update channel from the
+      dashboard.
+    </p>
     <div class="card-grid" :class="columnClass">
       <card-widget
         :highlighted="selected === 'stable'"
@@ -117,6 +122,7 @@ import CardWidget from './CardWidget.vue';
 import useSystemStore from '../store/system';
 
 const systemStore = useSystemStore();
+const supportedChannels = ['stable', 'beta', 'c-lightning'];
 
 const mainModal = ref<null | {show: () => void; hide: () => void}>();
 const selected = ref<'stable' | 'beta' | 'core-ln'>('stable');
@@ -132,7 +138,6 @@ const columnClass = ref('grid-1-column');
 const getCorrectSize = () => {
   const width = document.querySelector('#channel-selector-modal .modal-content')
     ?.clientWidth as number;
-  console.log(width);
   if (width > 900) {
     columnClass.value = 'grid-3-column';
   } else if (width > 600) {
