@@ -1,5 +1,5 @@
 <template>
-  <card-widget header="Storage" :status="cardStatus">
+  <card-widget :header="t('storage')" :status="cardStatus">
     <div class="card-custom-body">
       <div class="card-app-info px-3 px-lg-4">
         <div class="d-flex w-100 justify-content-between mb-4">
@@ -14,7 +14,7 @@
                 {{ readableSize(storage.used) }}
               </h3>
               <p class="text-muted mb-0">
-                Used out of {{ readableSize(storage.total) }}
+                {{ t('used-out-of', {storage: readableSize(storage.total)}) }}
               </p>
             </div>
           </div>
@@ -87,9 +87,11 @@
             "
           ></b-progress>
           <div class="text-end">
-            <small class="text-muted"
-              >{{ readableSize(storage.total - storage.used) }} available</small
-            >
+            <small class="text-muted">{{
+              t('available', {
+                storage: readableSize(storage.total - storage.used),
+              })
+            }}</small>
           </div>
 
           <b-alert
@@ -172,8 +174,9 @@
   </card-widget>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script lang="ts" setup>
+import {computed} from 'vue';
+import {useI18n} from 'vue-i18n';
 
 import {BIconInfoCircleFill} from 'bootstrap-vue/src/index.js';
 
@@ -182,79 +185,71 @@ import CardWidget from '../CardWidget.vue';
 import useAppsStore from '../../store/apps';
 import useSystemStore from '../../store/system';
 
-export default defineComponent({
-  components: {
-    CardWidget,
-    BIconInfoCircleFill,
+const systemStore = useSystemStore();
+const appsStore = useAppsStore();
+const {t} = useI18n();
+
+const storage = computed(
+  (): {
+    total: number;
+    used: number;
+    breakdown: {id: string; used: number}[];
+  } => {
+    return systemStore.storage;
   },
-  setup() {
-    const systemStore = useSystemStore();
-    const appsStore = useAppsStore();
-    return {appsStore, systemStore};
-  },
-  computed: {
-    storage(): {
-      total: number;
-      used: number;
-      breakdown: {id: string; used: number}[];
-    } {
-      return this.systemStore.storage;
-    },
-    src(): string {
-      return new URL(`../../assets/icon-system.svg`, import.meta.url).href;
-    },
-    isRunningLowOnStorage(): boolean {
-      // less than 1GB remaining
-      if (this.storage && this.storage.total) {
-        return this.storage.total - this.storage.used < 1000000000;
-      }
-      return false;
-    },
-    isStorageFull(): boolean {
-      // less than 100MB remaining
-      if (this.storage && this.storage.total) {
-        return this.storage.total - this.storage.used < 100000000;
-      }
-      return false;
-    },
-    cardStatus():
-      | {
-          text: string;
-          variant: 'success' | 'primary' | 'muted' | 'danger' | 'warning';
-          blink: boolean;
-        }
-      | undefined {
-      if (this.isStorageFull) {
-        return {
-          text: 'No space left',
-          variant: 'danger',
-          blink: true,
-        };
-      }
-      if (this.isRunningLowOnStorage) {
-        return {
-          text: 'Low space',
-          variant: 'warning',
-          blink: true,
-        };
-      }
-      return undefined;
-    },
-  },
-  created() {
-    // to map app ID's to app names
-    this.appsStore.getAppStore();
-    this.systemStore.getDiskInfo();
-    this.systemStore.getStorage();
-  },
-  methods: {
-    readableSize(n: number) {
-      return readableSize(n);
-    },
-    getAppName(appId: string) {
-      const appStore = this.appsStore.store;
-      return appStore.find(({id}) => id === appId)?.name || appId;
-    },
-  },
+);
+
+const src = computed((): string => {
+  return new URL(`../../assets/icon-system.svg`, import.meta.url).href;
 });
+
+const isRunningLowOnStorage = computed((): boolean => {
+  // less than 1GB remaining
+  if (storage.value && storage.value.total) {
+    return storage.value.total - storage.value.used < 1000000000;
+  }
+  return false;
+});
+
+const isStorageFull = computed((): boolean => {
+  // less than 100MB remaining
+  if (storage.value && storage.value.total) {
+    return storage.value.total - storage.value.used < 100000000;
+  }
+  return false;
+});
+const cardStatus = computed(
+  ():
+    | {
+        text: string;
+        variant: 'success' | 'primary' | 'muted' | 'danger' | 'warning';
+        blink: boolean;
+      }
+    | undefined => {
+    if (isStorageFull.value) {
+      return {
+        text: 'No space left',
+        variant: 'danger',
+        blink: true,
+      };
+    }
+    if (isRunningLowOnStorage.value) {
+      return {
+        text: 'Low space',
+        variant: 'warning',
+        blink: true,
+      };
+    }
+    return undefined;
+  },
+);
+// to map app ID's to app names
+appsStore.getAppStore();
+systemStore.getDiskInfo();
+systemStore.getStorage();
+
+function getAppName(appId: string) {
+  const appStore = appsStore.store;
+  return appStore.find(({id}) => id === appId)?.name || appId;
+}
 </script>

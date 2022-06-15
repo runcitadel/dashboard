@@ -13,7 +13,6 @@ export default defineStore('sdk', {
           ? 'http://citadel-dev.local'
           : window.location.origin,
       ),
-      //citadel: new Citadel('https://node.runcitadel.space'),
     };
     state.citadel.jwt = window.localStorage.getItem('jwt') || '';
     return state;

@@ -1,11 +1,10 @@
 <template>
   <div class="p-sm-2">
     <div class="my-3 pb-2">
-      <h1 class="text-lowercase">
-        {{ greeting
-        }}{{ userStore.name ? `, ${userStore.name.split(' ')[0]}` : '' }}
+      <h1>
+        {{ t(`greetings.${greeting}`, {username: userStore.name}) }}
       </h1>
-      <p class="text-muted">Here's an overview of your Citadel</p>
+      <p class="text-muted">{{ t('overview') }}</p>
     </div>
     <b-row>
       <b-col col cols="12" md="6" xl="4">
@@ -15,11 +14,12 @@
         <card-widget
           header="Bitcoin Core"
           :status="{
-            text: bitcoinStore.percent < 100 ? 'Synchronizing' : 'Running',
+            text:
+              bitcoinStore.percent < 100 ? t('synchronizing') : t('running'),
             variant: 'success',
             blink: false,
           }"
-          sub-title="Synchronized"
+          :sub-title="t('synchronized')"
           icon="icon-app-bitcoin.svg"
           :loading="
             lightningStore.percent < 100 || bitcoinStore.blocks.length === 0
@@ -43,14 +43,16 @@
           </template>
           <div class>
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4">
-              <p class="mb-1">Connected Peers</p>
+              <p class="mb-1">{{ t('connected-peers') }}</p>
               <p>
                 {{ bitcoinStore.stats.peers }}
               </p>
             </div>
             <blockchain></blockchain>
             <div class="px-3 px-lg-4 py-3">
-              <router-link to="/bitcoin" class="card-link">Manage</router-link>
+              <router-link to="/bitcoin" class="card-link">{{
+                t('manage')
+              }}</router-link>
             </div>
           </div>
         </card-widget>
@@ -59,9 +61,12 @@
         <b-row>
           <b-col col cols="12" md="6" xl="12">
             <card-widget
-              header="Bitcoin Wallet"
+              :header="t('bitcoin-wallet')"
               :status="{
-                text: lightningStore.percent < 100 ? 'Synchronizing' : 'Active',
+                text:
+                  lightningStore.percent < 100
+                    ? t('synchronizing')
+                    : t('running'),
                 variant: 'success',
                 blink: false,
               }"
@@ -97,9 +102,9 @@
                 ></span>
               </template>
               <div class="px-3 px-lg-4 pt-2 pb-3">
-                <router-link to="/bitcoin" class="card-link"
-                  >Manage</router-link
-                >
+                <router-link to="/bitcoin" class="card-link">{{
+                  t('manage')
+                }}</router-link>
               </div>
             </card-widget>
           </b-col>
@@ -118,6 +123,7 @@ import useUserStore from '../store/user';
 import useBitcoinStore from '../store/bitcoin';
 import useLightningStore from '../store/lightning';
 import useUiStore from '../store/ui';
+import {useI18n} from 'vue-i18n';
 
 import {defineComponent} from 'vue';
 import {satsToBtc} from '../helpers/units';
@@ -142,6 +148,7 @@ export default defineComponent({
     const bitcoinStore = useBitcoinStore();
     const lightningStore = useLightningStore();
     const uiStore = useUiStore();
+    const {t} = useI18n();
 
     return {
       userStore,
@@ -149,6 +156,7 @@ export default defineComponent({
       bitcoinStore,
       lightningStore,
       uiStore,
+      t,
     };
   },
   data() {
@@ -172,16 +180,16 @@ export default defineComponent({
     greeting: () => {
       const currentHour = new Date().getHours();
 
-      const greetingMessage =
+      const greeting =
         currentHour >= 4 && currentHour < 12 // after 4:00AM and before 12:00PM
-          ? 'Good morning'
+          ? 'morning'
           : currentHour >= 12 && currentHour <= 16 // after 12:00PM and before 5:00PM
-          ? 'Good afternoon'
+          ? 'afternoon'
           : currentHour > 16 || currentHour < 4 // after 5:00PM or before 4:00AM (to accommodate our fellow hackers)
-          ? 'Good evening'
-          : 'Welcome back'; // if for some reason the calculation didn't work
+          ? 'evening'
+          : 'fallback'; // if for some reason the calculation didn't work
 
-      return greetingMessage;
+      return greeting;
     },
   },
   created() {

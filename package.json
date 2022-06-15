@@ -31,6 +31,7 @@
     "typescript": "^4.6.2",
     "vue": "^3.2.31",
     "vue-confetti": "^2.3.0",
+    "vue-i18n": "^9.1.10",
     "vue-router": "^4.0.13",
     "vue-toastification": "next"
   },

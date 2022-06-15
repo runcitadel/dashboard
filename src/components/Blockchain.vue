@@ -44,11 +44,15 @@
                 </div>
                 <div class="align-self-center">
                   <h6 class="mb-1 font-weight-normal">
-                    Block {{ block.height.toLocaleString() }}
+                    {{ t('block') }} {{ block.height.toLocaleString() }}
                   </h6>
                   <small v-if="block.numTransactions" class="text-muted">
                     {{ block.numTransactions.toLocaleString() }}
-                    transaction{{ block.numTransactions !== 1 ? 's' : '' }}
+                    {{
+                      block.numTransactions === 1
+                        ? t('transaction')
+                        : t('transactions')
+                    }}
                   </small>
                   <small v-if="block.size" class="text-muted">
                     <span>&bull; {{ Math.round(block.size / 1000) }} KB</span>
@@ -127,6 +131,7 @@
 
 <script lang="ts" setup>
 import {onBeforeUnmount, ref, watch} from 'vue';
+import {useI18n} from 'vue-i18n';
 
 import useBitcoinStore from '../store/bitcoin';
 import {
@@ -134,6 +139,8 @@ import {
   format,
   getDateFormatWithSeconds,
 } from '../helpers/date';
+
+const {t} = useI18n();
 
 defineProps({
   numBlocks: {
@@ -183,9 +190,9 @@ function blockTime(timestamp: number) {
   const minedAt = timestamp * 1000;
   //sometimes the block can have a timestamp with a few seconds in the future compared to browser's time
   if (new Date(minedAt) < new Date()) {
-    return formatDistance(new Date(minedAt), new Date());
+    return t('time-ago', {time: formatDistance(new Date(minedAt), new Date())});
   } else {
-    return 'just now';
+    return t('just-now');
   }
 }
 function blockReadableTime(timestamp: number) {
