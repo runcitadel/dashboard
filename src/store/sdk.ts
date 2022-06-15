@@ -7,13 +7,13 @@ export interface State {
   userStore: ReturnType<typeof useUserStore>;
 }
 
+const isDevelopment = import.meta.env.DEV;
+
 export default defineStore('sdk', {
   state: (): State => {
     const state: State = {
       citadel: new Citadel(
-        process.env.NODE_ENV === 'development'
-          ? 'http://citadel-dev.local'
-          : window.location.origin,
+        isDevelopment ? 'http://citadel-dev.local' : window.location.origin,
       ),
       userStore: useUserStore(),
     };
