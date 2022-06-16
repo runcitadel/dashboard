@@ -90,6 +90,12 @@ const messages = {
       subheading:
         'Add super powers to your Citadel with amazing self-hosted applications',
       'search-placeholder': 'Search for apps',
+      back: 'Back',
+      starting: 'Starting...',
+      installing: 'Installing...',
+      uninstalling: 'Uninstalling...',
+      open: 'Open',
+      'default-password': 'The default password for this app is',
     },
   },
 };
