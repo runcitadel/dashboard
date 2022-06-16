@@ -87,7 +87,11 @@ const messages = {
       'update-running': 'Update läuft...',
     },
     store: {
-      sidebar: 'App Store',
+      sidebar: 'App-Store',
+      heading: 'App-Store',
+      subheading:
+        'Verleihe deinem Citadel mit großartigen selbst gehosteten Apps Superkräfte',
+      'search-placeholder': 'Nach Apps suchen',
     },
   },
 };

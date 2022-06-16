@@ -86,6 +86,10 @@ const messages = {
     },
     store: {
       sidebar: 'App Store',
+      heading: 'app store',
+      subheading:
+        'Add super powers to your Citadel with amazing self-hosted applications',
+      'search-placeholder': 'Search for apps',
     },
   },
 };

@@ -2,9 +2,9 @@
   <div class="p-sm-2">
     <div class="mt-3 mb-4">
       <div class="">
-        <h1>app store</h1>
+        <h1>{{ t('apps.store.heading') }}</h1>
         <p class="text-muted">
-          Add super powers to your Citadel with amazing self-hosted applications
+          {{ t('apps.store.subheading') }}
         </p>
       </div>
     </div>
@@ -12,7 +12,7 @@
       v-if="systemStore.updateChannel !== 'stable'"
       v-model="searchQuery"
       class="neu-input my-4"
-      placeholder="Search for apps"
+      :placeholder="t('apps.store.search-placeholder')"
       type="text"
       size="lg"
       autofocus
@@ -97,6 +97,7 @@
 
 <script lang="ts" setup>
 import {computed, ref} from 'vue';
+import {useI18n} from 'vue-i18n';
 import useAppsStore, {app as appType} from '../store/apps';
 import useSystemStore from '../store/system';
 import Fuse from 'fuse.js';
@@ -105,6 +106,7 @@ import CardWidget from '../components/CardWidget.vue';
 
 const appsStore = useAppsStore();
 const systemStore = useSystemStore();
+const {t} = useI18n();
 
 const showIncompatible = ref(false);
 const searchQuery = ref('');
