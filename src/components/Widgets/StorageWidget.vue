@@ -100,10 +100,7 @@
             class="mt-3"
             show
           >
-            <small
-              >Consider uninstalling some apps or upgrading to a larger
-              drive.</small
-            >
+            <small>{{ t('storage-full-suggestion') }}</small>
           </b-alert>
         </div>
         <div class="pt-1">
@@ -111,8 +108,8 @@
             v-b-toggle.storage-breakdown-collapse
             class="card-link px-3 px-lg-4"
           >
-            <span class="when-closed">View usage</span>
-            <span class="when-open">Hide usage</span>
+            <span class="when-closed">{{ t('view-usage') }}</span>
+            <span class="when-open">{{ t('hide-usage') }}</span>
           </b-link>
           <div class="pb-4"></div>
           <b-collapse id="storage-breakdown-collapse">
@@ -138,22 +135,22 @@
                       class="d-flex justify-content-between align-items-center"
                     >
                       <span v-if="app.id === 'citadel'"
-                        >System
+                        >{{ t('system') }}
                         <b-icon-info-circle-fill
                           v-b-tooltip.hover.bottom
                           icon="info-circle-fill"
                           style="opacity: 0.4"
                           variant="dark"
                           class="ms-1"
-                          title="Including Bitcoin Core, LND, and Electrum server"
+                          :title="t('system-including')"
                         />
                       </span>
                       <span v-else>{{ getAppName(app.id) }}</span>
 
                       <!-- There's an edge case where a negative value may be returned by the API -->
-                      <small v-if="app.used < 0" class="text-muted"
-                        >Calculating...</small
-                      >
+                      <small v-if="app.used < 0" class="text-muted">{{
+                        t('calculating')
+                      }}</small>
                       <span v-else>{{ readableSize(app.used) }}</span>
                     </div>
                     <b-progress

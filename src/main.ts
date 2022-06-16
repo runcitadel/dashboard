@@ -15,6 +15,7 @@ import en from './i18n/en';
 import de from './i18n/de';
 
 const i18n = createI18n({
+  allowComposition: true,
   // Todo: safe check if a variant with the full name exists, otherwise use the short name
   locale: navigator.language.split('-')[0],
   fallbackLocale: 'en',
