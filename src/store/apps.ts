@@ -28,16 +28,21 @@ export default defineStore('apps', {
   // Functions to get data from the API
   actions: {
     async getInstalledApps() {
-      const installedApps = await this.sdkStore.citadel.manager.apps.list(true);
-      if (installedApps) {
-        this.installed = installedApps.apps as app[];
+      const {apps} = await this.sdkStore.citadel.manager.apps.list(true);
+      if (apps) {
+        this.installed = apps as app[];
       }
     },
     async getAppStore() {
       this.getInstalledApps();
-      const appStore = await this.sdkStore.citadel.manager.apps.list();
-      if (appStore) {
-        this.store = appStore.apps as app[];
+      const {apps, jwt} = await this.sdkStore.citadel.manager.apps.list();
+
+      // Update JWT
+      localStorage.setItem('jwt', jwt);
+      this.sdkStore.setJwt(jwt);
+
+      if (apps) {
+        this.store = apps;
       }
     },
     async uninstall(appId: string) {
