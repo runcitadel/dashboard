@@ -120,8 +120,11 @@
 import {watch, ref, nextTick, onUpdated} from 'vue';
 import CardWidget from './CardWidget.vue';
 import useSystemStore from '../store/system';
+import useToast from '../utils/toast';
+import delay from '../helpers/delay';
 
 const systemStore = useSystemStore();
+const toast = useToast();
 const supportedChannels = ['stable', 'beta', 'c-lightning'];
 
 const mainModal = ref<null | {show: () => void; hide: () => void}>();
@@ -163,6 +166,14 @@ watch([props], async () => {
 function selectChannel(channel: 'stable' | 'beta' | 'core-ln') {
   selected.value = channel;
   systemStore.setUpdateChannel(channel);
+  toast.success(
+    'Update channel set successfully',
+    "You'll now receive updates from this channel",
+  );
+  delay(3000).then(() => {
+    // The manager will be rebooting in the background.
+    window.location.reload();
+  });
 }
 
 systemStore.getUpdateChannel().then(() => {
