@@ -8,7 +8,7 @@ export type Dependency = 'bitcoind' | 'electrum' | 'lnd' | 'c-lightning';
  */
 export type app = {
   /** The id of the app, the name as a simple string without spaces */
-  id?: string;
+  id: string;
   /** A category for the app, used for grouping apps on the dashboard */
   category: string;
   /** The name of the app */
@@ -18,25 +18,25 @@ export type app = {
   /** A One line description of the app (max 50 characters) */
   tagline: string;
   /** A longer description of the app (50 to 200 words) */
-  description?: string;
+  description: string;
   /** The person(s) who created the app */
   developer?: string;
   /** The person(s) who created the app */
   developers?: Record<string, string>;
   /** The dependencies of the app */
-  dependencies?: (Dependency | Dependency[])[];
+  dependencies: (Dependency | Dependency[])[];
   /** The url to the app's Git repository */
   repo: string | Record<string, string>;
   /** The url to the app's support website/chat */
   support: string;
   /** The port the app's web UI uses */
-  port?: number;
+  port: number;
   /** A list of links to app promotional images, if no domain is provided, https://runcitadel.github.io/old-apps-gallery/${app.id}/ will be put in front of the path */
-  gallery?: string[];
+  gallery: string[];
   /** The path of the app the open button should open */
-  path?: string;
+  path: string;
   /** The app's default password */
-  defaultPassword?: string;
+  defaultPassword: string;
   torOnly?: boolean;
   /** Automatically added */
   hiddenService?: string;
@@ -68,16 +68,16 @@ export default defineStore('apps', {
   // Functions to get data from the API
   actions: {
     async getInstalledApps() {
-      const {apps} = await this.sdkStore.citadel.manager.apps.list(true);
-      if (apps) {
-        this.installed = apps;
+      const installedApps = await this.sdkStore.citadel.manager.apps.list(true);
+      if (installedApps) {
+        this.installed = installedApps;
       }
     },
     async getAppStore() {
       this.getInstalledApps();
-      const {apps} = await this.sdkStore.citadel.manager.apps.list();
-      if (apps) {
-        this.store = apps;
+      const appStore = await this.sdkStore.citadel.manager.apps.list();
+      if (appStore) {
+        this.store = appStore;
       }
     },
     async uninstall(appId: string) {

@@ -144,8 +144,9 @@ export default defineStore('system', {
       }
     },
     async getUpdateChannel() {
-      const data =
-        await this.sdkStore.citadel.manager.system.getUpdateChannel();
+      const data = await this.sdkStore.citadel.manager.system.getUpdateChannel(
+        '',
+      );
       if (data) {
         this.updateChannel = data;
       }
