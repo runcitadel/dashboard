@@ -1,4 +1,4 @@
-import Citadel from '../../node_modules/@runcitadel/sdk/dist/index.js';
+import Citadel from '@runcitadel/sdk';
 import {defineStore} from 'pinia';
 import useUserStore from './user';
 
