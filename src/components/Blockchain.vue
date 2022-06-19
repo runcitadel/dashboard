@@ -174,7 +174,7 @@ async function fetchBlocks() {
 }
 function poller(syncPercent: number) {
   window.clearInterval(polling.value as number);
-  //if syncing, fetch blocks every second
+  // if syncing (or in development), fetch blocks every second
   if (Number(syncPercent) !== 100 || isDevelopment) {
     polling.value = window.setInterval(fetchBlocks, 1000);
   } else {
