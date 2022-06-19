@@ -13,7 +13,9 @@ export default defineStore('sdk', {
   state: (): State => {
     const state: State = {
       citadel: new Citadel(
-        isDevelopment ? 'http://citadel-dev.local' : window.location.origin,
+        isDevelopment
+          ? `http://${__DEVICE_HOSTNAME__.host}`
+          : window.location.origin,
       ),
       userStore: useUserStore(),
     };
