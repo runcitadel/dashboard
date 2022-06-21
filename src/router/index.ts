@@ -8,7 +8,7 @@ const SimpleLayout = () => import('../layouts/SimpleLayout.vue');
 const DashboardLayout = () => import('../layouts/DashboardLayout.vue');
 
 const Start = () => import('../views/Start.vue');
-import Login from '../views/Login.vue';
+const Login = () => import('../views/Login.vue');
 const Dashboard = () => import('../views/Dashboard.vue');
 const Bitcoin = () => import('../views/Bitcoin.vue');
 const Lightning = () => import('../views/Lightning.vue');
