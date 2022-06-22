@@ -1,13 +1,5 @@
 <template>
   <div>
-    <!-- <div
-      class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
-      v-if="loading"
-    >
-      <img alt="Citadel" src="@/assets/logo.svg" class="mb-2 logo" />
-      <b-spinner class="my-5"></b-spinner>
-    </div>-->
-
     <div
       class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
     >
@@ -17,13 +9,13 @@
         height="200"
         class="mb-2 logo"
       />
-      <h1 class="text-center mb-2">welcome back</h1>
+      <h1 class="text-center mb-2">{{ t('login.welcome-back') }}</h1>
       <p v-if="!showTotpInput" class="text-muted w-75 text-center">
-        Enter the password to login to your Citadel
+        {{ t('login.enter-your-password') }}
       </p>
 
       <p v-else class="text-muted w-75 text-center">
-        Enter your two-factor authentication code
+        {{ t('login.enter-2fa-code') }}
       </p>
 
       <form
@@ -44,8 +36,10 @@
         />
         <div class="login-button-container">
           <transition name="fade">
-            <small v-show="isIncorrectPassword" class="mt-2 text-danger error"
-              >Incorrect password</small
+            <small
+              v-show="isIncorrectPassword"
+              class="mt-2 text-danger error"
+              >{{ t('login.incorrect-password') }}</small
             >
           </transition>
           <transition name="slide-up">
@@ -77,9 +71,9 @@
         />
         <div class="login-button-container">
           <transition name="fade">
-            <small v-show="isIncorrectTotp" class="mt-2 text-danger error"
-              >Incorrect code</small
-            >
+            <small v-show="isIncorrectTotp" class="mt-2 text-danger error">{{
+              t('login.incorrect-code')
+            }}</small>
           </transition>
         </div>
       </form>
@@ -93,6 +87,7 @@ import useUserStore from '../store/user';
 import InputPassword from '../components/Utility/InputPassword.vue';
 import InputOtpToken from '../components/Utility/InputOtpToken.vue';
 import delay from '../helpers/delay';
+import {useI18n} from 'vue-i18n';
 
 export default defineComponent({
   components: {
@@ -101,14 +96,14 @@ export default defineComponent({
   },
   setup() {
     const userStore = useUserStore();
-    return {userStore};
+    const {t} = useI18n();
+    return {userStore, t};
   },
   data() {
     return {
       loading: true,
       password: '',
       isIncorrectPassword: false,
-      isIncorrectToken: false,
       isLoggingIn: false,
       totpToken: '',
       showTotpInput: false,

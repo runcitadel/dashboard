@@ -1,8 +1,8 @@
 <template>
   <card-widget
-    header="Lightning Wallet"
+    :header="t('lightning-wallet')"
     :status="{
-      text: lightningStore.percent < 100 ? 'Synchronizing' : 'Active',
+      text: lightningStore.percent < 100 ? t('synchronizing') : t('running'),
       variant: 'success',
       blink: false,
     }"
@@ -78,8 +78,8 @@
                 fill="#EDEEF1"
               />
             </svg>
-            <small class="align-self-center mt-3 text-muted"
-              >No transactions</small
+            <small class="align-self-center mt-3 text-muted">
+              {{ t('no-transactions') }}</small
             >
           </div>
 
@@ -868,6 +868,7 @@ import {
   getDateFormatWithSeconds,
 } from '../helpers/date';
 import {addHours} from 'date-fns';
+import {useI18n} from 'vue-i18n';
 
 import {satsToBtc, btcToSats} from '../helpers/units';
 
@@ -946,6 +947,7 @@ export default defineComponent({
     const appsStore = useAppsStore();
     const sdkStore = useSdkStore();
     const uiStore = useUiStore();
+    const {t} = useI18n();
     return {
       sdkStore,
       appsStore,
@@ -954,6 +956,7 @@ export default defineComponent({
       bitcoinStore,
       lightningStore,
       uiStore,
+      t,
     };
   },
   data(): data {
