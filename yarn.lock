@@ -200,6 +200,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@popperjs/core@npm:^2.11.5":
+  version: 2.11.5
+  resolution: "@popperjs/core@npm:2.11.5"
+  checksum: fd7f9dca3fb716d7426332b6ee283f88d2724c0ab342fb678865a640bad403dfb9eeebd8204a406986162f7e2b33394f104320008b74d0e9066d7322f70ea35d
+  languageName: node
+  linkType: hard
+
 "@runcitadel/dashboard@workspace:.":
   version: 0.0.0-use.local
   resolution: "@runcitadel/dashboard@workspace:."
@@ -214,8 +221,7 @@ __metadata:
     "@vue/compat": ^3.2.31
     bignumber.js: ^9.0.2
     bootstrap: ^5.1.3
-    bootstrap-vue: "https://github.com/bootstrap-vue/bootstrap-vue.git#vue3-compat-build"
-    bootstrap-vue-upstream: "npm:bootstrap-vue@2.22.0"
+    bootstrap-vue: "https://github.com/AaronDewes/bootstrap-vue.git#vue3-compat-build"
     buffer: ^6.0.3
     countup.js: ^2.1.0
     date-fns: ^2.28.0
@@ -456,6 +462,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vue/composition-api@npm:^1.6.2":
+  version: 1.6.3
+  resolution: "@vue/composition-api@npm:1.6.3"
+  peerDependencies:
+    vue: ">= 2.5 < 3"
+  checksum: be02f40ae13db10dc075a35b3d844547ed1ebeba08f536fdd4abb7037e7d5fa131fea3f4c247d2c34d11514fe5f348843d51201f8033ba148967af220a633919
+  languageName: node
+  linkType: hard
+
 "@vue/devtools-api@npm:^6.0.0, @vue/devtools-api@npm:^6.0.0-beta.13, @vue/devtools-api@npm:^6.1.4":
   version: 6.1.4
   resolution: "@vue/devtools-api@npm:6.1.4"
@@ -684,48 +699,38 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bootstrap-vue-upstream@npm:bootstrap-vue@2.22.0":
-  version: 2.22.0
-  resolution: "bootstrap-vue@npm:2.22.0"
-  dependencies:
-    "@nuxt/opencollective": ^0.3.2
-    bootstrap: ^4.6.1
-    popper.js: ^1.16.1
-    portal-vue: ^2.1.7
-    vue-functional-data-merge: ^3.1.0
-  checksum: 801f148de895b4e390d2d79629f0da5c2fd8fd6d002230f4572ff0354e64f70236363bb69496451009bcd582d9b4eea2c31055649c7c99b8971bce5b418a4f01
-  languageName: node
-  linkType: hard
-
-"bootstrap-vue@https://github.com/bootstrap-vue/bootstrap-vue.git#vue3-compat-build":
+"bootstrap-vue@https://github.com/AaronDewes/bootstrap-vue.git#vue3-compat-build":
   version: 2.21.2
-  resolution: "bootstrap-vue@https://github.com/bootstrap-vue/bootstrap-vue.git#commit=5c5092edb0429ab9b13c9f144fe560982bc8deef"
+  resolution: "bootstrap-vue@https://github.com/AaronDewes/bootstrap-vue.git#commit=c146f999fd07930ecfef5732fcb2b7f934ed6d70"
   dependencies:
     "@nuxt/opencollective": ^0.3.2
+    "@popperjs/core": ^2.11.5
+    "@vue/composition-api": ^1.6.2
     bootstrap: ">=4.5.3 <5.0.0"
-    popper.js: ^1.16.1
+    bootstrap5: "npm:bootstrap@5.1.3"
     portal-vue: ^2.1.7
+    vue-demi: ^0.13.1
     vue-functional-data-merge: ^3.1.0
-  checksum: d3bc3e2e4f42fe6bac8a3c807e2245605bd63568007f4d9962eba677589f683e49f8e1a4596ebc88878757579c459ae57629123f6928100f30a310fc8c960cd5
+  checksum: 1c1835f40bbd44fcc36a66665a89f6f5d6c4a2d2d5a211190f66d38f31c1252c6e4bfc7025c8cf454e291232860f2f1a244088e3090968d284c9ec8aa5b7da0d
   languageName: node
   linkType: hard
 
-"bootstrap@npm:>=4.5.3 <5.0.0, bootstrap@npm:^4.6.1":
+"bootstrap5@npm:bootstrap@5.1.3, bootstrap@npm:^5.1.3":
+  version: 5.1.3
+  resolution: "bootstrap@npm:5.1.3"
+  peerDependencies:
+    "@popperjs/core": ^2.10.2
+  checksum: 301b5ed872efba061104cf22ac93568e3837867fb5527ab9326a51510fb752bd4883e1d488225c8be72f86d9d3a55ef5b166aa7fa62c2fdd077c3f05b65752f8
+  languageName: node
+  linkType: hard
+
+"bootstrap@npm:>=4.5.3 <5.0.0":
   version: 4.6.1
   resolution: "bootstrap@npm:4.6.1"
   peerDependencies:
     jquery: 1.9.1 - 3
     popper.js: ^1.16.1
   checksum: ff44e13787aafe1e2b8ac77802eae0f19bf957ea53a40ce3d9d4af9b67eab8adc585dc5a62cb6be82a3bc33e7ae67b0efd75f02282c0ddca09272d5c18a0b379
-  languageName: node
-  linkType: hard
-
-"bootstrap@npm:^5.1.3":
-  version: 5.1.3
-  resolution: "bootstrap@npm:5.1.3"
-  peerDependencies:
-    "@popperjs/core": ^2.10.2
-  checksum: 301b5ed872efba061104cf22ac93568e3837867fb5527ab9326a51510fb752bd4883e1d488225c8be72f86d9d3a55ef5b166aa7fa62c2fdd077c3f05b65752f8
   languageName: node
   linkType: hard
 
@@ -2297,13 +2302,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"popper.js@npm:^1.16.1":
-  version: 1.16.1
-  resolution: "popper.js@npm:1.16.1"
-  checksum: c56ae5001ec50a77ee297a8061a0221d99d25c7348d2e6bcd3e45a0d0f32a1fd81bca29d46cb0d4bdf13efb77685bd6a0ce93f9eb3c608311a461f945fffedbe
-  languageName: node
-  linkType: hard
-
 "portal-vue@npm:^3.0.0-beta.0":
   version: 3.0.0-beta.0
   resolution: "portal-vue@npm:3.0.0-beta.0"
@@ -2867,9 +2865,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-demi@npm:*":
-  version: 0.12.5
-  resolution: "vue-demi@npm:0.12.5"
+"vue-demi@npm:*, vue-demi@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "vue-demi@npm:0.13.1"
   peerDependencies:
     "@vue/composition-api": ^1.0.0-rc.1
     vue: ^3.0.0-0 || ^2.6.0
@@ -2879,7 +2877,7 @@ __metadata:
   bin:
     vue-demi-fix: bin/vue-demi-fix.js
     vue-demi-switch: bin/vue-demi-switch.js
-  checksum: 40a0470caea8312e0d4df2541f141c36c768dfc7f2f7d41f0f28ba29df11d3119e2f09b94c815f13b7c7f3f45dbc247b0e9e0c02a1800e2823e241c1d771e39b
+  checksum: d26b0602587f4dbd81f975f8f2de39910239805f0f2d72cafed0c7349c512f5363daf57e2761ba6a7ac66331a4cfa3dc857d6f7f62c57adbae85752d270118c8
   languageName: node
   linkType: hard
 
