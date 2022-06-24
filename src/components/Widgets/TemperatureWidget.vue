@@ -74,23 +74,24 @@
         </div>
 
         <b-alert
-          v-if="cpuTemperature > 80"
-          :variant="cpuTemperature > 85 ? 'danger' : 'warning'"
+          v-if="cpuTemperature > 75"
+          :variant="cpuTemperature > 80 ? 'danger' : 'warning'"
           class="mb-4"
           show
-          ><small
-            >Your Raspberry Pi is
-            {{ cpuTemperature > 85 ? 'dangerously' : 'running' }} hot. Consider
-            using a heatsink, fan or a cooling case.</small
-          ></b-alert
+          ><small>{{
+            cpuTemperature > 80
+              ? t('cpu-temp-urgent-warning')
+              : t('cpu-temp-warning')
+          }}</small></b-alert
         >
       </div>
     </div>
   </card-widget>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script lang="ts" setup>
+import {computed} from 'vue';
+import {useI18n} from 'vue-i18n';
 
 import CountUp from '../Utility/CountUp.vue';
 import CardWidget from '../CardWidget.vue';
@@ -104,114 +105,103 @@ type CardStatus =
     }
   | Record<string, never>;
 
-export default defineComponent({
-  components: {
-    CardWidget,
-    CountUp,
-  },
-  setup() {
-    const systemStore = useSystemStore();
-    return {systemStore};
-  },
-  computed: {
-    cpuTemperature(): number {
-      return this.systemStore.cpuTemperature;
-    },
-    cpuTemperatureUnit(): 'fahrenheit' | 'celsius' {
-      return this.systemStore.cpuTemperatureUnit;
-    },
-    cpuTemperatureInUnit(): number {
-      if (this.cpuTemperatureUnit === 'fahrenheit') {
-        return Math.round(this.cpuTemperature * 1.8 + 32);
-      }
-      return this.cpuTemperature;
-    },
-    cardStatus(): CardStatus {
-      if (this.cpuTemperature > 85) {
-        return {
-          text: 'Too hot',
-          variant: 'danger',
-          blink: true,
-        };
-      }
-      if (this.cpuTemperature > 80) {
-        return {
-          text: 'Hot',
-          variant: 'warning',
-          blink: true,
-        };
-      }
-      return {
-        text: 'Normal',
-        variant: 'success',
-        blink: false,
-      };
-    },
-    thermometerHeight(): number {
-      if (this.cpuTemperature < 25) {
-        return 40.375;
-      }
-      if (this.cpuTemperature > 80) {
-        return 20.375;
-      }
-      return 40.375 - (this.cpuTemperature - 25) / 2.75;
-    },
-    thermometerBgColor(): string {
-      const temp = this.cpuTemperature;
-      if (temp > 85) {
-        return '#F45252';
-      }
-      if (temp > 80) {
-        return '#F1736B';
-      }
-      if (temp > 75) {
-        return '#F1836B';
-      }
-      if (temp > 70) {
-        return '#F1936B';
-      }
-      if (temp > 65) {
-        return '#F1A36B';
-      }
-      if (temp > 60) {
-        return '#F1BB6B';
-      }
-      if (temp > 55) {
-        return '#F1CB6B';
-      }
-      if (temp > 50) {
-        return '#F4E44E';
-      }
-      if (temp > 45) {
-        return '#E6E953';
-      }
-      if (temp > 40) {
-        return '#C0EA67';
-      }
-      if (temp > 35) {
-        return '#96F16B';
-      }
-      if (temp > 30) {
-        return '#6BF188';
-      }
-      if (temp > 25) {
-        return '#6BF1C9';
-      }
-      return '#6BF1E9';
-    },
-  },
-  created() {
-    this.systemStore.getCpuTemperature();
-    this.systemStore.getCpuTemperatureUnit();
-  },
-  methods: {
-    toggleUnit() {
-      this.systemStore.changeCpuTemperatureUnit(
-        this.cpuTemperatureUnit === 'celsius' ? 'fahrenheit' : 'celsius',
-      );
-    },
-  },
+const systemStore = useSystemStore();
+const {t} = useI18n();
+
+const cpuTemperature = computed(() => systemStore.cpuTemperature);
+
+const cpuTemperatureUnit = computed(
+  (): 'fahrenheit' | 'celsius' => systemStore.cpuTemperatureUnit,
+);
+const cpuTemperatureInUnit = computed((): number => {
+  if (cpuTemperatureUnit.value === 'fahrenheit') {
+    return Math.round(cpuTemperature.value * 1.8 + 32);
+  }
+  return cpuTemperature.value;
 });
+
+const cardStatus = computed((): CardStatus => {
+  if (cpuTemperature.value > 85) {
+    return {
+      text: 'Too hot',
+      variant: 'danger',
+      blink: true,
+    };
+  }
+  if (cpuTemperature.value > 80) {
+    return {
+      text: 'Hot',
+      variant: 'warning',
+      blink: true,
+    };
+  }
+  return {
+    text: 'Normal',
+    variant: 'success',
+    blink: false,
+  };
+});
+const thermometerHeight = computed((): number => {
+  if (cpuTemperature.value < 25) {
+    return 40.375;
+  }
+  if (cpuTemperature.value > 80) {
+    return 20.375;
+  }
+  return 40.375 - (cpuTemperature.value - 25) / 2.75;
+});
+const thermometerBgColor = computed((): string => {
+  const temp = cpuTemperature.value;
+  if (temp > 85) {
+    return '#F45252';
+  }
+  if (temp > 80) {
+    return '#F1736B';
+  }
+  if (temp > 75) {
+    return '#F1836B';
+  }
+  if (temp > 70) {
+    return '#F1936B';
+  }
+  if (temp > 65) {
+    return '#F1A36B';
+  }
+  if (temp > 60) {
+    return '#F1BB6B';
+  }
+  if (temp > 55) {
+    return '#F1CB6B';
+  }
+  if (temp > 50) {
+    return '#F4E44E';
+  }
+  if (temp > 45) {
+    return '#E6E953';
+  }
+  if (temp > 40) {
+    return '#C0EA67';
+  }
+  if (temp > 35) {
+    return '#96F16B';
+  }
+  if (temp > 30) {
+    return '#6BF188';
+  }
+  if (temp > 25) {
+    return '#6BF1C9';
+  }
+  return '#6BF1E9';
+});
+
+systemStore.getCpuTemperature();
+systemStore.getCpuTemperatureUnit();
+
+function toggleUnit() {
+  systemStore.changeCpuTemperatureUnit(
+    cpuTemperatureUnit.value === 'celsius' ? 'fahrenheit' : 'celsius',
+  );
+}
 </script>
 
 <style lang="scss" scoped>

@@ -2,6 +2,7 @@
 import {createApp, configureCompat} from 'vue';
 import BootstrapVue from 'bootstrap-vue/src/index.js';
 import {createPinia} from 'pinia';
+import {createI18n} from 'vue-i18n';
 import Toast, {PluginOptions, POSITION} from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 
@@ -10,10 +11,21 @@ import router from './router/index';
 import {satsToBtc} from './helpers/units';
 import type useBitcoinStore from './store/bitcoin';
 import type useSystemStore from './store/system';
+import en from './i18n/en';
+import de from './i18n/de';
+
+const i18n = createI18n({
+  allowComposition: true,
+  // Todo: safe check if a variant with the full name exists, otherwise use the short name
+  locale: navigator.language.split('-')[0],
+  fallbackLocale: 'en',
+  messages: {de, en},
+});
 
 const app = createApp(App);
 app.use(createPinia());
 app.use(router);
+app.use(i18n);
 
 app.config.globalProperties.$filters = {
   unit: (value: number | string, store: ReturnType<typeof useSystemStore>) => {

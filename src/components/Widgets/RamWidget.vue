@@ -7,7 +7,7 @@
             <div>
               <h3 class="mb-1">{{ readableSize(ram.used) }}</h3>
               <p class="text-muted mb-0">
-                Used out of {{ readableSize(ram.total) }}
+                {{ t('used-out-of', {storage: readableSize(ram.total)}) }}
               </p>
             </div>
           </div>
@@ -76,9 +76,11 @@
             "
           ></b-progress>
           <div class="text-end">
-            <small class="text-muted"
-              >{{ readableSize(ram.total - ram.used) }} available</small
-            >
+            <small class="text-muted">{{
+              t('available', {
+                storage: readableSize(ram.total - ram.used),
+              })
+            }}</small>
           </div>
 
           <b-alert
@@ -87,10 +89,7 @@
             class="mt-3"
             show
           >
-            <small
-              >Consider uninstalling some apps or upgrading your Citadel's
-              hardware.</small
-            >
+            <small>{{ t('ram-full-suggestion') }}</small>
           </b-alert>
         </div>
         <div class="pt-1">
@@ -98,8 +97,8 @@
             v-b-toggle.ram-breakdown-collapse
             class="card-link px-3 px-lg-4"
           >
-            <span class="when-closed">View usage</span>
-            <span class="when-open">Hide usage</span>
+            <span class="when-closed">{{ t('view-usage') }}</span>
+            <span class="when-open">{{ t('hide-usage') }}</span>
           </b-link>
           <div class="pb-4"></div>
           <b-collapse id="ram-breakdown-collapse">
@@ -125,22 +124,22 @@
                       class="d-flex justify-content-between align-items-center"
                     >
                       <span v-if="app.id === 'citadel'"
-                        >System
+                        >{{ t('system') }}
                         <b-icon-info-circle-fill
                           v-b-tooltip.hover.bottom
                           icon="info-circle-fill"
                           style="opacity: 0.4"
                           variant="dark"
                           class="ms-1"
-                          title="Including Bitcoin Core, LND, and Electrum server"
+                          :title="t('system-including')"
                         />
                       </span>
                       <span v-else>{{ getAppName(app.id) }}</span>
 
                       <!-- There's an edge case where a negative value may be returned by the API -->
-                      <small v-if="app.used < 0" class="text-muted"
-                        >Calculating...</small
-                      >
+                      <small v-if="app.used < 0" class="text-muted">{{
+                        t('calculating')
+                      }}</small>
                       <span v-else>{{ readableSize(app.used) }}</span>
                     </div>
                     <b-progress
@@ -161,8 +160,9 @@
   </card-widget>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script lang="ts" setup>
+import {computed} from 'vue';
+import {useI18n} from 'vue-i18n';
 
 import {BIconInfoCircleFill} from 'bootstrap-vue/src/index.js';
 
@@ -171,76 +171,63 @@ import CardWidget from '../CardWidget.vue';
 import useAppsStore from '../../store/apps';
 import useSystemStore from '../../store/system';
 
-export default defineComponent({
-  components: {
-    CardWidget,
-    BIconInfoCircleFill,
-  },
-  setup() {
-    const systemStore = useSystemStore();
-    const appsStore = useAppsStore();
-    return {appsStore, systemStore};
-  },
-  computed: {
-    ram(): {
-      total: number;
-      used: number;
-      breakdown: {id: string; used: number}[];
-    } {
-      return this.systemStore.ram;
-    },
-    src: () => {
-      return new URL(`../../assets/icon-system.svg`, import.meta.url).href;
-    },
-    isRunningLowOnRam(): boolean {
-      if (this.ram && this.ram.total) {
-        return this.ram.used / this.ram.total > 0.95;
-      }
-      return false;
-    },
-    isRamFull(): boolean {
-      if (this.ram && this.ram.total) {
-        return this.ram.used / this.ram.total > 0.99;
-      }
-      return false;
-    },
-    cardStatus():
-      | {
-          text: string;
-          variant: 'success' | 'primary' | 'muted' | 'danger' | 'warning';
-          blink: boolean;
-        }
-      | undefined {
-      if (this.isRamFull) {
-        return {
-          text: 'RAM full',
-          variant: 'danger',
-          blink: true,
-        };
-      }
-      if (this.isRunningLowOnRam) {
-        return {
-          text: 'Low RAM',
-          variant: 'warning',
-          blink: true,
-        };
-      }
-      return undefined;
-    },
-  },
-  created() {
-    // to map app ID's to app names
-    this.appsStore.getAppStore();
-    this.systemStore.getRam();
-  },
-  methods: {
-    readableSize(n: number) {
-      return readableSize(n);
-    },
-    getAppName(appId: string) {
-      const appStore = this.appsStore.store;
-      return appStore.find(({id}) => id === appId)?.name || appId;
-    },
-  },
+const systemStore = useSystemStore();
+const appsStore = useAppsStore();
+const {t} = useI18n();
+
+const ram = computed(() => systemStore.ram);
+
+const src = computed((): string => {
+  return new URL(`../../assets/icon-system.svg`, import.meta.url).href;
 });
+
+const isRunningLowOnRam = computed((): boolean => {
+  // less than 1GB remaining
+  if (ram.value && ram.value.total) {
+    return ram.value.total - ram.value.used < 1000000000;
+  }
+  return false;
+});
+
+const isRamFull = computed((): boolean => {
+  // less than 100MB remaining
+  if (ram.value && ram.value.total) {
+    return ram.value.used / ram.value.total > 0.99;
+  }
+  return false;
+});
+const cardStatus = computed(
+  ():
+    | {
+        text: string;
+        variant: 'success' | 'primary' | 'muted' | 'danger' | 'warning';
+        blink: boolean;
+      }
+    | undefined => {
+    if (isRamFull.value) {
+      return {
+        text: 'RAM full',
+        variant: 'danger',
+        blink: true,
+      };
+    }
+    if (isRunningLowOnRam.value) {
+      return {
+        text: 'Low RAM',
+        variant: 'warning',
+        blink: true,
+      };
+    }
+    return undefined;
+  },
+);
+
+// to map app ID's to app names
+appsStore.getAppStore();
+systemStore.getRam();
+
+function getAppName(appId: string) {
+  const appStore = appsStore.store;
+  return appStore.find(({id}) => id === appId)?.name || appId;
+}
 </script>
