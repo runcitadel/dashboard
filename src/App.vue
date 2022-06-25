@@ -189,7 +189,9 @@ export default defineComponent({
   },
   methods: {
     getThemePreference() {
-      const activeTheme = localStorage.getItem('user-theme');
+      const activeTheme = localStorage.getItem('user-theme') as
+        | 'light'
+        | 'dark';
       const hasDarkPreference = window.matchMedia(
         '(prefers-color-scheme: dark)',
       ).matches;

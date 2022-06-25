@@ -148,6 +148,9 @@ defineProps({
     default: 3,
   },
 });
+
+const isDevelopment = import.meta.env.DEV;
+
 const bitcoinStore = useBitcoinStore();
 const pollInProgress = ref(false);
 const polling = ref<null | number>(null);
@@ -178,8 +181,8 @@ async function fetchBlocks() {
 }
 function poller(syncPercent: number) {
   window.clearInterval(polling.value as number);
-  //if syncing, fetch blocks every second
-  if (Number(syncPercent) !== 100) {
+  // if syncing (or in development), fetch blocks every second
+  if (Number(syncPercent) !== 100 || isDevelopment) {
     polling.value = window.setInterval(fetchBlocks, 1000);
   } else {
     //else, slow down and fetch blocks every minute
