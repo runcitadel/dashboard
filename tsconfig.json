@@ -7,6 +7,7 @@
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "allowJs": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["vite/client"]
   }
 }

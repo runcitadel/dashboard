@@ -6,7 +6,7 @@
       </div>
     </div>
 
-    <div class="settings-card-columns card-columns">
+    <div class="settings-card-columns">
       <storage-widget id="storage" class="card-app-list"></storage-widget>
 
       <ram-widget id="ram" class="card-app-list"></ram-widget>
@@ -539,8 +539,8 @@
                   <BellIcon />
                 </div>
                 <small class="text-muted ms-1"
-                  >{{ systemStore.availableUpdate.name }} is now available to
-                  install</small
+                  >{{ systemStore.availableUpdate.name }} is now
+                  available</small
                 >
                 <b-button
                   class="ms-auto"

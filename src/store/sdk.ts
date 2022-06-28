@@ -1,21 +1,33 @@
-import Citadel from '../../node_modules/@runcitadel/sdk/dist/index.js';
+import Citadel from '@runcitadel/sdk';
 import {defineStore} from 'pinia';
+import useUserStore from './user';
 
 export interface State {
   citadel: Citadel;
+  userStore: ReturnType<typeof useUserStore>;
 }
+
+const isDevelopment = import.meta.env.DEV;
 
 export default defineStore('sdk', {
   state: (): State => {
     const state: State = {
       citadel: new Citadel(
-        process.env.NODE_ENV === 'development'
-          ? 'http://citadel-dev.local'
+        isDevelopment
+          ? `http://${__DEVICE_HOSTNAME__.host}`
           : window.location.origin,
       ),
-      //citadel: new Citadel('https://node.runcitadel.space'),
+      userStore: useUserStore(),
     };
+
     state.citadel.jwt = window.localStorage.getItem('jwt') || '';
+
+    // Redirect back to login on 401
+    state.citadel.onAuthFailed = () => {
+      // This removes the token everywhere and redirects to login
+      state.userStore.logout();
+    };
+
     return state;
   },
   actions: {
