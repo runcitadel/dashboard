@@ -6,11 +6,15 @@
     hide-footer
     scrollable
   >
-    <template #modal-header="{close}">
+    <template #modal-header>
       <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
         <h3>features</h3>
         <!-- Emulate built in modal header close button action -->
-        <a href="#" class="align-self-center" @click.stop.prevent="close">
+        <a
+          href="#"
+          class="align-self-center"
+          @click.stop.prevent="closeFunction"
+        >
           <svg
             width="18"
             height="18"
@@ -126,6 +130,7 @@ import delay from '../helpers/delay';
 const systemStore = useSystemStore();
 const toast = useToast();
 const supportedChannels = ['stable', 'beta', 'c-lightning'];
+const emit = defineEmits(['close-modal']);
 
 const mainModal = ref<null | {show: () => void; hide: () => void}>();
 const selected = ref<'stable' | 'beta' | 'core-ln'>('stable');
@@ -185,6 +190,10 @@ systemStore.getUpdateChannel().then(() => {
 onUpdated(() => {
   getCorrectSize();
 });
+
+function closeFunction() {
+  emit('close-modal');
+}
 </script>
 <style lang="scss" scoped>
 .card-grid {

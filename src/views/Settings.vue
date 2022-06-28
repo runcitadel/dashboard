@@ -512,10 +512,9 @@
               >Manage</b-button
             >
             <channel-selector
-              ref="channel-selector-modal"
               size="xl"
               :show-modal="showChannelSelectorModal"
-              @close="closeChannelModal"
+              @close-modal="closeChannelModal"
             />
           </div>
         </div>
