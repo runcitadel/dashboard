@@ -33,8 +33,8 @@
       </div>
     </template>
     <p v-if="!supportedChannels.includes(selected)">
-      You are currently on this update channel: {{ selected }}. If you choose
-      another one, you can not go back to your current update channel from the
+      You are currently receiving these updates: {{ selected }}. If you choose
+      another one, you can not go back to your current variant from the
       dashboard.
     </p>
     <div class="card-grid" :class="columnClass">
@@ -57,10 +57,10 @@
             variant="primary"
             class="channel-button"
             @click="selectChannel('stable')"
-            >Select this channel</b-button
+            >Select this variant</b-button
           >
           <b-button v-else variant="success" disabled class="channel-button"
-            >Current channel</b-button
+            >Current variant</b-button
           >
         </div>
       </card-widget>
@@ -83,10 +83,10 @@
             variant="primary"
             class="channel-button"
             @click="selectChannel('beta')"
-            >Select this channel</b-button
+            >Select this variant</b-button
           >
           <b-button v-else variant="success" disabled class="channel-button"
-            >Current channel</b-button
+            >Current variant</b-button
           >
         </div>
       </card-widget>
@@ -109,10 +109,10 @@
             variant="primary"
             class="channel-button"
             @click="selectChannel('core-ln')"
-            >Select this channel</b-button
+            >Select this variant</b-button
           >
           <b-button v-else variant="success" disabled class="channel-button"
-            >Current channel</b-button
+            >Current variant</b-button
           >
         </div>
       </card-widget>
