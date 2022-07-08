@@ -138,6 +138,8 @@ html[data-theme='dark'] {
   --card-bg: #fff;
   --card-shadow: 0px 10px 30px rgba(209, 213, 223, 0.5);
   --card-shadow-hover: 0px 10px 30px rgba(209, 213, 223, 0.6);
+  --btn-shadow: 0px 5px 15px rgba(143, 149, 163, 0.25);
+  --btn-shadow-hover: 0px 5px 30px rgba(143, 149, 163, 0.35);
   --toggle-switch-bg: linear-gradient(346.78deg, #f7fcfc 0%, #fafcfa 100%);
   --toggle-switch-selected: #fff;
 }
@@ -152,6 +154,8 @@ html[data-theme='dark'] {
   --card-bg: #2a3244;
   --card-shadow: 0px 10px 30px rgba(0, 0, 0, 0.4);
   --card-shadow-hover: 0px 10px 30px rgba(0, 0, 0, 0.5);
+  --btn-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+  --btn-shadow-hover: 0px 5px 30px rgba(0, 0, 0, 0.35);
   --toggle-switch-bg: linear-gradient(346.78deg, #484848 0%, #414241 100%);
   --toggle-switch-selected: #1c1c26;
 
@@ -840,9 +844,10 @@ html[data-theme='dark'] {
   background: #fff;
   z-index: 9;
   // width: 280px;
-  height: calc(var(--vh100, 100vh) - 82px);
-  top: 82px;
+  height: calc(var(--vh100, 100vh) - 74px);
+  top: 74px;
   overflow-y: auto;
+
   .nav-item {
     .nav-link {
       color: #141821;

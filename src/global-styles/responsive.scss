@@ -7,13 +7,41 @@
 
 .card-columns {
   column-count: 1;
+  column-gap: 30px;
+
   @include media-breakpoint-up(md) {
     column-count: 2;
   }
+
   @media (min-width: 1600px) {
     column-count: 3;
   }
+}
+
+.settings-card-columns {
+  column-count: 1;
   column-gap: 30px;
+
+  @include media-breakpoint-up(md) {
+    column-count: 2;
+  }
+
+  @media (min-width: 1600px) {
+    column-count: unset;
+    column-gap: unset;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-height: 1200px;
+
+    .card {
+      min-width: 400px;
+
+      &:not(:last-child) {
+        margin-right: 30px;
+      }
+    }
+  }
 }
 
 .app-name {

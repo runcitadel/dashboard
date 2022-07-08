@@ -153,32 +153,34 @@
         </b-modal>
         <div class="pe-xl-2 content-container">
           <b-alert
+            :show="!!systemStore.availableUpdate.version"
             class="mt-4 mb-0"
             variant="success"
-            :show="!!systemStore.availableUpdate.version"
-            dismissible
           >
-            <div class="icon-16px"><BellIcon /></div>
-            <a
-              :href="`https://github.com/runcitadel/core/releases/tag/v${systemStore.availableUpdate.version}`"
-              target="_blank"
-              class="alert-link"
-              >{{ systemStore.availableUpdate.name }}</a
-            >
-            &nbsp;is now available to install
-            <a
-              v-show="!isUpdating"
-              href="#"
-              class="alert-link float-right"
-              @click.prevent="confirmUpdate"
-              >Install now</a
-            >
-            <b-spinner
-              v-show="isUpdating"
-              variant="success"
-              small
-              class="float-right mt-1"
-            ></b-spinner>
+            <div class="d-flex align-items-center mb-0">
+              <div class="icon-24px"><BellIcon /></div>
+              <a
+                :href="`https://github.com/runcitadel/core/releases/tag/v${systemStore.availableUpdate.version}`"
+                target="_blank"
+                class="alert-link"
+                >{{ systemStore.availableUpdate.name }}</a
+              >
+              &nbsp;is now available to install.
+            </div>
+            <div class="mt-2">
+              <b-button
+                v-show="!isUpdating"
+                variant="primary"
+                size="sm"
+                :disabled="isUpdating"
+                @click.prevent="confirmUpdate"
+                >Install now</b-button
+              >
+              <div v-if="isUpdating" class="d-flex align-items-center">
+                <b-spinner class="me-1" variant="success" small></b-spinner>
+                Installing...
+              </div>
+            </div>
           </b-alert>
           <b-alert
             v-if="isRunningLowOnRam"
@@ -514,7 +516,7 @@ html[data-theme='dark'] {
   max-width: 280px;
   height: calc(var(--vh100, 100vh) - 84px);
   background: #fff;
-  box-shadow: 0px 10px 30px rgba(209, 213, 223, 0.5);
+  box-shadow: var(--card-shadow);
   transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
 }
 

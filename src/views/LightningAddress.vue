@@ -3,56 +3,52 @@
     <div class="p-sm-2">
       <div class="my-3">
         <div>
-          <h1>lightning address</h1>
-          <p>Get a Lightning address to receive tips to your Citadel</p>
+          <h1>{{ t('lightning-address.heading') }}</h1>
+          <p>{{ t('lightning-address.subheading') }}</p>
         </div>
       </div>
     </div>
-    <card-widget header="Here's how to get your Lightning address">
-      <div class="px-3 px-lg-4 pb-3">
-        <step-list>
-          <step>
-            Install the
-            <b-link to="/app-store/lnme">LnMe</b-link> app on your Citadel.
-          </step>
-          <step>
-            You can now send tips to this address:
+    <div class="px-3 px-lg-4 pb-3">
+      <step-list>
+        <step>
+          {{ t('lightning-address.step-1-part-1')
+          }}<b-link to="/app-store/lnme">LnMe</b-link
+          >{{ t('lightning-address.step-1-part-2') }}
+        </step>
+        <step>
+          {{ t('lightning-address.step-2') }}
+          <input-copy class="my-1" :value="lnAddress"></input-copy>
+        </step>
+        <p>
+          {{ t('lightning-address.optional-steps') }}
+        </p>
+        <step>{{ t('lightning-address.step-3') }}</step>
+        <step>
+          {{ t('lightning-address.step-4-part-1')
+          }}<a href="https://getalby.com/">Alby</a
+          >{{ t('lightning-address.step-4-part-2') }}</step
+        >
+        <step>
+          {{ t('lightning-address.step-5-part-1') }}
+          <a href="https://sats4.me/">sats4me</a>
+          {{ t('lightning-address.step-5-part-2') }}
 
-            <input-copy class="my-1" :value="lnAddress"></input-copy>
-          </step>
-          <step>
-            The following steps are optional, but if you want a shorter
-            Lightning address, a tipping page and a LNURL, you can also set that
-            up.
-          </step>
-          <step> First, you need at least one open Lightning channel. </step>
-          <step>
-            Then, you need to set up the
-            <a href="https://getalby.com/">Alby</a> extension and connect it to
-            your node</step
-          >
-          <step>
-            Now, you can visit <a href="https://sats4.me/">sats4me</a> and sign
-            up there. As LnMe onion URL, please enter this:
-
-            <input-copy class="my-1" :value="lnmeAddress" />
-          </step>
-          <step>
-            We'll get back to you with a new Lightning address soon.
-          </step>
-        </step-list>
-      </div>
-    </card-widget>
+          <input-copy class="my-1" :value="lnmeAddress" />
+        </step>
+      </step-list>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import StepList from '../components/ConnectWallet/StepList.vue';
 import Step from '../components/ConnectWallet/Step.vue';
-import CardWidget from '../components/CardWidget.vue';
 import InputCopy from '../components/Utility/InputCopy.vue';
 import useAppsStore from '../store/apps';
 import {computed, onMounted} from 'vue';
+import {useI18n} from 'vue-i18n';
+
+const {t} = useI18n();
 
 const appsStore = useAppsStore();
 const lnAddress = computed(() => {
@@ -62,9 +58,11 @@ const lnAddress = computed(() => {
       (app) => app.id === 'lnme',
     )?.hiddenService;
 
-    return address ? `tips@${address}` : 'None yet, please install LnMe first.';
+    return address
+      ? `tips@${address}`
+      : t('lightning-address.placeholder-lnme');
   } catch {
-    return 'None yet, please install LnMe first.';
+    return t('lightning-address.placeholder-lnme');
   }
 });
 
@@ -73,10 +71,10 @@ const lnmeAddress = computed(() => {
     // Get the app from state.apps.installed where the ID is lnme
     return (
       appsStore.installed.find((app) => app.id === 'lnme')?.hiddenService ||
-      'None yet, please install LnMe first.'
+      t('lightning-address.placeholder-lnme')
     );
   } catch {
-    return 'None yet, please install LnMe first.';
+    return t('lightning-address.placeholder-lnme');
   }
 });
 

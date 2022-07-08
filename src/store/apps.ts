@@ -1,50 +1,72 @@
 import {defineStore} from 'pinia';
+import type {app as appType, Dependency} from '@runcitadel/sdk';
+
 import useSdkStore from './sdk';
 
-/** A dependency an app could have */
-export type Dependency = 'bitcoind' | 'electrum' | 'lnd' | 'c-lightning';
-/**
- * Defines an app
- */
-export type app = {
-  /** The id of the app, the name as a simple string without spaces */
-  id: string;
-  /** A category for the app, used for grouping apps on the dashboard */
+type MetadataV4 = {
+  /**
+   * The category for the app
+   */
   category: string;
-  /** The name of the app */
+  /**
+   * The app's default password. Can also be $APP_SEED for a random password
+   */
+  defaultPassword?: string | undefined;
+  developers: Record<string, string>;
+  /**
+   * A list of promo images for the apps
+   */
+  gallery?: string[] | undefined;
+  /**
+   * The name of the app
+   */
   name: string;
-  /** The version of the app */
-  version: string;
-  /** A One line description of the app (max 50 characters) */
-  tagline: string;
-  /** A longer description of the app (50 to 200 words) */
-  description: string;
-  /** The person(s) who created the app */
-  developer?: string;
-  /** The person(s) who created the app */
-  developers?: Record<string, string>;
-  /** The dependencies of the app */
-  dependencies: (Dependency | Dependency[])[];
-  /** The url to the app's Git repository */
-  repo: string | Record<string, string>;
-  /** The url to the app's support website/chat */
+  /**
+   * The path the "Open" link on the dashboard should lead to
+   */
+  path?: string | undefined;
+  /**
+   * Permissions the app requires
+   */
+  permissions?: Array<string | string[]>;
+  /**
+   * App repository name -> repo URL
+   */
+  repo: Record<string, string>;
+  /**
+   * A support link for the app
+   */
   support: string;
-  /** The port the app's web UI uses */
-  port: number;
-  /** A list of links to app promotional images, if no domain is provided, https://runcitadel.github.io/old-apps-gallery/${app.id}/ will be put in front of the path */
-  gallery: string[];
-  /** The path of the app the open button should open */
-  path: string;
-  /** The app's default password */
-  defaultPassword: string;
+  /**
+   * A short tagline for the app
+   */
+  tagline: string;
+  /**
+   * True if the app only works over Tor
+   */
   torOnly?: boolean;
+  /**
+   * A list of containers to update automatically (still validated by the Citadel team)
+   */
+  updateContainers?: string[] | undefined;
+  /**
+   * The version of the app
+   */
+  version: string;
   /** Automatically added */
   hiddenService?: string;
   /** Automatically added */
   installed?: boolean;
   /** Automatically added */
   compatible: boolean;
-  icon?: string;
+};
+
+export type app = appType & {
+  id: string;
+  port: number;
+  dependencies: (Dependency | Dependency[])[];
+  description?: string;
+  developer: string;
 };
 
 export interface State {
@@ -68,16 +90,29 @@ export default defineStore('apps', {
   // Functions to get data from the API
   actions: {
     async getInstalledApps() {
-      const installedApps = await this.sdkStore.citadel.manager.apps.list(true);
-      if (installedApps) {
-        this.installed = installedApps;
+      const {apps} = await this.sdkStore.citadel.manager.apps.list(true);
+      if (apps) {
+        this.installed = apps as app[];
       }
     },
     async getAppStore() {
       this.getInstalledApps();
-      const appStore = await this.sdkStore.citadel.manager.apps.list();
-      if (appStore) {
-        this.store = appStore;
+      const {apps, jwt} = await this.sdkStore.citadel.manager.apps.list();
+
+      // Update JWT
+      localStorage.setItem('jwt', jwt);
+      this.sdkStore.setJwt(jwt);
+
+      if (apps) {
+        this.store = (apps as app[]).map((app) => {
+          if ((app as MetadataV4).permissions) {
+            app.dependencies = (app as MetadataV4).permissions as (
+              | Dependency
+              | Dependency[]
+            )[];
+          }
+          return app;
+        });
       }
     },
     async uninstall(appId: string) {

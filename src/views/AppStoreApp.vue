@@ -17,7 +17,7 @@
             fill="#C3C6D1"
           />
         </svg>
-        Back</router-link
+        {{ t('apps.store.back') }}</router-link
       >
       <div
         class="d-flex flex-column flex-sm-row justify-content-between align-items-center"
@@ -52,7 +52,7 @@
             size="lg"
             class="px-4 fade-in-out cursor-wait"
             disabled
-            >Starting...</b-button
+            >{{ t('apps.store.starting') }}</b-button
           >
           <b-button
             v-else
@@ -62,10 +62,10 @@
             :href="url"
             target="_blank"
             @click="openApp($event)"
-            >Open</b-button
+            >{{ t('apps.store.open') }}</b-button
           >
           <div v-if="app.defaultPassword" class="mt-2 text-center">
-            <small class="">The default password of this app is</small>
+            <small class="">{{ t('apps.store.default-password') }}</small>
             <input-copy
               size="sm"
               :value="app.defaultPassword"
@@ -80,7 +80,7 @@
             size="lg"
             class="px-4 fade-in-out cursor-wait"
             disabled
-            >Installing...</b-button
+            >{{ t('apps.store.installing') }}</b-button
           >
           <b-button
             v-else-if="isUninstalling"
@@ -88,7 +88,7 @@
             size="lg"
             class="px-4 fade-in-out cursor-wait"
             disabled
-            >Uninstalling...</b-button
+            >{{ t('apps.store.uninstalling') }}</b-button
           >
           <b-button
             v-else-if="!app.compatible"
@@ -142,65 +142,68 @@
       <b-col col cols="12" lg="6" xl="8">
         <card-widget header="About this app">
           <div class="px-3 px-lg-4 pb-4">
-            <p class="text-newlines">{{ app.description }}</p>
+            <p class="text-newlines">{{ app?.description }}</p>
           </div>
         </card-widget>
       </b-col>
       <b-col col cols="12" lg="6" xl="4">
         <card-widget header="Information">
           <div class="px-3 px-lg-4 pb-4">
-            <div class="d-flex justify-content-between mb-3">
-              <span>Version</span>
-              <span>{{ app.version }}</span>
-            </div>
-            <div
-              v-if="typeof app.repo == 'string'"
-              class="d-flex justify-content-between mb-3"
-            >
-              <span>Source Code</span>
-              <a :href="app.repo" target="_blank">Public</a>
-            </div>
-            <div
-              v-for="repo in app.repo"
-              v-else
-              :key="repo"
-              class="d-flex justify-content-between mb-3"
-            >
-              <span>{{ repo }} Source Code</span>
-              <a :href="app.repo[repo]" target="_blank">Public</a>
-            </div>
-            <div
-              v-if="app.developer"
-              class="d-flex justify-content-between mb-3"
-            >
-              <span>Developer</span>
-              <a
-                :href="(app as unknown as { website: string}).website"
-                target="_blank"
-                >{{ app.developer }}</a
-              >
-            </div>
-            <div
-              v-if="app.developers"
-              class="d-flex justify-content-between mb-3"
-            >
-              <span>Developers</span>
-              <a
-                v-for="developer in app.developers"
-                :key="developer"
-                :href="developer"
-                target="_blank"
-                >{{ app.developers[developer] }}</a
-              >
-            </div>
-            <!-- We don't need to show this until there are incompatible apps -->
-            <div class="d-flex justify-content-between mb-3">
-              <span>Compatibility</span>
-              <span v-if="!app.compatible" class="text-danger"
-                >Not compatible</span
-              >
-              <span v-else class="text-success">Compatible</span>
-            </div>
+            <table border="0">
+              <tr>
+                <td>Version</td>
+                <td>{{ app.version }}</td>
+              </tr>
+              <tr>
+                <td>Source Code</td>
+                <td>
+                  <a
+                    v-if="typeof app.repo == 'string'"
+                    :href="app.repo"
+                    target="_blank"
+                    >Public</a
+                  >
+                  <a
+                    v-for="(link, name) in app.repo"
+                    v-else
+                    :key="name"
+                    :href="link"
+                    >{{ name }}
+                  </a>
+                </td>
+              </tr>
+              <tr v-if="app.developer">
+                <td>Developer</td>
+                <td>
+                  <a
+                    :href="(app as unknown as { website: string}).website"
+                    target="_blank"
+                    >{{ app.developer }}</a
+                  >
+                </td>
+              </tr>
+              <tr v-else-if="app.developers">
+                <td>Developers</td>
+                <td>
+                  <a
+                    v-for="(website, developer) in app.developers"
+                    :key="developer"
+                    :href="website"
+                    target="_blank"
+                    >{{ developer }}</a
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td>Compatibility</td>
+                <td>
+                  <span v-if="!app.compatible" class="text-danger"
+                    >Not compatible</span
+                  >
+                  <span v-else class="text-success">Compatible</span>
+                </td>
+              </tr>
+            </table>
             <div v-if="app.dependencies.length" class="mb-4">
               <span class="d-block mb-3">Utilizes</span>
               <div
@@ -328,146 +331,134 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script lang="ts" setup>
+import {ref, computed, onBeforeUnmount} from 'vue';
+import {useRoute} from 'vue-router';
+import {useI18n} from 'vue-i18n';
 
 import delay from '../helpers/delay';
 
-import useAppsStore, {app} from '../store/apps';
+import useAppsStore, {app as appType} from '../store/apps';
 import useLightningStore from '../store/lightning';
 
 import CardWidget from '../components/CardWidget.vue';
 import InputCopy from '../components/Utility/InputCopy.vue';
 
-export default defineComponent({
-  components: {
-    CardWidget,
-    InputCopy,
-  },
-  setup() {
-    const appsStore = useAppsStore();
-    const lightningStore = useLightningStore();
-    return {appsStore, lightningStore};
-  },
-  data() {
-    return {
-      isOffline: false,
-      checkIfAppIsOffline: true,
-    };
-  },
-  computed: {
-    /*...mapState({
-      installedApps: (state) => state.apps.installed,
-      appStore: (state) => state.apps.store,
-      installing: (state) => state.apps.installing,
-      uninstalling: (state) => state.apps.uninstalling,
-      lightningImplementation: (state) => state.lightning.implementation,
-    }),*/
-    app(): app {
-      return this.appsStore.store.find(
-        (app) => app.id === this.$route.params.id,
-      ) as app;
-    },
-    isInstalled(): boolean {
-      const installedAppIndex = this.appsStore.installed.findIndex(
-        (app) => app.id === this.app.id,
-      );
-      return installedAppIndex !== -1;
-    },
-    isInstalling(): boolean {
-      const index = this.appsStore.installing.findIndex(
-        (appId) => appId === this.app.id,
-      );
-      return index !== -1;
-    },
-    isUninstalling(): boolean {
-      const index = this.appsStore.uninstalling.findIndex(
-        (appId) => appId === this.app.id,
-      );
-      return index !== -1;
-    },
-    url(): string {
-      if (window.location.origin.indexOf('.onion') > 0) {
-        const installedApp = this.appsStore.installed.find(
-          (app) => app.id === this.app.id,
-        );
-        return `http://${installedApp?.hiddenService || ''}${this.app.path}`;
-      } else {
-        if (this.app.torOnly) {
-          return '#';
-        }
-        return `http://${window.location.hostname}:${this.app.port}${this.app.path}`;
-      }
-    },
-  },
-  async created() {
-    await this.appsStore.getAppStore();
-    if (this.isInstalled) {
-      this.pollOfflineApp();
-    }
-    await this.lightningStore.getVersionInfo();
-  },
-  beforeUnmount() {
-    this.checkIfAppIsOffline = false;
-  },
-  methods: {
-    formatDependency(dependency: string) {
-      switch (dependency) {
-        case 'bitcoind':
-          return 'Bitcoin Core';
-        case 'lnd':
-          return 'LND';
-        case 'electrum':
-          return 'Electrum Server';
-        default:
-          return dependency;
-      }
-    },
-    isDependencyInstalled(dependency: string) {
-      const allInstalled = [
-        'bitcoind',
-        'electrum',
-        this.lightningStore.implementation,
-      ];
-      return allInstalled.includes(dependency);
-    },
-    src(dependency: string) {
-      return new URL(
-        `../assets/app-store/dependencies/${dependency}.svg`,
-        import.meta.url,
-      ).href;
-    },
-    installApp() {
-      if (!this.app.compatible) return;
-      this.appsStore.install(this.app.id);
-      this.isOffline = true;
-      this.pollOfflineApp();
-    },
-    openApp(event: Event) {
-      if (this.app.id === 'bluewallet') this.checkIfAppIsOffline = false;
-      if (this.app.torOnly && window.location.origin.indexOf('.onion') < 0) {
-        event.preventDefault();
-        alert(
-          `${this.app.name} can only be used over Tor. Please access your Citadel in a Tor browser on your remote access URL (Settings > Tor > Remote Access URL) to open this app.`,
-        );
-      }
-      return;
-    },
-    async pollOfflineApp() {
-      this.checkIfAppIsOffline = true;
-      while (this.checkIfAppIsOffline) {
-        try {
-          await window.fetch(this.url, {mode: 'no-cors'});
-          this.isOffline = false;
-          this.checkIfAppIsOffline = false;
-        } catch (error) {
-          this.isOffline = true;
-        }
-        await delay(1000);
-      }
-    },
-  },
+const appsStore = useAppsStore();
+const lightningStore = useLightningStore();
+const route = useRoute();
+const {t} = useI18n();
+
+const isOffline = ref(false);
+const checkIfAppIsOffline = ref(true);
+
+const app = computed(() => {
+  return appsStore.store.find((app) => app.id === route.params.id) as appType;
 });
+const isInstalled = computed(() => {
+  const installedAppIndex = appsStore.installed.findIndex(
+    (_app) => _app.id === app.value.id,
+  );
+  return installedAppIndex !== -1;
+});
+const isInstalling = computed(() => {
+  const index = appsStore.installing.findIndex(
+    (appId) => appId === app.value.id,
+  );
+  return index !== -1;
+});
+const isUninstalling = computed(() => {
+  const index = appsStore.uninstalling.findIndex(
+    (appId) => appId === app.value.id,
+  );
+  return index !== -1;
+});
+const url = computed(() => {
+  if (window.location.origin.indexOf('.onion') > 0) {
+    const installedApp = appsStore.installed.find(
+      (_app) => _app.id === app.value.id,
+    );
+    return `http://${installedApp?.hiddenService || ''}${app.value.path}`;
+  } else {
+    if (app.value.torOnly) {
+      return '#';
+    }
+    return `http://${window.location.hostname}:${app.value.port}${app.value.path}`;
+  }
+});
+async function created() {
+  await appsStore.getAppStore();
+  if (isInstalled.value) {
+    pollOfflineApp();
+  }
+  await lightningStore.getVersionInfo();
+}
+created();
+onBeforeUnmount(() => {
+  checkIfAppIsOffline.value = false;
+});
+function formatDependency(dependency: string) {
+  switch (dependency) {
+    case 'bitcoind':
+      return 'Bitcoin Core';
+    case 'lnd':
+      return 'LND';
+    case 'electrum':
+      return 'Electrum Server';
+    default:
+      return dependency;
+  }
+}
+function isDependencyInstalled(dependency: string) {
+  const allInstalled = ['bitcoind', 'electrum', lightningStore.implementation];
+  return allInstalled.includes(dependency);
+}
+function src(dependency: string) {
+  return new URL(
+    `../assets/app-store/dependencies/${dependency}.svg`,
+    import.meta.url,
+  ).href;
+}
+function installApp() {
+  if (!app.value.compatible) return;
+  appsStore.install(app.value.id);
+  isOffline.value = true;
+  pollOfflineApp();
+}
+function openApp(event: Event) {
+  if (app.value.id === 'bluewallet') checkIfAppIsOffline.value = false;
+  if (app.value.torOnly && window.location.origin.indexOf('.onion') < 0) {
+    event.preventDefault();
+    alert(
+      `${app.value.name} can only be used over Tor. Please access your Citadel in a Tor browser on your remote access URL (Settings > Tor > Remote Access URL) to open this app.`,
+    );
+  }
+  return;
+}
+async function pollOfflineApp() {
+  checkIfAppIsOffline.value = true;
+  while (checkIfAppIsOffline.value) {
+    try {
+      await window.fetch(url.value, {mode: 'no-cors'});
+      isOffline.value = false;
+      checkIfAppIsOffline.value = false;
+    } catch (error) {
+      isOffline.value = true;
+    }
+    await delay(1000);
+  }
+}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+td {
+  padding: 0.5rem;
+  padding-left: 0;
+  padding-right: 2rem;
+  &:nth-child(2) {
+    width: 100%;
+    text-align: right;
+    padding-right: 0;
+  }
+}
+</style>

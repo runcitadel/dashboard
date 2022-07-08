@@ -3,18 +3,20 @@
     <div v-if="appsStore.installed.length">
       <div class="my-3 pb-3">
         <div class="d-flex justify-content-between align-items-center">
-          <h1>apps</h1>
+          <h1>{{ t('apps.overview.heading') }}</h1>
           <div>
             <b-button
               variant="outline-primary"
               size="sm"
               @click="startUpdate"
               >{{
-                isUpdating ? 'Update running in the background...' : 'Update'
+                isUpdating
+                  ? t('apps.overview.update-running')
+                  : t('apps.overview.update')
               }}</b-button
             >
             <b-button variant="outline-primary" size="sm" @click="toggleEdit">{{
-              isEditing ? 'Done' : 'Edit'
+              isEditing ? t('apps.overview.done') : t('apps.overview.edit')
             }}</b-button>
           </div>
         </div>
@@ -37,14 +39,14 @@
     </div>
     <div v-else>
       <div class="my-3 pb-3">
-        <h1>apps</h1>
+        <h1>{{ t('apps.overview.heading') }}</h1>
         <div
           class="d-flex flex-column justify-content-center align-items-center py-5 mb-lg-5"
         >
-          <p class="text-muted mb-2">You don't have any apps installed yet</p>
-          <b-button variant="success" class="px-4" :to="'app-store'"
-            >Go to App Store</b-button
-          >
+          <p class="text-muted mb-2">{{ t('apps.overview.none-installed') }}</p>
+          <b-button variant="success" class="px-4" :to="'app-store'">{{
+            t('apps.overview.go-to-app-store')
+          }}</b-button>
         </div>
       </div>
     </div>
@@ -56,9 +58,11 @@ import {ref} from 'vue';
 import InstalledApp from '../components/InstalledApp.vue';
 import useAppsStore from '../store/apps';
 import useSystemStore from '../store/system';
+import {useI18n} from 'vue-i18n';
 
 const appsStore = useAppsStore();
 const systemStore = useSystemStore();
+const {t} = useI18n();
 const isEditing = ref(false);
 const isUpdating = ref(false);
 appsStore.getInstalledApps();

@@ -122,14 +122,14 @@ export default defineStore('user', {
       seed: string[];
     }) {
       if (!this.registered) {
-        const jwt = await this.sdkStore.citadel.manager.auth.register(
+        const response = await this.sdkStore.citadel.manager.auth.register(
           name,
           password,
           seed,
         );
 
-        if (jwt) {
-          this.setJwt(jwt);
+        if (response && response.jwt) {
+          this.setJwt(response.jwt);
           this.registered = true;
           this.seed = []; // Remove seed from store
         }

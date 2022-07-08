@@ -28,10 +28,7 @@
             `${systemStore.updateStatus.description}...`
           }}</small>
           <b-alert class="system-alert" variant="warning" show>
-            <small
-              >Please do not refresh this page or turn off your Citadel while
-              the update is in progress</small
-            >
+            <small>{{ t('refresh-warning-update') }}</small>
           </b-alert>
         </div>
       </loading>
@@ -50,13 +47,11 @@
           class="text-center"
         >
           <b-alert class="system-alert" variant="warning" show>
-            <small
-              >Please do not refresh this page or turn off your Citadel while it
-              is
-              {{
-                systemStore.shuttingDown ? 'shutting down' : 'rebooting'
-              }}</small
-            >
+            <small>{{
+              systemStore.shuttingDown
+                ? t('refresh-warning-shutdown')
+                : t('refresh-warning-reboot')
+            }}</small>
           </b-alert>
         </div>
       </shutdown>
@@ -76,6 +71,7 @@ import delay from './helpers/delay';
 import Shutdown from './components/Shutdown.vue';
 import Loading from './components/Loading.vue';
 import {defineComponent} from 'vue';
+import {useI18n} from 'vue-i18n';
 
 export default defineComponent({
   name: 'App',
@@ -88,7 +84,8 @@ export default defineComponent({
     const userStore = useUserStore();
     const uiStore = useUiStore();
     const toast = useToast();
-    return {userStore, systemStore, uiStore, toast};
+    const {t} = useI18n();
+    return {t, userStore, systemStore, uiStore, toast};
   },
   data() {
     return {
@@ -192,7 +189,9 @@ export default defineComponent({
   },
   methods: {
     getThemePreference() {
-      const activeTheme = localStorage.getItem('user-theme');
+      const activeTheme = localStorage.getItem('user-theme') as
+        | 'light'
+        | 'dark';
       const hasDarkPreference = window.matchMedia(
         '(prefers-color-scheme: dark)',
       ).matches;

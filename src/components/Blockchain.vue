@@ -44,11 +44,15 @@
                 </div>
                 <div class="align-self-center">
                   <h6 class="mb-1 font-weight-normal">
-                    Block {{ block.height.toLocaleString() }}
+                    {{ t('block') }} {{ block.height.toLocaleString() }}
                   </h6>
                   <small v-if="block.numTransactions" class="text-muted">
                     {{ block.numTransactions.toLocaleString() }}
-                    transaction{{ block.numTransactions !== 1 ? 's' : '' }}
+                    {{
+                      block.numTransactions === 1
+                        ? t('transaction')
+                        : t('transactions')
+                    }}
                   </small>
                   <small v-if="block.size" class="text-muted">
                     <span>&bull; {{ Math.round(block.size / 1000) }} KB</span>
@@ -127,6 +131,7 @@
 
 <script lang="ts" setup>
 import {onBeforeUnmount, ref, watch} from 'vue';
+import {useI18n} from 'vue-i18n';
 
 import useBitcoinStore from '../store/bitcoin';
 import {
@@ -135,12 +140,17 @@ import {
   getDateFormatWithSeconds,
 } from '../helpers/date';
 
+const {t} = useI18n();
+
 defineProps({
   numBlocks: {
     type: Number,
     default: 3,
   },
 });
+
+const isDevelopment = import.meta.env.DEV;
+
 const bitcoinStore = useBitcoinStore();
 const pollInProgress = ref(false);
 const polling = ref<null | number>(null);
@@ -171,8 +181,8 @@ async function fetchBlocks() {
 }
 function poller(syncPercent: number) {
   window.clearInterval(polling.value as number);
-  //if syncing, fetch blocks every second
-  if (Number(syncPercent) !== 100) {
+  // if syncing (or in development), fetch blocks every second
+  if (Number(syncPercent) !== 100 || isDevelopment) {
     polling.value = window.setInterval(fetchBlocks, 1000);
   } else {
     //else, slow down and fetch blocks every minute
@@ -183,9 +193,9 @@ function blockTime(timestamp: number) {
   const minedAt = timestamp * 1000;
   //sometimes the block can have a timestamp with a few seconds in the future compared to browser's time
   if (new Date(minedAt) < new Date()) {
-    return formatDistance(new Date(minedAt), new Date());
+    return t('time-ago', {time: formatDistance(new Date(minedAt), new Date())});
   } else {
-    return 'just now';
+    return t('just-now');
   }
 }
 function blockReadableTime(timestamp: number) {
