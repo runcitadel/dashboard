@@ -441,7 +441,7 @@ export default defineComponent({
     },
     async getChannelBackup() {
       const {data} = await this.lightningStore.getChannelBackup();
-      const blob = new Blob([data], {type: 'text/csv'});
+      const blob = new Blob([data], {type: 'application/octet-stream'});
       const url = window.URL.createObjectURL(blob);
       window.open(url);
     },
