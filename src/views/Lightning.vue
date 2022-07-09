@@ -157,8 +157,16 @@
               v-b-modal.open-channel-modal
               variant="outline-primary"
               size="sm"
-              >+ Open Channel</b-button
             >
+              + Open Channel
+            </b-button>
+            <b-button
+              variant="outline-primary"
+              size="sm"
+              @click="getChannelBackup"
+            >
+              Download Channel Backup
+            </b-button>
           </template>
           <template #menu>
             <!--<b-dropdown-item
@@ -430,6 +438,12 @@ export default defineComponent({
     },
     src(icon: string) {
       return new URL(`../assets/${icon}`, import.meta.url).href;
+    },
+    async getChannelBackup() {
+      const {data} = await this.lightningStore.getChannelBackup();
+      const blob = new Blob([data], {type: 'text/csv'});
+      const url = window.URL.createObjectURL(blob);
+      window.open(url);
     },
   },
 });

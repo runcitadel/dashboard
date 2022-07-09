@@ -303,6 +303,10 @@ export default defineStore('lightning', {
       }
     },
 
+    async getChannelBackup() {
+      return await this.sdkStore.citadel.middleware.lightning.channel.getBackup();
+    },
+
     async getTransactions() {
       // Get invoices and payments
       const invoices =
