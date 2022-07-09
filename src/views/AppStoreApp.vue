@@ -435,8 +435,10 @@ function openApp(event: Event) {
   }
   return;
 }
+const skipCheckApps = ['bluewallet', 'ringtools'];
 async function pollOfflineApp() {
   checkIfAppIsOffline.value = true;
+  if (skipCheckApps.includes(app.value.id)) checkIfAppIsOffline.value = false;
   while (checkIfAppIsOffline.value) {
     try {
       await window.fetch(url.value, {mode: 'no-cors'});
