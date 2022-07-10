@@ -82,7 +82,7 @@
                   style="opacity: 0.4"
                   variant="dark"
                   class="ms-1"
-                  title="This percentage depends on the number of transactions inside each block and is only an estimation. Empty blocks will be verified faster and have less weight in the overall synchronization percentage"
+                  :title="t('bitcoin.sync-info')"
                 />
               </small>
             </div>
@@ -169,6 +169,7 @@ import BitcoinWallet from '../components/BitcoinWallet.vue';
 import useBitcoinStore from '../store/bitcoin';
 
 import {defineComponent} from 'vue';
+import {useI18n} from 'vue-i18n';
 import {BIconInfoCircleFill} from 'bootstrap-vue/src/index.js';
 
 export default defineComponent({
@@ -180,8 +181,9 @@ export default defineComponent({
     BIconInfoCircleFill,
   },
   setup() {
+    const {t} = useI18n();
     const bitcoinStore = useBitcoinStore();
-    return {bitcoinStore};
+    return {t, bitcoinStore};
   },
   data() {
     return {} as {

@@ -94,6 +94,10 @@ const messages = {
       'search-placeholder': 'Nach Apps suchen',
     },
   },
+  bitcoin: {
+    'sync-info':
+      'Diese Prozentzahl hängt von der Anzahl der Transaktion in jedem Block ab und ist nur eine Schätzung. Leere Blöcke werden schneller überprüft und tragen weniger zu der Gesamtprozentzahl bei',
+  },
 };
 
 export default messages;
