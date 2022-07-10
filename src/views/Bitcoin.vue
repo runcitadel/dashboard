@@ -76,6 +76,14 @@
               >
                 {{ bitcoinStore.currentBlock.toLocaleString() }} of
                 {{ bitcoinStore.blockHeight.toLocaleString() }} blocks
+                <b-icon-info-circle-fill
+                  v-b-tooltip.hover.bottom
+                  icon="info-circle-fill"
+                  style="opacity: 0.4"
+                  variant="dark"
+                  class="ms-1"
+                  title="This percentage depends on the number of transactions inside each block and is only an estimation. Empty blocks will be verified faster and have less weight in the overall synchronization percentage"
+                />
               </small>
             </div>
             <!-- low storage mode  -->
@@ -161,6 +169,7 @@ import BitcoinWallet from '../components/BitcoinWallet.vue';
 import useBitcoinStore from '../store/bitcoin';
 
 import {defineComponent} from 'vue';
+import {BIconInfoCircleFill} from 'bootstrap-vue/src/index.js';
 
 export default defineComponent({
   components: {
@@ -168,6 +177,7 @@ export default defineComponent({
     Blockchain,
     Stat,
     BitcoinWallet,
+    BIconInfoCircleFill,
   },
   setup() {
     const bitcoinStore = useBitcoinStore();
