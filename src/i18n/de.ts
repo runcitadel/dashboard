@@ -96,7 +96,7 @@ const messages = {
   },
   bitcoin: {
     'sync-info':
-      'Diese Prozentzahl hängt von der Anzahl der Transaktion in jedem Block ab und ist nur eine Schätzung. Leere Blöcke werden schneller überprüft und tragen weniger zu der Gesamtprozentzahl bei',
+      'Diese Prozentzahl hängt von der Anzahl der Transaktionen in jedem Block ab und ist nur eine Schätzung. Leere Blöcke werden schneller überprüft und tragen weniger zur Gesamtprozentzahl bei',
   },
 };
 
