@@ -98,6 +98,10 @@ const messages = {
       'default-password': 'The default password for this app is',
     },
   },
+  bitcoin: {
+    'sync-info':
+      'This percentage depends on the number of transactions inside each block and is only an estimation. Empty blocks will be verified faster and have less weight in the overall synchronization percentage',
+  },
 };
 
 export default messages;
