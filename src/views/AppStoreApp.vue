@@ -142,65 +142,68 @@
       <b-col col cols="12" lg="6" xl="8">
         <card-widget header="About this app">
           <div class="px-3 px-lg-4 pb-4">
-            <p class="text-newlines">{{ app.description }}</p>
+            <p class="text-newlines">{{ app?.description }}</p>
           </div>
         </card-widget>
       </b-col>
       <b-col col cols="12" lg="6" xl="4">
         <card-widget header="Information">
           <div class="px-3 px-lg-4 pb-4">
-            <div class="d-flex justify-content-between mb-3">
-              <span>Version</span>
-              <span>{{ app.version }}</span>
-            </div>
-            <div
-              v-if="typeof app.repo == 'string'"
-              class="d-flex justify-content-between mb-3"
-            >
-              <span>Source Code</span>
-              <a :href="app.repo" target="_blank">Public</a>
-            </div>
-            <div
-              v-for="repo in app.repo"
-              v-else
-              :key="repo"
-              class="d-flex justify-content-between mb-3"
-            >
-              <span>{{ repo }} Source Code</span>
-              <a :href="app.repo[repo]" target="_blank">Public</a>
-            </div>
-            <div
-              v-if="app.developer"
-              class="d-flex justify-content-between mb-3"
-            >
-              <span>Developer</span>
-              <a
-                :href="(app as unknown as { website: string}).website"
-                target="_blank"
-                >{{ app.developer }}</a
-              >
-            </div>
-            <div
-              v-if="app.developers"
-              class="d-flex justify-content-between mb-3"
-            >
-              <span>Developers</span>
-              <a
-                v-for="developer in app.developers"
-                :key="developer"
-                :href="developer"
-                target="_blank"
-                >{{ app.developers[developer] }}</a
-              >
-            </div>
-            <!-- We don't need to show this until there are incompatible apps -->
-            <div class="d-flex justify-content-between mb-3">
-              <span>Compatibility</span>
-              <span v-if="!app.compatible" class="text-danger"
-                >Not compatible</span
-              >
-              <span v-else class="text-success">Compatible</span>
-            </div>
+            <table border="0">
+              <tr>
+                <td>Version</td>
+                <td>{{ app.version }}</td>
+              </tr>
+              <tr>
+                <td>Source Code</td>
+                <td>
+                  <a
+                    v-if="typeof app.repo == 'string'"
+                    :href="app.repo"
+                    target="_blank"
+                    >Public</a
+                  >
+                  <a
+                    v-for="(link, name) in app.repo"
+                    v-else
+                    :key="name"
+                    :href="link"
+                    >{{ name }}
+                  </a>
+                </td>
+              </tr>
+              <tr v-if="app.developer">
+                <td>Developer</td>
+                <td>
+                  <a
+                    :href="(app as unknown as { website: string}).website"
+                    target="_blank"
+                    >{{ app.developer }}</a
+                  >
+                </td>
+              </tr>
+              <tr v-else-if="app.developers">
+                <td>Developers</td>
+                <td>
+                  <a
+                    v-for="(website, developer) in app.developers"
+                    :key="developer"
+                    :href="website"
+                    target="_blank"
+                    >{{ developer }}</a
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td>Compatibility</td>
+                <td>
+                  <span v-if="!app.compatible" class="text-danger"
+                    >Not compatible</span
+                  >
+                  <span v-else class="text-success">Compatible</span>
+                </td>
+              </tr>
+            </table>
             <div v-if="app.dependencies.length" class="mb-4">
               <span class="d-block mb-3">Utilizes</span>
               <div
@@ -432,8 +435,10 @@ function openApp(event: Event) {
   }
   return;
 }
+const skipCheckApps = ['bluewallet', 'ringtools'];
 async function pollOfflineApp() {
   checkIfAppIsOffline.value = true;
+  if (skipCheckApps.includes(app.value.id)) checkIfAppIsOffline.value = false;
   while (checkIfAppIsOffline.value) {
     try {
       await window.fetch(url.value, {mode: 'no-cors'});
@@ -446,3 +451,16 @@ async function pollOfflineApp() {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+td {
+  padding: 0.5rem;
+  padding-left: 0;
+  padding-right: 2rem;
+  &:nth-child(2) {
+    width: 100%;
+    text-align: right;
+    padding-right: 0;
+  }
+}
+</style>
