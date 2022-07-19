@@ -186,7 +186,6 @@
                     :success="isCorrectOtp"
                     :error="isIncorrectOtp"
                     @otp-token="setTotpToken"
-                    @keyup="hideOtpError"
                   />
                 </div>
                 <div class="py-2"></div>
@@ -202,7 +201,7 @@
                   <small class="text-danger error">Incorrect password</small>
                 </div>
 
-                <div v-show="isIncorrectTotp" class="my-2 text-center">
+                <div v-show="isIncorrectOtp" class="my-2 text-center">
                   <small class="text-danger error">Incorrect code</small>
                 </div>
 
@@ -498,6 +497,27 @@
             </b-modal>
           </div>
         </div>
+        <div class="pt-0">
+          <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+            <div>
+              <span class="d-block">Features</span>
+              <small class="d-block" style="opacity: 0.4"
+                >Manage features you want</small
+              >
+            </div>
+            <b-button
+              variant="outline-primary"
+              size="sm"
+              @click="openChannelModal"
+              >Manage</b-button
+            >
+            <channel-selector
+              size="xl"
+              :show-modal="showChannelSelectorModal"
+              @close-modal="closeChannelModal"
+            />
+          </div>
+        </div>
         <div class="px-3 px-lg-4 pb-4">
           <div class="w-100 d-flex justify-content-between mb-1">
             <span class="align-self-end">Citadel Version</span>
@@ -582,6 +602,7 @@ import useSystemStore from '../store/system';
 import useUserStore from '../store/user';
 import {defineComponent, DefineComponent} from 'vue';
 import useToast from '../utils/toast';
+import ChannelSelector from '../components/ChannelSelector.vue';
 
 export default defineComponent({
   components: {
@@ -599,6 +620,7 @@ export default defineComponent({
     BIconCheckCircleFill,
     BellIcon: BellIcon as DefineComponent,
     RefreshIcon: RefreshIcon as DefineComponent,
+    ChannelSelector,
   },
   setup() {
     const sdkStore = useSdkStore();
@@ -622,6 +644,7 @@ export default defineComponent({
       loadingDebug: false,
       debugFailed: false,
       showDmesg: false,
+      showChannelSelectorModal: false,
       authenticatorToken: '',
     } as {
       currentPassword: string;
@@ -639,6 +662,9 @@ export default defineComponent({
       showDmesg: boolean;
       authenticatorToken: string;
       pollUpdateStatus?: number;
+      isCorrectOtp: boolean;
+      isIncorrectOtp: boolean;
+      showChannelSelectorModal: boolean;
     };
   },
   computed: {
@@ -654,9 +680,11 @@ export default defineComponent({
       if (typeof this.systemStore.debugStatus === 'string') {
         return 'Error loading data!';
       }
-      return this.showDmesg
-        ? this.systemStore.debugStatus.dmesg
-        : this.systemStore.debugStatus.debug;
+      return (
+        this.showDmesg
+          ? this.systemStore.debugStatus.dmesg
+          : this.systemStore.debugStatus.debug
+      ) as string;
     },
     debugFilename(): string {
       const type: string = this.showDmesg ? 'dmesg' : 'debug';
@@ -698,7 +726,7 @@ export default defineComponent({
     }
   },
   methods: {
-    setTotpToken(totpToken) {
+    setTotpToken(totpToken: string) {
       this.totpToken = totpToken;
     },
     async enableTwoFactorAuth() {
@@ -768,7 +796,7 @@ export default defineComponent({
     async changePassword() {
       this.isChangingPassword = true;
       this.isIncorrectPassword = false;
-      this.isIncorrectTotp = false;
+      this.isIncorrectOtp = false;
 
       try {
         await this.sdkStore.citadel.manager.auth.changePassword(
@@ -788,7 +816,7 @@ export default defineComponent({
         const isIncorrectTotp = errorString.includes('Incorrect 2FA code');
 
         this.isIncorrectPassword = isIncorrectPassword;
-        this.isIncorrectTotp = isIncorrectTotp;
+        this.isIncorrectOtp = isIncorrectTotp;
 
         this.isChangingPassword = false;
         return;
@@ -837,6 +865,12 @@ export default defineComponent({
     closeDebugModal() {
       this.loadingDebug = false;
       (this.$refs['debug-modal'] as {hide: () => void}).hide();
+    },
+    async openChannelModal() {
+      this.showChannelSelectorModal = true;
+    },
+    closeChannelModal() {
+      this.showChannelSelectorModal = false;
     },
     downloadTextFile(contents: string, fileName: string) {
       const blob = new Blob([contents], {

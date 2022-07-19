@@ -121,7 +121,7 @@ export default defineStore('apps', {
 
       const poll = window.setInterval(async () => {
         await this.getInstalledApps();
-        const index = this.installed.findIndex((app) => app.id === appId);
+        const index = this.installed.findIndex((app) => app?.id === appId);
         if (index === -1) {
           this.uninstalling.splice(this.uninstalling.indexOf(appId), 1);
           window.clearInterval(poll);
@@ -134,7 +134,7 @@ export default defineStore('apps', {
 
       const poll = window.setInterval(async () => {
         await this.getInstalledApps();
-        const index = this.installed.findIndex((app) => app.id === appId);
+        const index = this.installed.findIndex((app) => app?.id === appId);
         if (index !== -1) {
           this.installing.splice(this.installing.indexOf(appId), 1);
           window.clearInterval(poll);
