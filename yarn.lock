@@ -206,7 +206,7 @@ __metadata:
   dependencies:
     "@aarondewes/vue-slider-component": ^3.2.16
     "@bitcoin-design/bitcoin-icons-vue": ^0.1.9
-    "@runcitadel/sdk": ^0.5.1
+    "@runcitadel/sdk": ^0.5.2
     "@types/node": ^17.0.21
     "@typescript-eslint/eslint-plugin": ^5.13.0
     "@typescript-eslint/parser": ^5.13.0
@@ -239,13 +239,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@runcitadel/sdk@npm:^0.5.1":
-  version: 0.5.1
-  resolution: "@runcitadel/sdk@npm:0.5.1"
+"@runcitadel/sdk@npm:^0.5.2":
+  version: 0.5.2
+  resolution: "@runcitadel/sdk@npm:0.5.2"
   peerDependencies:
     "@types/react": ^18.0.5
     react: ^18.0.0
-  checksum: 0f1b404638908e2f161789fc785adb07e2feaef9ecfbdd8d3968f40ff658b218052237052af481da110976cc738e9e65eeaa51bb9742334950ad466dae9d5153
+  checksum: 4b455351b601fd26cf16ebdac96c818c854012fc9b6cf009a0d69041e8ca107c45be0d2e33c8c705a23c46fae088252204a1f53f1ad6d2961060d26e744c2713
   languageName: node
   linkType: hard
 
