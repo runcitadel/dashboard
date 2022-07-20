@@ -346,12 +346,12 @@ export default defineComponent({
     this.interval = window.setInterval(this.fetchData, 20000);
 
     // This data isn't changing as much and fetching it every 5 minutes is enough
-      this.fetchLessChangingData();
+    this.fetchLessChangingData();
 
-      this.otherInterval = window.setInterval(
-        this.fetchLessChangingData,
-        60 * 5 * 1000,
-      );
+    this.otherInterval = window.setInterval(
+      this.fetchLessChangingData,
+      60 * 5 * 1000,
+    );
 
     //Automatically check for updates if the setting is toggled on every 25 minutes
     if (this.userStore.autoCheckForUpdates) {
@@ -368,8 +368,8 @@ export default defineComponent({
     if (this.pollUpdateStatus) {
       window.clearInterval(this.pollUpdateStatus);
     }
-    if(this.fetchAvailableUpdateInterval) {
-      window.clearInterval(this.fetchAvailableUpdateInterval)
+    if (this.fetchAvailableUpdateInterval) {
+      window.clearInterval(this.fetchAvailableUpdateInterval);
     }
   },
   methods: {
@@ -400,8 +400,8 @@ export default defineComponent({
       this.systemStore.getCpuTemperature();
     },
     fetchAvailableUpdate() {
-       this.systemStore.getAvailableUpdate();
-    }
+      this.systemStore.getAvailableUpdate();
+    },
     toggleMobileMenu() {
       this.uiStore.isMobileMenuOpen = !this.uiStore.isMobileMenuOpen;
     },

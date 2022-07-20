@@ -647,13 +647,14 @@ export default defineComponent({
     };
   },
   computed: {
-    autoCheckForUpdates(): boolean {
+    autoCheckForUpdates: {
       get: function getChecked() {
         return this.userStore.autoCheckForUpdates;
       },
       set: function setChecked(newVal) {
-        this.userStore.autoCheckForUpdates = !this.userStore.autoCheckForUpdates;
-      }
+        this.userStore.autoCheckForUpdates =
+          !this.userStore.autoCheckForUpdates;
+      },
     },
     authenticatorSecretUri(): string {
       return `otpauth://totp/${encodeURIComponent(
