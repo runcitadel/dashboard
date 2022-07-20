@@ -12,11 +12,13 @@ export interface State {
   seed: string[];
   installedApps: string[];
   sdkStore: ReturnType<typeof useSdkStore>;
+  autoCheckForUpdates: boolean;
 }
 
 // Initial state
 export default defineStore('user', {
   state: (): State => ({
+    autoCheckForUpdates: true,
     name: '',
     jwt: window.localStorage.getItem('jwt') || '',
     registered: true,

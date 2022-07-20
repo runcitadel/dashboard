@@ -344,18 +344,32 @@ export default defineComponent({
     //refresh this data every 20s:
     this.fetchData();
     this.interval = window.setInterval(this.fetchData, 20000);
-    // This data is't changing as much and fetching it every 5 minutes is enough
-    this.fetchLessChangingData();
-    this.otherInterval = window.setInterval(
-      this.fetchLessChangingData,
-      60 * 5 * 1000,
-    );
+
+    // This data isn't changing as much and fetching it every 5 minutes is enough
+      this.fetchLessChangingData();
+
+      this.otherInterval = window.setInterval(
+        this.fetchLessChangingData,
+        60 * 5 * 1000,
+      );
+
+    //Automatically check for updates if the setting is toggled on every 25 minutes
+    if (this.userStore.autoCheckForUpdates) {
+      this.fetchAvailableUpdate();
+      this.fetchAvailableUpdateInterval = window.setInterval(
+        this.fetchAvailableUpdate,
+        5 * 60 * 5 * 1000,
+      );
+    }
   },
   beforeUnmount() {
     window.clearInterval(this.interval);
     window.clearInterval(this.otherInterval);
     if (this.pollUpdateStatus) {
       window.clearInterval(this.pollUpdateStatus);
+    }
+    if(this.fetchAvailableUpdateInterval) {
+      window.clearInterval(this.fetchAvailableUpdateInterval)
     }
   },
   methods: {
@@ -381,11 +395,13 @@ export default defineComponent({
     fetchLessChangingData() {
       this.lightningStore.getChannels();
       this.bitcoinStore.getPrice();
-      this.systemStore.getAvailableUpdate();
       this.systemStore.getRam();
       this.systemStore.getStorage();
       this.systemStore.getCpuTemperature();
     },
+    fetchAvailableUpdate() {
+       this.systemStore.getAvailableUpdate();
+    }
     toggleMobileMenu() {
       this.uiStore.isMobileMenuOpen = !this.uiStore.isMobileMenuOpen;
     },

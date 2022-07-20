@@ -552,6 +552,11 @@
           />
           {{ isCheckingForUpdate ? 'Checking for update' : 'Check for update' }}
         </b-button>
+        <b-form-checkbox v-model="autoCheckForUpdates" size="sm" switch>
+          <small class="text-muted">
+            Automatically check for updates (every 5 minutes)
+          </small>
+        </b-form-checkbox>
       </card-widget>
     </div>
   </div>
@@ -642,6 +647,14 @@ export default defineComponent({
     };
   },
   computed: {
+    autoCheckForUpdates(): boolean {
+      get: function getChecked() {
+        return this.userStore.autoCheckForUpdates;
+      },
+      set: function setChecked(newVal) {
+        this.userStore.autoCheckForUpdates = !this.userStore.autoCheckForUpdates;
+      }
+    },
     authenticatorSecretUri(): string {
       return `otpauth://totp/${encodeURIComponent(
         this.userStore.name,
