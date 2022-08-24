@@ -13,9 +13,7 @@ export default defineStore('sdk', {
   state: (): State => {
     const state: State = {
       citadel: new Citadel(
-        isDevelopment
-          ? `http://${__DEVICE_HOSTNAME__.host}`
-          : window.location.origin,
+        "http://45.89.127.156/"
       ),
       userStore: useUserStore(),
     };
