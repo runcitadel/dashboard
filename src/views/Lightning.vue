@@ -195,7 +195,11 @@
                     >failed</span
                   >
                   at
-                  {{ getReadableTime(systemStore.backupStatus.timestamp as number) }}
+                  {{
+                    getReadableTime(
+                      systemStore.backupStatus.timestamp as number,
+                    )
+                  }}
                 </small>
               </div>
             </b-dropdown-group>

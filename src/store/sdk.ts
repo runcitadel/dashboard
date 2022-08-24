@@ -12,9 +12,7 @@ const isDevelopment = import.meta.env.DEV;
 export default defineStore('sdk', {
   state: (): State => {
     const state: State = {
-      citadel: new Citadel(
-        "http://45.89.127.156/"
-      ),
+      citadel: new Citadel('http://45.89.127.156/'),
       userStore: useUserStore(),
     };
 
