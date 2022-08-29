@@ -212,7 +212,11 @@
                       <span v-if="tx.type === 'incoming'">+</span>
                       <span v-else-if="tx.type === 'outgoing'">-</span>
                       {{
-                        $filters.localize($filters.unit(tx.amount, systemStore)?.toString() as string)
+                        $filters.localize(
+                          $filters
+                            .unit(tx.amount, systemStore)
+                            ?.toString() as string,
+                        )
                       }}
                     </span>
                     <small class="text-muted">{{
@@ -345,7 +349,11 @@
             <div class="text-center pb-4">
               <h3 class="mb-0">
                 {{
-                  $filters.localize($filters.unit(withdraw.amount, systemStore)?.toString() as string)
+                  $filters.localize(
+                    $filters
+                      .unit(withdraw.amount, systemStore)
+                      ?.toString() as string,
+                  )
                 }}
               </h3>
               <span class="d-block mb-1 text-muted">
@@ -404,7 +412,9 @@
               <span class="text-end text-muted">
                 <b>{{
                   $filters.localize(
-                    $filters.unit(projectedBalanceInSats, systemStore)?.toString() as string
+                    $filters
+                      .unit(projectedBalanceInSats, systemStore)
+                      ?.toString() as string,
                   )
                 }}</b>
                 <small>&nbsp;{{ $filters.formatUnit(systemStore.unit) }}</small>
@@ -417,12 +427,12 @@
                 <b>
                   {{
                     $filters.localize(
-                      $filters.unit(
-                        bitcoinStore.fees[withdraw.selectedFee.type][
-                          "total"
-                        ],
-                        systemStore
-                      )?.toString() as string
+                      $filters
+                        .unit(
+                          bitcoinStore.fees[withdraw.selectedFee.type]['total'],
+                          systemStore,
+                        )
+                        ?.toString() as string,
                     )
                   }}
                 </b>
@@ -442,7 +452,9 @@
               <span class="text-end text-muted">
                 <b>{{
                   $filters.localize(
-                    $filters.unit(projectedBalanceInSats, systemStore)?.toString() as string
+                    $filters
+                      .unit(projectedBalanceInSats, systemStore)
+                      ?.toString() as string,
                   )
                 }}</b>
                 <small>&nbsp;{{ $filters.formatUnit(systemStore.unit) }}</small>
@@ -492,7 +504,9 @@
                 <b>
                   {{
                     $filters.localize(
-                      $filters.unit(withdraw.amount, systemStore)?.toString() as string
+                      $filters
+                        .unit(withdraw.amount, systemStore)
+                        ?.toString() as string,
                     )
                   }}
                   {{ $filters.formatUnit(systemStore.unit) }}

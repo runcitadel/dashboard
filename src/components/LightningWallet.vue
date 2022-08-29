@@ -249,7 +249,9 @@
                       <span v-else-if="tx.type === 'outgoing'">-</span>
                       {{
                         $filters.localize(
-                          $filters.unit(tx.amount, systemStore)?.toString() as string
+                          $filters
+                            .unit(tx.amount, systemStore)
+                            ?.toString() as string,
                         )
                       }}
                     </span>
@@ -313,7 +315,9 @@
                 <small class="d-block text-muted mb-1">Paying</small>
                 <h4 class="d-block mb-0">
                   {{
-                    $filters.localize($filters.unit(send.amount, systemStore) as number)
+                    $filters.localize(
+                      $filters.unit(send.amount, systemStore) as number,
+                    )
                   }}
                 </h4>
                 <small class="d-block text-muted">
@@ -367,9 +371,14 @@
           <!-- Invoice amount + description -->
           <p class="text-center mb-4 pb-1">
             Paid
-            <b
-              >{{ $filters.localize($filters.unit(send.amount?.toString() as string, systemStore) as number) }}</b
-            >
+            <b>{{
+              $filters.localize(
+                $filters.unit(
+                  send.amount?.toString() as string,
+                  systemStore,
+                ) as number,
+              )
+            }}</b>
             {{ $filters.formatUnit(systemStore.unit) }}
             <span v-if="send.description">
               for
@@ -496,7 +505,12 @@
               <!-- {{ $filters.localize($filters.unit(receive.amount)) }} -->
               <b>
                 {{
-                  $filters.localize($filters.unit(receive.amount as number, systemStore) as number)
+                  $filters.localize(
+                    $filters.unit(
+                      receive.amount as number,
+                      systemStore,
+                    ) as number,
+                  )
                 }}
                 {{ $filters.formatUnit(systemStore.unit) }}
               </b>
@@ -565,7 +579,12 @@
             Received
             <b
               >{{
-                $filters.localize($filters.unit(receive.amount as number, systemStore) as number)
+                $filters.localize(
+                  $filters.unit(
+                    receive.amount as number,
+                    systemStore,
+                  ) as number,
+                )
               }}
               {{ $filters.formatUnit(systemStore.unit) }}</b
             >
@@ -615,7 +634,14 @@
           <p class="text-center mb-2">
             Paid
             <b>
-              {{ $filters.localize($filters.unit(paymentInfo.amount as number, systemStore) as number) }}
+              {{
+                $filters.localize(
+                  $filters.unit(
+                    paymentInfo.amount as number,
+                    systemStore,
+                  ) as number,
+                )
+              }}
               {{ $filters.formatUnit(systemStore.unit) }}
             </b>
             <span v-if="paymentInfo.description">
@@ -631,7 +657,12 @@
               <small class="text-muted">
                 Fee:
                 {{
-                  $filters.localize($filters.unit(paymentInfo.fee as number, systemStore) as number)
+                  $filters.localize(
+                    $filters.unit(
+                      paymentInfo.fee as number,
+                      systemStore,
+                    ) as number,
+                  )
                 }}
                 {{ $filters.formatUnit(systemStore.unit) }}
               </small>
@@ -685,7 +716,9 @@
             <br />
             <small class="text-muted"
               >Expired on
-              {{ getReadableTime(expiredInvoice.expiresOn as number | Date) }}</small
+              {{
+                getReadableTime(expiredInvoice.expiresOn as number | Date)
+              }}</small
             >
           </p>
         </div>

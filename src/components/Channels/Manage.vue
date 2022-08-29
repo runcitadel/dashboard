@@ -9,7 +9,11 @@
             $filters.satsToUSD(channel.localBalance, bitcoinStore).toString()
           "
         >
-          {{ $filters.localize($filters.unit(channel.localBalance, systemStore) as number) }}
+          {{
+            $filters.localize(
+              $filters.unit(channel.localBalance, systemStore) as number,
+            )
+          }}
           {{ $filters.formatUnit(systemStore.unit) }}
         </h4>
         <h4
@@ -19,7 +23,11 @@
             $filters.satsToUSD(channel.remoteBalance, bitcoinStore).toString()
           "
         >
-          {{ $filters.localize($filters.unit(channel.remoteBalance, systemStore) as number) }}
+          {{
+            $filters.localize(
+              $filters.unit(channel.remoteBalance, systemStore) as number,
+            )
+          }}
           {{ $filters.formatUnit(systemStore.unit) }}
         </h4>
       </div>
@@ -81,7 +89,11 @@
             "
             class="text-capitalize font-weight-bold"
           >
-            {{ $filters.localize($filters.unit(channel.localBalance, systemStore) as number) }}
+            {{
+              $filters.localize(
+                $filters.unit(channel.localBalance, systemStore) as number,
+              )
+            }}
             {{ $filters.formatUnit(systemStore.unit) }}
           </span>
         </div>
@@ -95,7 +107,11 @@
             "
             class="text-capitalize font-weight-bold"
           >
-            {{ $filters.localize($filters.unit(channel.remoteBalance, systemStore) as number) }}
+            {{
+              $filters.localize(
+                $filters.unit(channel.remoteBalance, systemStore) as number,
+              )
+            }}
             {{ $filters.formatUnit(systemStore.unit) }}
           </span>
         </div>
@@ -110,7 +126,9 @@
             class="text-capitalize font-weight-bold"
           >
             {{
-              $filters.localize($filters.unit(channel.capacity, systemStore) as number)
+              $filters.localize(
+                $filters.unit(channel.capacity, systemStore) as number,
+              )
             }}
             {{ $filters.formatUnit(systemStore.unit) }}
           </span>
@@ -132,7 +150,11 @@
         >
           <span class="text-muted">Commit Fee</span>
           <span class="text-capitalize font-weight-bold">
-            {{ $filters.localize($filters.unit(channel.commitFee, systemStore) as number) }}
+            {{
+              $filters.localize(
+                $filters.unit(channel.commitFee, systemStore) as number,
+              )
+            }}
             {{ $filters.formatUnit(systemStore.unit) }}
           </span>
         </div>
