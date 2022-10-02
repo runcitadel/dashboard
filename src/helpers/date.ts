@@ -21,7 +21,7 @@ export function format(date: number | Date, formatStr: string) {
     });
   }
   // Otherwise, return the default date format
-  else return dateFnsFormat(date, formatStr, {locale: locales.enUS});
+  else return dateFnsFormat(date, formatStr, { locale: locales.enUS });
 }
 
 export function formatDistance(date: number | Date, baseDate: number | Date) {
@@ -30,16 +30,21 @@ export function formatDistance(date: number | Date, baseDate: number | Date) {
   if (locales[language.replace('-', '') as keyof typeof locales]) {
     return dateFnsFormatDistance(date, baseDate, {
       locale: locales[language.replace('-', '') as keyof typeof locales],
+      addSuffix: true,
     });
   }
   // Otherwise, check if just the language code exists
   else if (locales[language.split('-')[0] as keyof typeof locales]) {
     return dateFnsFormatDistance(date, baseDate, {
       locale: locales[language.split('-')[0] as keyof typeof locales],
+      addSuffix: true,
     });
   }
   // Otherwise, return the default date format
-  else return dateFnsFormatDistance(date, baseDate, {locale: locales.enUS});
+  else return dateFnsFormatDistance(date, baseDate, {
+    locale: locales.enUS,
+    addSuffix: true,
+  });
 }
 
 const dateFormats: Record<string, string> = {
@@ -82,6 +87,6 @@ export function getDateFormatWithSeconds() {
 }
 
 export function prettifySeconds(seconds: number) {
-  const duration = intervalToDuration({start: 0, end: seconds * 1000});
+  const duration = intervalToDuration({ start: 0, end: seconds * 1000 });
   return formatDuration(duration);
 }
