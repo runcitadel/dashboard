@@ -163,7 +163,7 @@ systemStore.getUpdateChannel();
   }
 }
 
-/*.citadel-dev-note {
+.citadel-dev-note {
   position: relative;
   overflow: visible;
   .rocket {
@@ -172,5 +172,5 @@ systemStore.getUpdateChannel();
     top: -30px;
     left: 0;
   }
-}*/
+}
 </style>
