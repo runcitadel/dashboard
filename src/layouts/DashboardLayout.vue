@@ -225,10 +225,11 @@
             <b>High temperature:</b> Your Raspberry Pi is running hot. Consider
             using a heatsink, fan or a cooling case.
           </b-alert>
-          <transition name="change-page" mode="out-in">
-            <!-- Content -->
-            <router-view></router-view>
-          </transition>
+          <router-view v-slot="{ Component }">
+            <transition name="change-page" mode="out-in">
+              <component :is="Component"></component>
+            </transition>
+          </router-view>
         </div>
 
         <!-- Footer -->
