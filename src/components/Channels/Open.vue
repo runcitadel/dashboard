@@ -61,7 +61,7 @@
     </b-row>
     <b-row>
       <b-col col cols="12" sm="6">
-        <fee-selector :fee="fee" class @change="selectFee"></fee-selector>
+        <fee-selector :fee="fee" class v-model="selectedFee"></fee-selector>
       </b-col>
       <b-col class="d-flex" col cols="12" sm="6">
         <div
@@ -221,14 +221,6 @@ export default defineComponent({
     },
   },
   methods: {
-    selectFee(fee: {
-      type: 'normal' | 'fast' | 'slow' | 'cheapest' | 'custom';
-      satPerByte: number;
-    }) {
-      // Remove any error shown due to fee
-      this.error = '';
-      this.selectedFee = fee;
-    },
     async openChannel() {
       this.isOpening = true;
 

@@ -7,7 +7,6 @@
         class="d-flex align-items-center"
         size="sm"
         switch
-        :disabled="isDisabled"
       >
         <small class="text-muted ms-1">Custom</small>
       </b-form-checkbox>
@@ -22,8 +21,7 @@
         :interval="1"
         :dot-size="[22, 22]"
         contained
-        :tooltip="isDisabled ? 'none' : 'always'"
-        :disabled="isDisabled"
+        tooltip="always"
         @change="emitValue"
       >
         <template #tooltip="{value, focus}">
@@ -60,7 +58,7 @@
         v-model="chosenFee"
         absorb
         marks
-        :vdata="recommendedFees"
+        :data="recommendedFees"
         :dot-size="[22, 22]"
         contained
         :tooltip="isDisabled ? 'none' : 'always'"
@@ -93,8 +91,8 @@
 </template>
 
 <script lang="ts">
-import VueSlider from '@aarondewes/vue-slider-component';
-import '@aarondewes/vue-slider-component/theme/default.css';
+import VueSlider from 'vue-slider-component';
+import 'vue-slider-component/theme/default.css';
 import {defineComponent} from 'vue';
 import useBitcoinStore from '../../store/bitcoin';
 
@@ -103,6 +101,10 @@ export default defineComponent({
     VueSlider,
   },
   props: {
+    modelValue: {
+      type: Object,
+      required: true,
+    },
     fee: {
       type: Object,
       required: true,
@@ -120,7 +122,7 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ['change'],
+  emits: ['update:modelValue'],
   setup() {
     const bitcoinStore = useBitcoinStore();
     return {bitcoinStore};
@@ -162,10 +164,10 @@ export default defineComponent({
     },
   },
   watch: {
-    useCustomFee: function () {
+    useCustomFee() {
       this.emitValue();
     },
-    'fee.fast.total': function () {
+    chosenFee() {
       this.emitValue();
     },
   },
@@ -176,13 +178,13 @@ export default defineComponent({
           type: 'custom',
           satPerByte: parseInt(this.customFee.toString(), 10),
         };
-        this.$emit('change', fee);
+        this.$emit('update:modelValue', fee);
       } else {
         const fee = {
           type: this.chosenFee,
           satPerByte: parseInt(this.fee[this.chosenFee].perByte, 10),
         };
-        this.$emit('change', fee);
+        this.$emit('update:modelValue', fee);
       }
     },
     timeToConfirm(fee: 'fast' | 'normal' | 'slow' | 'cheapest') {
@@ -230,7 +232,7 @@ $stepBgColor: rgba(0, 0, 0, 0.1) !default;
 $labelFontSize: 0.8rem;
 
 /* import theme style */
-@import 'node_modules/@aarondewes/vue-slider-component/lib/theme/default.scss';
+@import 'node_modules/vue-slider-component/lib/theme/default.scss';
 
 .vue-slider-container {
   padding-top: 3rem;

@@ -5,16 +5,6 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@aarondewes/vue-slider-component@npm:^3.2.16":
-  version: 3.2.16
-  resolution: "@aarondewes/vue-slider-component@npm:3.2.16"
-  dependencies:
-    core-js: ^3.20.3
-    vue-property-decorator: ^10.0.0-rc.3
-  checksum: e96122e20c701ea93d19826f82121ed7a57c3394602aa413904d73cf1b3d2e6f625e8559407011b272e02f500846d5be1b61d56910d1182009c06f86e95ef86b
-  languageName: node
-  linkType: hard
-
 "@babel/helper-string-parser@npm:^7.18.10":
   version: 7.18.10
   resolution: "@babel/helper-string-parser@npm:7.18.10"
@@ -240,7 +230,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@runcitadel/dashboard@workspace:."
   dependencies:
-    "@aarondewes/vue-slider-component": ^3.2.16
     "@bitcoin-design/bitcoin-icons-vue": ^0.1.9
     "@runcitadel/sdk": ^0.5.4
     "@types/node": ^18.7.23
@@ -271,6 +260,7 @@ __metadata:
     vue-confetti: ^2.3.0
     vue-i18n: ^v9.2.2
     vue-router: ^4.1.5
+    vue-slider-component: 4.1.0-beta.2
     vue-toastification: next
   languageName: unknown
   linkType: soft
@@ -926,13 +916,6 @@ __metadata:
   version: 1.1.0
   resolution: "console-control-strings@npm:1.1.0"
   checksum: 8755d76787f94e6cf79ce4666f0c5519906d7f5b02d4b884cf41e11dcd759ed69c57da0670afd9236d229a46e0f9cf519db0cd829c6dca820bb5a5c3def584ed
-  languageName: node
-  linkType: hard
-
-"core-js@npm:^3.20.3":
-  version: 3.25.3
-  resolution: "core-js@npm:3.25.3"
-  checksum: 26ca0a5e575e6da03dc30099f48bc00db50a1c0a3f81299165f111cb163869ae453de5e345f2cb7bc8be85a9adcee11fca94f0fbdbdf6d483c68e1c55a9efc5a
   languageName: node
   linkType: hard
 
@@ -3019,16 +3002,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-property-decorator@npm:^10.0.0-rc.3":
-  version: 10.0.0-rc.3
-  resolution: "vue-property-decorator@npm:10.0.0-rc.3"
-  peerDependencies:
-    vue: "*"
-    vue-class-component: "*"
-  checksum: 50a20cb6cfe54c689ca23f342250b09781f6f138513d6a4418ef0090fafb2661085eadf43832044bdede26a968523abf8c6a913e1eb2f5b3e6e73056d8af6aa9
-  languageName: node
-  linkType: hard
-
 "vue-router@npm:^4.1.5":
   version: 4.1.5
   resolution: "vue-router@npm:4.1.5"
@@ -3037,6 +3010,13 @@ __metadata:
   peerDependencies:
     vue: ^3.2.0
   checksum: cafa2f4e14188bca0d4d45e05a901b6ff7bb3933010a6b2c9372bed7fa872bb2e18f1f033b23f540d3a75e1ecd6840b79a5ba5a714de01942d02e1e6cce88dec
+  languageName: node
+  linkType: hard
+
+"vue-slider-component@npm:4.1.0-beta.2":
+  version: 4.1.0-beta.2
+  resolution: "vue-slider-component@npm:4.1.0-beta.2"
+  checksum: 4c72abefa589d673d6c361d4485ea1c0ba36d2d433764d9273f7079cda083896e4bb82053cf3c29f00a6c464b60b127161915a8f1a907d255b5f523d7e30b038
   languageName: node
   linkType: hard
 

@@ -14,7 +14,6 @@
     "postinstall": "husky install"
   },
   "dependencies": {
-    "@aarondewes/vue-slider-component": "^3.2.16",
     "@bitcoin-design/bitcoin-icons-vue": "^0.1.9",
     "@runcitadel/sdk": "^0.5.4",
     "@vue/compat": "^3.2.40",
@@ -33,6 +32,7 @@
     "vue-confetti": "^2.3.0",
     "vue-i18n": "^v9.2.2",
     "vue-router": "^4.1.5",
+    "vue-slider-component": "4.1.0-beta.2",
     "vue-toastification": "next"
   },
   "devDependencies": {

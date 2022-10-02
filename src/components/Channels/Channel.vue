@@ -42,7 +42,7 @@
               "
               >{{
                 $filters.localize(
-                  $filters.unit(channel.localBalance, systemStore) as number
+                  $filters.unit(channel.localBalance, systemStore) as number,
                 )
               }}
               {{ $filters.formatUnit(systemStore.unit) }}</span
@@ -57,7 +57,7 @@
               class="text-success text-end font-weight-bold"
               >{{
                 $filters.localize(
-                  $filters.unit(channel.remoteBalance, systemStore) as number
+                  $filters.unit(channel.remoteBalance, systemStore) as number,
                 )
               }}
               {{ $filters.formatUnit(systemStore.unit) }}</span
