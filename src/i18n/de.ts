@@ -98,6 +98,44 @@ const messages = {
     'sync-info':
       'Diese Prozentzahl hängt von der Anzahl der Transaktionen in jedem Block ab und ist nur eine Schätzung. Leere Blöcke werden schneller überprüft und tragen weniger zur Gesamtprozentzahl bei',
   },
+  setup: {
+    'step-1': {
+      heading: 'Willkommen zu Citadel',
+      text: 'Deine Reise in die digitalen Freiheit startet jetzt.',
+    },
+    'step-2': {
+      heading: 'Was ist dein Name?',
+      text: 'Dein Name bleibt auf deinem Node und wird niemals mit uns oder dritten geteilt.',
+    },
+    'step-3': {
+      heading: 'Lege dein Passwort fest',
+      text: "Du brauchst dieses Passwort später, um dich anzumelden.",
+    },
+    'step-4': {
+      heading: 'Bestätige dein Passwort',
+      text: "Du brauchst dieses Passwort später, um dich anzumelden.",
+    },
+    'step-5': {
+      heading: 'Notiere dir deinen Seed',
+      text: "Auf der nächsten Seite werden dir 24 Wörter angezeigt. Schreibe sie dir am besten mit einem Stift auf ein Blatt Papier und lagere es sicher.",
+    },
+    'step-6': {
+      heading: 'Notiere dir deinen Seed',
+      text: 'Wenn irgendwas schiefläuft oder du dein Passwort vergisst, brauchst du diese Wörter, um wieder an dein Wallet zu kommen..',
+    },
+    'step-7': {
+      heading: 'Von überall zugreifen',
+      text: "Auch wenn du nicht zuhause bist, kannst du mit dem Tor-Browser dein Citadel jederzeit unter folgender Adresse erreichen:",
+    },
+    'step-8': {
+      heading: 'Eine letzte Sache',
+      text: "Sei nicht zu unvorsichtig",
+    },
+    'step-9': {
+      heading: "🎉 Das war's!",
+      text: 'Gratulation! Dein Citadel ist fertig eingerichtet und synct nun die Bitcoin-Blockchain.',
+    }
+  }
 };
 
 export default messages;

@@ -102,6 +102,44 @@ const messages = {
     'sync-info':
       'This percentage depends on the number of transactions inside each block and is only an estimation. Empty blocks will be verified faster and have less weight in the overall synchronization percentage',
   },
+  setup: {
+    'step-1': {
+      heading: 'welcome to citadel',
+      text: 'Your journey to digital freedom starts now.',
+    },
+    'step-2': {
+      heading: 'what is your name?',
+      text: 'Your name stays on your Citadel and is never shared with us or a 3rd party.',
+    },
+    'step-3': {
+      heading: 'set your password',
+      text: "You'll need this password to login to your Citadel.",
+    },
+    'step-4': {
+      heading: 'confirm your password',
+      text: "You'll need this password to login to your Citadel.",
+    },
+    'step-5': {
+      heading: 'note down your secret words',
+      text: "On the next screen you will be shown 24 words. It's recommended that you write them down on a piece of paper and store it in a safe place.",
+    },
+    'step-6': {
+      heading: 'note down your secret words',
+      text: 'Remember, there is no "forgot password" button. You will need these 24 words to recover your Citadel.',
+    },
+    'step-7': {
+      heading: 'access from anywhere',
+      text: "Even when you're not on your home network, you can access your Citadel using Tor Browser on the following URL",
+    },
+    'step-8': {
+      heading: 'one last thing',
+      text: "Don't be too #reckless.",
+    },
+    'step-9': {
+      heading: "🎉 that's it!",
+      text: 'Congratulations! Your Citadel is now set up and synchronizing the Bitcoin blockchain.',
+    }
+  }
 };
 
 export default messages;

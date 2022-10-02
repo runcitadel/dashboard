@@ -162,6 +162,7 @@ import useLightningStore from '../store/lightning';
 import useAppsStore from '../store/apps';
 import useSdkStore from '../store/sdk';
 import useToast from '../utils/toast';
+import {useI18n} from "vue-i18n";
 
 import delay from '../helpers/delay';
 
@@ -169,50 +170,6 @@ import InputPassword from '../components/Utility/InputPassword.vue';
 import Seed from '../components/Utility/Seed.vue';
 import InputCopy from '../components/Utility/InputCopy.vue';
 import {BIconExclamationCircleFill} from 'bootstrap-vue/src/index.js';
-
-type Step = {
-  heading: string;
-  text: string;
-};
-
-const steps: Step[] = [
-  {
-    heading: 'welcome to citadel',
-    text: 'Your journey to digital freedom starts now.',
-  },
-  {
-    heading: 'what is your name?',
-    text: 'Your name stays on your Citadel and is never shared with us or a 3rd party.',
-  },
-  {
-    heading: 'set your password',
-    text: "You'll need this password to login to your Citadel.",
-  },
-  {
-    heading: 'confirm your password',
-    text: "You'll need this password to login to your Citadel.",
-  },
-  {
-    heading: 'note down your secret words',
-    text: "On the next screen you will be shown 24 words. It's recommended that you write them down on a piece of paper and store it in a safe place.",
-  },
-  {
-    heading: 'note down your secret words',
-    text: 'Remember, there is no "forgot password" button. You will need these 24 words to recover your Citadel.',
-  },
-  {
-    heading: 'access from anywhere',
-    text: "Even when you're not on your home network, you can access your Citadel using Tor Browser on the following URL",
-  },
-  {
-    heading: 'one last thing',
-    text: "Don't be too #reckless.",
-  },
-  {
-    heading: "🎉 that's it!",
-    text: 'Congratulations! Your Citadel is now set up and synchronizing the Bitcoin blockchain.',
-  },
-];
 
 export default defineComponent({
   components: {
@@ -229,6 +186,7 @@ export default defineComponent({
     const appsStore = useAppsStore();
     const sdkStore = useSdkStore();
     const toast = useToast();
+    const { t } = useI18n();
 
     return {
       sdkStore,
@@ -238,6 +196,7 @@ export default defineComponent({
       bitcoinStore,
       lightningStore,
       toast,
+      t,
     };
   },
   data(): {
@@ -264,24 +223,17 @@ export default defineComponent({
     };
   },
   computed: {
-    /*...mapState({
-      isLndOperational: (state) => state.lightning.operational,
-      registered: (state) => state.user.registered,
-      seed: (state) => state.user.seed,
-      unlocked: (state) => state.lightning.unlocked,
-      onionAddress: (state) => state.system.onionAddress,
-    }),*/
     heading(): string {
       if (this.currentStep === 5 && this.recover) {
         return 'recover your citadel';
       }
-      return steps[this.currentStep]['heading'];
+      return this.t(`setup.step-${this.currentStep + 1}.heading`);
     },
     text(): string {
       if (this.currentStep === 5 && this.recover) {
         return 'Enter your 24 secret words in the exact order to recover your Citadel.';
       }
-      return steps[this.currentStep]['text'];
+      return this.t(`setup.step-${this.currentStep + 1}.text`);
     },
     nextButtonText(): string {
       if (this.currentStep === 0) {
@@ -320,7 +272,7 @@ export default defineComponent({
     progress(): number {
       return this.currentStep === 0
         ? 0
-        : Math.round((this.currentStep * 100) / (steps.length - 1));
+        : Math.round((this.currentStep * 100) / 8);
     },
   },
   async created() {
