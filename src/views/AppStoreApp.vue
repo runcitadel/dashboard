@@ -38,7 +38,7 @@
             </h3>
             <p class="text-muted">{{ app.tagline }}</p>
             <p>
-              <small>{{ app.developer }}</small>
+              <small>{{ Object.keys(app.developers)[0] }}</small>
             </p>
           </div>
         </div>
@@ -172,17 +172,7 @@
                   </a>
                 </td>
               </tr>
-              <tr v-if="app.developer">
-                <td>Developer</td>
-                <td>
-                  <a
-                    :href="(app as unknown as { website: string}).website"
-                    target="_blank"
-                    >{{ app.developer }}</a
-                  >
-                </td>
-              </tr>
-              <tr v-else-if="app.developers">
+              <tr>
                 <td>Developers</td>
                 <td>
                   <a
@@ -204,10 +194,10 @@
                 </td>
               </tr>
             </table>
-            <div v-if="app.dependencies.length" class="mb-4">
+            <div v-if="app.permissions?.length" class="mb-4">
               <span class="d-block mb-3">Utilizes</span>
               <div
-                v-for="dependency in app.dependencies"
+                v-for="dependency in app.permissions"
                 :key="dependency.toString()"
               >
                 <div
@@ -332,17 +322,17 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, computed, onBeforeUnmount} from 'vue';
+import {ref, computed, onBeforeUnmount, onMounted} from 'vue';
 import {useRoute} from 'vue-router';
 import {useI18n} from 'vue-i18n';
 
 import delay from '../helpers/delay';
-
-import useAppsStore, {app as appType} from '../store/apps';
+import useAppsStore from '../store/apps';
 import useLightningStore from '../store/lightning';
 
 import CardWidget from '../components/CardWidget.vue';
 import InputCopy from '../components/Utility/InputCopy.vue';
+import { app } from '@runcitadel/sdk';
 
 const appsStore = useAppsStore();
 const lightningStore = useLightningStore();
@@ -353,7 +343,7 @@ const isOffline = ref(false);
 const checkIfAppIsOffline = ref(true);
 
 const app = computed(() => {
-  return appsStore.store.find((app) => app.id === route.params.id) as appType;
+  return appsStore.store.find((app) => app.id === route.params.id) as app;
 });
 const isInstalled = computed(() => {
   const installedAppIndex = appsStore.installed.findIndex(
@@ -383,17 +373,20 @@ const url = computed(() => {
     if (app.value.torOnly) {
       return '#';
     }
+    // @ts-expect-error Types need fixing
     return `http://${window.location.hostname}:${app.value.port}${app.value.path}`;
   }
 });
-async function created() {
+onMounted(async () => {
   await appsStore.getAppStore();
   if (isInstalled.value) {
     pollOfflineApp();
   }
   await lightningStore.getVersionInfo();
-}
-created();
+  if (!appsStore.hasElectrum) {
+    await appsStore.getHasElectrum();
+  }
+});
 onBeforeUnmount(() => {
   checkIfAppIsOffline.value = false;
 });
@@ -410,7 +403,8 @@ function formatDependency(dependency: string) {
   }
 }
 function isDependencyInstalled(dependency: string) {
-  const allInstalled = ['bitcoind', 'electrum', lightningStore.implementation];
+  const allInstalled = ['bitcoind', lightningStore.implementation, ...appsStore.installed.map((app) => app.id as string)];
+  if (appsStore.hasElectrum) allInstalled.push("electrum");
   return allInstalled.includes(dependency);
 }
 function src(dependency: string) {
@@ -421,7 +415,7 @@ function src(dependency: string) {
 }
 function installApp() {
   if (!app.value.compatible) return;
-  appsStore.install(app.value.id);
+  appsStore.install(app.value.id as string);
   isOffline.value = true;
   pollOfflineApp();
 }
@@ -438,7 +432,7 @@ function openApp(event: Event) {
 const skipCheckApps = ['bluewallet', 'ringtools'];
 async function pollOfflineApp() {
   checkIfAppIsOffline.value = true;
-  if (skipCheckApps.includes(app.value.id)) checkIfAppIsOffline.value = false;
+  if (skipCheckApps.includes(app.value.id as string)) checkIfAppIsOffline.value = false;
   while (checkIfAppIsOffline.value) {
     try {
       await window.fetch(url.value, {mode: 'no-cors'});

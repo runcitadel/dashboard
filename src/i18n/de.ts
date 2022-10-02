@@ -65,7 +65,7 @@ const messages = {
     'optional-steps':
       'Die folgenden Schritte sind optional, aber wenn du eine kürzere Lighhtning-Adresse, eine Spendenseite und LNUrl möchtest, können wir das auch einrichten.',
     'step-3': 'Du benötigst zuerst mindestens einen Lightning-Channel.',
-    'step-4-part-1': 'Richte die Erweiterung "',
+    'step-4-part-1': '(Optional) Richte die Erweiterung "',
     // Alby link
     'step-4-part-2':
       '" in deinem Browser ein und verbinde sie mit deinem Citadel. Alby wird benötigt, um dich suf unserer Lightning-Adressen-Seite anzumelden. Du kannst stattdessen auch Discord, Twitter oder GitHub zum Login nutzen.',

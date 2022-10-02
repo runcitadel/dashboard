@@ -1,73 +1,7 @@
 import {defineStore} from 'pinia';
-import type {app as appType, Dependency} from '@runcitadel/sdk';
+import type {app} from '@runcitadel/sdk';
 
 import useSdkStore from './sdk';
-
-type MetadataV4 = {
-  /**
-   * The category for the app
-   */
-  category: string;
-  /**
-   * The app's default password. Can also be $APP_SEED for a random password
-   */
-  defaultPassword?: string | undefined;
-  developers: Record<string, string>;
-  /**
-   * A list of promo images for the apps
-   */
-  gallery?: string[] | undefined;
-  /**
-   * The name of the app
-   */
-  name: string;
-  /**
-   * The path the "Open" link on the dashboard should lead to
-   */
-  path?: string | undefined;
-  /**
-   * Permissions the app requires
-   */
-  permissions?: Array<string | string[]>;
-  /**
-   * App repository name -> repo URL
-   */
-  repo: Record<string, string>;
-  /**
-   * A support link for the app
-   */
-  support: string;
-  /**
-   * A short tagline for the app
-   */
-  tagline: string;
-  /**
-   * True if the app only works over Tor
-   */
-  torOnly?: boolean;
-  /**
-   * A list of containers to update automatically (still validated by the Citadel team)
-   */
-  updateContainers?: string[] | undefined;
-  /**
-   * The version of the app
-   */
-  version: string;
-  /** Automatically added */
-  hiddenService?: string;
-  /** Automatically added */
-  installed?: boolean;
-  /** Automatically added */
-  compatible: boolean;
-};
-
-export type app = appType & {
-  id: string;
-  port: number;
-  dependencies: (Dependency | Dependency[])[];
-  description?: string;
-  developer: string;
-};
 
 export interface State {
   installed: app[];
@@ -75,6 +9,7 @@ export interface State {
   installing: string[];
   uninstalling: string[];
   icon?: string;
+  hasElectrum: boolean;
   sdkStore: ReturnType<typeof useSdkStore>;
 }
 
@@ -86,6 +21,7 @@ export default defineStore('apps', {
     installing: [],
     uninstalling: [],
     sdkStore: useSdkStore(),
+    hasElectrum: false,
   }),
   // Functions to get data from the API
   actions: {
@@ -104,15 +40,7 @@ export default defineStore('apps', {
       this.sdkStore.setJwt(jwt);
 
       if (apps) {
-        this.store = (apps as app[]).map((app) => {
-          if ((app as MetadataV4).permissions) {
-            app.dependencies = (app as MetadataV4).permissions as (
-              | Dependency
-              | Dependency[]
-            )[];
-          }
-          return app;
-        });
+        this.store = apps;
       }
     },
     async uninstall(appId: string) {
@@ -144,5 +72,20 @@ export default defineStore('apps', {
     async updateApps() {
       await this.sdkStore.citadel.manager.apps.updateAll();
     },
+    async getHasElectrum() {
+      if (this.store?.length < 1) {
+        await this.getAppStore();
+      }
+      if (this.installed?.length < 1) {
+        await this.getInstalledApps();
+      }
+      let appsThatImplementElectrum = this.store.filter(elem => elem.implements === "electrum");
+      let installedIds = this.installed.map((elem) => elem.id);
+      let installed = [...installedIds, ...this.installing];
+      let electrumImplementation = appsThatImplementElectrum.find((elem) => installed.includes(elem.id));
+      if (electrumImplementation) {
+        this.hasElectrum = true;
+      }
+    }
   },
 });

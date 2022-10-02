@@ -9,7 +9,6 @@
       </div>
     </div>
     <b-input
-      v-if="systemStore.updateChannel !== 'stable'"
       v-model="searchQuery"
       class="neu-input my-4"
       :placeholder="t('apps.store.search-placeholder')"
@@ -74,7 +73,7 @@
           </div>
         </router-link>
       </card-widget>
-      <!--<card-widget class="pb-2 card-app-list citadel-dev-note mt-2">
+      <card-widget class="pb-2 card-app-list citadel-dev-note mt-2">
         <div class="px-3 px-lg-4 py-3">
           <span class="rocket ms-3 ms-lg-4">🚀</span>
           <h4 class="font-weight-normal mt-4">
@@ -85,12 +84,12 @@
             app for Citadel.
           </p>
           <b-link
-            href="https://github.com/runcitadel/core/blob/main/apps/README.md
+            href="https://developers.runcitadel.space/"
             target="_blank"
             >Learn more</b-link
           >
         </div>
-      </card-widget>-->
+      </card-widget>
     </div>
   </div>
 </template>
@@ -98,11 +97,12 @@
 <script lang="ts" setup>
 import {computed, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
-import useAppsStore, {app as appType} from '../store/apps';
+import useAppsStore from '../store/apps';
 import useSystemStore from '../store/system';
 import Fuse from 'fuse.js';
 
 import CardWidget from '../components/CardWidget.vue';
+import type { app } from '@runcitadel/sdk';
 
 const appsStore = useAppsStore();
 const systemStore = useSystemStore();
@@ -129,9 +129,9 @@ const foundApps = computed(() => {
   return result ? result : appsToShow.value;
 });
 
-const categorizedAppStore = computed((): Record<string, appType[]> => {
-  let store = foundApps.value as appType[];
-  let group = store.reduce((r: Record<string, appType[]>, app) => {
+const categorizedAppStore = computed((): Record<string, app[]> => {
+  let store = foundApps.value as app[];
+  let group = store.reduce((r: Record<string, app[]>, app) => {
     r[app.category] = [...(r[app.category] || []), app];
     return r;
   }, {});
