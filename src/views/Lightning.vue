@@ -111,11 +111,7 @@
               <div class="d-flex align-items-center">
                 <!-- Pubkey QR Code -->
                 <qr-code
-                  :value="
-                    lightningStore.uris.length
-                      ? lightningStore.uris[0]
-                      : lightningStore.pubkey
-                  "
+                  :value=lightningStore.uris.length ? lightningStore.uris[0] : lightningStore.pubkey"
                   :size="180"
                   class="qr-image mx-auto"
                   show-logo
