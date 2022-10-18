@@ -55,7 +55,7 @@
     "not dead",
     "not ie 11"
   ],
-  "packageManager": "yarn@3.2.3",
+  "packageManager": "yarn@3.2.4",
   "resolutions": {
     "portal-vue": "^3.0.0-beta.0"
   }
