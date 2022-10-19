@@ -412,7 +412,7 @@ function isDependencyInstalled(dependency: string) {
     lightningStore.implementation,
     ...appsStore.installed.map((app) => app.id as string),
   ];
-  //if (appsStore.hasElectrum) allInstalled.push('electrum');
+  if (appsStore.hasElectrum) allInstalled.push('electrum');
   return allInstalled.includes(dependency);
 }
 function src(dependency: string) {
