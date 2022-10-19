@@ -31,7 +31,7 @@ WORKDIR /app
 
 # Copy dependency management files
 COPY .yarnrc.yml yarn.lock package.json ./
-COPY .yarn/releases/yarn-3.2.3.cjs /app/.yarn/releases/yarn-3.2.3.cjs
+COPY .yarn/releases/yarn-3.2.4.cjs /app/.yarn/releases/yarn-3.2.4.cjs
 # Install dependencies
 RUN yarn install
 
