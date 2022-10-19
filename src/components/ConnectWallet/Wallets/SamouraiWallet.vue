@@ -3,7 +3,7 @@
     <step-list>
       <step>
         Install
-        <b-link to="/app-store/samourai-server">Samourai Server app</b-link> on
+        <b-link to="/app-store/app/samourai-server">Samourai Server app</b-link> on
         your Citadel.
       </step>
       <step>

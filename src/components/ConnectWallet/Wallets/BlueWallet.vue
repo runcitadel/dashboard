@@ -3,7 +3,7 @@
     <step-list>
       <step>
         Install the
-        <b-link to="/app-store/lndhub">LNDHub</b-link> app on your Citadel.
+        <b-link to="/app-store/app/lndhub">LNDHub</b-link> app on your Citadel.
       </step>
       <step>
         Open BlueWallet on your phone, tap the three dots to access the settings
@@ -15,7 +15,7 @@
       </step>
       <step>
         Scan the QR code displayed in the
-        <b-link to="/app-store/lndhub">LNDHub</b-link> app on your Citadel.
+        <b-link to="/app-store/app/lndhub">LNDHub</b-link> app on your Citadel.
       </step>
       <step> Tap <span class="font-weight-bold">"Save"</span>. </step>
       <step>

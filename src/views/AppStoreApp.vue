@@ -21,15 +21,13 @@
       >
       <div
         class="d-flex flex-column flex-sm-row justify-content-between align-items-center"
+        v-if="app"
       >
         <div class="d-flex w-xs-100 justify-content-start pe-2">
           <div class="d-block">
             <img
               class="app-icon app-icon-lg me-2 me-sm-3 align-self-top"
-              :src="
-                app.icon ||
-                `https://runcitadel.github.io/old-apps-gallery/${app.id}/icon.svg`
-              "
+              :src="`https://runcitadel.github.io/old-apps-gallery/${app.id}/icon.svg`"
             />
           </div>
           <div>
@@ -125,7 +123,7 @@
         </div>
       </div>
     </div>
-    <div class="app-gallery pt-3 pb-4 mb-2 mb-sm-3">
+    <div class="app-gallery pt-3 pb-4 mb-2 mb-sm-3" v-if="app">
       <img
         v-for="image in app.gallery"
         :key="image"
@@ -138,7 +136,7 @@
       />
       <div class="d-block" style="padding: 1px"></div>
     </div>
-    <b-row>
+    <b-row v-if="app">
       <b-col col cols="12" lg="6" xl="8">
         <card-widget header="About this app">
           <div class="px-3 px-lg-4 pb-4">
@@ -249,6 +247,8 @@
                       ></path>
                     </svg>
                     <small class="text-danger">Not installed</small>
+                    <b-link v-if="dependency === 'electrum'" :to="`/app-store/category/${encodeURIComponent('Electrum Servers')}`" class="ms-2"
+                      >Install</b-link>
                   </div>
                 </div>
                 <div
@@ -302,6 +302,8 @@
                       ></path>
                     </svg>
                     <small class="text-danger">Not installed</small>
+                    <b-link v-if="realDependency === 'electrum'" :to="`/app-store/category/${encodeURIComponent('Electrum Servers')}`" class="text-muted"
+                      >Install</b-link>
                   </div>
                 </div>
               </div>
@@ -332,7 +334,7 @@ import useLightningStore from '../store/lightning';
 
 import CardWidget from '../components/CardWidget.vue';
 import InputCopy from '../components/Utility/InputCopy.vue';
-import { app } from '@runcitadel/sdk';
+import {app} from '@runcitadel/sdk';
 
 const appsStore = useAppsStore();
 const lightningStore = useLightningStore();
@@ -341,6 +343,8 @@ const {t} = useI18n();
 
 const isOffline = ref(false);
 const checkIfAppIsOffline = ref(true);
+
+if (appsStore.store.length === 0) appsStore.getAppStore();
 
 const app = computed(() => {
   return appsStore.store.find((app) => app.id === route.params.id) as app;
@@ -403,15 +407,22 @@ function formatDependency(dependency: string) {
   }
 }
 function isDependencyInstalled(dependency: string) {
-  const allInstalled = ['bitcoind', lightningStore.implementation, ...appsStore.installed.map((app) => app.id as string)];
-  if (appsStore.hasElectrum) allInstalled.push("electrum");
+  const allInstalled = [
+    'bitcoind',
+    lightningStore.implementation,
+    ...appsStore.installed.map((app) => app.id as string),
+  ];
+  //if (appsStore.hasElectrum) allInstalled.push('electrum');
   return allInstalled.includes(dependency);
 }
 function src(dependency: string) {
-  return new URL(
-    `../assets/app-store/dependencies/${dependency}.svg`,
-    import.meta.url,
-  ).href;
+  if (['lnd', 'bitcoind', 'c-lightning', 'electrum'].includes(dependency))
+    return new URL(
+      `../assets/app-store/dependencies/${dependency}.svg`,
+      import.meta.url,
+    ).href;
+  else
+    return `https://runcitadel.github.io/old-apps-gallery/${dependency}/icon.svg`;
 }
 function installApp() {
   if (!app.value.compatible) return;
@@ -432,7 +443,8 @@ function openApp(event: Event) {
 const skipCheckApps = ['bluewallet', 'ringtools'];
 async function pollOfflineApp() {
   checkIfAppIsOffline.value = true;
-  if (skipCheckApps.includes(app.value.id as string)) checkIfAppIsOffline.value = false;
+  if (skipCheckApps.includes(app.value.id as string))
+    checkIfAppIsOffline.value = false;
   while (checkIfAppIsOffline.value) {
     try {
       await window.fetch(url.value, {mode: 'no-cors'});

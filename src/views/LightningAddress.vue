@@ -12,7 +12,7 @@
       <step-list>
         <step>
           {{ t('lightning-address.step-1-part-1')
-          }}<b-link to="/app-store/lnme">LnMe</b-link
+          }}<b-link to="/app-store/app/lnme">LnMe</b-link
           >{{ t('lightning-address.step-1-part-2') }}
         </step>
         <step>

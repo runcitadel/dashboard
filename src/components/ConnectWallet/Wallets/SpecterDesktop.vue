@@ -7,7 +7,7 @@
         href="https://github.com/cryptoadvance/specter-desktop/releases/latest"
         >native Specter Desktop application</b-link
       >. If you're using the
-      <b-link to="/app-store/specter-desktop"> Specter Desktop app</b-link> on
+      <b-link to="/app-store/app/specter-desktop"> Specter Desktop app</b-link> on
       Citadel, you do not need to follow these instructions as Specter
       automatically connects to Bitcoin Core on your Citadel.</b-alert
     >

@@ -18,13 +18,11 @@
     ></b-input>
     <div class="app-store-card-columns card-columns">
       <card-widget
-        v-for="categorizedApps in categorizedAppStore"
-        :key="categorizedApps[0].category"
+        v-for="app in foundApps"
+        :key="app.id"
         class="pb-2 card-app-list"
-        :header="categorizedApps[0].category"
       >
         <router-link
-          v-for="app in categorizedApps"
           :key="app.id"
           :to="`/app-store/app/${app.id}`"
           class="app-list-app d-flex justify-content-between align-items-center px-3 px-lg-4 py-3"
@@ -36,12 +34,15 @@
                 :src="`https://runcitadel.github.io/old-apps-gallery/${app.id}/icon.svg`"
               />
             </div>
-            <div class="d-flex justify-content-center flex-column my-4">
+            <div class="d-flex justify-content-center flex-column mt-4">
               <h3 class="app-name font-weight-bolder text-dark mb-1">
                 {{ app.name }}
               </h3>
-              <p class="text-muted mb-0">
+              <h6 class="text-muted mb-2">
                 {{ app.tagline }}
+              </h6>
+              <p class="text-muted mb-0">
+                {{ truncate(app.description.replaceAll("\n", " ").replaceAll("\\n", " "), 200) }}
               </p>
             </div>
           </div>
@@ -73,70 +74,48 @@
           </div>
         </router-link>
       </card-widget>
-      <card-widget class="pb-2 card-app-list citadel-dev-note mt-2">
-        <div class="px-3 px-lg-4 py-3">
-          <span class="rocket ms-3 ms-lg-4">🚀</span>
-          <h4 class="font-weight-normal mt-4">
-            Get your app on the Citadel App Store
-          </h4>
-          <p class="text-muted mb-3">
-            Use any programming language, database or framework to build your
-            app for Citadel.
-          </p>
-          <b-link
-            href="https://developers.runcitadel.space/"
-            target="_blank"
-            >Learn more</b-link
-          >
-        </div>
-      </card-widget>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import {computed, ref} from 'vue';
+import {useRoute} from 'vue-router';
 import {useI18n} from 'vue-i18n';
 import useAppsStore from '../store/apps';
 import useSystemStore from '../store/system';
 import Fuse from 'fuse.js';
 
 import CardWidget from '../components/CardWidget.vue';
-import type { app } from '@runcitadel/sdk';
 
 const appsStore = useAppsStore();
 const systemStore = useSystemStore();
 const {t} = useI18n();
+const route = useRoute();
 
-const showIncompatible = ref(false);
 const searchQuery = ref('');
 
-const compatibleApps = computed(() => {
-  return appsStore.store.filter((app) => app.compatible);
-});
-
-const appsToShow = computed(() => {
-  return showIncompatible.value ? appsStore.store : compatibleApps.value;
+const appsInCategory = computed(() => {
+  return appsStore.store.filter((app) => app.category.toLowerCase() === (route.params.category as string).toLowerCase());
 });
 
 const fuse = computed(() => {
-  return new Fuse(appsToShow.value, {keys: ['name', 'tagline']});
+  return new Fuse(appsInCategory.value, {keys: ['name', 'tagline']});
 });
 
 const foundApps = computed(() => {
-  if (!searchQuery.value) return appsToShow.value;
+  if (!searchQuery.value) return appsInCategory.value;
   let result = fuse.value.search(searchQuery.value).map((val) => val.item);
-  return result ? result : appsToShow.value;
+  return result ? result : appsInCategory.value;
 });
 
-const categorizedAppStore = computed((): Record<string, app[]> => {
-  let store = foundApps.value as app[];
-  let group = store.reduce((r: Record<string, app[]>, app) => {
-    r[app.category] = [...(r[app.category] || []), app];
-    return r;
-  }, {});
-  return group;
-});
+// Truncate a string to the given amunt of characters without cutting words
+// Add a … at the end
+function truncate(text: string, chars: number) {
+  if (text.length <= chars) return text;
+  const truncated = text.substring(0, chars);
+  return truncated.substring(0, Math.min(truncated.length, truncated.lastIndexOf(' '))) + '…';
+}
 
 appsStore.getAppStore();
 systemStore.getUpdateChannel();

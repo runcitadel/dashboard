@@ -67,8 +67,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script lang="ts" setup>
+import {computed, ref, watch} from 'vue';
 import CountUp from './CountUp.vue';
 
 const abbreviate = (n: number): [number, string] => {
@@ -81,110 +81,99 @@ const abbreviate = (n: number): [number, string] => {
   // This is just for TypeScript, we'll never actually get here
   return [0, 'Error'];
 };
-
-export default defineComponent({
-  components: {
-    CountUp,
+const props = defineProps({
+  title: {
+    type: String,
+    required: true,
   },
-  props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    value: {
-      type: Number,
-      required: true,
-    },
-    suffix: {
-      type: String,
-      default: '',
-    },
-    abbreviateValue: {
-      type: Boolean,
-      default: false,
-    },
-    hasDecimals: {
-      type: Boolean,
-      default: false,
-    },
-    showNumericChange: {
-      type: Boolean,
-      default: false,
-    },
-    showPercentChange: {
-      type: Boolean,
-      default: false,
-    },
+  value: {
+    type: Number,
+    required: true,
   },
-  data() {
-    return {
-      change: {
-        value: 0,
-        suffix: '',
-      },
-    };
+  suffix: {
+    type: String,
+    default: '',
   },
-  computed: {
-    numberValue() {
-      if (!this.abbreviateValue) {
-        return this.value;
+  abbreviateValue: {
+    type: Boolean,
+    default: false,
+  },
+  hasDecimals: {
+    type: Boolean,
+    default: false,
+  },
+  showNumericChange: {
+    type: Boolean,
+    default: false,
+  },
+  showPercentChange: {
+    type: Boolean,
+    default: false,
+  },
+});
+const change = ref({
+  value: 0,
+  suffix: '',
+});
+const numberValue = computed(() => {
+  if (!props.abbreviateValue) {
+    return props.value;
+  } else {
+    return abbreviate(props.value)[0];
+  }
+});
+const numberSuffix = computed(() => {
+  if (!props.abbreviateValue) {
+    return '';
+  } else {
+    return abbreviate(props.value)[1];
+  }
+});
+watch(
+  () => props.value,
+  (newValue, oldValue) => {
+    if (props.showNumericChange) {
+      if (oldValue <= 0) {
+        change.value = {
+          value: 0,
+          suffix: '',
+        };
       } else {
-        return abbreviate(this.value)[0];
-      }
-    },
-    numberSuffix() {
-      if (!this.abbreviateValue) {
-        return '';
-      } else {
-        return abbreviate(this.value)[1];
-      }
-    },
-  },
-  watch: {
-    value(newValue, oldValue) {
-      if (this.showNumericChange) {
-        if (oldValue <= 0) {
-          this.change = {
-            value: 0,
+        if (!props.abbreviateValue) {
+          change.value = {
+            value: newValue - oldValue,
             suffix: '',
           };
         } else {
-          if (!this.abbreviateValue) {
-            this.change = {
-              value: newValue - oldValue,
-              suffix: '',
+          //because fn abbreviate doesn't work with negative numbers
+          if (newValue - oldValue < 0) {
+            change.value = {
+              value: abbreviate(oldValue - newValue)[0] * -1,
+              suffix: abbreviate(oldValue - newValue)[1],
             };
           } else {
-            //because fn abbreviate doesn't work with negative numbers
-            if (newValue - oldValue < 0) {
-              this.change = {
-                value: abbreviate(oldValue - newValue)[0] * -1,
-                suffix: abbreviate(oldValue - newValue)[1],
-              };
-            } else {
-              this.change = {
-                value: abbreviate(newValue - oldValue)[0],
-                suffix: abbreviate(newValue - oldValue)[1],
-              };
-            }
+            change.value = {
+              value: abbreviate(newValue - oldValue)[0],
+              suffix: abbreviate(newValue - oldValue)[1],
+            };
           }
         }
-      } else if (this.showPercentChange) {
-        if (oldValue <= 0) {
-          this.change = {
-            value: 0,
-            suffix: '%',
-          };
-        } else {
-          this.change = {
-            value: Math.round(((newValue - oldValue) * 100) / oldValue),
-            suffix: '%',
-          };
-        }
       }
-    },
+    } else if (props.showPercentChange) {
+      if (oldValue <= 0) {
+        change.value = {
+          value: 0,
+          suffix: '%',
+        };
+      } else {
+        change.value = {
+          value: Math.round(((newValue - oldValue) * 100) / oldValue),
+          suffix: '%',
+        };
+      }
+    }
   },
-});
+);
 </script>
 
 <style lang="scss" scoped>

@@ -90,15 +90,7 @@
               class="list-group pb-2 transactions"
             >
               <b-list-group-item
-                v-for="tx in (lightningStore.transactions as {
-                  type: string;
-                  amount: number;
-                  timestamp: Date;
-                  description: string;
-                  expiresOn?: Date;
-                  paymentRequest: string;
-                  paymentPreImage?: string;
-                }[])"
+                v-for="tx in lightningStore.transactions"
                 :key="tx.paymentRequest || tx.paymentPreImage"
                 class="flex-column align-items-start px-3 px-lg-4"
                 href="#"
@@ -717,7 +709,7 @@
             <small class="text-muted"
               >Expired on
               {{
-                getReadableTime(expiredInvoice.expiresOn as number | Date)
+                getReadableTime(expiredInvoice.expiresOn!)
               }}</small
             >
           </p>

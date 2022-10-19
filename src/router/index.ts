@@ -15,6 +15,7 @@ const Lightning = () => import('../views/Lightning.vue');
 const Apps = () => import('../views/Apps.vue');
 const AppStore = () => import('../views/AppStore.vue');
 const AppStoreApp = () => import('../views/AppStoreApp.vue');
+const AppStoreCategory = () => import('../views/AppStoreCategory.vue');
 const Settings = () => import('../views/Settings.vue');
 const LightningAddress = () => import('../views/LightningAddress.vue');
 const ConnectWallet = () => import('../views/ConnectWallet.vue');
@@ -179,7 +180,12 @@ const routes = [
             component: AppStore,
           },
           {
-            path: ':id',
+            path: 'category/:category',
+            name: 'app-store-category',
+            component: AppStoreCategory,
+          },
+          {
+            path: 'app/:id',
             name: 'app-store-app',
             component: AppStoreApp,
           },
