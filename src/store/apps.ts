@@ -79,13 +79,17 @@ export default defineStore('apps', {
       if (this.installed?.length < 1) {
         await this.getInstalledApps();
       }
-      let appsThatImplementElectrum = this.store.filter(elem => elem.implements === "electrum");
-      let installedIds = this.installed.map((elem) => elem.id);
-      let installed = [...installedIds, ...this.installing];
-      let electrumImplementation = appsThatImplementElectrum.find((elem) => installed.includes(elem.id));
+      const appsThatImplementElectrum = this.store.filter(
+        (elem) => elem.implements === 'electrum',
+      );
+      const installedIds = this.installed.map((elem) => elem.id);
+      const installed = [...installedIds, ...this.installing];
+      const electrumImplementation = appsThatImplementElectrum.find((elem) =>
+        installed.includes(elem.id),
+      );
       if (electrumImplementation) {
         this.hasElectrum = true;
       }
-    }
+    },
   },
 });

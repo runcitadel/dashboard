@@ -8,6 +8,7 @@
     "experimentalDecorators": true,
     "allowJs": false,
     "skipLibCheck": true,
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "allowSyntheticDefaultImports": true,
   }
 }

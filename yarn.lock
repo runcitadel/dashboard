@@ -232,6 +232,7 @@ __metadata:
   dependencies:
     "@bitcoin-design/bitcoin-icons-vue": ^0.1.9
     "@runcitadel/sdk": ^0.5.4
+    "@types/lodash": ^4.14.186
     "@types/node": ^18.7.23
     "@typescript-eslint/eslint-plugin": ^5.38.1
     "@typescript-eslint/parser": ^5.38.1
@@ -250,6 +251,7 @@ __metadata:
     eslint-plugin-vue: ^9.5.1
     fuse.js: ^6.6.2
     husky: ^8.0.1
+    lodash: ^4.17.21
     pinia: ^2.0.22
     prettier: ^2.7.1
     qrcode.vue: ^3.3.3
@@ -286,6 +288,13 @@ __metadata:
   version: 7.0.11
   resolution: "@types/json-schema@npm:7.0.11"
   checksum: 527bddfe62db9012fccd7627794bd4c71beb77601861055d87e3ee464f2217c85fca7a4b56ae677478367bbd248dbde13553312b7d4dbc702a2f2bbf60c4018d
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:^4.14.186":
+  version: 4.14.186
+  resolution: "@types/lodash@npm:4.14.186"
+  checksum: ee0c1368a8100bb6efb88335107473a41928fc307ff1ef4ff1278868ccddba9c04c68c36d1ffe3a0392ef4a956e1955f7de3203ec09df4f1655dd1b88485c549
   languageName: node
   linkType: hard
 

@@ -33,6 +33,7 @@
           :tor-only="app.torOnly"
           :show-uninstall-button="isEditing"
           :is-uninstalling="appsStore.uninstalling.includes(app.id)"
+          :implements="app.implements"
         >
         </installed-app>
       </div>

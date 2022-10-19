@@ -10,12 +10,34 @@
     </div>
     <b-input
       v-model="searchQuery"
-      class="neu-input my-4"
+      class="neu-input mt-4 mb-2"
       :placeholder="t('apps.store.search-placeholder')"
       type="text"
       size="lg"
       autofocus
     ></b-input>
+    <div class="form-check mb-2">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        v-model="showIncompatible"
+        id="showIncompatible"
+      />
+      <label class="form-check-label" for="showIncompatible">
+        Show incompatible apps
+      </label>
+    </div>
+    <div class="form-check mb-4">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        v-model="showInstalled"
+        id="showInstalled"
+      />
+      <label class="form-check-label" for="showInstalled">
+        Show installed apps
+      </label>
+    </div>
     <div class="app-store-card-columns card-columns">
       <card-widget
         v-for="categorizedApps in categorizedAppStore"
@@ -83,9 +105,7 @@
             Use any programming language, database or framework to build your
             app for Citadel.
           </p>
-          <b-link
-            href="https://developers.runcitadel.space/"
-            target="_blank"
+          <b-link href="https://developers.runcitadel.space/" target="_blank"
             >Learn more</b-link
           >
         </div>
@@ -102,21 +122,33 @@ import useSystemStore from '../store/system';
 import Fuse from 'fuse.js';
 
 import CardWidget from '../components/CardWidget.vue';
-import type { app } from '@runcitadel/sdk';
+import type {app as _app} from '@runcitadel/sdk';
 
 const appsStore = useAppsStore();
 const systemStore = useSystemStore();
 const {t} = useI18n();
 
 const showIncompatible = ref(false);
+const showInstalled = ref(false);
 const searchQuery = ref('');
 
 const compatibleApps = computed(() => {
   return appsStore.store.filter((app) => app.compatible);
 });
+appsStore.getInstalledApps();
+
+const installedApps = computed(() => {
+  return appsStore.installed.map((app) => app.id);
+});
 
 const appsToShow = computed(() => {
-  return showIncompatible.value ? appsStore.store : compatibleApps.value;
+  let compatibleFilter = showIncompatible.value
+    ? appsStore.store
+    : compatibleApps.value;
+  let installedFilter = showInstalled.value
+    ? compatibleFilter
+    : compatibleFilter.filter((app) => !installedApps.value.includes(app.id));
+  return installedFilter;
 });
 
 const fuse = computed(() => {
@@ -129,9 +161,9 @@ const foundApps = computed(() => {
   return result ? result : appsToShow.value;
 });
 
-const categorizedAppStore = computed((): Record<string, app[]> => {
-  let store = foundApps.value as app[];
-  let group = store.reduce((r: Record<string, app[]>, app) => {
+const categorizedAppStore = computed((): Record<string, _app[]> => {
+  let store = foundApps.value as _app[];
+  let group = store.reduce((r: Record<string, _app[]>, app) => {
     r[app.category] = [...(r[app.category] || []), app];
     return r;
   }, {});

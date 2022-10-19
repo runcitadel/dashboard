@@ -42,7 +42,14 @@
                 {{ app.tagline }}
               </h6>
               <p class="text-muted mb-0">
-                {{ truncate(app.description.replaceAll("\n", " ").replaceAll("\\n", " "), 200) }}
+                {{
+                  truncate(
+                    app.description
+                      .replaceAll('\n', ' ')
+                      .replaceAll('\\n', ' '),
+                    200,
+                  )
+                }}
               </p>
             </div>
           </div>
@@ -96,7 +103,11 @@ const route = useRoute();
 const searchQuery = ref('');
 
 const appsInCategory = computed(() => {
-  return appsStore.store.filter((app) => app.category.toLowerCase() === (route.params.category as string).toLowerCase());
+  return appsStore.store.filter(
+    (app) =>
+      app.category.toLowerCase() ===
+      (route.params.category as string).toLowerCase(),
+  );
 });
 
 const fuse = computed(() => {
@@ -114,6 +125,7 @@ const foundApps = computed(() => {
 function truncate(text: string, chars: number) {
   if (text.length <= chars) return text;
   const truncated = text.substring(0, chars);
+  // eslint-disable-next-line prettier/prettier
   return truncated.substring(0, Math.min(truncated.length, truncated.lastIndexOf(' '))) + '…';
 }
 

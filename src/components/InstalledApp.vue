@@ -38,153 +38,153 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script lang="ts" setup>
+import {computed, onBeforeUnmount, ref} from 'vue';
 import useAppsStore from '../store/apps';
 // @ts-expect-error No type definitions for this yet
 import {TrashIcon} from '@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js';
+import flatten from 'lodash/flatten';
 
 import delay from '../helpers/delay';
 
 const skipCheckApps = ['bluewallet', 'ringtools'];
 
-export default defineComponent({
-  components: {
-    TrashIcon,
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
   },
-  props: {
-    id: {
-      type: String,
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    hiddenService: {
-      type: String,
-      required: true,
-    },
-    port: {
-      type: Number,
-      required: true,
-    },
-    path: {
-      type: String,
-      default: '/',
-    },
-    showUninstallButton: {
-      type: Boolean,
-      default: false,
-    },
-    isUninstalling: {
-      type: Boolean,
-      default: false,
-    },
-    torOnly: {
-      type: Boolean,
-      default: false,
-    },
+  name: {
+    type: String,
+    required: true,
   },
-  setup() {
-    const appsStore = useAppsStore();
-    return {
-      appsStore,
-    };
+  hiddenService: {
+    type: String,
+    required: true,
   },
-  data() {
-    return {
-      isOffline: false,
-      checkIfAppIsOffline: true,
-    };
+  port: {
+    type: Number,
+    required: true,
   },
-  computed: {
-    url: function () {
-      if (window.location.origin === 'https://node.runcitadel.space') {
-        switch (this.id) {
-          case 'ride-the-lightning':
-            return 'https://rtl.runcitadel.space';
-          case 'lnme':
-            return 'https://donate.runcitadel.space';
-          case 'nextcloud':
-            return 'https://cloud.runcitadel.space';
-          case 'btcpay-server':
-            return 'https://pay.runcitadel.space';
-          case 'lightning-terminal':
-            return 'https://ln-terminal.runcitadel.space';
-          case 'btc-rpc-explorer-public-fast':
-            return 'https://rpc-explorer.runcitadel.space';
-          case 'supabase':
-            return 'https://supabase-ln.runcitadel.space';
-          case 'lightning-addresses':
-            return 'https://sats4.me';
-        }
-        return `https://${this.id}.runcitadel.space`;
-      }
-      if (window.location.origin.indexOf('.onion') > 0) {
-        return `http://${this.hiddenService}${this.path}`;
-      } else {
-        if (this.torOnly) {
-          return '#';
-        }
-        return `http://${window.location.hostname}:${this.port}${this.path}`;
-      }
-    },
+  path: {
+    type: String,
+    default: '/',
   },
-  created() {
-    this.pollOfflineApp();
+  showUninstallButton: {
+    type: Boolean,
+    default: false,
   },
-  beforeUnmount() {
-    this.checkIfAppIsOffline = false;
+  isUninstalling: {
+    type: Boolean,
+    default: false,
   },
-  methods: {
-    uninstall(name: string, appId: string) {
-      if (
-        !window.confirm(
-          `Are you sure you want to uninstall ${name}? This is will also delete all of its data.`,
-        )
-      ) {
-        return;
-      }
-      this.appsStore.uninstall(appId);
-    },
-    openApp(event: Event) {
-      if (this.torOnly && window.location.origin.indexOf('.onion') < 0) {
-        event.preventDefault();
-        alert(
-          `${this.name} can only be used over Tor. Please access your Citadel in a Tor browser on your remote access URL (Settings > Tor > Remote Access URL) to open this app.`,
-        );
-        return;
-      }
-      if (this.isUninstalling || this.isOffline) {
-        event.preventDefault();
-        return;
-      }
-      return;
-    },
-    async pollOfflineApp() {
-      this.checkIfAppIsOffline = true;
-      if (skipCheckApps.includes(this.id)) this.checkIfAppIsOffline = false;
-      while (this.checkIfAppIsOffline) {
-        try {
-          await window.fetch(this.url, {mode: 'no-cors'});
-          this.isOffline = false;
-          this.checkIfAppIsOffline = false;
-        } catch {
-          await delay(1000);
-          try {
-            await window.fetch(this.url);
-            this.isOffline = false;
-            this.checkIfAppIsOffline = false;
-          } catch {
-            this.isOffline = true;
-          }
-        }
-        await delay(1000);
-      }
-    },
+  torOnly: {
+    type: Boolean,
+    default: false,
+  },
+  implements: {
+    type: String,
+    default: '',
   },
 });
+const appsStore = useAppsStore();
+
+const isOffline = ref(false);
+const checkIfAppIsOffline = ref(false);
+
+const url = computed(() => {
+  if (window.location.origin === 'https://node.runcitadel.space') {
+    switch (props.id) {
+      case 'ride-the-lightning':
+        return 'https://rtl.runcitadel.space';
+      case 'nextcloud':
+        return 'https://cloud.runcitadel.space';
+      case 'btcpay-server':
+        return 'https://pay.runcitadel.space';
+      case 'lightning-terminal':
+        return 'https://ln-terminal.runcitadel.space';
+      case 'btc-rpc-explorer-public-fast':
+        return 'https://rpc-explorer.runcitadel.space';
+      case 'supabase':
+        return 'https://supabase-ln.runcitadel.space';
+      case 'sats4.me':
+        return 'https://sats4.me';
+    }
+    return `https://${props.id}.runcitadel.space`;
+  }
+  if (window.location.origin.indexOf('.onion') > 0) {
+    return `http://${props.hiddenService}${props.path}`;
+  } else {
+    if (props.torOnly) {
+      return '#';
+    }
+    return `http://${window.location.hostname}:${props.port}${props.path}`;
+  }
+});
+
+onBeforeUnmount(() => {
+  checkIfAppIsOffline.value = false;
+});
+
+const dependants = computed(() => {
+  return appsStore.installed.filter((app) => {
+    const permissions = flatten(app.permissions);
+    return (
+      permissions.includes(props.id) || permissions.includes(props.implements)
+    );
+  });
+});
+function uninstall(name: string, appId: string) {
+  let message = `Are you sure you want to uninstall ${name}? This is will also delete all of its data. `;
+  if (props.implements) {
+    message += `This app also provides "${props.implements}". If you uninstall it, you will not be able to install or use use any apps that depend on ${props.implements} until you install another app that provides ${props.implements}. `;
+    if (dependants.value.length > 0) {
+      message += `Apps that need ${props.implements} are ${dependants.value
+        .map((app) => app.name)
+        .join(', ')}.`;
+    }
+  }
+  if (!window.confirm(message.trim())) {
+    return;
+  }
+  appsStore.uninstall(appId);
+}
+function openApp(event: Event) {
+  if (props.torOnly && window.location.origin.indexOf('.onion') < 0) {
+    event.preventDefault();
+    alert(
+      `${props.name} can only be used over Tor. Please access your Citadel in a Tor browser on your remote access URL (Settings > Tor > Remote Access URL) to open this app.`,
+    );
+    return;
+  }
+  if (props.isUninstalling || isOffline.value) {
+    event.preventDefault();
+    return;
+  }
+  return;
+}
+async function pollOfflineApp() {
+  checkIfAppIsOffline.value = true;
+  if (skipCheckApps.includes(props.id)) checkIfAppIsOffline.value = false;
+  while (checkIfAppIsOffline.value) {
+    try {
+      await window.fetch(url.value, {mode: 'no-cors'});
+      isOffline.value = false;
+      checkIfAppIsOffline.value = false;
+    } catch {
+      await delay(1000);
+      try {
+        await window.fetch(url.value);
+        isOffline.value = false;
+        checkIfAppIsOffline.value = false;
+      } catch {
+        isOffline.value = true;
+      }
+    }
+    await delay(1000);
+  }
+}
+pollOfflineApp();
 </script>
 
 <style lang="scss" scoped>
