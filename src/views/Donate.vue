@@ -8,7 +8,7 @@
         </div>
       </div>
     </div>
-    <card-widget header="We can't offer Citadel without your support">
+    <h5 class="px-3 px-lg-4 pb-3">We can't offer Citadel without your support</h5>
       <div class="px-3 px-lg-4 pb-3">
         Thank you for using Citadel! As you probably know, we're a completely
         free (as in free speech) open source project.<br />
@@ -19,12 +19,8 @@
         backups of your Lightning channels.<br />
         <br />
         If you want to support us, please consider sending us some sats
-        <a href="https://c.lnbits.rocks/tipjar/1">here</a>.
+        <a href="https://opencollective.com/runcitadel">here</a>.
+        We are completely transparent regarding where your donations are spent, you can see all our spendings on that page.
       </div>
-    </card-widget>
   </div>
 </template>
-
-<script lang="ts" setup>
-import CardWidget from '../components/CardWidget.vue';
-</script>
