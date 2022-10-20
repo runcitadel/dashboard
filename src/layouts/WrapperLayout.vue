@@ -1,19 +1,23 @@
 <template>
   <div>
-    <router-view v-slot="{ Component }">
+    <router-view v-slot="{Component}">
       <transition name="change-page" mode="out-in">
-        <component :is="Component"></component>
+        <KeepAlive>
+          <Suspense>
+            <!-- main content -->
+            <component :is="Component"></component>
+
+            <!-- loading state -->
+            <template #fallback><loading :progress="99" /></template>
+          </Suspense>
+        </KeepAlive>
       </transition>
     </router-view>
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
-
-export default defineComponent({
-  name: 'SimpleLayout',
-});
+<script lang="ts" setup>
+import Loading from '../components/Loading.vue';
 </script>
 
 <style lang="scss" scoped>

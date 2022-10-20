@@ -1,10 +1,12 @@
-// @ts-expect-error configureCompat is actually exported by @vue/compat
-import {createApp, configureCompat} from 'vue';
-import BootstrapVue from 'bootstrap-vue/src/index.js';
+import {createApp} from 'vue';
+import BootstrapVue3 from '../node_modules/bootstrap-vue-3/src/BootstrapVue';
 import {createPinia} from 'pinia';
 import {createI18n} from 'vue-i18n';
 import Toast, {PluginOptions, POSITION} from 'vue-toastification';
+import FloatingVue from 'floating-vue';
+import 'floating-vue/dist/style.css';
 import 'vue-toastification/dist/index.css';
+import 'bootstrap-vue-3/dist/bootstrap-vue-3.css';
 
 import App from './App.vue';
 import router from './router/index';
@@ -64,16 +66,7 @@ app.config.globalProperties.$filters = {
     Number(n).toLocaleString(undefined, {maximumFractionDigits: 8}),
 };
 
-configureCompat({
-  INSTANCE_EVENT_EMITTER: true,
-  CUSTOM_DIR: true,
-  COMPONENT_FUNCTIONAL: true,
-  OPTIONS_DATA_MERGE: true,
-  GLOBAL_EXTEND: true,
-  MODE: 2,
-});
-
-app.use(BootstrapVue);
+app.use(BootstrapVue3);
 
 const toastOptions: PluginOptions = {
   position: POSITION['BOTTOM_RIGHT'],
@@ -92,5 +85,7 @@ const toastOptions: PluginOptions = {
 };
 
 app.use(Toast, toastOptions);
+
+app.use(FloatingVue);
 
 app.mount('#app');

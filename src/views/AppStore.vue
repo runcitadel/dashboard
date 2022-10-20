@@ -8,14 +8,14 @@
         </p>
       </div>
     </div>
-    <b-input
+    <b-form-input
       v-model="searchQuery"
       class="neu-input mt-4 mb-2"
       :placeholder="t('apps.store.search-placeholder')"
       type="text"
       size="lg"
       autofocus
-    ></b-input>
+    ></b-form-input>
     <div class="form-check mb-2">
       <input
         class="form-check-input"

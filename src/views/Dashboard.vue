@@ -77,8 +77,7 @@
               <template #title>
                 <div
                   v-if="btcBalance !== -1 && uiStore.showBalance"
-                  v-b-tooltip.hover.right
-                  :title="
+                  v-tooltip.right="
                     $filters
                       .satsToUSD(bitcoinStore.balance.total, bitcoinStore)
                       .toString()

@@ -18,8 +18,7 @@
     <template #title>
       <div
         v-if="bitcoinStore.balance.total !== -1 && uiStore.showBalance"
-        v-b-tooltip.hover.right
-        :title="
+        v-tooltip.right="
           $filters
             .satsToUSD(bitcoinStore.balance.total, bitcoinStore)
             .toString()
@@ -88,7 +87,7 @@
               <b-list-group-item
                 v-for="tx in bitcoinStore.transactions"
                 :key="(tx as { hash: string }).hash"
-                class="flex-column align-items-start px-3 px-lg-4"
+                class="flex-column align-items-start px-3 px-lg-4 py-2"
                 :href="getTxExplorerUrl((tx as { hash: string }).hash)"
                 target="_blank"
                 @click="openTxInExplorer"
@@ -171,16 +170,17 @@
                     <!-- TODO: Clean this -->
                     <small
                       v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
-                      v-b-tooltip.hover.bottomright
+                      v-tooltip.bottom-end="
+                        `${getReadableTime(tx.timestamp)} | ${
+                          tx.confirmations
+                        } confirmations`
+                      "
                       class="text-muted mt-0 tx-timestamp"
                       :style="
                         tx.confirmations > 0
                           ? 'margin-left: 25px;'
                           : 'margin-left: 21px;'
                       "
-                      :title="`${getReadableTime(tx.timestamp)} | ${
-                        tx.confirmations
-                      } confirmations`"
                     >
                       {{ getTimeFromNow(tx.timestamp) }}
                       <span
@@ -202,9 +202,8 @@
 
                   <div class="text-end">
                     <span
-                      v-b-tooltip.hover.left
                       class="font-weight-bold d-block"
-                      :title="
+                      v-tooltip.left="
                         $filters.satsToUSD(tx.amount, bitcoinStore).toString()
                       "
                     >
@@ -265,7 +264,7 @@
                 </b-form-checkbox>-->
               </div>
               <b-input-group class="neu-input-group">
-                <b-input
+                <b-form-input
                   id="input-withdrawal-amount"
                   v-model="withdraw.amountInput"
                   class="neu-input"
@@ -276,7 +275,7 @@
                   style="padding-right: 82px"
                   :disabled="withdraw.sweep"
                   @input="fetchWithdrawalFees"
-                ></b-input>
+                ></b-form-input>
                 <b-input-group-append class="neu-input-group-append">
                   <sats-btc-switch
                     class="align-self-center"
@@ -300,7 +299,7 @@
             <label class="visually-hidden" for="input-withdrawal-address"
               >Address</label
             >
-            <b-input
+            <b-form-input
               id="input-withdrawal-address"
               v-model="withdraw.address"
               class="mb-2 neu-input"
@@ -309,7 +308,7 @@
               size="lg"
               min="1"
               @input="fetchWithdrawalFees"
-            ></b-input>
+            ></b-form-input>
           </div>
           <div v-show="!error" class="px-3 px-lg-4 mt-1">
             <fee-selector

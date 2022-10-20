@@ -1,16 +1,21 @@
 <template>
   <b-input-group :class="inputGroupClass">
-    <!-- Todo: make it work with b-form-input + v-model -->
     <input
       :class="inputClass"
       :placeholder="placeholder"
       :type="showPassword ? 'text' : 'password'"
-      :value="value"
+      :value="modelValue"
       :disabled="disabled"
-      @input="$emit('input', ($event as any).target.value)"
+      @input="
+        $emit('update:modelValue', ($event.target as HTMLOptionElement).value)
+      "
     />
     <b-input-group-append>
-      <b-button :disabled="disabled" @click="togglePassword">
+      <b-button
+        class="show-password"
+        :disabled="disabled"
+        @click="toggleShowPassword"
+      >
         <HiddenIcon v-if="showPassword" />
         <VisibleIcon v-else />
       </b-button>
@@ -18,57 +23,52 @@
   </b-input-group>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import {
   HiddenIcon,
   VisibleIcon,
 } from '@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js';
-import {defineComponent, PropType} from 'vue';
+import {type PropType, ref} from 'vue';
 
-export default defineComponent({
-  components: {
-    HiddenIcon,
-    VisibleIcon,
+const showPassword = ref(false);
+defineProps({
+  modelValue: {
+    type: String,
+    required: true,
   },
-  props: {
-    value: {
-      type: String,
-      default: '',
-    },
-    inputClass: {
-      type: [String, Array] as PropType<string | string[]>,
-      default: '',
-    },
-    inputGroupClass: {
-      type: String,
-      default: 'card-input-group',
-    },
-    placeholder: {
-      type: String,
-      default: 'password',
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
+  inputClass: {
+    type: [String, Array] as PropType<string | string[]>,
+    default: '',
   },
-  emits: ['input'],
-  data() {
-    return {
-      state: {
-        showPassword: false,
-      },
-    };
+  inputGroupClass: {
+    type: String,
+    default: 'card-input-group',
   },
-  computed: {
-    showPassword() {
-      return this.state.showPassword;
-    },
+  placeholder: {
+    type: String,
+    default: 'password',
   },
-  methods: {
-    togglePassword() {
-      return (this.state.showPassword = !this.state.showPassword);
-    },
+  disabled: {
+    type: Boolean,
+    default: false,
   },
 });
+defineEmits(['update:modelValue']);
+function toggleShowPassword() {
+  showPassword.value = !showPassword.value;
+}
 </script>
+
+<style scoped lang="scss">
+.show-password {
+  position: absolute;
+  height: 100%;
+  right: 0;
+  background: none;
+  color: rgb(54, 54, 54);
+  &:hover {
+    background: none;
+    color: rgb(54, 54, 54);
+  }
+}
+</style>

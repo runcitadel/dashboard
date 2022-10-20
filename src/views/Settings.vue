@@ -57,12 +57,15 @@
               >
             </div>
 
-            <b-button v-b-modal.seed-modal variant="outline-primary" size="sm"
+            <b-button
+              variant="outline-primary"
+              size="sm"
+              @click="showSeedModal = true"
               >View</b-button
             >
 
             <b-modal id="seed-modal" centered hide-footer>
-              <template #modal-header="{close}">
+              <template #modal-header>
                 <div
                   class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
                 >
@@ -71,7 +74,7 @@
                   <a
                     href="#"
                     class="align-self-center"
-                    @click.stop.prevent="close"
+                    @click.stop.prevent="showSeedModal = false"
                   >
                     <svg
                       width="18"
@@ -104,15 +107,15 @@
             </div>
 
             <b-button
-              v-b-modal.change-password-modal
               variant="outline-primary"
               size="sm"
               :disabled="isChangingPassword"
+              @click="showChangePasswordModal = true"
               >Change</b-button
             >
 
-            <b-modal id="change-password-modal" centered hide-footer>
-              <template #modal-header="{close}">
+            <b-modal v-model="showChangePasswordModal" centered hide-footer>
+              <template #modal-header>
                 <div
                   class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
                 >
@@ -121,7 +124,7 @@
                   <a
                     href="#"
                     class="align-self-center"
-                    @click.stop.prevent="close"
+                    @click.stop.prevent="showChangePasswordModal = false"
                   >
                     <svg
                       width="18"
@@ -183,8 +186,8 @@
                 <div v-if="userStore.totpEnabled">
                   <input-otp-token
                     :disabled="isChangingPassword"
-                    :success="isCorrectOtp"
-                    :error="isIncorrectOtp"
+                    :success="isCorrectTotp"
+                    :error="isIncorrectTotp"
                     @otp-token="setTotpToken"
                     @keyup="hideOtpError"
                   />
@@ -301,13 +304,13 @@
                   Enter the code from your authenticator app to verify and
                   {{ userStore.totpEnabled ? 'disable' : 'enable' }} 2FA.
                 </label>
-                <b-input
+                <b-form-input
                   id="input-token"
                   v-model="authenticatorToken"
                   class="mb-4 neu-input"
                   size="lg"
                   placeholder="6-digit-code"
-                ></b-input>
+                ></b-form-input>
                 <b-button
                   v-if="!userStore.totpEnabled"
                   class="w-100"
@@ -391,11 +394,11 @@
               >Restart</b-button
             >
             <b-modal
-              ref="reboot-modal"
+              v-model="showRebootModal"
               title="Are you sure?"
               no-close-on-backdrop
               no-close-on-esc
-              @ok="reboot($event)"
+              @ok.prevent="reboot()"
             >
               <div>
                 <p>
@@ -576,7 +579,7 @@ import {
   FlipHorizontalIcon,
   RefreshIcon,
 } from '@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js';
-import {BIconCheckCircleFill} from 'bootstrap-vue/src/index.js';
+import {BIconCheckCircleFill} from 'bootstrap-icons-vue';
 import useSdkStore from '../store/sdk';
 import useSystemStore from '../store/system';
 import useUserStore from '../store/user';
@@ -611,6 +614,8 @@ export default defineComponent({
     return {
       currentPassword: '',
       isIncorrectPassword: false,
+      isCorrectTotp: false,
+      isIncorrectTotp: false,
       newPassword: '',
       confirmNewPassword: '',
       totpToken: '',
@@ -622,10 +627,16 @@ export default defineComponent({
       loadingDebug: false,
       debugFailed: false,
       showDmesg: false,
+      showChangePasswordModal: false,
+      showSeedModal: false,
+      showTotpModal: false,
       authenticatorToken: '',
+      showRebootModal: false,
     } as {
       currentPassword: string;
       isIncorrectPassword: boolean;
+      isCorrectTotp: boolean;
+      isIncorrectTotp: boolean;
       newPassword: string;
       confirmNewPassword: string;
       totpToken: string;
@@ -639,6 +650,10 @@ export default defineComponent({
       showDmesg: boolean;
       authenticatorToken: string;
       pollUpdateStatus?: number;
+      showChangePasswordModal: boolean;
+      showSeedModal: boolean;
+      showTotpModal: boolean;
+      showRebootModal: boolean;
     };
   },
   computed: {
@@ -654,9 +669,10 @@ export default defineComponent({
       if (typeof this.systemStore.debugStatus === 'string') {
         return 'Error loading data!';
       }
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
       return this.showDmesg
-        ? this.systemStore.debugStatus.dmesg
-        : this.systemStore.debugStatus.debug;
+        ? this.systemStore.debugStatus.dmesg!
+        : this.systemStore.debugStatus.debug!;
     },
     debugFilename(): string {
       const type: string = this.showDmesg ? 'dmesg' : 'debug';
@@ -698,7 +714,7 @@ export default defineComponent({
     }
   },
   methods: {
-    setTotpToken(totpToken) {
+    setTotpToken(totpToken: string) {
       this.totpToken = totpToken;
     },
     async enableTwoFactorAuth() {
@@ -714,7 +730,7 @@ export default defineComponent({
           "You've successfully enabled two-factor authentication",
         );
 
-        this.$bvModal.hide('two-factor-auth-modal');
+        this.showTotpModal = false;
 
         // set optimistic
         this.userStore.totpEnabled = true;
@@ -746,7 +762,7 @@ export default defineComponent({
           "You've successfully disabled two-factor authentication",
         );
 
-        this.$bvModal.hide('two-factor-auth-modal');
+        this.showTotpModal = false;
 
         // set optimistic
         this.userStore.totpEnabled = false;
@@ -795,7 +811,7 @@ export default defineComponent({
       }
 
       this.isChangingPassword = false;
-      this.$bvModal.hide('change-password-modal');
+      this.showChangePasswordModal = false;
 
       // Remove passwords from view
       this.currentPassword = '';
@@ -812,7 +828,7 @@ export default defineComponent({
       this.isCheckingForUpdate = false;
     },
     async openTwoFactorAuthModal() {
-      (this.$refs['two-factor-auth-modal'] as {show: () => void}).show();
+      this.showTotpModal = true;
       this.userStore.getTotpKey();
     },
     async openDebugModal() {
@@ -851,9 +867,8 @@ export default defineComponent({
     },
     async shutdownPrompt() {
       // Get user consent first
-      const approved = await this.$bvModal.msgBoxConfirm(
-        'Your Lightning wallet will not be able to receive any payments while your Citadel is offline.',
-        {title: 'Are you sure?'},
+      const approved = window.confirm(
+        'Are you sure? Your Lightning wallet will not be able to receive any payments while your Citadel is offline.',
       );
       if (!approved) {
         return;
@@ -873,11 +888,13 @@ export default defineComponent({
     rebootPrompt() {
       // Reset any cached hasRebooted value from previous reboot
       this.systemStore.hasRebooted = false;
-      (this.$refs['reboot-modal'] as {show: () => void}).show();
+      this.showRebootModal = true;
     },
-    async reboot(event: Event) {
+    hideOtpError() {
+      this.isIncorrectTotp = false;
+    },
+    async reboot() {
       if (!this.systemStore.hasRebooted) {
-        event.preventDefault();
         try {
           await this.systemStore.reboot();
         } catch (error) {

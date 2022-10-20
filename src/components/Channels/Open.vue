@@ -5,7 +5,7 @@
         <label class="visually-hidden" for="peer-connection"
           >Lightning address</label
         >
-        <b-input
+        <b-form-input
           id="peer-connection"
           v-model="peerConnectionCode"
           class="mb-3 neu-input"
@@ -14,14 +14,14 @@
           size="lg"
           :disabled="isOpening"
           autofocus
-        ></b-input>
+        ></b-form-input>
       </b-col>
       <b-col col cols="12" sm="6">
         <label class="visually-hidden" for="funding-amount">Amount</label>
         <div class="mb-3">
           <div>
             <b-input-group class="neu-input-group">
-              <b-input
+              <b-form-input
                 id="funding-amount"
                 v-model="fundingAmountInput"
                 class="neu-input"
@@ -29,7 +29,7 @@
                 size="lg"
                 style="padding-right: 82px"
                 :disabled="isOpening || sweep"
-              ></b-input>
+              ></b-form-input>
               <b-input-group-append class="neu-input-group-append">
                 <sats-btc-switch
                   class="align-self-center"

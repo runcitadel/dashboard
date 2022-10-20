@@ -1,74 +1,55 @@
 <template>
   <div>
-    <b-navbar type="light" variant="default" class="nav-horizontal">
-      <div class="container-fluid">
-        <div>
-          <b-navbar-brand to="/dashboard">
-            <img src="@/assets/logo.svg" alt="Citadel" height="50" />
-          </b-navbar-brand>
+    <b-navbar type="light" class="nav-horizontal py-1">
+      <b-navbar-brand to="/dashboard">
+        <img src="@/assets/logo.svg" alt="Citadel" height="50" />
+      </b-navbar-brand>
+
+      <!-- Right aligned nav items -->
+      <b-navbar-nav class="ms-auto">
+        <!-- Chain badge -->
+        <b-badge
+          v-if="bitcoinStore.chain !== 'main'"
+          variant="success"
+          class="align-self-center me-2 text-capitalize"
+          pill
+          >{{
+            bitcoinStore.chain === 'test' ? 'testnet' : bitcoinStore.chain
+          }}</b-badge
+        >
+
+        <div
+          class="toggle-theme-icon d-flex align-items-center"
+          @click="toggleTheme"
+        >
+          <div v-if="uiStore.userTheme === 'light'" class="icon-24px">
+            <MoonIcon />
+          </div>
+          <div v-if="uiStore.userTheme === 'dark'" class="icon-24px">
+            <SunIcon />
+          </div>
         </div>
 
-        <!-- <b-navbar-toggle target="nav-collapse"></b-navbar-toggle> -->
+        <div
+          class="nav-hamburger-icon d-lg-none d-xl-none ms-3"
+          :class="{active: uiStore.isMobileMenuOpen}"
+          @click="toggleMobileMenu"
+        >
+          <div></div>
+        </div>
 
-        <!-- Search Bar -->
-        <!-- <b-navbar-nav>
-        <div class="px-lg-4 px-xl-5 mx-xl-4"></div>
-        <b-nav-form class="input-search-form">
-          <b-form-input
-            size="sm"
-            class="input-search"
-            placeholder="Search for transactions, addresses, etc."
-          ></b-form-input>
-          <div class="input-search-icon"></div>
-        </b-nav-form>
-      </b-navbar-nav>-->
-
-        <!-- Right aligned nav items -->
-        <b-navbar-nav class="ms-auto">
-          <!-- Chain badge -->
-          <b-badge
-            v-if="bitcoinStore.chain !== 'main'"
-            variant="success"
-            class="align-self-center me-2 text-capitalize"
-            pill
-            >{{
-              bitcoinStore.chain === 'test' ? 'testnet' : bitcoinStore.chain
-            }}</b-badge
-          >
-
-          <div
-            class="toggle-theme-icon d-flex align-items-center"
-            @click="toggleTheme"
-          >
-            <div v-if="uiStore.userTheme === 'light'" class="icon-24px">
-              <MoonIcon />
-            </div>
-            <div v-if="uiStore.userTheme === 'dark'" class="icon-24px">
-              <SunIcon />
-            </div>
-          </div>
-
-          <div
-            class="nav-hamburger-icon d-lg-none d-xl-none ms-3"
-            :class="{active: uiStore.isMobileMenuOpen}"
-            @click="toggleMobileMenu"
-          >
-            <div></div>
-          </div>
-
-          <b-nav-item-dropdown
-            class="d-none d-lg-block d-xl-block ms-2"
-            right
-            no-caret
-          >
-            <!-- Using 'button-content' slot -->
-            <template #button-content>{{
-              userStore.name.split(' ')[0]
-            }}</template>
-            <b-dropdown-item @click="logout">Log out</b-dropdown-item>
-          </b-nav-item-dropdown>
-        </b-navbar-nav>
-      </div>
+        <b-nav-item-dropdown
+          class="d-none d-lg-block d-xl-block ms-2"
+          right
+          no-caret
+        >
+          <!-- Using 'button-content' slot -->
+          <template #button-content>{{
+            userStore.name.split(' ')[0]
+          }}</template>
+          <b-dropdown-item @click="logout">Log out</b-dropdown-item>
+        </b-nav-item-dropdown>
+      </b-navbar-nav>
     </b-navbar>
 
     <!-- Mobile menu -->
@@ -225,7 +206,7 @@
             <b>High temperature:</b> Your Raspberry Pi is running hot. Consider
             using a heatsink, fan or a cooling case.
           </b-alert>
-          <router-view v-slot="{ Component }">
+          <router-view v-slot="{Component}">
             <transition name="change-page" mode="out-in">
               <component :is="Component"></component>
             </transition>
@@ -261,7 +242,7 @@ import {
   MoonIcon,
   // @ts-expect-error No type definitions for this yet
 } from '@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js';
-import {BIconExclamationCircle} from 'bootstrap-vue/src/index.js';
+import {BIconExclamationCircle} from 'bootstrap-icons-vue';
 import {defineComponent} from 'vue';
 
 export default defineComponent({

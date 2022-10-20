@@ -24,7 +24,6 @@
         @submit.prevent="authenticateUser"
       >
         <input-password
-          ref="password"
           v-model="password"
           autocomplete="current-password"
           placeholder="Password"
@@ -44,7 +43,7 @@
           </transition>
           <transition name="slide-up">
             <b-button
-              v-show="!!password && !isIncorrectPassword"
+              v-show="password.length > 0"
               variant="success"
               type="submit"
               size="lg"
@@ -81,114 +80,98 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script lang="ts" setup>
+import {ref, watch} from 'vue';
 import useUserStore from '../store/user';
 import InputPassword from '../components/Utility/InputPassword.vue';
 import InputOtpToken from '../components/Utility/InputOtpToken.vue';
 import delay from '../helpers/delay';
 import {useI18n} from 'vue-i18n';
+import {useRouter} from 'vue-router';
 
-export default defineComponent({
-  components: {
-    InputPassword,
-    InputOtpToken,
-  },
-  setup() {
-    const userStore = useUserStore();
-    const {t} = useI18n();
-    return {userStore, t};
-  },
-  data() {
-    return {
-      loading: true,
-      password: '',
-      isIncorrectPassword: false,
-      isLoggingIn: false,
-      totpToken: '',
-      showTotpInput: false,
-      isCorrectTotp: false,
-      isIncorrectTotp: false,
-    };
-  },
-  watch: {
-    password: function () {
-      // bring up log in button after user retries new password after failed attempt
-      this.isIncorrectPassword = false;
-    },
-  },
-  async created() {
-    // redirect to dashboard if already logged in
-    if (this.userStore.jwt) {
-      this.$router.push('/dashboard');
-    }
+const router = useRouter();
+const userStore = useUserStore();
+const {t} = useI18n();
 
-    // redirect to onboarding if the user is not registered
-    await this.userStore.getRegistered();
-    if (!this.userStore.registered) {
-      return this.$router.push('/start');
-    } else {
-      await this.userStore.getTotpEnabledStatus();
-    }
+const loading = ref(true);
+const password = ref('');
+const isIncorrectPassword = ref(false);
+const isLoggingIn = ref(false);
+const totpToken = ref('');
+const showTotpInput = ref(false);
+const isCorrectTotp = ref(false);
+const isIncorrectTotp = ref(false);
 
-    this.loading = false;
-  },
-  methods: {
-    async authenticateUser() {
-      this.isLoggingIn = true;
+// redirect to dashboard if already logged in
+if (userStore.jwt) {
+  router.push('/dashboard');
+}
 
-      try {
-        await this.userStore.login({
-          password: this.password,
-          totpToken: this.totpToken,
-        });
+// redirect to onboarding if the user is not registered
+await userStore.getRegistered();
+if (!userStore.registered) {
+  router.push('/start');
+} else {
+  await userStore.getTotpEnabledStatus();
+}
 
-        if (this.totpToken) {
-          // show ripple animation
-          this.isCorrectTotp = true;
-          await delay(1000);
-        }
-
-        // redirect to dashboard
-        return this.$router.push(
-          new URL(window.location as unknown as URL).searchParams.get(
-            'redirect',
-          ) || '/dashboard',
-        );
-      } catch (error) {
-        console.error(error);
-        const errorString = String(error);
-        const isIncorrectPassword = errorString.includes('Incorrect password');
-        const isIncorrectTotp = errorString.includes('Incorrect 2FA code');
-
-        this.isIncorrectPassword = isIncorrectPassword;
-        this.isLoggingIn = false;
-
-        if (this.userStore.totpEnabled) {
-          if (!isIncorrectPassword) {
-            this.showTotpInput = true;
-          }
-
-          if (this.totpToken) {
-            this.isIncorrectTotp = isIncorrectTotp;
-          }
-        }
-
-        // hide error message after interval
-        await delay(3000);
-        this.isIncorrectPassword = false;
-      }
-    },
-
-    authenticateUserWithTotp(totpToken: string) {
-      this.totpToken = totpToken;
-      this.authenticateUser();
-    },
-    hideTotpError() {
-      this.isIncorrectTotp = false;
-    },
-  },
+loading.value = false;
+watch(password, () => {
+  isIncorrectPassword.value = false;
 });
+
+async function authenticateUser() {
+  isLoggingIn.value = true;
+
+  try {
+    await userStore.login({
+      password: password.value,
+      totpToken: totpToken.value,
+    });
+
+    if (totpToken.value) {
+      // show ripple animation
+      isCorrectTotp.value = true;
+      await delay(1000);
+    }
+
+    // redirect to dashboard
+    return router.push(
+      new URL(window.location as unknown as URL).searchParams.get('redirect') ||
+        '/dashboard',
+    );
+  } catch (error) {
+    console.error(error);
+    const errorString = String(error);
+    const _isIncorrectPassword = errorString.includes('Incorrect password');
+    const _isIncorrectTotp = errorString.includes('Incorrect 2FA code');
+
+    isIncorrectPassword.value = _isIncorrectPassword;
+    isLoggingIn.value = false;
+
+    if (userStore.totpEnabled) {
+      if (!isIncorrectPassword) {
+        showTotpInput.value = true;
+      }
+
+      if (totpToken.value) {
+        isIncorrectTotp.value = _isIncorrectTotp;
+      }
+    }
+
+    // hide error message after interval
+    await delay(3000);
+    isIncorrectPassword.value = false;
+  }
+}
+
+function authenticateUserWithTotp(_totpToken: string) {
+  totpToken.value = _totpToken;
+  authenticateUser();
+}
+function hideTotpError() {
+  isIncorrectTotp.value = false;
+}
 </script>
 
 <style lang="scss">

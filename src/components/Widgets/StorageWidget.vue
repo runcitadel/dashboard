@@ -104,15 +104,18 @@
           </b-alert>
         </div>
         <div class="pt-1">
-          <b-link
-            v-b-toggle.storage-breakdown-collapse
+          <a
             class="card-link px-3 px-lg-4"
+            @click="
+              () => {
+                showBreakdown = !showBreakdown;
+                return false;
+              }
+            "
+            >{{ showBreakdown ? t('hide-usage') : t('view-usage') }}</a
           >
-            <span class="when-closed">{{ t('view-usage') }}</span>
-            <span class="when-open">{{ t('hide-usage') }}</span>
-          </b-link>
           <div class="pb-4"></div>
-          <b-collapse id="storage-breakdown-collapse">
+          <b-collapse id="storage-breakdown-collapse" v-model="showBreakdown">
             <ul class="app-stat-list px-3 px-lg-4">
               <li
                 v-for="app in storage.breakdown"
@@ -137,12 +140,11 @@
                       <span v-if="app.id === 'citadel'"
                         >{{ t('system') }}
                         <b-icon-info-circle-fill
-                          v-b-tooltip.hover.bottom
+                          v-tooltip.bottom="t('system-including')"
                           icon="info-circle-fill"
                           style="opacity: 0.4"
                           variant="dark"
                           class="ms-1"
-                          :title="t('system-including')"
                         />
                       </span>
                       <span v-else>{{ getAppName(app.id) }}</span>
@@ -172,10 +174,10 @@
 </template>
 
 <script lang="ts" setup>
-import {computed} from 'vue';
+import {computed, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
 
-import {BIconInfoCircleFill} from 'bootstrap-vue/src/index.js';
+import {BIconInfoCircleFill} from 'bootstrap-icons-vue';
 
 import {readableSize} from '../../helpers/size';
 import CardWidget from '../CardWidget.vue';
@@ -185,6 +187,8 @@ import useSystemStore from '../../store/system';
 const systemStore = useSystemStore();
 const appsStore = useAppsStore();
 const {t} = useI18n();
+
+const showBreakdown = ref(false);
 
 const storage = computed(
   (): {
@@ -250,3 +254,9 @@ function getAppName(appId: string) {
   return appStore.find(({id}) => id === appId)?.name || appId;
 }
 </script>
+
+<style scoped>
+a {
+  cursor: pointer;
+}
+</style>

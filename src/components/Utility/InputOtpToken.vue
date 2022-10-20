@@ -6,7 +6,7 @@
       success: success,
     }"
   >
-    <b-input
+    <b-form-input
       ref="digitOneInput"
       v-model="digit1"
       class="neu-input otp-input"
@@ -17,7 +17,7 @@
       :autofocus="autofocus"
       @keyup="keyup"
     />
-    <b-input
+    <b-form-input
       v-model="digit2"
       class="neu-input otp-input"
       type="text"
@@ -26,7 +26,7 @@
       :disabled="disabled"
       @keyup="keyup"
     />
-    <b-input
+    <b-form-input
       v-model="digit3"
       class="neu-input otp-input"
       type="text"
@@ -35,7 +35,7 @@
       :disabled="disabled"
       @keyup="keyup"
     />
-    <b-input
+    <b-form-input
       v-model="digit4"
       class="neu-input otp-input"
       type="text"
@@ -44,7 +44,7 @@
       :disabled="disabled"
       @keyup="keyup"
     />
-    <b-input
+    <b-form-input
       v-model="digit5"
       class="neu-input otp-input"
       type="text"
@@ -53,7 +53,7 @@
       :disabled="disabled"
       @keyup="keyup"
     />
-    <b-input
+    <b-form-input
       v-model="digit6"
       class="neu-input otp-input"
       type="text"

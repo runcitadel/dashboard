@@ -18,8 +18,7 @@
     <template #title>
       <div
         v-if="walletBalance !== -1 && uiStore.showBalance"
-        v-b-tooltip.hover.right
-        :title="
+        v-tooltip.right="
           $filters
             .satsToUSD(lightningStore.balance.total, bitcoinStore)
             .toString()
@@ -92,7 +91,7 @@
               <b-list-group-item
                 v-for="tx in lightningStore.transactions"
                 :key="tx.paymentRequest || tx.paymentPreImage"
-                class="flex-column align-items-start px-3 px-lg-4"
+                class="flex-column align-items-start px-3 px-lg-4 py-4"
                 href="#"
                 @click.prevent="showTransactionInfo(tx)"
               >
@@ -199,10 +198,9 @@
                     <!-- Timestamp of tx -->
                     <small
                       v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
-                      v-b-tooltip.hover.right
+                      v-tooltip.right="getReadableTime(tx.timestamp)"
                       class="text-muted mt-0 tx-timestamp"
                       style="margin-left: 25px"
-                      :title="getReadableTime(tx.timestamp)"
                       >{{ getTimeFromNow(tx.timestamp) }}</small
                     >
 
@@ -230,11 +228,10 @@
 
                   <div class="text-end">
                     <span
-                      v-b-tooltip.hover.left
-                      class="font-weight-bold d-block"
-                      :title="
+                      v-tooltip.left="
                         $filters.satsToUSD(tx.amount, bitcoinStore).toString()
                       "
+                      class="font-weight-bold d-block"
                     >
                       <!-- Positive or negative prefix with amount -->
                       <span v-if="tx.type === 'incoming'">+</span>
@@ -287,7 +284,7 @@
           </div>
 
           <label class="visually-hidden" for="input-sats">Paste Invoice</label>
-          <b-input
+          <b-form-input
             id="input-sats"
             v-model="send.paymentRequest"
             class="mb-4 neu-input"
@@ -298,7 +295,7 @@
             autofocus
             :disabled="send.isSending"
             @input="fetchInvoiceDetails"
-          ></b-input>
+          ></b-form-input>
 
           <!-- Invoice amount + description -->
           <div v-if="send.isValidInvoice && send.amount">
@@ -411,7 +408,7 @@
           <label class="visually-hidden" for="input-sats">Amount</label>
           <div class="mb-2">
             <b-input-group class="neu-input-group">
-              <b-input
+              <b-form-input
                 id="input-sats"
                 v-model.number="receive.amountInput"
                 class="neu-input"
@@ -421,7 +418,7 @@
                 autofocus
                 :disabled="receive.isGeneratingInvoice"
                 style="padding-right: 82px"
-              ></b-input>
+              ></b-form-input>
               <b-input-group-append class="neu-input-group-append">
                 <sats-btc-switch
                   class="align-self-center"
@@ -446,14 +443,14 @@
             Description
             <small class="text-muted">(optional)</small>
           </label>
-          <b-input
+          <b-form-input
             id="input-description"
             v-model="receive.description"
             class="mb-4 neu-input"
             placeholder="Description (optional)"
             size="lg"
             :disabled="receive.isGeneratingInvoice"
-          ></b-input>
+          ></b-form-input>
         </div>
 
         <!-- SCREEN/MODE: Show Generated Invoice -->

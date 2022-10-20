@@ -3,11 +3,10 @@
     <div class="mb-4">
       <div class="d-flex justify-content-between">
         <h4
-          v-b-tooltip.hover.right
-          class="text-primary font-weight-bold"
-          :title="
+          v-tooltip.right="
             $filters.satsToUSD(channel.localBalance, bitcoinStore).toString()
           "
+          class="text-primary font-weight-bold"
         >
           {{
             $filters.localize(
@@ -17,11 +16,10 @@
           {{ $filters.formatUnit(systemStore.unit) }}
         </h4>
         <h4
-          v-b-tooltip.hover.left
-          class="text-success font-weight-bold text-end"
-          :title="
+          v-tooltip.left="
             $filters.satsToUSD(channel.remoteBalance, bitcoinStore).toString()
           "
+          class="text-success font-weight-bold text-end"
         >
           {{
             $filters.localize(
@@ -83,8 +81,7 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Local Balance</span>
           <span
-            v-b-tooltip.hover.left
-            :title="
+            v-tooltip.left="
               $filters.satsToUSD(channel.localBalance, bitcoinStore).toString()
             "
             class="text-capitalize font-weight-bold"
@@ -101,8 +98,7 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Remote Balance</span>
           <span
-            v-b-tooltip.hover.left
-            :title="
+            v-tooltip.left="
               $filters.satsToUSD(channel.remoteBalance, bitcoinStore).toString()
             "
             class="text-capitalize font-weight-bold"
@@ -119,8 +115,7 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Channel Capacity</span>
           <span
-            v-b-tooltip.hover.left
-            :title="
+            v-tooltip.left="
               $filters.satsToUSD(channel.capacity, bitcoinStore).toString()
             "
             class="text-capitalize font-weight-bold"

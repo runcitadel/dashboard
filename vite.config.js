@@ -25,17 +25,9 @@ export default defineConfig(({mode}) => {
       // To be consistent with esbuild behavior, must either be a JSON object (null, boolean, number, string, array, or object) or a single identifier
       __DEVICE_HOSTNAME__: {host},
     },
-    resolve: {alias: {'@': '/src', vue: '@vue/compat'}},
+    resolve: {alias: {'@': '/src'}},
     plugins: [
-      vue({
-        template: {
-          compilerOptions: {
-            compatConfig: {
-              MODE: 3,
-            },
-          },
-        },
-      }),
+      vue(),
     ],
   };
 });

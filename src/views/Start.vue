@@ -85,9 +85,10 @@
             using Citadel right away!
           </p>
           <a
-            v-b-tooltip.hover.bottom
+            v-tooltip.bottom="
+              'Citadel uses neutrino while the sync is in progress, and automatically switches to Bitcoin Core once it\'s synced'
+            "
             href="#"
-            title="Citadel uses neutrino while the sync is in progress, and automatically switches to Bitcoin Core once it's synced"
           >
             <small>
               <b-icon-exclamation-circle-fill
@@ -169,7 +170,7 @@ import delay from '../helpers/delay';
 import InputPassword from '../components/Utility/InputPassword.vue';
 import Seed from '../components/Utility/Seed.vue';
 import InputCopy from '../components/Utility/InputCopy.vue';
-import {BIconExclamationCircleFill} from 'bootstrap-vue/src/index.js';
+import {BIconExclamationCircleFill} from 'bootstrap-icons-vue';
 
 export default defineComponent({
   components: {

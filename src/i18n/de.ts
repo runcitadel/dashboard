@@ -33,7 +33,7 @@ const messages = {
   storage: 'Speicher',
   available: '{storage} verfügbar',
   system: 'System',
-  'system-including': 'Inklusive Bitcoin Core, LND, und Electrum server',
+  'system-including': 'Inklusive Bitcoin Core und LND',
   calculating: 'Wird berechnet...',
   'view-usage': 'Auslastung anzeigen',
   'hide-usage': 'Auslastung ausblenden',
@@ -109,15 +109,15 @@ const messages = {
     },
     'step-3': {
       heading: 'Lege dein Passwort fest',
-      text: "Du brauchst dieses Passwort später, um dich anzumelden.",
+      text: 'Du brauchst dieses Passwort später, um dich anzumelden.',
     },
     'step-4': {
       heading: 'Bestätige dein Passwort',
-      text: "Du brauchst dieses Passwort später, um dich anzumelden.",
+      text: 'Du brauchst dieses Passwort später, um dich anzumelden.',
     },
     'step-5': {
       heading: 'Notiere dir deinen Seed',
-      text: "Auf der nächsten Seite werden dir 24 Wörter angezeigt. Schreibe sie dir am besten mit einem Stift auf ein Blatt Papier und lagere es sicher.",
+      text: 'Auf der nächsten Seite werden dir 24 Wörter angezeigt. Schreibe sie dir am besten mit einem Stift auf ein Blatt Papier und lagere es sicher.',
     },
     'step-6': {
       heading: 'Notiere dir deinen Seed',
@@ -125,17 +125,17 @@ const messages = {
     },
     'step-7': {
       heading: 'Von überall zugreifen',
-      text: "Auch wenn du nicht zuhause bist, kannst du mit dem Tor-Browser dein Citadel jederzeit unter folgender Adresse erreichen:",
+      text: 'Auch wenn du nicht zuhause bist, kannst du mit dem Tor-Browser dein Citadel jederzeit unter folgender Adresse erreichen:',
     },
     'step-8': {
       heading: 'Eine letzte Sache',
-      text: "Sei nicht zu unvorsichtig",
+      text: 'Sei nicht zu unvorsichtig',
     },
     'step-9': {
       heading: "🎉 Das war's!",
       text: 'Gratulation! Dein Citadel ist fertig eingerichtet und synct nun die Bitcoin-Blockchain.',
-    }
-  }
+    },
+  },
 };
 
 export default messages;

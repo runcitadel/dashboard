@@ -8,14 +8,14 @@
         </p>
       </div>
     </div>
-    <b-input
+    <b-form-input
       v-model="searchQuery"
       class="neu-input my-4"
       :placeholder="t('apps.store.search-placeholder')"
       type="text"
       size="lg"
       autofocus
-    ></b-input>
+    ></b-form-input>
     <div class="app-store-card-columns card-columns">
       <card-widget
         v-for="app in foundApps"

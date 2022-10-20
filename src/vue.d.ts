@@ -1,11 +1,8 @@
-import {BvModal, BvToast} from 'bootstrap-vue';
 import type useBitcoinStore from './store/bitcoin';
 import type useSystemStore from './store/system';
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
-    readonly $bvModal: BvModal;
-    readonly $bvToast: BvToast;
     readonly $filters: {
       unit: (
         value: number | string,

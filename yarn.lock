@@ -79,6 +79,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@floating-ui/core@npm:^0.3.0":
+  version: 0.3.1
+  resolution: "@floating-ui/core@npm:0.3.1"
+  checksum: b5b646f662994cff2feb694781c1fae2025293b74c6bbdb891a647a26b57aa8499cee8d8211f8dd9eafa53909cc24ad451545678c250162b30c37bc02046845a
+  languageName: node
+  linkType: hard
+
+"@floating-ui/dom@npm:^0.1.10":
+  version: 0.1.10
+  resolution: "@floating-ui/dom@npm:0.1.10"
+  dependencies:
+    "@floating-ui/core": ^0.3.0
+  checksum: 9a247f87ef9fd5d20ebfcb262222adce394c49a9c9b35da966794edf7aecc193ee6481cdb6e25a561c6f3d4eb4dea1dad3bc712ccfdba4aeb565d9228618ca94
+  languageName: node
+  linkType: hard
+
 "@gar/promisify@npm:^1.1.3":
   version: 1.1.3
   resolution: "@gar/promisify@npm:1.1.3"
@@ -213,16 +229,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/opencollective@npm:^0.3.2":
-  version: 0.3.3
-  resolution: "@nuxt/opencollective@npm:0.3.3"
-  dependencies:
-    chalk: ^4.1.0
-    consola: ^2.15.0
-    node-fetch: ^2.6.7
-  bin:
-    opencollective: bin/opencollective.js
-  checksum: 24ccbc8d1c05ed5b424651819d59c5a9ad37a8f7139b0351970bdeba08ac87e56e48cb94a6d307be741319f0952fa997f433f223af0c9d551a4b23b0fb0aa21d
+"@popperjs/core@npm:^2.11.6":
+  version: 2.11.6
+  resolution: "@popperjs/core@npm:2.11.6"
+  checksum: 47fb328cec1924559d759b48235c78574f2d71a8a6c4c03edb6de5d7074078371633b91e39bbf3f901b32aa8af9b9d8f82834856d2f5737a23475036b16817f0
   languageName: node
   linkType: hard
 
@@ -231,17 +241,17 @@ __metadata:
   resolution: "@runcitadel/dashboard@workspace:."
   dependencies:
     "@bitcoin-design/bitcoin-icons-vue": ^0.1.9
+    "@popperjs/core": ^2.11.6
     "@runcitadel/sdk": ^0.5.4
     "@types/lodash": ^4.14.186
     "@types/node": ^18.7.23
     "@typescript-eslint/eslint-plugin": ^5.38.1
     "@typescript-eslint/parser": ^5.38.1
     "@vitejs/plugin-vue": ^3.1.0
-    "@vue/compat": ^3.2.40
     bignumber.js: ^9.1.0
     bootstrap: ^5.2.1
-    bootstrap-vue: "https://github.com/bootstrap-vue/bootstrap-vue.git#vue3-compat-build"
-    bootstrap-vue-upstream: "npm:bootstrap-vue@2.22.0"
+    bootstrap-icons-vue: ^1.8.1
+    bootstrap-vue-3: ^0.3.12
     buffer: ^6.0.3
     countup.js: ^2.3.2
     date-fns: ^2.29.3
@@ -249,6 +259,7 @@ __metadata:
     eslint-config-prettier: ^8.5.0
     eslint-plugin-prettier: ^4.2.1
     eslint-plugin-vue: ^9.5.1
+    floating-vue: ^2.0.0-beta.20
     fuse.js: ^6.6.2
     husky: ^8.0.1
     lodash: ^4.17.21
@@ -259,7 +270,6 @@ __metadata:
     typescript: ^4.8.4
     vite: ^3.1.4
     vue: ^3.2.40
-    vue-confetti: ^2.3.0
     vue-i18n: ^v9.2.2
     vue-router: ^4.1.5
     vue-slider-component: 4.1.0-beta.2
@@ -429,19 +439,6 @@ __metadata:
     vite: ^3.0.0
     vue: ^3.2.25
   checksum: 351436306090dee709314f71bb52f0b502c284c8f556d4aecbbdfea840b1d35a8af32e78e962df28d3a6034a75c78886448e3371cee320f711dab833f6ada274
-  languageName: node
-  linkType: hard
-
-"@vue/compat@npm:^3.2.40":
-  version: 3.2.40
-  resolution: "@vue/compat@npm:3.2.40"
-  dependencies:
-    "@babel/parser": ^7.16.4
-    estree-walker: ^2.0.2
-    source-map: ^0.6.1
-  peerDependencies:
-    vue: 3.2.40
-  checksum: 58067bfe849f55fefbb2f427703d3f4308fe311ae41ced95bb906184b185ef223d4aeb4fe279342aff15560e470805297e742ffbae8c2863fbfdf16fd84e5e03
   languageName: node
   linkType: hard
 
@@ -723,39 +720,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bootstrap-vue-upstream@npm:bootstrap-vue@2.22.0":
-  version: 2.22.0
-  resolution: "bootstrap-vue@npm:2.22.0"
-  dependencies:
-    "@nuxt/opencollective": ^0.3.2
-    bootstrap: ^4.6.1
-    popper.js: ^1.16.1
-    portal-vue: ^2.1.7
-    vue-functional-data-merge: ^3.1.0
-  checksum: 801f148de895b4e390d2d79629f0da5c2fd8fd6d002230f4572ff0354e64f70236363bb69496451009bcd582d9b4eea2c31055649c7c99b8971bce5b418a4f01
+"bootstrap-icons-vue@npm:^1.8.1":
+  version: 1.8.1
+  resolution: "bootstrap-icons-vue@npm:1.8.1"
+  checksum: e3b462b6c3f89d906b802b71e223502cb7b6d377351c0701306af080edc1ebc006e0c1304b98a150459f33d23492cd1463536835263c614b234bd8983ca3c560
   languageName: node
   linkType: hard
 
-"bootstrap-vue@https://github.com/bootstrap-vue/bootstrap-vue.git#vue3-compat-build":
-  version: 2.21.2
-  resolution: "bootstrap-vue@https://github.com/bootstrap-vue/bootstrap-vue.git#commit=5c5092edb0429ab9b13c9f144fe560982bc8deef"
-  dependencies:
-    "@nuxt/opencollective": ^0.3.2
-    bootstrap: ">=4.5.3 <5.0.0"
-    popper.js: ^1.16.1
-    portal-vue: ^2.1.7
-    vue-functional-data-merge: ^3.1.0
-  checksum: 79fe1092caaad4f59dbfe9901d24e255cca43e91388a75533e9963929ff97ceaa84e54bbc892b727e6b6da03a9c015aeeff422f7c6874ea99d76f51f2560abfb
-  languageName: node
-  linkType: hard
-
-"bootstrap@npm:>=4.5.3 <5.0.0, bootstrap@npm:^4.6.1":
-  version: 4.6.2
-  resolution: "bootstrap@npm:4.6.2"
+"bootstrap-vue-3@npm:^0.3.12":
+  version: 0.3.12
+  resolution: "bootstrap-vue-3@npm:0.3.12"
   peerDependencies:
-    jquery: 1.9.1 - 3
-    popper.js: ^1.16.1
-  checksum: 3f4e7768ff7d618c49d4bf4f02aa54a9bfb679d4eecb0f3854fa4af1a17b9114b147009c435946432cdd1572efffc71d88ec385c55943a12fa66253cde0876b0
+    "@popperjs/core": ^2.11.6
+    bootstrap: ^5.2.0
+    vue: ^3.2.37
+  checksum: a6689b68e1ab86856dedff5ac971b92cde4830696b1c3f8faf149cbaa32461ed4ea54e1d1e4c99e16ee07e94a62fabcaa349a84046f3d64f100660346c06bbdd
   languageName: node
   linkType: hard
 
@@ -839,7 +818,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^4.0.0, chalk@npm:^4.1.0":
+"chalk@npm:^4.0.0":
   version: 4.1.2
   resolution: "chalk@npm:4.1.2"
   dependencies:
@@ -911,13 +890,6 @@ __metadata:
   version: 0.0.1
   resolution: "concat-map@npm:0.0.1"
   checksum: 902a9f5d8967a3e2faf138d5cb784b9979bad2e6db5357c5b21c568df4ebe62bcb15108af1b2253744844eb964fc023fbd9afbbbb6ddd0bcc204c6fb5b7bf3af
-  languageName: node
-  linkType: hard
-
-"consola@npm:^2.15.0":
-  version: 2.15.3
-  resolution: "consola@npm:2.15.3"
-  checksum: 8ef7a09b703ec67ac5c389a372a33b6dc97eda6c9876443a60d76a3076eea0259e7f67a4e54fd5a52f97df73690822d090cf8b7e102b5761348afef7c6d03e28
   languageName: node
   linkType: hard
 
@@ -1563,6 +1535,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"floating-vue@npm:^2.0.0-beta.20":
+  version: 2.0.0-y.0
+  resolution: "floating-vue@npm:2.0.0-y.0"
+  dependencies:
+    "@floating-ui/dom": ^0.1.10
+    vue-resize: ^2.0.0-alpha.1
+  peerDependencies:
+    vue: ^3.2.0
+  checksum: b2fda2ab779946b42d1ede75d04ad9995369ae5c3b3a79c4bd16765151f17dd334bceca474b1d28cda5fdb011fbb44c4e41365a680f4494bae794b4ba98ad6b2
+  languageName: node
+  linkType: hard
+
 "fs-minipass@npm:^2.0.0, fs-minipass@npm:^2.1.0":
   version: 2.1.0
   resolution: "fs-minipass@npm:2.1.0"
@@ -2191,20 +2175,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.6.7":
-  version: 2.6.7
-  resolution: "node-fetch@npm:2.6.7"
-  dependencies:
-    whatwg-url: ^5.0.0
-  peerDependencies:
-    encoding: ^0.1.0
-  peerDependenciesMeta:
-    encoding:
-      optional: true
-  checksum: 8d816ffd1ee22cab8301c7756ef04f3437f18dace86a1dae22cf81db8ef29c0bf6655f3215cb0cdb22b420b6fe141e64b26905e7f33f9377a7fa59135ea3e10b
-  languageName: node
-  linkType: hard
-
 "node-gyp@npm:latest":
   version: 9.1.0
   resolution: "node-gyp@npm:9.1.0"
@@ -2388,22 +2358,6 @@ __metadata:
     typescript:
       optional: true
   checksum: 394906326758ac41acfdf4a29263c952c2cb7f35ebf87771a025ab492bdde7cf7fd87a49f82ec3a98bf8323ed2cb231f1ad272f7ea522694a9fab5a5cde3e727
-  languageName: node
-  linkType: hard
-
-"popper.js@npm:^1.16.1":
-  version: 1.16.1
-  resolution: "popper.js@npm:1.16.1"
-  checksum: c56ae5001ec50a77ee297a8061a0221d99d25c7348d2e6bcd3e45a0d0f32a1fd81bca29d46cb0d4bdf13efb77685bd6a0ce93f9eb3c608311a461f945fffedbe
-  languageName: node
-  linkType: hard
-
-"portal-vue@npm:^3.0.0-beta.0":
-  version: 3.0.0-beta.0
-  resolution: "portal-vue@npm:3.0.0-beta.0"
-  peerDependencies:
-    vue: ^3.0.4
-  checksum: fd6dfc8f339ec2bb55a798a00805a390ff632e77bda87ebd02c8dd4c5c2839cf14fc31bf4191fc75a12e53d9c1bd039bd7e5bdbb1a621f76dcfed922389a8e2c
   languageName: node
   linkType: hard
 
@@ -2823,13 +2777,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tr46@npm:~0.0.3":
-  version: 0.0.3
-  resolution: "tr46@npm:0.0.3"
-  checksum: 726321c5eaf41b5002e17ffbd1fb7245999a073e8979085dacd47c4b4e8068ff5777142fc6726d6ca1fd2ff16921b48788b87225cbc57c72636f6efa8efbffe3
-  languageName: node
-  linkType: hard
-
 "tslib@npm:^1.8.1":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
@@ -2950,13 +2897,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-confetti@npm:^2.3.0":
-  version: 2.3.0
-  resolution: "vue-confetti@npm:2.3.0"
-  checksum: 9062b0d9d0b93afcacbcd004cf92151c3632cfa455e86fa39a12d6651ac8e7dd8c200bf2f51e59a7b774a55808b9068bfd61d3fc2522a25c1502300b47eb6ad4
-  languageName: node
-  linkType: hard
-
 "vue-demi@npm:*":
   version: 0.13.11
   resolution: "vue-demi@npm:0.13.11"
@@ -2990,13 +2930,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-functional-data-merge@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "vue-functional-data-merge@npm:3.1.0"
-  checksum: 6f1db64050b364e3c80b8cbd83e1eac69804fa9ca84a324b05fa437f451ad5176955731e946ec8dda5e50d224d03b6f2bc7c7254c62967ecc711d1453bb99a93
-  languageName: node
-  linkType: hard
-
 "vue-i18n@npm:^v9.2.2":
   version: 9.2.2
   resolution: "vue-i18n@npm:9.2.2"
@@ -3008,6 +2941,15 @@ __metadata:
   peerDependencies:
     vue: ^3.0.0
   checksum: 513b82d701674816d01ce085cbf4e21813bcfb65636dbef0f8df4ce94add272d49df8eca122863349dff0eb7046ab0379852386602dd752b48d16b2b2178c735
+  languageName: node
+  linkType: hard
+
+"vue-resize@npm:^2.0.0-alpha.1":
+  version: 2.0.0-alpha.1
+  resolution: "vue-resize@npm:2.0.0-alpha.1"
+  peerDependencies:
+    vue: ^3.0.0
+  checksum: 574321cc4792a393fe8f698a840cd6f11c8524da7869cffa8dc17a342521ee17579e14c243510bba96ef197f9a99ef8c57c22e9320c1486f62150f01f7a17ebe
   languageName: node
   linkType: hard
 
@@ -3048,23 +2990,6 @@ __metadata:
     "@vue/server-renderer": 3.2.40
     "@vue/shared": 3.2.40
   checksum: fb5ca87c16e58f24c0088add152ca1ef70ac6d198ec3a60e7904201c31aadefb2c28e361934c42a704742835cdd9c02ab5765f0c29e8335eb13261d7b764b0ee
-  languageName: node
-  linkType: hard
-
-"webidl-conversions@npm:^3.0.0":
-  version: 3.0.1
-  resolution: "webidl-conversions@npm:3.0.1"
-  checksum: c92a0a6ab95314bde9c32e1d0a6dfac83b578f8fa5f21e675bc2706ed6981bc26b7eb7e6a1fab158e5ce4adf9caa4a0aee49a52505d4d13c7be545f15021b17c
-  languageName: node
-  linkType: hard
-
-"whatwg-url@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "whatwg-url@npm:5.0.0"
-  dependencies:
-    tr46: ~0.0.3
-    webidl-conversions: ^3.0.0
-  checksum: b8daed4ad3356cc4899048a15b2c143a9aed0dfae1f611ebd55073310c7b910f522ad75d727346ad64203d7e6c79ef25eafd465f4d12775ca44b90fa82ed9e2c
   languageName: node
   linkType: hard
 

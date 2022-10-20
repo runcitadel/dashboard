@@ -2,9 +2,8 @@ import {createRouter, createWebHistory} from 'vue-router';
 import useUserStore from '../store/user';
 import useUiStore from '../store/ui';
 
-const TransitionWrapperLayout = () =>
-  import('../layouts/TransitionWrapperLayout.vue');
-const SimpleLayout = () => import('../layouts/SimpleLayout.vue');
+const WrapperLayout = () =>
+  import('../layouts/WrapperLayout.vue');
 const DashboardLayout = () => import('../layouts/DashboardLayout.vue');
 
 const Start = () => import('../views/Start.vue');
@@ -71,31 +70,19 @@ const LNDConnectRESTTor = () =>
 const routes = [
   {
     path: '/',
-    component: TransitionWrapperLayout,
+    component: WrapperLayout,
     children: [
       {
         path: '',
-        component: SimpleLayout,
-        children: [
-          {
-            path: '',
-            name: 'login',
-            component: Login,
-            meta: {requiresAuth: false},
-          },
-        ],
+        name: 'login',
+        component: Login,
+        meta: {requiresAuth: false},
       },
       {
         path: '/start',
-        component: SimpleLayout,
+        component: Start,
         meta: {requiresAuth: false},
-        children: [
-          {
-            path: '',
-            name: 'start',
-            component: Start,
-          },
-        ],
+        name: 'start',
       },
       {
         path: '/dashboard',

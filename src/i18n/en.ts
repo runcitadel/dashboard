@@ -33,7 +33,7 @@ const messages = {
   storage: 'Storage',
   available: '{storage} available',
   system: 'System',
-  'system-including': 'Including Bitcoin Core, LND, and Electrum server',
+  'system-including': 'Including Bitcoin Core and LND',
   calculating: 'Calculating...',
   'view-usage': 'View usage',
   'hide-usage': 'Hide usage',

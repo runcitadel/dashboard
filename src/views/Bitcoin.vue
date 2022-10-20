@@ -19,10 +19,13 @@
               <circle cx="4" cy="4" r="4" fill="#00CD98" />
             </svg>
             <small class="ms-1 text-success">Running</small>
-            <h3 class="d-block font-weight-bold mb-1">Bitcoin Core</h3>
-            <span class="d-block text-muted"
+            <h3 class="d-block font-weight-bold mb-1">Bitcoin</h3>
+            <span v-if="knotsVersion" class="d-block text-muted"
               >Bitcoin Knots {{ knotsVersion }} (Based on Bitcoin Core
               {{ coreVersion }})</span
+            >
+            <span v-else class="d-block text-muted"
+              >Bitcoin Core {{ coreVersion }}</span
             >
           </div>
         </div>
@@ -40,9 +43,6 @@
             bitcoinStore.percent !== 100 || bitcoinStore.blocks.length === 0
           "
         >
-          <!-- <template v-slot:menu>
-            <b-dropdown-item variant="danger" href="#" disabled>Resync Blockchain</b-dropdown-item>
-          </template>-->
           <div class>
             <div class="px-3 px-lg-4 mb-3">
               <div class="w-100 d-flex justify-content-between mb-2">
@@ -77,23 +77,14 @@
                 {{ bitcoinStore.currentBlock.toLocaleString() }} of
                 {{ bitcoinStore.blockHeight.toLocaleString() }} blocks
                 <b-icon-info-circle-fill
-                  v-b-tooltip.hover.bottom
+                  v-tooltip.bottom="t('bitcoin.sync-info')"
                   icon="info-circle-fill"
                   style="opacity: 0.4"
                   variant="dark"
                   class="ms-1"
-                  :title="t('bitcoin.sync-info')"
                 />
               </small>
             </div>
-            <!-- low storage mode  -->
-            <!-- <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
-              <div>
-                <span class="d-block">Low Storage Mode</span>
-                <small class="text-muted d-block">Discard old blocks</small>
-              </div>
-              <toggle-switch class="align-self-center"></toggle-switch>
-            </div>-->
             <p class="px-3 px-lg-4 mb-3">Latest Blocks</p>
             <blockchain :num-blocks="3"></blockchain>
             <div class="px-3 px-lg-4 py-2"></div>
@@ -105,17 +96,6 @@
           <div class>
             <div class="px-3 px-lg-4 pb-2">
               <b-row>
-                <!-- <b-col col cols="6" md="3" xl="6" v-for="stat in stats" :key="stat.title">
-                  <stat
-                    :title="stat.title"
-                    :value="stat.value"
-                    :suffix="stat.suffix"
-                    :change="{
-                      value: stat.change.value,
-                      suffix: stat.change.suffix
-                    }"
-                  ></stat>
-                </b-col>-->
                 <b-col col cols="6" md="3" xl="6">
                   <stat
                     title="Connections"
@@ -161,95 +141,60 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import CardWidget from '../components/CardWidget.vue';
 import Blockchain from '../components/Blockchain.vue';
 import Stat from '../components/Utility/Stat.vue';
 import BitcoinWallet from '../components/BitcoinWallet.vue';
 import useBitcoinStore from '../store/bitcoin';
 
-import {defineComponent} from 'vue';
+import {ref, computed, onMounted, onBeforeUnmount} from 'vue';
 import {useI18n} from 'vue-i18n';
-import {BIconInfoCircleFill} from 'bootstrap-vue/src/index.js';
+import {BIconInfoCircleFill} from 'bootstrap-icons-vue';
 
-export default defineComponent({
-  components: {
-    CardWidget,
-    Blockchain,
-    Stat,
-    BitcoinWallet,
-    BIconInfoCircleFill,
-  },
-  setup() {
-    const {t} = useI18n();
-    const bitcoinStore = useBitcoinStore();
-    return {t, bitcoinStore};
-  },
-  data() {
-    return {} as {
-      interval?: number;
-    };
-  },
-  /*computed: {
-    ...mapState<RootState>({
-      syncPercent: (state: RootState) => state.bitcoin.percent,
-      blocks: (state: RootState) => state.bitcoin.blocks,
-      coreVersion: (state: RootState) =>
-        state.bitcoin.version.split("/")[1].split(":")[1],
-      knotsVersion: (state: RootState) =>
-        state.bitcoin.version.split("/")[2].split(":")[1],
-      currentBlock: (state: RootState) => state.bitcoin.currentBlock,
-      blockHeight: (state: RootState) => state.bitcoin.blockHeight,
-      stats: (state: RootState) => state.bitcoin.stats,
-      onionAddress: (state: RootState) => state.bitcoin.onionAddress,
-      rpc: (state: RootState) => state.bitcoin.rpc,
-    }),
-  },*/
-  computed: {
-    coreVersion(): string {
-      return this.bitcoinStore.version.split('/')[1]?.split(':')[1];
-    },
-    knotsVersion(): string {
-      return this.bitcoinStore.version.split('/')[2]?.split(':')[1];
-    },
-  },
-  created() {
-    this.bitcoinStore.getVersion();
-    this.fetchStats();
-    this.interval = window.setInterval(this.fetchStats, 5000);
-  },
-  beforeUnmount() {
-    window.clearInterval(this.interval);
-  },
-  methods: {
-    random(min: number, max: number) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    },
-    abbreviateHashRate(n: number): [number, string] {
-      if (n < 1e3) return [Number(n.toFixed(1)), 'H/s'];
-      if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), 'kH/s'];
-      if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), 'MH/s'];
-      if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), 'GH/s'];
-      if (n >= 1e12 && n < 1e15) return [Number((n / 1e12).toFixed(1)), 'TH/s'];
-      if (n >= 1e15 && n < 1e18) return [Number((n / 1e15).toFixed(1)), 'PH/s'];
-      if (n >= 1e18 && n < 1e21) return [Number((n / 1e18).toFixed(1)), 'EH/s'];
-      if (n >= 1e21) return [Number(+(n / 1e21).toFixed(1)), 'ZH/s'];
-      // Just a fallback to prevent TS errors
-      return [Number(n.toFixed(1)), 'H/s'];
-    },
-    abbreviateSize(n: number): [number, string] {
-      if (n < 1e3) return [Number(n.toFixed(1)), 'Bytes'];
-      if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), 'KB'];
-      if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), 'MB'];
-      if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), 'GB'];
-      if (n >= 1e12 && n < 1e15) return [Number((n / 1e12).toFixed(1)), 'TB'];
-      if (n >= 1e15) return [Number(+(n / 1e15).toFixed(1)), 'PB'];
-      // Just a fallback to prevent TS errors
-      return [Number(n.toFixed(1)), 'Bytes'];
-    },
-    fetchStats() {
-      this.bitcoinStore.getStats();
-    },
-  },
+const {t} = useI18n();
+const bitcoinStore = useBitcoinStore();
+
+const interval = ref<null | number>(null);
+
+const coreVersion = computed(() => {
+  return bitcoinStore.version.split('/')[1]?.split(':')[1];
 });
+const knotsVersion = computed(() => {
+  return bitcoinStore.version.split('/')[2]?.split(':')[1];
+});
+onMounted(() => {
+  bitcoinStore.getVersion();
+  fetchStats();
+  interval.value = window.setInterval(fetchStats, 5000);
+});
+onBeforeUnmount(() => {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  window.clearInterval(interval.value!);
+});
+function abbreviateHashRate(n: number): [number, string] {
+  if (n < 1e3) return [Number(n.toFixed(1)), 'H/s'];
+  if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), 'kH/s'];
+  if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), 'MH/s'];
+  if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), 'GH/s'];
+  if (n >= 1e12 && n < 1e15) return [Number((n / 1e12).toFixed(1)), 'TH/s'];
+  if (n >= 1e15 && n < 1e18) return [Number((n / 1e15).toFixed(1)), 'PH/s'];
+  if (n >= 1e18 && n < 1e21) return [Number((n / 1e18).toFixed(1)), 'EH/s'];
+  if (n >= 1e21) return [Number(+(n / 1e21).toFixed(1)), 'ZH/s'];
+  // Just a fallback to prevent TS errors
+  return [Number(n.toFixed(1)), 'H/s'];
+}
+function abbreviateSize(n: number): [number, string] {
+  if (n < 1e3) return [Number(n.toFixed(1)), 'Bytes'];
+  if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), 'KB'];
+  if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), 'MB'];
+  if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), 'GB'];
+  if (n >= 1e12 && n < 1e15) return [Number((n / 1e12).toFixed(1)), 'TB'];
+  if (n >= 1e15) return [Number(+(n / 1e15).toFixed(1)), 'PB'];
+  // Just a fallback to prevent TS errors
+  return [Number(n.toFixed(1)), 'Bytes'];
+}
+function fetchStats() {
+  bitcoinStore.getStats();
+}
 </script>

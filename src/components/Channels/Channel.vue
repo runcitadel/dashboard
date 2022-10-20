@@ -33,13 +33,12 @@
         <div class>
           <div class="d-flex justify-content-between">
             <span
-              v-b-tooltip.hover.right
-              class="text-primary font-weight-bold"
-              :title="
+              v-tooltip.right="
                 $filters
                   .satsToUSD(channel.localBalance, bitcoinStore)
                   .toString()
               "
+              class="text-primary font-weight-bold"
               >{{
                 $filters.localize(
                   $filters.unit(channel.localBalance, systemStore) as number,
@@ -48,8 +47,7 @@
               {{ $filters.formatUnit(systemStore.unit) }}</span
             >
             <span
-              v-b-tooltip.hover.left
-              :title="
+              v-tooltip.left="
                 $filters
                   .satsToUSD(channel.remoteBalance, bitcoinStore)
                   .toString()

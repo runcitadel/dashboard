@@ -1,6 +1,6 @@
 <template>
   <div
-    v-b-tooltip.hover.left
+    v-tooltip.left="tooltip"
     class="toggle"
     :class="{
       'toggle-off': !isOn,
@@ -8,7 +8,6 @@
       'toggle-disabled': disabled,
       'toggle-loading': loading,
     }"
-    :title="tooltip"
     @click="toggle"
   >
     <div
