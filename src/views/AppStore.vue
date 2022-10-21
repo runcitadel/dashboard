@@ -38,7 +38,7 @@
         Hide installed apps
       </label>
     </div>
-    <b-alert dismissible v-if="!appsStore.hasElectrum && hideIncompatible">
+    <b-alert v-if="!appsStore.hasElectrum && hideIncompatible" dismissible>
       Missing some apps? A lot of Bitcoin-related apps require an Electrum
       server to be installed. Deselect "Hide incompatible" above to see which
       apps need one or

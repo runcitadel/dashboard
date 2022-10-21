@@ -160,12 +160,12 @@
               >+ Open Channel</b-button
             >
           </template>
-          <template #menu>
-            <!--<b-dropdown-item
+          <!--<template #menu>
+            <b-dropdown-item
               href="#"
               >Download channel backup file</b-dropdown-item
             >
-            <b-dropdown-divider></b-dropdown-divider>-->
+            <b-dropdown-divider></b-dropdown-divider>
             <b-dropdown-group>
               <div class="dropdown-group">
                 <div class="d-flex w-100 justify-content-between">
@@ -203,7 +203,7 @@
                 </small>
               </div>
             </b-dropdown-group>
-          </template>
+          </template>-->
           <div class>
             <div class="px-3 px-lg-4">
               <b-row>
@@ -346,7 +346,6 @@ import Stat from '../components/Utility/Stat.vue';
 import LightningWallet from '../components/LightningWallet.vue';
 import QrCode from '../components/Utility/QrCode.vue';
 import InputCopy from '../components/Utility/InputCopy.vue';
-import ToggleSwitch from '../components/ToggleSwitch.vue';
 import ChannelList from '../components/Channels/List.vue';
 import ChannelOpen from '../components/Channels/Open.vue';
 import ChannelManage from '../components/Channels/Manage.vue';
@@ -362,7 +361,6 @@ export default defineComponent({
     Stat,
     QrCode,
     InputCopy,
-    ToggleSwitch,
     ChannelList,
     ChannelOpen,
     ChannelManage,
