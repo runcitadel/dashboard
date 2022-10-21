@@ -30,7 +30,7 @@
             <small class="text-muted"
               >~
               {{
-                $filters.satsToUSD(btcBalance + lightningBalance, bitcoinStore)
+                satsToUSD(btcBalance + lightningBalance)
               }}</small
             >
           </div>
@@ -143,6 +143,7 @@
 
 <script lang="ts" setup>
 import {satsToBtc} from '../helpers/units';
+import {satsToUSD} from '../helpers/filters';
 import CountUp from './Utility/CountUp.vue';
 import SatsBtcSwitch from './Utility/SatsBtcSwitch.vue';
 import useSystemStore from '../store/system';

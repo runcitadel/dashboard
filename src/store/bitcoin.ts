@@ -1,5 +1,5 @@
 import {toPrecision} from '../helpers/units';
-import {defineStore} from 'pinia';
+import {defineStore, acceptHMRUpdate} from 'pinia';
 import useSdkStore from './sdk';
 
 type BasicBlock = {
@@ -105,7 +105,7 @@ export interface State {
   sdkStore: ReturnType<typeof useSdkStore>;
 }
 
-export default defineStore('bitcoin', {
+const useBitcoinStore = defineStore('bitcoin', {
   // Initial state
   state: (): State => ({
     operational: false,
@@ -466,3 +466,9 @@ export default defineStore('bitcoin', {
     },
   },
 });
+
+export default useBitcoinStore;
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useBitcoinStore, import.meta.hot))
+}

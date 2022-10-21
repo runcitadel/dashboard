@@ -1,5 +1,5 @@
 import type {Channel} from '@runcitadel/sdk';
-import {defineStore} from 'pinia';
+import {defineStore, acceptHMRUpdate} from 'pinia';
 import {toPrecision} from '../helpers/units';
 import useSdkStore from './sdk';
 
@@ -97,7 +97,7 @@ export type ParsedChannel = Channel & {
   purpose: string;
 };
 
-export default defineStore('lightning', {
+const useLightningStore = defineStore('lightning', {
   // Initial state
   state: (): State => ({
     operational: false,
@@ -449,3 +449,9 @@ export default defineStore('lightning', {
     },
   },
 });
+
+export default useLightningStore;
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useLightningStore, import.meta.hot))
+}

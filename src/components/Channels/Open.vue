@@ -47,16 +47,10 @@
             <small
               class="text-muted d-block mb-0"
               :style="{opacity: fundingAmount > 0 ? 1 : 0}"
-              >~ {{ $filters.satsToUSD(fundingAmount, bitcoinStore) }}</small
+              >~ {{ satsToUSD(fundingAmount) }}</small
             >
           </div>
         </div>
-
-        <!--<small
-          >{{ btc.confirmed.toLocaleString() }} Sats available out of
-          {{ btc.total.toLocaleString() }} and
-          {{ btc.pending.toLocaleString() }} pending</small
-        >-->
       </b-col>
     </b-row>
     <b-row>
@@ -88,6 +82,7 @@
 import {defineComponent} from 'vue';
 
 import {satsToBtc, btcToSats} from '../../helpers/units';
+import {satsToUSD} from '../../helpers/filters';
 import useToast from '../../utils/toast';
 
 import SatsBtcSwitch from '../Utility/SatsBtcSwitch.vue';
@@ -147,7 +142,7 @@ export default defineComponent({
     const sdkStore = useSdkStore();
     const systemStore = useSystemStore();
     const toast = useToast();
-    return {bitcoinStore, sdkStore, systemStore, toast};
+    return {bitcoinStore, sdkStore, systemStore, toast, satsToUSD};
   },
   data(): data {
     return {

@@ -70,7 +70,7 @@
                 variant: 'success',
                 blink: false,
               }"
-              :sub-title="$filters.formatUnit(systemStore.unit)"
+              :sub-title="formatUnit(systemStore.unit)"
               icon="icon-app-bitcoin.svg"
               :loading="lightningStore.percent < 100"
             >
@@ -78,9 +78,7 @@
                 <div
                   v-if="btcBalance !== -1 && uiStore.showBalance"
                   v-tooltip.right="
-                    $filters
-                      .satsToUSD(bitcoinStore.balance.total, bitcoinStore)
-                      .toString()
+                    satsToUSD(bitcoinStore.balance.total).toString()
                   "
                 >
                   <CountUp
@@ -116,7 +114,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import useSystemStore from '../store/system';
 import useUserStore from '../store/user';
 import useBitcoinStore from '../store/bitcoin';
@@ -124,8 +122,9 @@ import useLightningStore from '../store/lightning';
 import useUiStore from '../store/ui';
 import {useI18n} from 'vue-i18n';
 
-import {defineComponent} from 'vue';
+import {computed, onBeforeUnmount, onMounted, ref} from 'vue';
 import {satsToBtc} from '../helpers/units';
+import {satsToUSD, formatUnit} from '../helpers/filters';
 
 import CountUp from '../components/Utility/CountUp.vue';
 import CardWidget from '../components/CardWidget.vue';
@@ -133,72 +132,45 @@ import Blockchain from '../components/Blockchain.vue';
 import LightningWallet from '../components/LightningWallet.vue';
 import StorageWidget from '../components/Widgets/StorageWidget.vue';
 
-export default defineComponent({
-  components: {
-    CountUp,
-    CardWidget,
-    Blockchain,
-    LightningWallet,
-    StorageWidget,
-  },
-  setup() {
-    const systemStore = useSystemStore();
-    const userStore = useUserStore();
-    const bitcoinStore = useBitcoinStore();
-    const lightningStore = useLightningStore();
-    const uiStore = useUiStore();
-    const {t} = useI18n();
+const systemStore = useSystemStore();
+const userStore = useUserStore();
+const bitcoinStore = useBitcoinStore();
+const lightningStore = useLightningStore();
+const uiStore = useUiStore();
+const {t} = useI18n();
+const interval = ref<null | number>(null);
 
-    return {
-      userStore,
-      systemStore,
-      bitcoinStore,
-      lightningStore,
-      uiStore,
-      t,
-    };
-  },
-  data() {
-    return {
-      interval: null,
-    } as {
-      interval: null | number;
-    };
-  },
-  computed: {
-    btcBalance() {
-      //skip if still loading
-      if (this.bitcoinStore.balance.total === -1) {
-        return -1;
-      }
-      if (this.systemStore.unit === 'btc') {
-        return satsToBtc(this.bitcoinStore.balance.total);
-      }
-      return this.bitcoinStore.balance.total;
-    },
-    greeting: () => {
-      const currentHour = new Date().getHours();
+const btcBalance = computed(() => {
+  //skip if still loading
+  if (bitcoinStore.balance.total === -1) {
+    return -1;
+  }
+  if (systemStore.unit === 'btc') {
+    return satsToBtc(bitcoinStore.balance.total);
+  }
+  return bitcoinStore.balance.total;
+});
 
-      const greeting =
-        currentHour >= 4 && currentHour < 12 // after 4:00AM and before 12:00PM
-          ? 'morning'
-          : currentHour >= 12 && currentHour <= 16 // after 12:00PM and before 5:00PM
-          ? 'afternoon'
-          : currentHour > 16 || currentHour < 4 // after 5:00PM or before 4:00AM (to accommodate our fellow hackers)
-          ? 'evening'
-          : 'fallback'; // if for some reason the calculation didn't work
+const greeting = computed(() => {
+  const currentHour = new Date().getHours();
 
-      return greeting;
-    },
-  },
-  created() {
-    this.interval = window.setInterval(() => {
-      this.bitcoinStore.getStats();
-    }, 30000);
-  },
-  beforeUnmount() {
-    window.clearInterval(this.interval as number);
-  },
-  methods: {},
+  const greeting =
+    currentHour >= 4 && currentHour < 12 // after 4:00AM and before 12:00PM
+      ? 'morning'
+      : currentHour >= 12 && currentHour <= 16 // after 12:00PM and before 5:00PM
+      ? 'afternoon'
+      : currentHour > 16 || currentHour < 4 // after 5:00PM or before 4:00AM (to accommodate our fellow hackers)
+      ? 'evening'
+      : 'fallback'; // if for some reason the calculation didn't work
+
+  return greeting;
+});
+onMounted(() => {
+  interval.value = window.setInterval(() => {
+    bitcoinStore.getStats();
+  }, 30000);
+});
+onBeforeUnmount(() => {
+  window.clearInterval(interval.value as number);
 });
 </script>

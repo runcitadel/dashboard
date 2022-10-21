@@ -1,4 +1,4 @@
-import {defineStore} from 'pinia';
+import {defineStore, acceptHMRUpdate} from 'pinia';
 import type {app} from '@runcitadel/sdk';
 
 import useSdkStore from './sdk';
@@ -13,7 +13,7 @@ export interface State {
   sdkStore: ReturnType<typeof useSdkStore>;
 }
 
-export default defineStore('apps', {
+const useAppsStore = defineStore('apps', {
   // Initial state
   state: (): State => ({
     installed: [],
@@ -93,3 +93,9 @@ export default defineStore('apps', {
     },
   },
 });
+
+export default useAppsStore;
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useAppsStore, import.meta.hot))
+}

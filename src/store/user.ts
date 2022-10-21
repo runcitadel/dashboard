@@ -1,4 +1,4 @@
-import {defineStore} from 'pinia';
+import {defineStore, acceptHMRUpdate} from 'pinia';
 import router from '../router/index.js';
 import useSdkStore from './sdk';
 
@@ -15,7 +15,7 @@ export interface State {
 }
 
 // Initial state
-export default defineStore('user', {
+const useUserStore = defineStore('user', {
   state: (): State => ({
     name: '',
     jwt: window.localStorage.getItem('jwt') || '',
@@ -137,3 +137,9 @@ export default defineStore('user', {
     },
   },
 });
+
+export default useUserStore;
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useUserStore, import.meta.hot))
+}

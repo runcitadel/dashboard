@@ -1,4 +1,4 @@
-import {defineStore} from 'pinia';
+import {defineStore, acceptHMRUpdate} from 'pinia';
 
 export interface State {
   isMobileMenuOpen: boolean;
@@ -6,7 +6,7 @@ export interface State {
   showBalance: boolean;
 }
 
-export default defineStore('ui', {
+const useUiStore = defineStore('ui', {
   // Initial state
   state: (): State => ({
     isMobileMenuOpen: false,
@@ -24,3 +24,9 @@ export default defineStore('ui', {
     },
   },
 });
+
+export default useUiStore;
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useUiStore, import.meta.hot))
+}

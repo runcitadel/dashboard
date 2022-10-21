@@ -491,7 +491,6 @@
             <!-- Invoice amount + description -->
             <span v-else>
               Invoice of
-              <!-- {{ $filters.localize($filters.unit(receive.amount)) }} -->
               <b>
                 {{
                   $filters.localize(

@@ -37,11 +37,10 @@
             <small class="text-muted"
               >≈
               {{
-                $filters.satsToUSD(
+                satsToUSD(
                   (parseInt(fee.fast.total, 10) /
                     parseInt(fee.fast.perByte, 10)) *
                     value,
-                  bitcoinStore,
                 )
               }}</small
             >
@@ -81,7 +80,7 @@
               >{{ fee[value].perByte }} sat/vB
             </span>
             <small class="text-muted"
-              >≈ {{ $filters.satsToUSD(fee[value].total, bitcoinStore) }}</small
+              >≈ {{ satsToUSD(fee[value].total) }}</small
             >
           </div>
         </template>
@@ -95,6 +94,7 @@ import VueSlider from 'vue-slider-component';
 import 'vue-slider-component/theme/default.css';
 import {defineComponent} from 'vue';
 import useBitcoinStore from '../../store/bitcoin';
+import {satsToUSD} from '../../helpers/filters';
 
 export default defineComponent({
   components: {
@@ -125,7 +125,7 @@ export default defineComponent({
   emits: ['update:modelValue'],
   setup() {
     const bitcoinStore = useBitcoinStore();
-    return {bitcoinStore};
+    return {bitcoinStore, satsToUSD};
   },
   data() {
     return {

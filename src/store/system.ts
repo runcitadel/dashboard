@@ -1,4 +1,4 @@
-import {defineStore} from 'pinia';
+import {defineStore, acceptHMRUpdate} from 'pinia';
 import useSdkStore from './sdk';
 
 type memBreakdown = {
@@ -74,7 +74,7 @@ export interface State {
   sdkStore: ReturnType<typeof useSdkStore>;
 }
 
-export default defineStore('system', {
+const useSystemStore = defineStore('system', {
   // Initial state
   state: (): State => ({
     version: '',
@@ -357,3 +357,9 @@ export default defineStore('system', {
     },
   },
 });
+
+export default useSystemStore;
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useSystemStore, import.meta.hot))
+}

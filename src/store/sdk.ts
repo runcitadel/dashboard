@@ -1,5 +1,5 @@
 import Citadel from '@runcitadel/sdk';
-import {defineStore} from 'pinia';
+import {defineStore, acceptHMRUpdate} from 'pinia';
 import useUserStore from './user';
 
 export interface State {
@@ -9,7 +9,7 @@ export interface State {
 
 const isDevelopment = import.meta.env.DEV;
 
-export default defineStore('sdk', {
+const useSdkStore = defineStore('sdk', {
   state: (): State => {
     const state: State = {
       citadel: new Citadel(
@@ -36,3 +36,9 @@ export default defineStore('sdk', {
     },
   },
 });
+
+export default useSdkStore;
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useSdkStore, import.meta.hot))
+}

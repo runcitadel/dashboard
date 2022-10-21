@@ -6,7 +6,7 @@
       variant: 'success',
       blink: false,
     }"
-    :sub-title="$filters.formatUnit(systemStore.unit)"
+    :sub-title="formatUnit(systemStore.unit)"
     icon="icon-app-bitcoin.svg"
     :loading="
       loading ||
@@ -18,11 +18,7 @@
     <template #title>
       <div
         v-if="bitcoinStore.balance.total !== -1 && uiStore.showBalance"
-        v-tooltip.right="
-          $filters
-            .satsToUSD(bitcoinStore.balance.total, bitcoinStore)
-            .toString()
-        "
+        v-tooltip.right="satsToUSD(bitcoinStore.balance.total).toString()"
       >
         <CountUp
           :value="{
@@ -203,23 +199,15 @@
                   <div class="text-end">
                     <span
                       class="font-weight-bold d-block"
-                      v-tooltip.left="
-                        $filters.satsToUSD(tx.amount, bitcoinStore).toString()
-                      "
+                      v-tooltip.left="satsToUSD(tx.amount).toString()"
                     >
                       <!-- Positive or negative prefix with amount -->
                       <span v-if="tx.type === 'incoming'">+</span>
                       <span v-else-if="tx.type === 'outgoing'">-</span>
-                      {{
-                        $filters.localize(
-                          $filters
-                            .unit(tx.amount, systemStore)
-                            ?.toString() as string,
-                        )
-                      }}
+                      {{ localize(unit(tx.amount)?.toString() as string) }}
                     </span>
                     <small class="text-muted">{{
-                      $filters.formatUnit(systemStore.unit)
+                      formatUnit(systemStore.unit)
                     }}</small>
                   </div>
                 </div>
@@ -288,10 +276,7 @@
                 <small
                   class="text-muted mt-1 d-block text-end mb-0"
                   :style="{opacity: withdraw.amount > 0 ? 1 : 0}"
-                  >~
-                  {{
-                    $filters.satsToUSD(withdraw.amount, bitcoinStore).toString()
-                  }}</small
+                  >~ {{ satsToUSD(withdraw.amount).toString() }}</small
                 >
               </div>
             </div>
@@ -347,20 +332,13 @@
             </div>
             <div class="text-center pb-4">
               <h3 class="mb-0">
-                {{
-                  $filters.localize(
-                    $filters
-                      .unit(withdraw.amount, systemStore)
-                      ?.toString() as string,
-                  )
-                }}
+                {{ localize(unit(withdraw.amount)?.toString() as string) }}
               </h3>
               <span class="d-block mb-1 text-muted">
-                {{ $filters.formatUnit(systemStore.unit) }}
+                {{ formatUnit(systemStore.unit) }}
               </span>
               <small class="text-muted d-block mb-3"
-                >~
-                {{ $filters.satsToUSD(withdraw.amount, bitcoinStore) }}</small
+                >~ {{ satsToUSD(withdraw.amount) }}</small
               >
 
               <svg
@@ -392,7 +370,7 @@
                 <small>
                   ~
                   {{
-                    $filters.satsToUSD(
+                    satsToUSD(
                       (parseInt(bitcoinStore.fees.fast.total.toString(), 10) /
                         parseInt(
                           bitcoinStore.fees.fast.perByte.toString(),
@@ -410,13 +388,9 @@
               </span>
               <span class="text-end text-muted">
                 <b>{{
-                  $filters.localize(
-                    $filters
-                      .unit(projectedBalanceInSats, systemStore)
-                      ?.toString() as string,
-                  )
+                  localize(unit(projectedBalanceInSats)?.toString() as string)
                 }}</b>
-                <small>&nbsp;{{ $filters.formatUnit(systemStore.unit) }}</small>
+                <small>&nbsp;{{ formatUnit(systemStore.unit) }}</small>
                 <br />
                 <small>Remaining balance</small>
               </span>
@@ -425,24 +399,20 @@
               <span class="text-muted">
                 <b>
                   {{
-                    $filters.localize(
-                      $filters
-                        .unit(
-                          bitcoinStore.fees[withdraw.selectedFee.type]['total'],
-                          systemStore,
-                        )
-                        ?.toString() as string,
+                    localize(
+                      unit(
+                        bitcoinStore.fees[withdraw.selectedFee.type]['total'],
+                      )?.toString() as string,
                     )
                   }}
                 </b>
-                <small>&nbsp;{{ $filters.formatUnit(systemStore.unit) }}</small>
+                <small>&nbsp;{{ formatUnit(systemStore.unit) }}</small>
                 <br />
                 <small>
                   ~
                   {{
-                    $filters.satsToUSD(
+                    satsToUSD(
                       bitcoinStore.fees[withdraw.selectedFee.type]['total'],
-                      bitcoinStore,
                     )
                   }}
                   Transaction fee
@@ -450,13 +420,9 @@
               </span>
               <span class="text-end text-muted">
                 <b>{{
-                  $filters.localize(
-                    $filters
-                      .unit(projectedBalanceInSats, systemStore)
-                      ?.toString() as string,
-                  )
+                  localize(unit(projectedBalanceInSats)?.toString() as string)
                 }}</b>
-                <small>&nbsp;{{ $filters.formatUnit(systemStore.unit) }}</small>
+                <small>&nbsp;{{ formatUnit(systemStore.unit) }}</small>
                 <br />
                 <small>Remaining balance</small>
               </span>
@@ -501,14 +467,8 @@
               <span class="d-block mb-2">
                 Successfully withdrawn
                 <b>
-                  {{
-                    $filters.localize(
-                      $filters
-                        .unit(withdraw.amount, systemStore)
-                        ?.toString() as string,
-                    )
-                  }}
-                  {{ $filters.formatUnit(systemStore.unit) }}
+                  {{ localize(unit(withdraw.amount)?.toString() as string) }}
+                  {{ formatUnit(systemStore.unit) }}
                 </b>
               </span>
               <small class="text-muted d-block">Transaction ID</small>
@@ -726,6 +686,7 @@ import {
 } from '../helpers/date';
 
 import {satsToBtc, btcToSats} from '../helpers/units';
+import {satsToUSD, localize, unit, formatUnit} from '../helpers/filters';
 
 import CountUp from '../components/Utility/CountUp.vue';
 import CardWidget from '../components/CardWidget.vue';
@@ -766,6 +727,10 @@ export default defineComponent({
       bitcoinStore,
       sdkStore,
       uiStore,
+      satsToUSD,
+      localize,
+      unit,
+      formatUnit,
     };
   },
   data() {
