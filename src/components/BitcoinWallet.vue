@@ -198,8 +198,8 @@
 
                   <div class="text-end">
                     <span
-                      class="font-weight-bold d-block"
                       v-tooltip.left="satsToUSD(tx.amount).toString()"
+                      class="font-weight-bold d-block"
                     >
                       <!-- Positive or negative prefix with amount -->
                       <span v-if="tx.type === 'incoming'">+</span>

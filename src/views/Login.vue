@@ -150,7 +150,7 @@ async function authenticateUser() {
     isLoggingIn.value = false;
 
     if (userStore.totpEnabled) {
-      if (!isIncorrectPassword) {
+      if (!isIncorrectPassword.value) {
         showTotpInput.value = true;
       }
 

@@ -97,5 +97,5 @@ const useAppsStore = defineStore('apps', {
 export default useAppsStore;
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useAppsStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useAppsStore, import.meta.hot));
 }

@@ -138,8 +138,8 @@ const messages = {
     'step-9': {
       heading: "🎉 that's it!",
       text: 'Congratulations! Your Citadel is now set up and synchronizing the Bitcoin blockchain.',
-    }
-  }
+    },
+  },
 };
 
 export default messages;

@@ -12,7 +12,11 @@
     You will be able to connect {{ name }} to your Citadel after Bitcoin Core
     has synchronized 100%.
   </b-alert>
-  <b-alert v-else-if="requires === 'electrum' && !appsStore.hasElectrum" variant="warning" show>
+  <b-alert
+    v-else-if="requires === 'electrum' && !appsStore.hasElectrum"
+    variant="warning"
+    show
+  >
     You need to install an Electrum server on your node to connect this wallet.
     We recommend using either
     <b-link to="/app-store/app/electrs">Electrs</b-link> or
@@ -22,7 +26,8 @@
     <div class="px-3 px-lg-4 pb-3">
       <slot></slot>
       <b-alert v-if="requires === 'electrum'" variant="info" show>
-        Unable to connect to {{ name }}? Please check if your Electrum server is already synced to 100%.
+        Unable to connect to {{ name }}? Please check if your Electrum server is
+        already synced to 100%.
       </b-alert>
     </div>
   </card-widget>

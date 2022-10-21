@@ -361,5 +361,5 @@ const useSystemStore = defineStore('system', {
 export default useSystemStore;
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useSystemStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useSystemStore, import.meta.hot));
 }

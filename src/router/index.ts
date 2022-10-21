@@ -2,8 +2,7 @@ import {createRouter, createWebHistory} from 'vue-router';
 import useUserStore from '../store/user';
 import useUiStore from '../store/ui';
 
-const WrapperLayout = () =>
-  import('../layouts/WrapperLayout.vue');
+const WrapperLayout = () => import('../layouts/WrapperLayout.vue');
 const DashboardLayout = () => import('../layouts/DashboardLayout.vue');
 
 const Start = () => import('../views/Start.vue');

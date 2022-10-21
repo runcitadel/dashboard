@@ -18,10 +18,10 @@
     ></b-form-input>
     <div class="form-check mb-2">
       <input
+        id="showIncompatible"
+        v-model="showIncompatible"
         class="form-check-input"
         type="checkbox"
-        v-model="showIncompatible"
-        id="showIncompatible"
       />
       <label class="form-check-label" for="showIncompatible">
         Show incompatible apps
@@ -29,10 +29,10 @@
     </div>
     <div class="form-check mb-4">
       <input
+        id="showInstalled"
+        v-model="showInstalled"
         class="form-check-input"
         type="checkbox"
-        v-model="showInstalled"
-        id="showInstalled"
       />
       <label class="form-check-label" for="showInstalled">
         Show installed apps

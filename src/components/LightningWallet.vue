@@ -704,9 +704,7 @@
             <br />
             <small class="text-muted"
               >Expired on
-              {{
-                getReadableTime(expiredInvoice.expiresOn!)
-              }}</small
+              {{ getReadableTime(expiredInvoice.expiresOn!) }}</small
             >
           </p>
         </div>

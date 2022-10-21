@@ -28,10 +28,7 @@
               />
             </h3>
             <small class="text-muted"
-              >~
-              {{
-                satsToUSD(btcBalance + lightningBalance)
-              }}</small
+              >~ {{ satsToUSD(btcBalance + lightningBalance) }}</small
             >
           </div>
           <span

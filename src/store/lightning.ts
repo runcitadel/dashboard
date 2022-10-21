@@ -453,5 +453,5 @@ const useLightningStore = defineStore('lightning', {
 export default useLightningStore;
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useLightningStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useLightningStore, import.meta.hot));
 }

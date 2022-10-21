@@ -40,5 +40,5 @@ const useSdkStore = defineStore('sdk', {
 export default useSdkStore;
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useSdkStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useSdkStore, import.meta.hot));
 }

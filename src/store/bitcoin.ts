@@ -470,5 +470,5 @@ const useBitcoinStore = defineStore('bitcoin', {
 export default useBitcoinStore;
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useBitcoinStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useBitcoinStore, import.meta.hot));
 }

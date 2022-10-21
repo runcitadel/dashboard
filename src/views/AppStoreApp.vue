@@ -20,8 +20,8 @@
         {{ t('apps.store.back') }}</router-link
       >
       <div
-        class="d-flex flex-column flex-sm-row justify-content-between align-items-center"
         v-if="app"
+        class="d-flex flex-column flex-sm-row justify-content-between align-items-center"
       >
         <div class="d-flex w-xs-100 justify-content-start pe-2">
           <div class="d-block">
@@ -123,7 +123,7 @@
         </div>
       </div>
     </div>
-    <div class="app-gallery pt-3 pb-4 mb-2 mb-sm-3" v-if="app">
+    <div v-if="app" class="app-gallery pt-3 pb-4 mb-2 mb-sm-3">
       <img
         v-for="image in app.gallery"
         :key="image"
@@ -247,8 +247,14 @@
                       ></path>
                     </svg>
                     <small class="text-danger">Not installed</small>
-                    <b-link v-if="dependency === 'electrum'" :to="`/app-store/category/${encodeURIComponent('Electrum Servers')}`" class="ms-2"
-                      >Install</b-link>
+                    <b-link
+                      v-if="dependency === 'electrum'"
+                      :to="`/app-store/category/${encodeURIComponent(
+                        'Electrum Servers',
+                      )}`"
+                      class="ms-2"
+                      >Install</b-link
+                    >
                   </div>
                 </div>
                 <div
@@ -302,8 +308,14 @@
                       ></path>
                     </svg>
                     <small class="text-danger">Not installed</small>
-                    <b-link v-if="realDependency === 'electrum'" :to="`/app-store/category/${encodeURIComponent('Electrum Servers')}`" class="text-muted"
-                      >Install</b-link>
+                    <b-link
+                      v-if="realDependency === 'electrum'"
+                      :to="`/app-store/category/${encodeURIComponent(
+                        'Electrum Servers',
+                      )}`"
+                      class="text-muted"
+                      >Install</b-link
+                    >
                   </div>
                 </div>
               </div>
@@ -416,13 +428,14 @@ function isDependencyInstalled(dependency: string) {
   return allInstalled.includes(dependency);
 }
 function src(dependency: string) {
-  if (['lnd', 'bitcoind', 'c-lightning', 'electrum'].includes(dependency))
+  if (['lnd', 'bitcoind', 'c-lightning', 'electrum'].includes(dependency)) {
     return new URL(
       `../assets/app-store/dependencies/${dependency}.svg`,
       import.meta.url,
     ).href;
-  else
+  } else {
     return `https://runcitadel.github.io/old-apps-gallery/${dependency}/icon.svg`;
+  }
 }
 function installApp() {
   if (!app.value.compatible) return;
@@ -443,8 +456,9 @@ function openApp(event: Event) {
 const skipCheckApps = ['bluewallet', 'ringtools'];
 async function pollOfflineApp() {
   checkIfAppIsOffline.value = true;
-  if (skipCheckApps.includes(app.value.id as string))
+  if (skipCheckApps.includes(app.value.id as string)) {
     checkIfAppIsOffline.value = false;
+  }
   while (checkIfAppIsOffline.value) {
     try {
       await window.fetch(url.value, {mode: 'no-cors'});

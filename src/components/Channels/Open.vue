@@ -55,7 +55,7 @@
     </b-row>
     <b-row>
       <b-col col cols="12" sm="6">
-        <fee-selector :fee="fee" class v-model="selectedFee"></fee-selector>
+        <fee-selector v-model="selectedFee" :fee="fee" class></fee-selector>
       </b-col>
       <b-col class="d-flex" col cols="12" sm="6">
         <div
