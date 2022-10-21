@@ -18,26 +18,36 @@
     ></b-form-input>
     <div class="form-check mb-2">
       <input
-        id="showIncompatible"
-        v-model="showIncompatible"
+        id="hideIncompatible"
+        v-model="hideIncompatible"
         class="form-check-input"
         type="checkbox"
       />
-      <label class="form-check-label" for="showIncompatible">
-        Show incompatible apps
+      <label class="form-check-label" for="hideIncompatible">
+        Hide incompatible apps
       </label>
     </div>
     <div class="form-check mb-4">
       <input
-        id="showInstalled"
-        v-model="showInstalled"
+        id="hideInstalled"
+        v-model="hideInstalled"
         class="form-check-input"
         type="checkbox"
       />
-      <label class="form-check-label" for="showInstalled">
-        Show installed apps
+      <label class="form-check-label" for="hideInstalled">
+        Hide installed apps
       </label>
     </div>
+    <b-alert dismissible v-if="!appsStore.hasElectrum && hideIncompatible">
+      Missing some apps? A lot of Bitcoin-related apps require an Electrum
+      server to be installed. Deselect "Hide incompatible" above to see which
+      apps need one or
+      <b-link
+        :to="`/app-store/category/${encodeURIComponent('Electrum Servers')}`"
+        class="ms-2"
+        >install one.</b-link
+      >
+    </b-alert>
     <div class="app-store-card-columns card-columns">
       <card-widget
         v-for="categorizedApps in categorizedAppStore"
@@ -128,8 +138,8 @@ const appsStore = useAppsStore();
 const systemStore = useSystemStore();
 const {t} = useI18n();
 
-const showIncompatible = ref(false);
-const showInstalled = ref(false);
+const hideIncompatible = ref(false);
+const hideInstalled = ref(false);
 const searchQuery = ref('');
 
 const compatibleApps = computed(() => {
@@ -142,12 +152,12 @@ const installedApps = computed(() => {
 });
 
 const appsToShow = computed(() => {
-  let compatibleFilter = showIncompatible.value
-    ? appsStore.store
-    : compatibleApps.value;
-  let installedFilter = showInstalled.value
-    ? compatibleFilter
-    : compatibleFilter.filter((app) => !installedApps.value.includes(app.id));
+  let compatibleFilter = hideIncompatible.value
+    ? compatibleApps.value
+    : appsStore.store;
+  let installedFilter = hideInstalled.value
+    ? compatibleFilter.filter((app) => !installedApps.value.includes(app.id))
+    : compatibleFilter;
   return installedFilter;
 });
 
@@ -171,6 +181,7 @@ const categorizedAppStore = computed((): Record<string, _app[]> => {
 });
 
 appsStore.getAppStore();
+appsStore.getHasElectrum();
 systemStore.getUpdateChannel();
 </script>
 
