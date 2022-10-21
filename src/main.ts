@@ -1,5 +1,5 @@
 import {createApp} from 'vue';
-import BootstrapVue3 from '../node_modules/bootstrap-vue-3/src/BootstrapVue';
+import BootstrapVue3 from 'bootstrap-vue-3';
 import {createPinia} from 'pinia';
 import {createI18n} from 'vue-i18n';
 import Toast, {PluginOptions, POSITION} from 'vue-toastification';
