@@ -135,7 +135,7 @@
         <div class="pe-xl-2 content-container">
           <b-alert
             :show="!!systemStore.availableUpdate.version"
-            class="mt-4 mb-0"
+            class="mt-4 mb-0 d-flex"
             variant="success"
           >
             <div class="d-flex align-items-center mb-0">
@@ -146,21 +146,20 @@
                 class="alert-link"
                 >{{ systemStore.availableUpdate.name }}</a
               >
-              &nbsp;is now available to install.
+              &nbsp;is now availablei to install.
             </div>
-            <div class="mt-2">
-              <b-button
-                v-show="!isUpdating"
-                variant="primary"
-                size="sm"
-                :disabled="isUpdating"
-                @click.prevent="confirmUpdate"
-                >Install now</b-button
-              >
-              <div v-if="isUpdating" class="d-flex align-items-center">
-                <b-spinner class="me-1" variant="success" small></b-spinner>
-                Installing...
-              </div>
+            <b-button
+              v-show="!isUpdating"
+              variant="primary"
+              size="sm"
+              :disabled="isUpdating"
+              class="ms-auto"
+              @click.prevent="confirmUpdate"
+              >Install now</b-button
+            >
+            <div v-if="isUpdating" class="d-flex align-items-center">
+              <b-spinner class="me-1" variant="success" small></b-spinner>
+              Installing...
             </div>
           </b-alert>
           <b-alert
