@@ -81,7 +81,7 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, watch} from 'vue';
+import {onMounted, ref, watch} from 'vue';
 import useUserStore from '../store/user';
 import InputPassword from '../components/Utility/InputPassword.vue';
 import InputOtpToken from '../components/Utility/InputOtpToken.vue';
@@ -107,15 +107,17 @@ if (userStore.jwt) {
   router.push('/dashboard');
 }
 
-// redirect to onboarding if the user is not registered
-await userStore.getRegistered();
-if (!userStore.registered) {
-  router.push('/start');
-} else {
-  await userStore.getTotpEnabledStatus();
-}
+onMounted(async () => {
+  // redirect to onboarding if the user is not registered
+  await userStore.getRegistered();
+  if (!userStore.registered) {
+    router.push('/start');
+  } else {
+    await userStore.getTotpEnabledStatus();
+  }
 
-loading.value = false;
+  loading.value = false;
+});
 watch(password, () => {
   isIncorrectPassword.value = false;
 });

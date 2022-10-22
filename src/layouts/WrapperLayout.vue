@@ -2,23 +2,11 @@
   <div>
     <router-view v-slot="{Component}">
       <transition name="change-page" mode="out-in">
-        <KeepAlive>
-          <Suspense>
-            <!-- main content -->
-            <component :is="Component"></component>
-
-            <!-- loading state -->
-            <template #fallback><loading :progress="99" /></template>
-          </Suspense>
-        </KeepAlive>
+        <component :is="Component"></component>
       </transition>
     </router-view>
   </div>
 </template>
-
-<script lang="ts" setup>
-import Loading from '../components/Loading.vue';
-</script>
 
 <style lang="scss" scoped>
 // Page changing transitions
