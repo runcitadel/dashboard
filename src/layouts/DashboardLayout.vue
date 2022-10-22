@@ -137,6 +137,7 @@
             :show="!!systemStore.availableUpdate.version"
             class="mt-4 mb-0 d-flex"
             variant="success"
+            dismissible
           >
             <div class="d-flex align-items-center mb-0">
               <div class="icon-24px"><BellIcon /></div>
@@ -146,7 +147,7 @@
                 class="alert-link"
                 >{{ systemStore.availableUpdate.name }}</a
               >
-              &nbsp;is now availablei to install.
+              &nbsp;is now available to install.
             </div>
             <b-button
               v-show="!isUpdating"
