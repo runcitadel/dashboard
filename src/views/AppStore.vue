@@ -138,7 +138,7 @@ const appsStore = useAppsStore();
 const systemStore = useSystemStore();
 const {t} = useI18n();
 
-const hideIncompatible = ref(false);
+const hideIncompatible = ref(true);
 const hideInstalled = ref(false);
 const searchQuery = ref('');
 
