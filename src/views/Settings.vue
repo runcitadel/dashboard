@@ -354,8 +354,7 @@
       >
         <div class="d-block pt-2"></div>
 
-        <!-- Uptime monitoring is only available on Citadel OS -->
-        <div v-if="systemStore.isCitadelOS" class="pt-0">
+        <div class="pt-0">
           <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
             <div>
               <span class="d-block">Uptime</span>
@@ -632,6 +631,7 @@ export default defineComponent({
       showTotpModal: false,
       authenticatorToken: '',
       showRebootModal: false,
+      increaseUptimeInterval: undefined,
     } as {
       currentPassword: string;
       isIncorrectPassword: boolean;
@@ -654,6 +654,7 @@ export default defineComponent({
       showSeedModal: boolean;
       showTotpModal: boolean;
       showRebootModal: boolean;
+      increaseUptimeInterval?: number;
     };
   },
   computed: {
@@ -707,10 +708,17 @@ export default defineComponent({
     this.systemStore.getVersion();
     this.systemStore.getUptime();
     this.userStore.getTotpEnabledStatus();
+    this.increaseUptimeInterval = window.setInterval(() => {
+      // @ts-expect-error This could be null
+      this.systemStore.uptime++;
+    }, 1000);
   },
   beforeUnmount() {
     if (this.pollUpdateStatus) {
       window.clearInterval(this.pollUpdateStatus);
+    }
+    if (this.increaseUptimeInterval) {
+      window.clearInterval(this.increaseUptimeInterval);
     }
   },
   methods: {
