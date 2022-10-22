@@ -209,7 +209,7 @@
                           tx.amount,
                           bitcoinStore.price,
                           bitcoinStore.currency,
-                        ).toString()
+                        )
                       "
                       class="font-weight-bold d-block"
                     >

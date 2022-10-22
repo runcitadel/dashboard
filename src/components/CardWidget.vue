@@ -100,7 +100,7 @@ const props = defineProps({
           blink: boolean;
         }
       | Record<string, never>
-    >, // {text, variant, blink}
+    >,
     required: false,
     default: () => {
       return false;

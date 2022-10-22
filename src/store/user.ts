@@ -11,7 +11,6 @@ export interface State {
   totpAuthenticated: boolean;
   seed: string[];
   installedApps: string[];
-  sdkStore: ReturnType<typeof useSdkStore>;
 }
 
 // Initial state
@@ -25,13 +24,13 @@ const useUserStore = defineStore('user', {
     totpAuthenticated: false,
     seed: [],
     installedApps: [],
-    sdkStore: useSdkStore(),
   }),
 
   // Functions to get data from the API
   actions: {
     async login({password, totpToken}: {password: string; totpToken: string}) {
-      const jwt = await this.sdkStore.citadel.manager.auth.login(
+      const sdkStore = useSdkStore();
+      const jwt = await sdkStore.citadel.manager.auth.login(
         password,
         totpToken,
       );
@@ -48,14 +47,16 @@ const useUserStore = defineStore('user', {
     },
 
     async setJwt(jwt: string) {
+      const sdkStore = useSdkStore();
       window.localStorage.setItem('jwt', jwt);
       this.jwt = jwt;
-      this.sdkStore.setJwt(jwt);
+      sdkStore.setJwt(jwt);
     },
 
     async refreshJWT() {
+      const sdkStore = useSdkStore();
       try {
-        const jwt = await this.sdkStore.citadel.manager.auth.refresh();
+        const jwt = await sdkStore.citadel.manager.auth.refresh();
         if (jwt) {
           this.setJwt(jwt);
         }
@@ -66,30 +67,32 @@ const useUserStore = defineStore('user', {
     },
 
     async getRegistered() {
-      const registered =
-        await this.sdkStore.citadel.manager.auth.isRegistered();
+      const sdkStore = useSdkStore();
+      const registered = await sdkStore.citadel.manager.auth.isRegistered();
       this.registered = registered;
     },
 
     async getInfo() {
-      const {name, installedApps} =
-        await this.sdkStore.citadel.manager.auth.info();
+      const sdkStore = useSdkStore();
+      const {name, installedApps} = await sdkStore.citadel.manager.auth.info();
       this.name = name;
       this.installedApps = installedApps || [];
     },
 
     async getTotpKey() {
-      const totpKey = await this.sdkStore.citadel.manager.auth.setupTotp();
+      const sdkStore = useSdkStore();
+      const totpKey = await sdkStore.citadel.manager.auth.setupTotp();
       this.totpKey = totpKey;
     },
 
     async getTotpEnabledStatus() {
-      const totpEnabled =
-        await this.sdkStore.citadel.manager.auth.isTotpEnabled();
+      const sdkStore = useSdkStore();
+      const totpEnabled = await sdkStore.citadel.manager.auth.isTotpEnabled();
       this.totpEnabled = totpEnabled;
     },
 
     async getSeed(auth?: {password: string; totpToken?: string}) {
+      const sdkStore = useSdkStore();
       let rawSeed: string[];
 
       //first check if user is registered or not
@@ -97,14 +100,14 @@ const useUserStore = defineStore('user', {
 
       //get user's stored seed if already registered
       if (this.registered && auth?.password) {
-        rawSeed = await this.sdkStore.citadel.manager.auth.seed(
+        rawSeed = await sdkStore.citadel.manager.auth.seed(
           auth.password,
           auth.totpToken,
         );
       } else {
         //get a new seed if new user
         rawSeed =
-          await this.sdkStore.citadel.middleware.lightning.wallet.generateSeed();
+          await sdkStore.citadel.middleware.lightning.wallet.generateSeed();
       }
 
       if (rawSeed) {
@@ -121,8 +124,9 @@ const useUserStore = defineStore('user', {
       password: string;
       seed: string[];
     }) {
+      const sdkStore = useSdkStore();
       if (!this.registered) {
-        const response = await this.sdkStore.citadel.manager.auth.register(
+        const response = await sdkStore.citadel.manager.auth.register(
           name,
           password,
           seed,

@@ -27,9 +27,9 @@ export function satsToUSD(
   value: string | number,
   price: number,
   currency: string,
-) {
+): string {
   if (isNaN(parseInt(value.toString()))) {
-    return value;
+    return value as string;
   } else {
     return Number(satsToBtc(parseInt(value.toString())) * price).toLocaleString(
       navigator.language,

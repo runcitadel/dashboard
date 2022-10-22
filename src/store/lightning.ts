@@ -80,7 +80,6 @@ export interface State {
   transactions: (CustomTransactionType | {type: 'loading'})[];
   confirmedTransactions: [];
   pendingTransactions: [];
-  sdkStore: ReturnType<typeof useSdkStore>;
 }
 export type ParsedChannel = Channel & {
   type?: string | undefined;
@@ -141,12 +140,12 @@ const useLightningStore = defineStore('lightning', {
     ],
     confirmedTransactions: [],
     pendingTransactions: [],
-    sdkStore: useSdkStore(),
   }),
   actions: {
     async getStatus() {
+      const sdkStore = useSdkStore();
       const status =
-        await this.sdkStore.citadel.middleware.lightning.info.getStatus();
+        await sdkStore.citadel.middleware.lightning.info.getStatus();
       if (status) {
         this.operational = status.operational;
         this.unlocked = status.unlocked;
@@ -154,8 +153,9 @@ const useLightningStore = defineStore('lightning', {
     },
 
     async getSync() {
+      const sdkStore = useSdkStore();
       const sync =
-        await this.sdkStore.citadel.middleware.lightning.info.syncStatus();
+        await sdkStore.citadel.middleware.lightning.info.syncStatus();
       if (sync && sync.percent) {
         this.percent = Number(toPrecision(parseFloat(sync.percent) * 100, 2));
         this.blockHeight = sync.knownBlockCount;
@@ -165,9 +165,10 @@ const useLightningStore = defineStore('lightning', {
 
     //basically fetches everything
     async getLndPageData() {
-      const data = await this.sdkStore.citadel.middleware.pages.lightning();
+      const sdkStore = useSdkStore();
+      const data = await sdkStore.citadel.middleware.pages.lightning();
       const versionInfo =
-        await this.sdkStore.citadel.middleware.lightning.info.version();
+        await sdkStore.citadel.middleware.lightning.info.version();
 
       if (data) {
         const channels = data.channels || [];
@@ -192,8 +193,9 @@ const useLightningStore = defineStore('lightning', {
     },
 
     async getVersionInfo() {
+      const sdkStore = useSdkStore();
       const versionInfo =
-        await this.sdkStore.citadel.middleware.lightning.info.version();
+        await sdkStore.citadel.middleware.lightning.info.version();
 
       if (versionInfo) {
         this.version = versionInfo.version;
@@ -202,8 +204,9 @@ const useLightningStore = defineStore('lightning', {
     },
 
     async getConnectionCode() {
+      const sdkStore = useSdkStore();
       const uris =
-        await this.sdkStore.citadel.middleware.lightning.info.publicUris();
+        await sdkStore.citadel.middleware.lightning.info.publicUris();
 
       if (uris && uris.length > 0) {
         this.connectionCode = uris[0];
@@ -213,6 +216,7 @@ const useLightningStore = defineStore('lightning', {
     },
 
     async getChannels(preFetchedChannels: Channel[] = []) {
+      const sdkStore = useSdkStore();
       let rawChannels: (Channel_extended & {
         status?:
           | 'Online'
@@ -232,7 +236,7 @@ const useLightningStore = defineStore('lightning', {
         rawChannels = preFetchedChannels;
       } else {
         rawChannels =
-          await this.sdkStore.citadel.middleware.lightning.channel.list();
+          await sdkStore.citadel.middleware.lightning.channel.list();
       }
 
       const channels: ParsedChannel[] = [];
@@ -304,11 +308,12 @@ const useLightningStore = defineStore('lightning', {
     },
 
     async getTransactions() {
+      const sdkStore = useSdkStore();
       // Get invoices and payments
       const invoices =
-        await this.sdkStore.citadel.middleware.lightning.lightning.invoices();
+        await sdkStore.citadel.middleware.lightning.lightning.invoices();
       const payments =
-        await this.sdkStore.citadel.middleware.lightning.lightning.getPayments();
+        await sdkStore.citadel.middleware.lightning.lightning.getPayments();
 
       if (!invoices || !payments) {
         return;
@@ -394,7 +399,7 @@ const useLightningStore = defineStore('lightning', {
 
         try {
           const invoiceDetails =
-            await this.sdkStore.citadel.middleware.lightning.lightning.parsePaymentRequest(
+            await sdkStore.citadel.middleware.lightning.lightning.parsePaymentRequest(
               tx.paymentRequest,
             );
           if (invoiceDetails) {
@@ -421,8 +426,8 @@ const useLightningStore = defineStore('lightning', {
     },
 
     async getLndConnectUrls() {
-      const urls =
-        await this.sdkStore.citadel.manager.system.getLndConnectUrls();
+      const sdkStore = useSdkStore();
+      const urls = await sdkStore.citadel.manager.system.getLndConnectUrls();
       if (urls) {
         this.lndConnectUrls = urls;
       }

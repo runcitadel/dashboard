@@ -18,5 +18,6 @@ module.exports = {
     'no-console': 'off',
     curly: ['error', 'multi-line'],
     'vue/multi-word-component-names': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
   },
 };
