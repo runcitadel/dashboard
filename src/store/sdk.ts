@@ -4,7 +4,6 @@ import useUserStore from './user';
 
 export interface State {
   citadel: Citadel;
-  userStore: ReturnType<typeof useUserStore>;
 }
 
 const isDevelopment = import.meta.env.DEV;
@@ -17,7 +16,6 @@ const useSdkStore = defineStore('sdk', {
           ? `http://${__DEVICE_HOSTNAME__.host}`
           : window.location.origin,
       ),
-      userStore: useUserStore(),
     };
 
     state.citadel.jwt = window.localStorage.getItem('jwt') || '';
@@ -25,7 +23,7 @@ const useSdkStore = defineStore('sdk', {
     // Redirect back to login on 401
     state.citadel.onAuthFailed = () => {
       // This removes the token everywhere and redirects to login
-      state.userStore.logout();
+      useUserStore().logout();
     };
 
     return state;

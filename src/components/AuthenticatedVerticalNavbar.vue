@@ -28,7 +28,14 @@
               />
             </h3>
             <small class="text-muted"
-              >~ {{ satsToUSD(btcBalance + lightningBalance) }}</small
+              >~
+              {{
+                satsToUSD(
+                  btcBalance + lightningBalance,
+                  bitcoinStore.price,
+                  bitcoinStore.currency,
+                )
+              }}</small
             >
           </div>
           <span
@@ -175,6 +182,7 @@ const bitcoinStore = useBitcoinStore();
 const lightningStore = useLightningStore();
 const appsStore = useAppsStore();
 const uiStore = useUiStore();
+
 appsStore.getInstalledApps();
 appsStore.getAppStore();
 

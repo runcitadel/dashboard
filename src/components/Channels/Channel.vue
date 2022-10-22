@@ -34,9 +34,11 @@
           <div class="d-flex justify-content-between">
             <span
               v-tooltip.right="
-                $filters
-                  .satsToUSD(channel.localBalance, bitcoinStore)
-                  .toString()
+                satsToUSD(
+                  channel.localBalance,
+                  bitcoinStore.price,
+                  bitcoinStore.currency,
+                ).toString()
               "
               class="text-primary font-weight-bold"
               >{{
@@ -48,9 +50,11 @@
             >
             <span
               v-tooltip.left="
-                $filters
-                  .satsToUSD(channel.remoteBalance, bitcoinStore)
-                  .toString()
+                satsToUSD(
+                  channel.remoteBalance,
+                  bitcoinStore.price,
+                  bitcoinStore.currency,
+                ).toString()
               "
               class="text-success text-end font-weight-bold"
               >{{
@@ -85,6 +89,7 @@ import status from '../Utility/Status.vue';
 import Bar from './Bar.vue';
 import useSystemStore from '../../store/system';
 import useBitcoinStore from '../../store/bitcoin';
+import {satsToUSD} from '../../helpers/filters';
 
 const props = defineProps({
   channel: {

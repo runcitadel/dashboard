@@ -19,9 +19,11 @@
       <div
         v-if="walletBalance !== -1 && uiStore.showBalance"
         v-tooltip.right="
-          $filters
-            .satsToUSD(lightningStore.balance.total, bitcoinStore)
-            .toString()
+          satsToUSD(
+            lightningStore.balance.total,
+            bitcoinStore.price,
+            bitcoinStore.currency,
+          )
         "
       >
         <CountUp
@@ -89,9 +91,16 @@
               class="list-group pb-2 transactions"
             >
               <b-list-group-item
-                v-for="tx in lightningStore.transactions"
+                v-for="tx in lightningStore.transactions
+                  .filter((tx, index) => {
+                    // hide old expired transaction
+                    // These are removed on the backend for LND users anyway
+                    return tx.type !== 'expired' || index < 20;
+                    // Limit to 50 to keep the list clean
+                  })
+                  .slice(0, 50)"
                 :key="tx.paymentRequest || tx.paymentPreImage"
-                class="flex-column align-items-start px-3 px-lg-4 py-4"
+                class="flex-column align-items-start px-3 px-lg-4 py-2"
                 href="#"
                 @click.prevent="showTransactionInfo(tx)"
               >
@@ -229,7 +238,11 @@
                   <div class="text-end">
                     <span
                       v-tooltip.left="
-                        $filters.satsToUSD(tx.amount, bitcoinStore).toString()
+                        satsToUSD(
+                          tx.amount,
+                          bitcoinStore.price,
+                          bitcoinStore.currency,
+                        ).toString()
                       "
                       class="font-weight-bold d-block"
                     >
@@ -314,7 +327,14 @@
                 </small>
               </div>
               <small class="d-block text-muted"
-                >~ {{ $filters.satsToUSD(send.amount, bitcoinStore) }}</small
+                >~
+                {{
+                  satsToUSD(
+                    send.amount,
+                    bitcoinStore.price,
+                    bitcoinStore.currency,
+                  )
+                }}</small
               >
             </div>
 
@@ -431,9 +451,10 @@
               :style="{opacity: (receive.amount || 0) > 0 ? 1 : 0}"
               >~
               {{
-                $filters.satsToUSD(
+                satsToUSD(
                   receive.amount?.toString() ?? 0,
-                  bitcoinStore,
+                  bitcoinStore.price,
+                  bitcoinStore.currency,
                 )
               }}</small
             >
@@ -886,6 +907,7 @@ import {
   format,
   getDateFormatWithSeconds,
 } from '../helpers/date';
+import {satsToUSD} from '../helpers/filters';
 import {addHours} from 'date-fns';
 import {useI18n} from 'vue-i18n';
 
@@ -976,6 +998,7 @@ export default defineComponent({
       lightningStore,
       uiStore,
       t,
+      satsToUSD,
     };
   },
   data(): data {

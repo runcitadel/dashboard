@@ -78,7 +78,11 @@
                 <div
                   v-if="btcBalance !== -1 && uiStore.showBalance"
                   v-tooltip.right="
-                    satsToUSD(bitcoinStore.balance.total).toString()
+                    satsToUSD(
+                      bitcoinStore.balance.total,
+                      bitcoinStore.price,
+                      bitcoinStore.currency,
+                    ).toString()
                   "
                 >
                   <CountUp

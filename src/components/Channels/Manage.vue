@@ -4,7 +4,11 @@
       <div class="d-flex justify-content-between">
         <h4
           v-tooltip.right="
-            $filters.satsToUSD(channel.localBalance, bitcoinStore).toString()
+            satsToUSD(
+              channel.localBalance,
+              bitcoinStore.price,
+              bitcoinStore.currency,
+            ).toString()
           "
           class="text-primary font-weight-bold"
         >
@@ -17,7 +21,11 @@
         </h4>
         <h4
           v-tooltip.left="
-            $filters.satsToUSD(channel.remoteBalance, bitcoinStore).toString()
+            satsToUSD(
+              channel.remoteBalance,
+              bitcoinStore.price,
+              bitcoinStore.currency,
+            ).toString()
           "
           class="text-success font-weight-bold text-end"
         >
@@ -82,7 +90,11 @@
           <span class="text-muted">Local Balance</span>
           <span
             v-tooltip.left="
-              $filters.satsToUSD(channel.localBalance, bitcoinStore).toString()
+              satsToUSD(
+                channel.localBalance,
+                bitcoinStore.price,
+                bitcoinStore.currency,
+              ).toString()
             "
             class="text-capitalize font-weight-bold"
           >
@@ -99,7 +111,11 @@
           <span class="text-muted">Remote Balance</span>
           <span
             v-tooltip.left="
-              $filters.satsToUSD(channel.remoteBalance, bitcoinStore).toString()
+              satsToUSD(
+                channel.remoteBalance,
+                bitcoinStore.price,
+                bitcoinStore.currency,
+              ).toString()
             "
             class="text-capitalize font-weight-bold"
           >
@@ -116,7 +132,11 @@
           <span class="text-muted">Channel Capacity</span>
           <span
             v-tooltip.left="
-              $filters.satsToUSD(channel.capacity, bitcoinStore).toString()
+              satsToUSD(
+                channel.capacity,
+                bitcoinStore.price,
+                bitcoinStore.currency,
+              ).toString()
             "
             class="text-capitalize font-weight-bold"
           >
@@ -205,6 +225,7 @@ import useBitcoinStore from '../../store/bitcoin';
 import useSdkStore from '../../store/sdk';
 import useSystemStore from '../../store/system';
 import useToast from '../../utils/toast';
+import {satsToUSD} from '../../helpers/filters';
 
 import Bar from '../Channels/Bar.vue';
 

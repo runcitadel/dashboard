@@ -41,6 +41,8 @@
                   (parseInt(fee.fast.total, 10) /
                     parseInt(fee.fast.perByte, 10)) *
                     value,
+                  bitcoinStore.price,
+                  bitcoinStore.currency,
                 )
               }}</small
             >
@@ -80,7 +82,14 @@
               >{{ fee[value].perByte }} sat/vB
             </span>
             <small class="text-muted"
-              >≈ {{ satsToUSD(fee[value].total) }}</small
+              >≈
+              {{
+                satsToUSD(
+                  fee[value].total,
+                  bitcoinStore.price,
+                  bitcoinStore.currency,
+                )
+              }}</small
             >
           </div>
         </template>

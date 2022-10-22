@@ -47,7 +47,14 @@
             <small
               class="text-muted d-block mb-0"
               :style="{opacity: fundingAmount > 0 ? 1 : 0}"
-              >~ {{ satsToUSD(fundingAmount) }}</small
+              >~
+              {{
+                satsToUSD(
+                  fundingAmount,
+                  bitcoinStore.price,
+                  bitcoinStore.currency,
+                )
+              }}</small
             >
           </div>
         </div>

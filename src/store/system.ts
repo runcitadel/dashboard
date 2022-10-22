@@ -71,7 +71,6 @@ export interface State {
   isNvme: boolean;
   // It can be anything, but these are the most likely
   updateChannel: 'stable' | 'beta' | 'c-lightning' | string;
-  sdkStore: ReturnType<typeof useSdkStore>;
 }
 
 const useSystemStore = defineStore('system', {
@@ -133,25 +132,26 @@ const useSystemStore = defineStore('system', {
     uptime: null,
     isNvme: false,
     updateChannel: 'stable',
-    sdkStore: useSdkStore(),
   }),
   actions: {
     async getVersion() {
-      const data = await this.sdkStore.citadel.manager.system.info();
+      const sdkStore = useSdkStore();
+      const data = await sdkStore.citadel.manager.system.info();
       if (data && data.version) {
         const {version} = data;
         this.version = version;
       }
     },
     async getUpdateChannel() {
-      const data =
-        await this.sdkStore.citadel.manager.system.getUpdateChannel();
+      const sdkStore = useSdkStore();
+      const data = await sdkStore.citadel.manager.system.getUpdateChannel();
       if (data) {
         this.updateChannel = data;
       }
     },
     async setUpdateChannel(channel: string) {
-      await this.sdkStore.citadel.manager.system.setUpdateChannel(channel);
+      const sdkStore = useSdkStore();
+      await sdkStore.citadel.manager.system.setUpdateChannel(channel);
       this.updateChannel = channel;
     },
     getUnit() {
@@ -166,19 +166,22 @@ const useSystemStore = defineStore('system', {
       }
     },
     async getManagerApi() {
-      const api = await this.sdkStore.citadel.manager.ping();
+      const sdkStore = useSdkStore();
+      const api = await sdkStore.citadel.manager.ping();
       this.managerApi = {
         operational: !!(api && api.version),
         version: api && api.version ? api.version : '',
       };
     },
     async getOnionAddress() {
+      const sdkStore = useSdkStore();
       const address =
-        await this.sdkStore.citadel.manager.system.getHiddenServiceUrl();
+        await sdkStore.citadel.manager.system.getHiddenServiceUrl();
       this.onionAddress = address;
     },
     async getAvailableUpdate() {
-      const update = await this.sdkStore.citadel.manager.system.getUpdate();
+      const sdkStore = useSdkStore();
+      const update = await sdkStore.citadel.manager.system.getUpdate();
       if (update && update.version) {
         this.availableUpdate = update;
       } else {
@@ -190,7 +193,8 @@ const useSystemStore = defineStore('system', {
       }
     },
     async startUpdate() {
-      await this.sdkStore.citadel.manager.system.startUpdate();
+      const sdkStore = useSdkStore();
+      await sdkStore.citadel.manager.system.startUpdate();
     },
     hideUpdateConfirmationModal() {
       this.showUpdateConfirmationModal = false;
@@ -199,26 +203,29 @@ const useSystemStore = defineStore('system', {
       this.showUpdateConfirmationModal = true;
     },
     async getUpdateStatus() {
-      const status = await this.sdkStore.citadel.manager.system.updateStatus();
+      const sdkStore = useSdkStore();
+      const status = await sdkStore.citadel.manager.system.updateStatus();
       if (status?.progress) {
         this.updateStatus = status;
       }
     },
     async getDiskInfo() {
-      const status =
-        (await this.sdkStore.citadel.manager.system.disk()) === 'nvme';
+      const sdkStore = useSdkStore();
+      const status = (await sdkStore.citadel.manager.system.disk()) === 'nvme';
       if (status) {
         this.isNvme = status;
       }
     },
     async getBackupStatus() {
-      const status = await this.sdkStore.citadel.manager.system.backupStatus();
+      const sdkStore = useSdkStore();
+      const status = await sdkStore.citadel.manager.system.backupStatus();
       if (status && status.timestamp) {
         this.backupStatus = status;
       }
     },
     async getDebugResult() {
-      const result = await this.sdkStore.citadel.manager.system.debugResult();
+      const sdkStore = useSdkStore();
+      const result = await sdkStore.citadel.manager.system.debugResult();
       if (!result) {
         throw new Error('Get debug request failed');
       }
@@ -226,21 +233,23 @@ const useSystemStore = defineStore('system', {
       this.debugStatus = result;
     },
     async debug() {
-      this.debugStatus = await this.sdkStore.citadel.manager.system.debug();
+      const sdkStore = useSdkStore();
+      this.debugStatus = await sdkStore.citadel.manager.system.debug();
     },
     async shutdown() {
+      const sdkStore = useSdkStore();
       // Reset any cached hasShutdown value from previous shutdown
       this.hasShutdown = false;
 
       // Shutting down
-      await this.sdkStore.citadel.manager.system.shutdown();
+      await sdkStore.citadel.manager.system.shutdown();
 
       this.shuttingDown = true;
 
       // Poll to check if system has shut down
       const pollIfDown = window.setInterval(async () => {
         try {
-          const {version} = await this.sdkStore.citadel.manager.ping();
+          const {version} = await sdkStore.citadel.manager.ping();
           if (!version) {
             // System shut down successfully
             window.clearInterval(pollIfDown);
@@ -262,18 +271,19 @@ const useSystemStore = defineStore('system', {
       }, 2000);
     },
     async reboot() {
+      const sdkStore = useSdkStore();
       // Reset any cached hasRebooted value from previous reboot
       this.hasRebooted = false;
 
       // Rebooting
-      await this.sdkStore.citadel.manager.system.reboot();
+      await sdkStore.citadel.manager.system.reboot();
 
       this.rebooting = true;
 
       let pollIfUp: number;
 
       const pollIfUpFunction = async () => {
-        const {version} = await this.sdkStore.citadel.manager.ping();
+        const {version} = await sdkStore.citadel.manager.ping();
         if (version) {
           // System is online again
           this.rebooting = false;
@@ -286,7 +296,7 @@ const useSystemStore = defineStore('system', {
       // Poll to check if system has shut down
       const pollIfDown = window.setInterval(async () => {
         try {
-          const {version} = await this.sdkStore.citadel.manager.ping();
+          const {version} = await sdkStore.citadel.manager.ping();
           if (!version) {
             // System shut down successfully
             window.clearInterval(pollIfDown);
@@ -307,28 +317,30 @@ const useSystemStore = defineStore('system', {
       }, 2000);
     },
     async getStorage() {
-      const storage =
-        await await this.sdkStore.citadel.manager.system.storage();
+      const sdkStore = useSdkStore();
+      const storage = await await sdkStore.citadel.manager.system.storage();
       if (storage && storage.total) {
         storage.breakdown.sort((app1, app2) => app2.used - app1.used);
         this.storage = storage;
       }
     },
     async getRam() {
-      const ram = await this.sdkStore.citadel.manager.system.memory();
+      const sdkStore = useSdkStore();
+      const ram = await sdkStore.citadel.manager.system.memory();
       if (ram && ram.total) {
         ram.breakdown.sort((app1, app2) => app2.used - app1.used);
         this.ram = ram;
       }
     },
     async getIsCitadelOS() {
-      const isCitadelOS =
-        await this.sdkStore.citadel.manager.system.isCitadelOS();
+      const sdkStore = useSdkStore();
+      const isCitadelOS = await sdkStore.citadel.manager.system.isCitadelOS();
       this.isCitadelOS = isCitadelOS;
     },
     async getCpuTemperature() {
+      const sdkStore = useSdkStore();
       const cpuTemperature =
-        await this.sdkStore.citadel.manager.system.temperature();
+        await sdkStore.citadel.manager.system.temperature();
       if (cpuTemperature) {
         this.cpuTemperature = cpuTemperature;
       }
@@ -350,7 +362,8 @@ const useSystemStore = defineStore('system', {
       }
     },
     async getUptime() {
-      const uptime = await this.sdkStore.citadel.manager.system.uptime();
+      const sdkStore = useSdkStore();
+      const uptime = await sdkStore.citadel.manager.system.uptime();
       if (uptime) {
         this.uptime = uptime;
       }

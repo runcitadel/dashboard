@@ -19,7 +19,6 @@ const messages = {
   running: 'Aktiv',
   manage: 'Verwalten',
   'connected-peers': 'Verbunde Nodes',
-  'time-ago': 'vor {time}',
   'bitcoin-wallet': 'Bitcoin-Wallet',
   'lightning-wallet': 'Lightning-Wallet',
   'just-now': 'gerade eben',

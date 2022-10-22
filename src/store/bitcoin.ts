@@ -1,6 +1,7 @@
 import {toPrecision} from '../helpers/units';
 import {defineStore, acceptHMRUpdate} from 'pinia';
 import useSdkStore from './sdk';
+import currencyHelper, {type Currency} from 'iso-country-currency';
 
 type BasicBlock = {
   hash: string;
@@ -93,6 +94,7 @@ export interface State {
   _transactions: ({type: 'loading'} | Transaction_extended)[];
   pending: [];
   price: number;
+  currency: string;
   fees: Record<
     string,
     {
@@ -102,94 +104,104 @@ export interface State {
       error?: boolean;
     }
   >;
-  sdkStore: ReturnType<typeof useSdkStore>;
 }
 
 const useBitcoinStore = defineStore('bitcoin', {
   // Initial state
-  state: (): State => ({
-    operational: false,
-    calibrating: false,
-    version: '',
-    ipAddress: '',
-    onionAddress: '',
-    p2p: {
-      address: '',
-      port: '',
-      connectionString: '',
-    },
-    electrum: {
-      address: '',
-      port: '',
-      connectionString: '',
-    },
-    rpc: {
-      rpcuser: '',
-      rpcpassword: '',
-      address: '',
-      port: '',
-      connectionString: '',
-    },
-    currentBlock: 0,
-    chain: '',
-    blockHeight: 0,
-    blocks: [],
-    percent: -1, //for loading state
-    depositAddress: '',
-    stats: {
-      peers: -1,
-      mempool: -1,
-      hashrate: -1,
-      blockchainSize: -1,
-    },
-    peers: {
-      total: 0,
-      inbound: 0,
-      outbound: 0,
-    },
-    balance: {
-      total: -1, //loading
-      confirmed: -1,
-      pending: -1,
-    },
-    _transactions: [
-      {type: 'loading'},
-      {type: 'loading'},
-      {type: 'loading'},
-      {type: 'loading'},
-    ],
-    pending: [],
-    price: 0,
-    fees: {
-      fast: {
-        total: '--',
-        perByte: '--',
-        error: false,
+  state: (): State => {
+    let countryInfo: Currency | undefined;
+    try {
+      countryInfo = currencyHelper.getAllInfoByISO(
+        navigator.language.split('-')[1],
+      );
+    } catch {
+      console.warn('Failed to get currency information');
+    }
+
+    return {
+      operational: false,
+      calibrating: false,
+      version: '',
+      ipAddress: '',
+      onionAddress: '',
+      p2p: {
+        address: '',
+        port: '',
+        connectionString: '',
       },
-      normal: {
-        total: '--',
-        perByte: '--',
-        error: false,
+      electrum: {
+        address: '',
+        port: '',
+        connectionString: '',
       },
-      slow: {
-        total: '--',
-        perByte: '--',
-        error: false,
+      rpc: {
+        rpcuser: '',
+        rpcpassword: '',
+        address: '',
+        port: '',
+        connectionString: '',
       },
-      cheapest: {
-        total: '--',
-        perByte: '--',
-        error: false,
+      currentBlock: 0,
+      chain: '',
+      blockHeight: 0,
+      blocks: [],
+      percent: -1, //for loading state
+      depositAddress: '',
+      stats: {
+        peers: -1,
+        mempool: -1,
+        hashrate: -1,
+        blockchainSize: -1,
       },
-    },
-    sdkStore: useSdkStore(),
-  }),
+      peers: {
+        total: 0,
+        inbound: 0,
+        outbound: 0,
+      },
+      balance: {
+        total: -1, //loading
+        confirmed: -1,
+        pending: -1,
+      },
+      _transactions: [
+        {type: 'loading'},
+        {type: 'loading'},
+        {type: 'loading'},
+        {type: 'loading'},
+      ],
+      pending: [],
+      price: 0,
+      fees: {
+        fast: {
+          total: '--',
+          perByte: '--',
+          error: false,
+        },
+        normal: {
+          total: '--',
+          perByte: '--',
+          error: false,
+        },
+        slow: {
+          total: '--',
+          perByte: '--',
+          error: false,
+        },
+        cheapest: {
+          total: '--',
+          perByte: '--',
+          error: false,
+        },
+      },
+      currency: countryInfo?.currency || 'USD',
+    };
+  },
 
   // Functions to get data from the API
   actions: {
     async getStatus() {
-      const status =
-        await this.sdkStore.citadel.middleware.bitcoin.isOperational();
+      const sdkStore = useSdkStore();
+      const status = await sdkStore.citadel.middleware.bitcoin.isOperational();
 
       if (status) {
         this.operational = status;
@@ -197,8 +209,9 @@ const useBitcoinStore = defineStore('bitcoin', {
     },
 
     async getP2PInfo() {
+      const sdkStore = useSdkStore();
       const p2pInfo =
-        await this.sdkStore.citadel.manager.system.getBitcoinP2PConnectionDetails();
+        await sdkStore.citadel.manager.system.getBitcoinP2PConnectionDetails();
 
       if (p2pInfo) {
         this.p2p = {
@@ -209,8 +222,9 @@ const useBitcoinStore = defineStore('bitcoin', {
     },
 
     async getElectrumInfo() {
+      const sdkStore = useSdkStore();
       const electrumInfo =
-        await this.sdkStore.citadel.manager.system.getElectrumConnectionDetails();
+        await sdkStore.citadel.manager.system.getElectrumConnectionDetails();
 
       if (electrumInfo) {
         this.electrum = {
@@ -221,8 +235,9 @@ const useBitcoinStore = defineStore('bitcoin', {
     },
 
     async getRpcInfo() {
+      const sdkStore = useSdkStore();
       const rpcInfo =
-        await this.sdkStore.citadel.manager.system.getBitcoinRPConnectionDetails();
+        await sdkStore.citadel.manager.system.getBitcoinRPConnectionDetails();
 
       if (rpcInfo) {
         this.rpc = {
@@ -233,7 +248,8 @@ const useBitcoinStore = defineStore('bitcoin', {
     },
 
     async getSync() {
-      const sync = await this.sdkStore.citadel.middleware.bitcoin.syncStatus();
+      const sdkStore = useSdkStore();
+      const sync = await sdkStore.citadel.middleware.bitcoin.syncStatus();
 
       if (sync) {
         this.percent = Number(
@@ -246,6 +262,7 @@ const useBitcoinStore = defineStore('bitcoin', {
     },
 
     async getBlocks() {
+      const sdkStore = useSdkStore();
       await this.getSync();
 
       // Cache block height array of latest 3 blocks for loading view
@@ -264,7 +281,7 @@ const useBitcoinStore = defineStore('bitcoin', {
 
       //TODO: Fetch only new blocks
       const latestThreeBlocks =
-        await this.sdkStore.citadel.middleware.bitcoin.blocks(
+        await sdkStore.citadel.middleware.bitcoin.blocks(
           currentBlock - 2,
           currentBlock,
         );
@@ -274,7 +291,8 @@ const useBitcoinStore = defineStore('bitcoin', {
     },
 
     async getVersion() {
-      const version = await this.sdkStore.citadel.middleware.bitcoin.version();
+      const sdkStore = useSdkStore();
+      const version = await sdkStore.citadel.middleware.bitcoin.version();
 
       if (version) {
         this.version = version;
@@ -282,8 +300,8 @@ const useBitcoinStore = defineStore('bitcoin', {
     },
 
     async getPeers() {
-      const peers =
-        await this.sdkStore.citadel.middleware.bitcoin.connections();
+      const sdkStore = useSdkStore();
+      const peers = await sdkStore.citadel.middleware.bitcoin.connections();
 
       if (peers) {
         this.peers = peers;
@@ -291,7 +309,8 @@ const useBitcoinStore = defineStore('bitcoin', {
     },
 
     async getStats() {
-      const stats = await this.sdkStore.citadel.middleware.bitcoin.stats();
+      const sdkStore = useSdkStore();
+      const stats = await sdkStore.citadel.middleware.bitcoin.stats();
 
       if (stats) {
         const peers = stats.connections;
@@ -309,8 +328,9 @@ const useBitcoinStore = defineStore('bitcoin', {
     },
 
     async getBalance() {
+      const sdkStore = useSdkStore();
       const balance =
-        await this.sdkStore.citadel.middleware.lightning.wallet.onChainBalance();
+        await sdkStore.citadel.middleware.lightning.wallet.onChainBalance();
 
       this.balance = {
         total: parseInt(balance.totalBalance.toString()),
@@ -320,13 +340,17 @@ const useBitcoinStore = defineStore('bitcoin', {
     },
 
     async getTransactions() {
+      const sdkStore = useSdkStore();
       const transactions =
-        await this.sdkStore.citadel.middleware.lightning.transaction.getOnChainTransactions();
+        await sdkStore.citadel.middleware.lightning.transaction.getOnChainTransactions();
       this._transactions = transactions;
     },
 
     async getPrice() {
-      const price = await this.sdkStore.citadel.manager.external.price('USD');
+      const sdkStore = useSdkStore();
+      const price = await sdkStore.citadel.manager.external.price(
+        this.currency,
+      );
 
       if (price) {
         this.price = price;
@@ -334,8 +358,8 @@ const useBitcoinStore = defineStore('bitcoin', {
     },
 
     async getDepositAddress() {
-      const {address} =
-        await this.sdkStore.citadel.middleware.lightning.address();
+      const sdkStore = useSdkStore();
+      const {address} = await sdkStore.citadel.middleware.lightning.address();
 
       if (address) {
         this.depositAddress = address;
@@ -351,8 +375,9 @@ const useBitcoinStore = defineStore('bitcoin', {
       amt: number;
       sweep?: boolean;
     }) {
+      const sdkStore = useSdkStore();
       const fees =
-        await this.sdkStore.citadel.middleware.lightning.transaction.estimateFeeAll(
+        await sdkStore.citadel.middleware.lightning.transaction.estimateFeeAll(
           address,
           amt,
           sweep,

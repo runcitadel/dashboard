@@ -193,7 +193,7 @@ function blockTime(timestamp: number) {
   const minedAt = timestamp * 1000;
   //sometimes the block can have a timestamp with a few seconds in the future compared to browser's time
   if (new Date(minedAt) < new Date()) {
-    return t('time-ago', {time: formatDistance(new Date(minedAt), new Date())});
+    return formatDistance(new Date(minedAt), new Date());
   } else {
     return t('just-now');
   }

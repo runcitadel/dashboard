@@ -11,7 +11,6 @@ import 'bootstrap-vue-3/dist/bootstrap-vue-3.css';
 import App from './App.vue';
 import router from './router/index';
 import {satsToBtc} from './helpers/units';
-import type useBitcoinStore from './store/bitcoin';
 import type useSystemStore from './store/system';
 import en from './i18n/en';
 import de from './i18n/de';
@@ -45,21 +44,6 @@ app.config.globalProperties.$filters = {
       return 'Sats';
     } else if (unit === 'btc') {
       return 'BTC';
-    }
-  },
-  satsToUSD: (
-    value: string | number,
-    store: ReturnType<typeof useBitcoinStore>,
-  ) => {
-    if (isNaN(parseInt(value.toString()))) {
-      return value;
-    } else {
-      return (
-        '$' +
-        Number(
-          (satsToBtc(parseInt(value.toString())) * store.price).toFixed(2),
-        ).toLocaleString()
-      );
     }
   },
   localize: (n: number | string) =>

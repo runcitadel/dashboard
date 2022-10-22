@@ -1,4 +1,3 @@
-import useBitcoinStore from '../store/bitcoin';
 import useSystemStore from '../store/system';
 import {satsToBtc} from './units';
 
@@ -24,16 +23,20 @@ export function formatUnit(unit: 'sats' | 'btc') {
     return 'BTC';
   }
 }
-export function satsToUSD(value: string | number) {
-  const store = useBitcoinStore();
+export function satsToUSD(
+  value: string | number,
+  price: number,
+  currency: string,
+) {
   if (isNaN(parseInt(value.toString()))) {
     return value;
   } else {
-    return (
-      '$' +
-      Number(
-        (satsToBtc(parseInt(value.toString())) * store.price).toFixed(2),
-      ).toLocaleString()
+    return Number(satsToBtc(parseInt(value.toString())) * price).toLocaleString(
+      navigator.language,
+      {
+        style: 'currency',
+        currency,
+      },
     );
   }
 }

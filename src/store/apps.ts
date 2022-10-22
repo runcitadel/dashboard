@@ -10,7 +10,6 @@ export interface State {
   uninstalling: string[];
   icon?: string;
   hasElectrum: boolean;
-  sdkStore: ReturnType<typeof useSdkStore>;
 }
 
 const useAppsStore = defineStore('apps', {
@@ -20,32 +19,34 @@ const useAppsStore = defineStore('apps', {
     store: [],
     installing: [],
     uninstalling: [],
-    sdkStore: useSdkStore(),
     hasElectrum: false,
   }),
   // Functions to get data from the API
   actions: {
     async getInstalledApps() {
-      const {apps} = await this.sdkStore.citadel.manager.apps.list(true);
+      const sdkStore = useSdkStore();
+      const {apps} = await sdkStore.citadel.manager.apps.list(true);
       if (apps) {
         this.installed = apps as app[];
       }
     },
     async getAppStore() {
+      const sdkStore = useSdkStore();
       this.getInstalledApps();
-      const {apps, jwt} = await this.sdkStore.citadel.manager.apps.list();
+      const {apps, jwt} = await sdkStore.citadel.manager.apps.list();
 
       // Update JWT
       localStorage.setItem('jwt', jwt);
-      this.sdkStore.setJwt(jwt);
+      sdkStore.setJwt(jwt);
 
       if (apps) {
         this.store = apps;
       }
     },
     async uninstall(appId: string) {
+      const sdkStore = useSdkStore();
       if (!this.uninstalling.includes(appId)) this.uninstalling.push(appId);
-      await this.sdkStore.citadel.manager.apps.uninstall(appId);
+      await sdkStore.citadel.manager.apps.uninstall(appId);
 
       const poll = window.setInterval(async () => {
         await this.getInstalledApps();
@@ -57,8 +58,9 @@ const useAppsStore = defineStore('apps', {
       }, 5000);
     },
     async install(appId: string) {
+      const sdkStore = useSdkStore();
       this.installing.push(appId);
-      await this.sdkStore.citadel.manager.apps.install(appId);
+      await sdkStore.citadel.manager.apps.install(appId);
 
       const poll = window.setInterval(async () => {
         await this.getInstalledApps();
@@ -70,7 +72,8 @@ const useAppsStore = defineStore('apps', {
       }, 5000);
     },
     async updateApps() {
-      await this.sdkStore.citadel.manager.apps.updateAll();
+      const sdkStore = useSdkStore();
+      await sdkStore.citadel.manager.apps.updateAll();
     },
     async getHasElectrum() {
       if (this.store?.length < 1) {

@@ -18,7 +18,13 @@
     <template #title>
       <div
         v-if="bitcoinStore.balance.total !== -1 && uiStore.showBalance"
-        v-tooltip.right="satsToUSD(bitcoinStore.balance.total).toString()"
+        v-tooltip.right="
+          satsToUSD(
+            bitcoinStore.balance.total,
+            bitcoinStore.price,
+            bitcoinStore.currency,
+          ).toString()
+        "
       >
         <CountUp
           :value="{
@@ -198,7 +204,13 @@
 
                   <div class="text-end">
                     <span
-                      v-tooltip.left="satsToUSD(tx.amount).toString()"
+                      v-tooltip.left="
+                        satsToUSD(
+                          tx.amount,
+                          bitcoinStore.price,
+                          bitcoinStore.currency,
+                        ).toString()
+                      "
                       class="font-weight-bold d-block"
                     >
                       <!-- Positive or negative prefix with amount -->
@@ -276,7 +288,14 @@
                 <small
                   class="text-muted mt-1 d-block text-end mb-0"
                   :style="{opacity: withdraw.amount > 0 ? 1 : 0}"
-                  >~ {{ satsToUSD(withdraw.amount).toString() }}</small
+                  >~
+                  {{
+                    satsToUSD(
+                      withdraw.amount,
+                      bitcoinStore.price,
+                      bitcoinStore.currency,
+                    ).toString()
+                  }}</small
                 >
               </div>
             </div>
@@ -338,7 +357,14 @@
                 {{ formatUnit(systemStore.unit) }}
               </span>
               <small class="text-muted d-block mb-3"
-                >~ {{ satsToUSD(withdraw.amount) }}</small
+                >~
+                {{
+                  satsToUSD(
+                    withdraw.amount,
+                    bitcoinStore.price,
+                    bitcoinStore.currency,
+                  )
+                }}</small
               >
 
               <svg
@@ -380,7 +406,8 @@
                           withdraw.selectedFee.satPerByte.toString(),
                           10,
                         ),
-                      bitcoinStore,
+                      bitcoinStore.price,
+                      bitcoinStore.currency,
                     )
                   }}
                   Transaction fee
@@ -413,6 +440,8 @@
                   {{
                     satsToUSD(
                       bitcoinStore.fees[withdraw.selectedFee.type]['total'],
+                      bitcoinStore.price,
+                      bitcoinStore.currency,
                     )
                   }}
                   Transaction fee

@@ -19,7 +19,6 @@ const messages = {
   running: 'Running',
   manage: 'Manage',
   'connected-peers': 'Connected peers',
-  'time-ago': '{time} ago',
   'bitcoin-wallet': 'Bitcoin Wallet',
   'lightning-wallet': 'Lightning Wallet',
   'just-now': 'just now',

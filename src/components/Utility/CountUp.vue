@@ -83,6 +83,13 @@ function create() {
 
   options.startVal = startVal.value;
 
+  // Get this based on browser locale
+  let separator = (12345).toLocaleString().match(/12(.*)345/);
+  let decimalSeparator = (12345.6789).toLocaleString().match(/345(.*)67/);
+  options.separator = separator?.at(1)?.length === 1 ? separator!.at(1) : ',';
+  options.decimal =
+    decimalSeparator?.at(1)?.length === 1 ? decimalSeparator!.at(1) : '.';
+
   instance.value = new CountUp(dom, props.value.endVal, options);
 
   if (instance.value.error) {
