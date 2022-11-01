@@ -235,7 +235,7 @@ __metadata:
   dependencies:
     "@bitcoin-design/bitcoin-icons-vue": ^0.1.9
     "@popperjs/core": ^2.11.6
-    "@runcitadel/sdk": ^0.5.4
+    "@runcitadel/sdk": ^0.5.5
     "@types/lodash": ^4.14.186
     "@types/node": ^18.11.2
     "@typescript-eslint/eslint-plugin": ^5.40.1
@@ -271,13 +271,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@runcitadel/sdk@npm:^0.5.4":
-  version: 0.5.4
-  resolution: "@runcitadel/sdk@npm:0.5.4"
+"@runcitadel/sdk@npm:^0.5.5":
+  version: 0.5.5
+  resolution: "@runcitadel/sdk@npm:0.5.5"
   peerDependencies:
     "@types/react": ^18.0.21
     react: ^18.2.0
-  checksum: 6dde705780605d9ffd6a8d90fec05cfe8ecf700bbc880d6b60301730d9ea260f592fc09da5a980456b1ad56da0352847fdb675065c5583676327a6bc6bb3611c
+  checksum: 43e06df1958d261477282a402ab9da6184dd623b0a981ed132842d83577e4bd14dc01c29e2d9a56903a12122573c949c9b54c3935ee06843d2e7dd9a323a545b
   languageName: node
   linkType: hard
 

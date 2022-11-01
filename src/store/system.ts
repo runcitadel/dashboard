@@ -71,6 +71,10 @@ export interface State {
   isNvme: boolean;
   // It can be anything, but these are the most likely
   updateChannel: 'stable' | 'beta' | 'c-lightning' | string;
+  i2p: {
+    username: string;
+    password: string;
+  };
 }
 
 const useSystemStore = defineStore('system', {
@@ -132,8 +136,16 @@ const useSystemStore = defineStore('system', {
     uptime: null,
     isNvme: false,
     updateChannel: 'stable',
+    i2p: {
+      username: 'i2pd',
+      password: '',
+    },
   }),
   actions: {
+    async getI2PCredentials() {
+      const sdkStore = useSdkStore();
+      this.i2p = await sdkStore.citadel.manager.system.i2pCredentials();
+    },
     async getVersion() {
       const sdkStore = useSdkStore();
       const data = await sdkStore.citadel.manager.system.info();

@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@bitcoin-design/bitcoin-icons-vue": "^0.1.9",
-    "@runcitadel/sdk": "^0.5.4",
+    "@runcitadel/sdk": "^0.5.5",
     "bignumber.js": "^9.1.0",
     "bootstrap": "^5.2.2",
     "bootstrap-icons-vue": "^1.8.1",

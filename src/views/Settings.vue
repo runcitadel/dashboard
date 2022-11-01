@@ -44,6 +44,40 @@
       </card-widget>
 
       <card-widget
+        header="I2P"
+        :status="{text: 'Running', variant: 'success', blink: false}"
+        title="I2P"
+        sub-title="Faster remote access"
+        icon="icon-app-tor.svg"
+        class="card-app-list"
+      >
+        <div class="pt-2">
+          <div class="px-3 px-lg-4 mb-4">
+            <div class="w-100 mb-3">
+              <span class="d-block pb-1">I2P Configuration</span>
+              <small class="d-block" style="opacity: 0.4"
+                >Manage i2p with the following credentials</small
+              >
+            </div>
+            <input-copy
+              class="w-100 mb-4"
+              size="sm"
+              :value="systemStore.i2p.username"
+            ></input-copy>
+            <input-copy
+              class="w-100"
+              size="sm"
+              :value="systemStore.i2p.password"
+            ></input-copy>
+          </div>
+          <div class="px-3 px-lg-4 py-1">
+            <a class="card-link" href="/i2p">Manage</a>
+          </div>
+          <div class="px-3 px-lg-4 py-2"></div>
+        </div>
+      </card-widget>
+
+      <card-widget
         header="Account"
         class="card-app-list"
         :loading="isChangingPassword"
@@ -712,6 +746,7 @@ export default defineComponent({
       // @ts-expect-error This could be null
       this.systemStore.uptime++;
     }, 1000);
+    this.systemStore.getI2PCredentials();
   },
   beforeUnmount() {
     if (this.pollUpdateStatus) {
