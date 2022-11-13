@@ -44,9 +44,14 @@
           <div class>
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4">
               <p class="mb-1">{{ t('connected-peers') }}</p>
-              <p>
+              <p v-if="bitcoinStore.stats.peers !== -1">
                 {{ bitcoinStore.stats.peers }}
               </p>
+              <span
+                v-else
+                class="loading-placeholder loading-placeholder-sm"
+                style="width: 60px"
+              ></span>
             </div>
             <blockchain></blockchain>
             <div class="px-3 px-lg-4 py-3">
