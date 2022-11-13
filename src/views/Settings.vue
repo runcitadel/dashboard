@@ -77,11 +77,7 @@
         </div>
       </card-widget>
 
-      <card-widget
-        header="Account"
-        class="card-app-list"
-        :loading="isChangingPassword"
-      >
+      <card-widget header="Account" class="card-app-list">
         <div class="pt-2">
           <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
             <div>
@@ -98,8 +94,13 @@
               >View</b-button
             >
 
-            <b-modal id="seed-modal" centered hide-footer>
-              <template #modal-header>
+            <b-modal
+              id="seed-modal"
+              v-model="showSeedModal"
+              centered
+              hide-footer
+            >
+              <template #modal-header="{close}">
                 <div
                   class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
                 >
@@ -108,7 +109,7 @@
                   <a
                     href="#"
                     class="align-self-center"
-                    @click.stop.prevent="showSeedModal = false"
+                    @click.stop.prevent="close"
                   >
                     <svg
                       width="18"
@@ -149,7 +150,7 @@
             >
 
             <b-modal v-model="showChangePasswordModal" centered hide-footer>
-              <template #modal-header>
+              <template #modal-header="{close}">
                 <div
                   class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
                 >
@@ -158,7 +159,7 @@
                   <a
                     href="#"
                     class="align-self-center"
-                    @click.stop.prevent="showChangePasswordModal = false"
+                    @click.stop.prevent="close"
                   >
                     <svg
                       width="18"
@@ -280,7 +281,7 @@
 
             <b-modal
               id="two-factor-auth-modal"
-              ref="two-factor-auth-modal"
+              v-model="showTotpModal"
               centered
               hide-footer
             >
