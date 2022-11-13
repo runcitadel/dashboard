@@ -51,7 +51,6 @@ export interface State {
   };
   managerApi: {
     operational: boolean;
-    version: string;
   };
   onionAddress: string;
   storage: {
@@ -117,7 +116,6 @@ const useSystemStore = defineStore('system', {
     },
     managerApi: {
       operational: false,
-      version: '',
     },
     onionAddress: '',
     storage: {
@@ -144,11 +142,11 @@ const useSystemStore = defineStore('system', {
   actions: {
     async getI2PCredentials() {
       const sdkStore = useSdkStore();
-      this.i2p = await sdkStore.citadel.manager.system.i2pCredentials();
+      this.i2p = await sdkStore.citadel.system.i2pCredentials();
     },
     async getVersion() {
       const sdkStore = useSdkStore();
-      const data = await sdkStore.citadel.manager.system.info();
+      const data = await sdkStore.citadel.system.info();
       if (data && data.version) {
         const {version} = data;
         this.version = version;
@@ -156,14 +154,14 @@ const useSystemStore = defineStore('system', {
     },
     async getUpdateChannel() {
       const sdkStore = useSdkStore();
-      const data = await sdkStore.citadel.manager.system.getUpdateChannel();
+      const data = await sdkStore.citadel.system.getUpdateChannel();
       if (data) {
         this.updateChannel = data;
       }
     },
     async setUpdateChannel(channel: string) {
       const sdkStore = useSdkStore();
-      await sdkStore.citadel.manager.system.setUpdateChannel(channel);
+      await sdkStore.citadel.system.setUpdateChannel(channel);
       this.updateChannel = channel;
     },
     getUnit() {
@@ -179,21 +177,19 @@ const useSystemStore = defineStore('system', {
     },
     async getManagerApi() {
       const sdkStore = useSdkStore();
-      const api = await sdkStore.citadel.manager.ping();
+      const api = await sdkStore.citadel.isOnline();
       this.managerApi = {
-        operational: !!(api && api.version),
-        version: api && api.version ? api.version : '',
+        operational: api.manager,
       };
     },
     async getOnionAddress() {
       const sdkStore = useSdkStore();
-      const address =
-        await sdkStore.citadel.manager.system.getHiddenServiceUrl();
+      const address = await sdkStore.citadel.system.getHiddenServiceUrl();
       this.onionAddress = address;
     },
     async getAvailableUpdate() {
       const sdkStore = useSdkStore();
-      const update = await sdkStore.citadel.manager.system.getUpdate();
+      const update = await sdkStore.citadel.system.getUpdate();
       if (update && update.version) {
         this.availableUpdate = update;
       } else {
@@ -206,7 +202,7 @@ const useSystemStore = defineStore('system', {
     },
     async startUpdate() {
       const sdkStore = useSdkStore();
-      await sdkStore.citadel.manager.system.startUpdate();
+      await sdkStore.citadel.system.startUpdate();
     },
     hideUpdateConfirmationModal() {
       this.showUpdateConfirmationModal = false;
@@ -216,28 +212,28 @@ const useSystemStore = defineStore('system', {
     },
     async getUpdateStatus() {
       const sdkStore = useSdkStore();
-      const status = await sdkStore.citadel.manager.system.updateStatus();
+      const status = await sdkStore.citadel.system.updateStatus();
       if (status?.progress) {
         this.updateStatus = status;
       }
     },
     async getDiskInfo() {
       const sdkStore = useSdkStore();
-      const status = (await sdkStore.citadel.manager.system.disk()) === 'nvme';
+      const status = (await sdkStore.citadel.system.disk()) === 'nvme';
       if (status) {
         this.isNvme = status;
       }
     },
     async getBackupStatus() {
       const sdkStore = useSdkStore();
-      const status = await sdkStore.citadel.manager.system.backupStatus();
+      const status = await sdkStore.citadel.system.backupStatus();
       if (status && status.timestamp) {
         this.backupStatus = status;
       }
     },
     async getDebugResult() {
       const sdkStore = useSdkStore();
-      const result = await sdkStore.citadel.manager.system.debugResult();
+      const result = await sdkStore.citadel.system.debugResult();
       if (!result) {
         throw new Error('Get debug request failed');
       }
@@ -246,7 +242,7 @@ const useSystemStore = defineStore('system', {
     },
     async debug() {
       const sdkStore = useSdkStore();
-      this.debugStatus = await sdkStore.citadel.manager.system.debug();
+      this.debugStatus = await sdkStore.citadel.system.debug();
     },
     async shutdown() {
       const sdkStore = useSdkStore();
@@ -254,15 +250,15 @@ const useSystemStore = defineStore('system', {
       this.hasShutdown = false;
 
       // Shutting down
-      await sdkStore.citadel.manager.system.shutdown();
+      await sdkStore.citadel.system.shutdown();
 
       this.shuttingDown = true;
 
       // Poll to check if system has shut down
       const pollIfDown = window.setInterval(async () => {
         try {
-          const {version} = await sdkStore.citadel.manager.ping();
-          if (!version) {
+          const {manager: managerIsOnline} = await sdkStore.citadel.isOnline();
+          if (!managerIsOnline) {
             // System shut down successfully
             window.clearInterval(pollIfDown);
             // Optimistically give another 30s to the system to shut down
@@ -288,15 +284,15 @@ const useSystemStore = defineStore('system', {
       this.hasRebooted = false;
 
       // Rebooting
-      await sdkStore.citadel.manager.system.reboot();
+      await sdkStore.citadel.system.reboot();
 
       this.rebooting = true;
 
       let pollIfUp: number;
 
       const pollIfUpFunction = async () => {
-        const {version} = await sdkStore.citadel.manager.ping();
-        if (version) {
+        const {manager: managerIsOnline} = await sdkStore.citadel.isOnline();
+        if (managerIsOnline) {
           // System is online again
           this.rebooting = false;
           this.hasRebooted = true;
@@ -308,8 +304,8 @@ const useSystemStore = defineStore('system', {
       // Poll to check if system has shut down
       const pollIfDown = window.setInterval(async () => {
         try {
-          const {version} = await sdkStore.citadel.manager.ping();
-          if (!version) {
+          const {manager: managerIsOnline} = await sdkStore.citadel.isOnline();
+          if (!managerIsOnline) {
             // System shut down successfully
             window.clearInterval(pollIfDown);
 
@@ -330,7 +326,7 @@ const useSystemStore = defineStore('system', {
     },
     async getStorage() {
       const sdkStore = useSdkStore();
-      const storage = await await sdkStore.citadel.manager.system.storage();
+      const storage = await await sdkStore.citadel.system.storage();
       if (storage && storage.total) {
         storage.breakdown.sort((app1, app2) => app2.used - app1.used);
         this.storage = storage;
@@ -338,7 +334,7 @@ const useSystemStore = defineStore('system', {
     },
     async getRam() {
       const sdkStore = useSdkStore();
-      const ram = await sdkStore.citadel.manager.system.memory();
+      const ram = await sdkStore.citadel.system.memory();
       if (ram && ram.total) {
         ram.breakdown.sort((app1, app2) => app2.used - app1.used);
         this.ram = ram;
@@ -346,13 +342,12 @@ const useSystemStore = defineStore('system', {
     },
     async getIsCitadelOS() {
       const sdkStore = useSdkStore();
-      const isCitadelOS = await sdkStore.citadel.manager.system.isCitadelOS();
+      const isCitadelOS = await sdkStore.citadel.system.isCitadelOS();
       this.isCitadelOS = isCitadelOS;
     },
     async getCpuTemperature() {
       const sdkStore = useSdkStore();
-      const cpuTemperature =
-        await sdkStore.citadel.manager.system.temperature();
+      const cpuTemperature = await sdkStore.citadel.system.temperature();
       if (cpuTemperature) {
         this.cpuTemperature = cpuTemperature;
       }
@@ -375,7 +370,7 @@ const useSystemStore = defineStore('system', {
     },
     async getUptime() {
       const sdkStore = useSdkStore();
-      const uptime = await sdkStore.citadel.manager.system.uptime();
+      const uptime = await sdkStore.citadel.system.uptime();
       if (uptime) {
         this.uptime = uptime;
       }

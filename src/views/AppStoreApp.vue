@@ -346,7 +346,7 @@ import useLightningStore from '../store/lightning';
 
 import CardWidget from '../components/CardWidget.vue';
 import InputCopy from '../components/Utility/InputCopy.vue';
-import {app} from '@runcitadel/sdk';
+import {app} from '@runcitadel/sdk-next';
 
 const appsStore = useAppsStore();
 const lightningStore = useLightningStore();

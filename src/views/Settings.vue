@@ -764,9 +764,7 @@ export default defineComponent({
       this.isEnablingTwoFactorAuth = true;
 
       try {
-        await this.sdkStore.citadel.manager.auth.enableTotp(
-          this.authenticatorToken,
-        );
+        await this.sdkStore.citadel.auth.enableTotp(this.authenticatorToken);
 
         this.toast.success(
           '2FA enabled',
@@ -796,9 +794,7 @@ export default defineComponent({
       this.isDisablingTwoFactorAuth = true;
 
       try {
-        await this.sdkStore.citadel.manager.auth.disableTotp(
-          this.authenticatorToken,
-        );
+        await this.sdkStore.citadel.auth.disableTotp(this.authenticatorToken);
 
         this.toast.success(
           '2FA disabled',
@@ -830,7 +826,7 @@ export default defineComponent({
       this.isIncorrectTotp = false;
 
       try {
-        await this.sdkStore.citadel.manager.auth.changePassword(
+        await this.sdkStore.citadel.auth.changePassword(
           this.currentPassword,
           this.newPassword,
           this.totpToken,

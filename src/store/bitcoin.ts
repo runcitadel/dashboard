@@ -1,4 +1,3 @@
-import {toPrecision} from '../helpers/units';
 import {defineStore, acceptHMRUpdate} from 'pinia';
 import useSdkStore from './sdk';
 import currencyHelper, {type Currency} from 'iso-country-currency';
@@ -201,7 +200,7 @@ const useBitcoinStore = defineStore('bitcoin', {
   actions: {
     async getStatus() {
       const sdkStore = useSdkStore();
-      const status = await sdkStore.citadel.middleware.bitcoin.isOperational();
+      const status = await sdkStore.citadel.bitcoin.isAvailable();
 
       if (status) {
         this.operational = status;
@@ -210,8 +209,7 @@ const useBitcoinStore = defineStore('bitcoin', {
 
     async getP2PInfo() {
       const sdkStore = useSdkStore();
-      const p2pInfo =
-        await sdkStore.citadel.manager.system.getBitcoinP2PConnectionDetails();
+      const p2pInfo = await sdkStore.citadel.bitcoin.p2pConnectionDetails();
 
       if (p2pInfo) {
         this.p2p = {
@@ -223,8 +221,7 @@ const useBitcoinStore = defineStore('bitcoin', {
 
     async getElectrumInfo() {
       const sdkStore = useSdkStore();
-      const electrumInfo =
-        await sdkStore.citadel.manager.system.getElectrumConnectionDetails();
+      const electrumInfo = await sdkStore.citadel.electrum.connectionDetails();
 
       if (electrumInfo) {
         this.electrum = {
@@ -236,8 +233,7 @@ const useBitcoinStore = defineStore('bitcoin', {
 
     async getRpcInfo() {
       const sdkStore = useSdkStore();
-      const rpcInfo =
-        await sdkStore.citadel.manager.system.getBitcoinRPConnectionDetails();
+      const rpcInfo = await sdkStore.citadel.bitcoin.rpcConnectionDetails();
 
       if (rpcInfo) {
         this.rpc = {
@@ -249,15 +245,15 @@ const useBitcoinStore = defineStore('bitcoin', {
 
     async getSync() {
       const sdkStore = useSdkStore();
-      const sync = await sdkStore.citadel.middleware.bitcoin.syncStatus();
+      const chain = await sdkStore.citadel.bitcoin.chain();
+      const max_header = await sdkStore.citadel.bitcoin.chainHeight();
 
-      if (sync) {
-        this.percent = Number(
-          toPrecision(parseFloat(sync.percent.toString()) * 100, 2),
-        );
-        this.currentBlock = sync.currentBlock;
-        this.blockHeight = sync.headerCount;
-        this.chain = sync.chain;
+      if (chain) {
+        this.percent =
+          Number(chain.blocks / (max_header === 0 ? 1 : max_header)) * 100;
+        this.currentBlock = chain.blocks;
+        this.blockHeight = chain.headers;
+        this.chain = chain.chain;
       }
     },
 
@@ -280,11 +276,10 @@ const useBitcoinStore = defineStore('bitcoin', {
       }
 
       //TODO: Fetch only new blocks
-      const latestThreeBlocks =
-        await sdkStore.citadel.middleware.bitcoin.blocks(
-          currentBlock - 2,
-          currentBlock,
-        );
+      const latestThreeBlocks = await sdkStore.citadel.bitcoin.blocks(
+        currentBlock - 2,
+        currentBlock,
+      );
 
       // Update blocks
       this.blocks = latestThreeBlocks;
@@ -292,7 +287,7 @@ const useBitcoinStore = defineStore('bitcoin', {
 
     async getVersion() {
       const sdkStore = useSdkStore();
-      const version = await sdkStore.citadel.middleware.bitcoin.version();
+      const version = await sdkStore.citadel.bitcoin.version();
 
       if (version) {
         this.version = version;
@@ -301,7 +296,7 @@ const useBitcoinStore = defineStore('bitcoin', {
 
     async getPeers() {
       const sdkStore = useSdkStore();
-      const peers = await sdkStore.citadel.middleware.bitcoin.connections();
+      const peers = await sdkStore.citadel.bitcoin.connections();
 
       if (peers) {
         this.peers = peers;
@@ -310,13 +305,13 @@ const useBitcoinStore = defineStore('bitcoin', {
 
     async getStats() {
       const sdkStore = useSdkStore();
-      const stats = await sdkStore.citadel.middleware.bitcoin.stats();
+      const stats = await sdkStore.citadel.bitcoin.stats();
 
       if (stats) {
-        const peers = stats.connections;
-        const mempool = stats.mempool;
-        const hashrate = stats.networkhashps;
-        const blockchainSize = stats.size;
+        const peers = stats.networkInfo.connections;
+        const mempool = stats.mempoolInfo.size;
+        const hashrate = stats.miningInfo.networkhashps;
+        const blockchainSize = stats.blockchainInfo.size_on_disk;
 
         this.stats = {
           peers,
@@ -329,8 +324,7 @@ const useBitcoinStore = defineStore('bitcoin', {
 
     async getBalance() {
       const sdkStore = useSdkStore();
-      const balance =
-        await sdkStore.citadel.middleware.lightning.wallet.onChainBalance();
+      const balance = await sdkStore.citadel.lightning.wallet.onChainBalance();
 
       this.balance = {
         total: parseInt(balance.totalBalance.toString()),
@@ -342,15 +336,13 @@ const useBitcoinStore = defineStore('bitcoin', {
     async getTransactions() {
       const sdkStore = useSdkStore();
       const transactions =
-        await sdkStore.citadel.middleware.lightning.transaction.getOnChainTransactions();
+        await sdkStore.citadel.lightning.transaction.getOnChainTransactions();
       this._transactions = transactions;
     },
 
     async getPrice() {
       const sdkStore = useSdkStore();
-      const price = await sdkStore.citadel.manager.external.price(
-        this.currency,
-      );
+      const price = await sdkStore.citadel.external.price(this.currency);
 
       if (price) {
         this.price = price;
@@ -359,7 +351,7 @@ const useBitcoinStore = defineStore('bitcoin', {
 
     async getDepositAddress() {
       const sdkStore = useSdkStore();
-      const {address} = await sdkStore.citadel.middleware.lightning.address();
+      const {address} = await sdkStore.citadel.lightning.address();
 
       if (address) {
         this.depositAddress = address;
@@ -376,12 +368,11 @@ const useBitcoinStore = defineStore('bitcoin', {
       sweep?: boolean;
     }) {
       const sdkStore = useSdkStore();
-      const fees =
-        await sdkStore.citadel.middleware.lightning.transaction.estimateFeeAll(
-          address,
-          amt,
-          sweep,
-        );
+      const fees = await sdkStore.citadel.lightning.transaction.estimateFeeAll(
+        address,
+        amt,
+        sweep,
+      );
 
       if (fees) {
         for (const [speed, estimate] of Object.entries(fees)) {

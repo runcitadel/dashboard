@@ -1,4 +1,4 @@
-import Citadel from '@runcitadel/sdk';
+import Citadel from '@runcitadel/sdk-next';
 import {defineStore, acceptHMRUpdate} from 'pinia';
 import useUserStore from './user';
 

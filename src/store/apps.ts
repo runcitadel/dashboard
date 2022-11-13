@@ -1,5 +1,5 @@
 import {defineStore, acceptHMRUpdate} from 'pinia';
-import type {app} from '@runcitadel/sdk';
+import type {app} from '@runcitadel/sdk-next';
 
 import useSdkStore from './sdk';
 
@@ -25,7 +25,7 @@ const useAppsStore = defineStore('apps', {
   actions: {
     async getInstalledApps() {
       const sdkStore = useSdkStore();
-      const {apps} = await sdkStore.citadel.manager.apps.list(true);
+      const {apps} = await sdkStore.citadel.apps.list(true);
       if (apps) {
         this.installed = apps as app[];
       }
@@ -33,7 +33,7 @@ const useAppsStore = defineStore('apps', {
     async getAppStore() {
       const sdkStore = useSdkStore();
       this.getInstalledApps();
-      const {apps, jwt} = await sdkStore.citadel.manager.apps.list();
+      const {apps, jwt} = await sdkStore.citadel.apps.list();
 
       // Update JWT
       localStorage.setItem('jwt', jwt);
@@ -46,7 +46,7 @@ const useAppsStore = defineStore('apps', {
     async uninstall(appId: string) {
       const sdkStore = useSdkStore();
       if (!this.uninstalling.includes(appId)) this.uninstalling.push(appId);
-      await sdkStore.citadel.manager.apps.uninstall(appId);
+      await sdkStore.citadel.apps.uninstall(appId);
 
       const poll = window.setInterval(async () => {
         await this.getInstalledApps();
@@ -60,7 +60,7 @@ const useAppsStore = defineStore('apps', {
     async install(appId: string) {
       const sdkStore = useSdkStore();
       this.installing.push(appId);
-      await sdkStore.citadel.manager.apps.install(appId);
+      await sdkStore.citadel.apps.install(appId);
 
       const poll = window.setInterval(async () => {
         await this.getInstalledApps();
@@ -73,7 +73,7 @@ const useAppsStore = defineStore('apps', {
     },
     async updateApps() {
       const sdkStore = useSdkStore();
-      await sdkStore.citadel.manager.apps.updateAll();
+      await sdkStore.citadel.apps.updateAll();
     },
     async getHasElectrum() {
       if (this.store?.length < 1) {

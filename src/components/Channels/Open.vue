@@ -291,7 +291,7 @@ export default defineComponent({
       //to do: connect to onion node if only the user's node is running tor
 
       try {
-        await this.sdkStore.citadel.middleware.lightning.channel.openChannel(
+        await this.sdkStore.citadel.lightning.channel.openChannel(
           payload.pubKey as string,
           payload.ip as string,
           payload.port as string,
@@ -327,7 +327,7 @@ export default defineComponent({
 
           try {
             estimates =
-              await this.sdkStore.citadel.middleware.lightning.channel.estimateFeeAll(
+              await this.sdkStore.citadel.lightning.channel.estimateFeeAll(
                 this.fundingAmount,
                 this.sweep,
               );

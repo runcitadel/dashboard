@@ -1,4 +1,4 @@
-import type {Channel} from '@runcitadel/sdk';
+import type {Channel} from '@runcitadel/sdk-next';
 import {defineStore, acceptHMRUpdate} from 'pinia';
 import {toPrecision} from '../helpers/units';
 import useSdkStore from './sdk';
@@ -144,8 +144,7 @@ const useLightningStore = defineStore('lightning', {
   actions: {
     async getStatus() {
       const sdkStore = useSdkStore();
-      const status =
-        await sdkStore.citadel.middleware.lightning.info.getStatus();
+      const status = await sdkStore.citadel.lightning.info.getStatus();
       if (status) {
         this.operational = status.operational;
         this.unlocked = status.unlocked;
@@ -154,8 +153,7 @@ const useLightningStore = defineStore('lightning', {
 
     async getSync() {
       const sdkStore = useSdkStore();
-      const sync =
-        await sdkStore.citadel.middleware.lightning.info.syncStatus();
+      const sync = await sdkStore.citadel.lightning.info.syncStatus();
       if (sync && sync.percent) {
         this.percent = Number(toPrecision(parseFloat(sync.percent) * 100, 2));
         this.blockHeight = sync.knownBlockCount;
@@ -166,9 +164,8 @@ const useLightningStore = defineStore('lightning', {
     //basically fetches everything
     async getLndPageData() {
       const sdkStore = useSdkStore();
-      const data = await sdkStore.citadel.middleware.pages.lightning();
-      const versionInfo =
-        await sdkStore.citadel.middleware.lightning.info.version();
+      const data = await sdkStore.citadel.pages.lightning();
+      const versionInfo = await sdkStore.citadel.lightning.info.version();
 
       if (data) {
         const channels = data.channels || [];
@@ -194,8 +191,7 @@ const useLightningStore = defineStore('lightning', {
 
     async getVersionInfo() {
       const sdkStore = useSdkStore();
-      const versionInfo =
-        await sdkStore.citadel.middleware.lightning.info.version();
+      const versionInfo = await sdkStore.citadel.lightning.info.version();
 
       if (versionInfo) {
         this.version = versionInfo.version;
@@ -205,8 +201,7 @@ const useLightningStore = defineStore('lightning', {
 
     async getConnectionCode() {
       const sdkStore = useSdkStore();
-      const uris =
-        await sdkStore.citadel.middleware.lightning.info.publicUris();
+      const uris = await sdkStore.citadel.lightning.info.publicUris();
 
       if (uris && uris.length > 0) {
         this.connectionCode = uris[0];
@@ -235,8 +230,7 @@ const useLightningStore = defineStore('lightning', {
         //eg when used by lnd page
         rawChannels = preFetchedChannels;
       } else {
-        rawChannels =
-          await sdkStore.citadel.middleware.lightning.channel.list();
+        rawChannels = await sdkStore.citadel.lightning.channel.list();
       }
 
       const channels: ParsedChannel[] = [];
@@ -310,10 +304,8 @@ const useLightningStore = defineStore('lightning', {
     async getTransactions() {
       const sdkStore = useSdkStore();
       // Get invoices and payments
-      const invoices =
-        await sdkStore.citadel.middleware.lightning.lightning.invoices();
-      const payments =
-        await sdkStore.citadel.middleware.lightning.lightning.getPayments();
+      const invoices = await sdkStore.citadel.lightning.lightning.invoices();
+      const payments = await sdkStore.citadel.lightning.lightning.getPayments();
 
       if (!invoices || !payments) {
         return;
@@ -399,7 +391,7 @@ const useLightningStore = defineStore('lightning', {
 
         try {
           const invoiceDetails =
-            await sdkStore.citadel.middleware.lightning.lightning.parsePaymentRequest(
+            await sdkStore.citadel.lightning.lightning.parsePaymentRequest(
               tx.paymentRequest,
             );
           if (invoiceDetails) {
@@ -427,7 +419,7 @@ const useLightningStore = defineStore('lightning', {
 
     async getLndConnectUrls() {
       const sdkStore = useSdkStore();
-      const urls = await sdkStore.citadel.manager.system.getLndConnectUrls();
+      const urls = await sdkStore.citadel.system.getLndConnectUrls();
       if (urls) {
         this.lndConnectUrls = urls;
       }

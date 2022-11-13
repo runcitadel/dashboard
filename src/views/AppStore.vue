@@ -132,7 +132,7 @@ import useSystemStore from '../store/system';
 import Fuse from 'fuse.js';
 
 import CardWidget from '../components/CardWidget.vue';
-import type {app as _app} from '@runcitadel/sdk';
+import type {app as _app} from '@runcitadel/sdk-next';
 
 const appsStore = useAppsStore();
 const systemStore = useSystemStore();

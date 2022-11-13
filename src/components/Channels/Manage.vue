@@ -259,7 +259,7 @@ async function confirmChannelClose() {
   isClosing.value = true;
 
   try {
-    await sdkStore.citadel.middleware.lightning.channel.closeChannel(
+    await sdkStore.citadel.lightning.channel.closeChannel(
       props.channel.channelPoint,
       !props.channel.active, // Avoids force closing if channel is active
     );

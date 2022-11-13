@@ -1021,12 +1021,11 @@ export default defineComponent({
       };
 
       try {
-        const res =
-          await this.sdkStore.citadel.middleware.lightning.transaction.sendCoins(
-            payload.addr,
-            payload.amt as number,
-            payload.satPerByte,
-          );
+        const res = await this.sdkStore.citadel.lightning.transaction.sendCoins(
+          payload.addr,
+          payload.amt as number,
+          payload.satPerByte,
+        );
         const withdrawTx = res;
         this.withdraw.txHash = withdrawTx.txid;
         this.changeMode('withdrawn');
