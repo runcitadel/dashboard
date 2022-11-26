@@ -135,6 +135,11 @@ const dependants = computed(() => {
   });
 });
 function uninstall(name: string, appId: string) {
+  // The uninstall button shouldn't be shown for these apps, but just for extra safety, do this too
+  if (['lnd', 'core-ln', 'bitcoin-core', 'bitcoin-knots'].includes(appId)) {
+    alert('This app can not be uninstalled currently');
+    return;
+  }
   let message = `Are you sure you want to uninstall ${name}? This is will also delete all of its data. `;
   if (props.implements) {
     message += `This app also provides "${props.implements}". If you uninstall it, you will not be able to install or use use any apps that depend on ${props.implements} until you install another app that provides ${props.implements}. `;

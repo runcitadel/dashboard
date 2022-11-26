@@ -587,7 +587,7 @@ __metadata:
     bignumber.js: ^9.1.0
     bootstrap: ^5.2.2
     bootstrap-icons-vue: ^1.8.1
-    bootstrap-vue-3: ^0.4.8
+    bootstrap-vue-3: ^0.4.10
     buffer: ^6.0.3
     countup.js: ^2.3.2
     date-fns: ^2.29.3
@@ -1079,16 +1079,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bootstrap-vue-3@npm:^0.4.8":
-  version: 0.4.8
-  resolution: "bootstrap-vue-3@npm:0.4.8"
+"bootstrap-vue-3@npm:^0.4.10":
+  version: 0.4.10
+  resolution: "bootstrap-vue-3@npm:0.4.10"
   dependencies:
     "@nuxt/kit": 3.0.0-rc.12
   peerDependencies:
     "@popperjs/core": ^2.11.6
     bootstrap: ^5.2.0
     vue: ^3.2.37
-  checksum: a196293b8a22de05acc6ba259b78545eac59179b1672fe0f60cbf600720cc07eaae08266dc7208f33dd6937d7187a136b88eb634227ec51efce697554e1d91d1
+  checksum: 0d2a435a53291b53b267d93edbff88df8fce3635b9527589d2f138bcde635276623a101272966990bc5291aa1deb6a08181a9b0ec04d9e03e0f0ab4a3dc3a477
   languageName: node
   linkType: hard
 

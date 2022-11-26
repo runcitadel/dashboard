@@ -45,6 +45,11 @@ const useAppsStore = defineStore('apps', {
     },
     async uninstall(appId: string) {
       const sdkStore = useSdkStore();
+      // Last layer of safety
+      if (['lnd', 'core-ln', 'bitcoin-core', 'bitcoin-knots'].includes(appId)) {
+        alert('This app can not be uninstalled currently');
+        return;
+      }
       if (!this.uninstalling.includes(appId)) this.uninstalling.push(appId);
       await sdkStore.citadel.apps.uninstall(appId);
 

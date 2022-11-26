@@ -31,7 +31,12 @@
           :path="app.path"
           :hidden-service="(app.hiddenService as string)"
           :tor-only="app.torOnly"
-          :show-uninstall-button="isEditing"
+          :show-uninstall-button="
+            isEditing &&
+            !['lnd', 'core-ln', 'bitcoin-core', 'bitcoin-knots'].includes(
+              app.id,
+            )
+          "
           :is-uninstalling="appsStore.uninstalling.includes(app.id)"
           :implements="app.implements"
         >
