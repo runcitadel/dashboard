@@ -26,13 +26,14 @@
       <div class="d-block word-container">
         <div v-if="recover" class="px-3">
           <b-form-input
-            ref="input-words-input"
+            ref="inputWordsInput"
             v-model="inputWords[index]"
             :placeholder="`Enter word #${index + 1}`"
             class="neu-input"
             autofocus
             size="lg"
             @keyup.enter="next"
+            @keyup="onInput"
           ></b-form-input>
         </div>
         <h2 v-else class="text-center mb-0">
@@ -62,99 +63,87 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent, PropType} from 'vue';
+<script lang="ts" setup>
+import {ref, PropType, watch} from 'vue';
 import ScrambledText from './ScrambledText.vue';
 
-export default defineComponent({
-  components: {
-    ScrambledText,
+const props = defineProps({
+  words: {
+    type: Array as PropType<string[]>,
+    required: true,
   },
-  props: {
-    words: {
-      type: Array as PropType<string[]>,
-      required: true,
-    },
-    recover: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: {incomplete: null, input: null, complete: null},
-  data() {
-    return {
-      index: 0,
-      inputWord: '',
-      inputWords: [
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-      ],
-    };
-  },
-  computed: {},
-  watch: {
-    inputWords() {
-      // Emit "complete" if user has entered all recovery words
-      if (
-        this.inputWords.length === 24 &&
-        !this.inputWords.includes(undefined as unknown as string) &&
-        !this.inputWords.includes('')
-      ) {
-        this.$emit('complete');
-      } else {
-        this.$emit('incomplete');
-      }
-      // Emit entered words
-      this.$emit('input', this.inputWords);
-    },
-  },
-  methods: {
-    previous() {
-      if (this.index !== 0) {
-        this.index -= 1;
-        // Autofocus input field if user is recovering
-        if (this.recover) {
-          (this.$refs['input-words-input'] as HTMLInputElement).focus();
-        }
-      }
-    },
-    next() {
-      if (this.index < this.words.length - 1) {
-        this.index += 1;
-        // Autofocus input field if user is recovering
-        if (this.recover) {
-          (this.$refs['input-words-input'] as HTMLInputElement).focus();
-        }
-        // Emit "complete" on reaching the last word
-        else if (this.index === this.words.length - 1) {
-          this.$emit('complete');
-        }
-      }
-    },
+  recover: {
+    type: Boolean,
+    default: false,
   },
 });
+const emit = defineEmits(['complete', 'incomplete', 'input']);
+const index = ref(0);
+const inputWords = ref([
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+]);
+
+const inputWordsInput = ref<HTMLInputElement | null>(null);
+
+function onInput() {
+  // Emit "complete" if user has entered all recovery words
+  if (
+    inputWords.value.length === 24 &&
+    !inputWords.value.includes(undefined as unknown as string) &&
+    !inputWords.value.includes('')
+  ) {
+    emit('complete');
+  } else {
+    emit('incomplete');
+  }
+  // Emit entered words
+  emit('input', inputWords.value);
+}
+
+function previous() {
+  if (index.value !== 0) {
+    index.value -= 1;
+    // Autofocus input field if user is recovering
+    if (props.recover) {
+      inputWordsInput.value!.focus();
+    }
+  }
+}
+function next() {
+  if (index.value < props.words.length - 1) {
+    index.value += 1;
+    // Autofocus input field if user is recovering
+    if (props.recover) {
+      inputWordsInput.value!.focus();
+      // Emit "complete" on reaching the last word
+    } else if (index.value === props.words.length - 1) {
+      emit('complete');
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -164,10 +153,10 @@ export default defineComponent({
   line-height: 3rem;
   border-radius: 50%;
 }
+
 .word-container {
   width: 350px;
 }
-
 .btn-neu-circle {
   height: 5rem;
   width: 5rem;

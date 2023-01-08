@@ -1,2 +1,7 @@
 tasks:
   - init: yarn install
+
+vscode:
+  extensions:
+    - Vue.volar
+    - esbenp.prettier-vscode
