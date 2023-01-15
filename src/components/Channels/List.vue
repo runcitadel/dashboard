@@ -44,7 +44,7 @@ const lightningStore = useLightningStore();
 </script>
 
 <style lang="scss" scoped>
-html[data-theme='dark'] {
+html[data-bs-theme='dark'] {
   .channel-list-container {
     &:before {
       background-image: linear-gradient(

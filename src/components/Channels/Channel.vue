@@ -41,12 +41,8 @@
                 ).toString()
               "
               class="text-primary font-weight-bold"
-              >{{
-                $filters.localize(
-                  $filters.unit(channel.localBalance, systemStore) as number,
-                )
-              }}
-              {{ $filters.formatUnit(systemStore.unit) }}</span
+              >{{ localize(unit(channel.localBalance) as number) }}
+              {{ formatUnit(systemStore.unit) }}</span
             >
             <span
               v-tooltip.left="
@@ -57,12 +53,8 @@
                 ).toString()
               "
               class="text-success text-end font-weight-bold"
-              >{{
-                $filters.localize(
-                  $filters.unit(channel.remoteBalance, systemStore) as number,
-                )
-              }}
-              {{ $filters.formatUnit(systemStore.unit) }}</span
+              >{{ localize(unit(channel.remoteBalance) as number) }}
+              {{ formatUnit(systemStore.unit) }}</span
             >
           </div>
           <bar
@@ -89,7 +81,7 @@ import status from '../Utility/Status.vue';
 import Bar from './Bar.vue';
 import useSystemStore from '../../store/system';
 import useBitcoinStore from '../../store/bitcoin';
-import {satsToUSD} from '../../helpers/filters';
+import {satsToUSD, formatUnit, localize, unit} from '../../helpers/filters';
 
 const props = defineProps({
   channel: {

@@ -208,7 +208,18 @@
           </b-alert>
           <router-view v-slot="{Component}">
             <transition name="change-page" mode="out-in">
-              <component :is="Component"></component>
+              <Suspense>
+                <component :is="Component" />
+                <template #fallback
+                  ><div>
+                    <h1
+                      class="loading-placeholder loading-placeholder-lg w-25 mt-4"
+                    ></h1>
+                    <p
+                      class="loading-placeholder loading-placeholder-sm w-50 d-block mt-2"
+                    ></p></div
+                ></template>
+              </Suspense>
             </transition>
           </router-view>
         </div>
@@ -401,7 +412,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-html[data-theme='dark'] {
+html[data-bs-theme='dark'] {
   .nav-horizontal {
     background: #2a3244 !important;
   }

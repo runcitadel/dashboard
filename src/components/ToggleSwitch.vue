@@ -71,7 +71,7 @@ onMounted(() => {
   border: 1px solid rgba(0, 0, 0, 0.04);
   box-shadow: inset 0px 5px 10px rgba(0, 0, 0, 0.1);
   &.toggle-on {
-    background: var(--success);
+    background: var(--success, #00cd98);
     box-shadow: none;
   }
   &.toggle-disabled {

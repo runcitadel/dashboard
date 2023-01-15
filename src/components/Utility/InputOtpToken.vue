@@ -287,7 +287,7 @@ export default defineComponent({
     color: inherit;
   }
   50% {
-    background: var(--success);
+    background: var(--success, #00cd98);
     color: rgba(255, 255, 255, 0.75);
   }
 }

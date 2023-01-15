@@ -66,6 +66,7 @@
 import useSystemStore from './store/system';
 import useUserStore from './store/user';
 import useUiStore from './store/ui';
+import useSdkStore from './store/sdk';
 import useToast from './utils/toast';
 import delay from './helpers/delay';
 import Shutdown from './components/Shutdown.vue';
@@ -77,6 +78,7 @@ import {useI18n} from 'vue-i18n';
 const systemStore = useSystemStore();
 const userStore = useUserStore();
 const uiStore = useUiStore();
+const sdkStore = useSdkStore();
 const toast = useToast();
 const {t} = useI18n();
 
@@ -217,16 +219,21 @@ async function getLoadingStatus() {
     }
   }
 
-  // Then check if middleware api is up
-  /*if (loadingProgress.value <= 40) {
-        loadingProgress.value = 40;
-        await this.$store.dispatch("system/getApi");
-        if (!this.isApiOperational) {
-          loading.value = true;
-          loadingPollInProgress.value = false;
-          return;
-        }
-      }*/
+  // Now, check if there's a domain set, and if yes, redirect to it
+  // Only redirect if on citadel.local, we can extend this in the future
+  if (
+    window.location.protocol !== 'https:' &&
+    window.location.hostname === 'citadel.local'
+  ) {
+    try {
+      const domain = await sdkStore.citadel.system.domain();
+      if (domain) {
+        window.location.href = `https://${domain}`;
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   // Then trigger auth check
   if (loadingProgress.value <= 80 && userStore.jwt) {

@@ -32,7 +32,7 @@ const messages = {
   storage: 'Storage',
   available: '{storage} available',
   system: 'System',
-  'system-including': 'Including Bitcoin Core and LND',
+  'system-including': 'Including Bitcoin Core',
   calculating: 'Calculating...',
   'view-usage': 'View usage',
   'hide-usage': 'Hide usage',

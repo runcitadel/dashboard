@@ -19,10 +19,13 @@
         </b-col>
       </b-row>
 
-      <router-view :urls="urls" @show-qr-modal="showQrModal"></router-view>
+      <router-view
+        :urls="urls"
+        @show-qr-modal="(value: string) => {qrModalData.value = value; showQrModal = true;}"
+      ></router-view>
     </div>
 
-    <b-modal id="qr-modal" ref="qr-modal" hide-footer size="lg">
+    <b-modal id="qr-modal" v-model="showQrModal" hide-footer size="lg">
       <div class="d-flex w-100 align-items-center justify-content-center">
         <qr-code
           :value="qrModalData.value"
@@ -35,110 +38,82 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script lang="ts" setup>
+import {ref, computed, onMounted} from 'vue';
 
 import useBitcoinStore from '../store/bitcoin';
 import useLightningStore from '../store/lightning';
 import QrCode from '../components/Utility/QrCode.vue';
+import {useRoute, useRouter} from 'vue-router';
 
-export default defineComponent({
-  components: {
-    QrCode,
+const bitcoinStore = useBitcoinStore();
+const lightningStore = useLightningStore();
+const route = useRoute();
+const router = useRouter();
+const options = [
+  {value: null, text: 'Select your wallet', disabled: true},
+  {value: 'bitboxapp', text: 'BitBoxApp'},
+  {value: 'blockstream-green', text: 'Blockstream Green (Android)'},
+  {value: 'bluewallet', text: 'BlueWallet'},
+  {value: 'electrum-android', text: 'Electrum Wallet (Android)'},
+  {value: 'electrum-desktop', text: 'Electrum Wallet (Desktop)'},
+  {value: 'fully-noded', text: 'Fully Noded (iOS)'},
+  {value: 'lily-wallet', text: 'Lily Wallet'},
+  {value: 'lightning-atm', text: 'Lightning ATM (Untested)'},
+  {value: 'phoenix', text: 'Phoenix Wallet'},
+  {value: 'samourai-wallet', text: 'Samourai Wallet'},
+  {value: 'sparrow', text: 'Sparrow'},
+  {value: 'specter-desktop', text: 'Specter Desktop'},
+  {value: 'wasabi', text: 'Wasabi'},
+  {value: 'zap-android', text: 'Zap (Android)'},
+  {value: 'zap-desktop', text: 'Zap (Desktop)'},
+  {value: 'zap-ios', text: 'Zap (iOS)'},
+  {value: 'zeus', text: 'Zeus'},
+  {
+    label: 'Other',
+    options: [
+      {value: 'bitcoin-core-p2p', text: 'Bitcoin Core P2P'},
+      {value: 'bitcoin-core-rpc', text: 'Bitcoin Core RPC'},
+      {value: 'electrum-server', text: 'Electrum Server'},
+      {value: 'lndconnect-grpc-local', text: 'lndconnect gRPC (Local)'},
+      {value: 'lndconnect-grpc-tor', text: 'lndconnect gRPC (Tor)'},
+      {value: 'lndconnect-rest-local', text: 'lndconnect REST (Local)'},
+      {value: 'lndconnect-rest-tor', text: 'lndconnect REST (Tor)'},
+    ],
   },
-  setup() {
-    const bitcoinStore = useBitcoinStore();
-    const lightningStore = useLightningStore();
-    return {bitcoinStore, lightningStore};
-  },
-  data() {
-    return {
-      options: [
-        {value: null, text: 'Select your wallet', disabled: true},
-        {value: 'bitboxapp', text: 'BitBoxApp'},
-        {value: 'blockstream-green', text: 'Blockstream Green (Android)'},
-        {value: 'bluewallet', text: 'BlueWallet'},
-        {value: 'electrum-android', text: 'Electrum Wallet (Android)'},
-        {value: 'electrum-desktop', text: 'Electrum Wallet (Desktop)'},
-        {value: 'fully-noded', text: 'Fully Noded (iOS)'},
-        {value: 'lily-wallet', text: 'Lily Wallet'},
-        {value: 'lightning-atm', text: 'Lightning ATM (Untested)'},
-        {value: 'phoenix', text: 'Phoenix Wallet'},
-        {value: 'samourai-wallet', text: 'Samourai Wallet'},
-        {value: 'sparrow', text: 'Sparrow'},
-        {value: 'specter-desktop', text: 'Specter Desktop'},
-        {value: 'wasabi', text: 'Wasabi'},
-        {value: 'zap-android', text: 'Zap (Android)'},
-        {value: 'zap-desktop', text: 'Zap (Desktop)'},
-        {value: 'zap-ios', text: 'Zap (iOS)'},
-        {value: 'zeus', text: 'Zeus'},
-        {
-          label: 'Other',
-          options: [
-            {value: 'bitcoin-core-p2p', text: 'Bitcoin Core P2P'},
-            {value: 'bitcoin-core-rpc', text: 'Bitcoin Core RPC'},
-            {value: 'electrum-server', text: 'Electrum Server'},
-            {value: 'lndconnect-grpc-local', text: 'lndconnect gRPC (Local)'},
-            {value: 'lndconnect-grpc-tor', text: 'lndconnect gRPC (Tor)'},
-            {value: 'lndconnect-rest-local', text: 'lndconnect REST (Local)'},
-            {value: 'lndconnect-rest-tor', text: 'lndconnect REST (Tor)'},
-          ],
-        },
-      ],
-      qrModalData: {
-        value: '',
-        size: window.innerWidth < 600 ? window.innerWidth - 60 : 500,
-      },
-    };
-  },
-  computed: {
-    urls(): {
-      bitcoin: {
-        p2p: {address: string; port: string; connectionString: string};
-        electrum: {address: string; port: string; connectionString: string};
-        rpc: {address: string; port: string; connectionString: string};
-      };
-      lnd: {
-        restTor: string;
-        restLocal: string;
-        grpcTor: string;
-        grpcLocal: string;
-      };
-    } {
-      return {
-        bitcoin: {
-          p2p: this.bitcoinStore.p2p,
-          electrum: this.bitcoinStore.electrum,
-          rpc: this.bitcoinStore.rpc,
-        },
-        lnd: this.lightningStore.lndConnectUrls,
-      };
-    },
-    wallet() {
-      return this.$route.meta.wallet || null;
-    },
-  },
-  created() {
-    this.fetchConnectionDetails();
-  },
-  methods: {
-    fetchConnectionDetails() {
-      return Promise.all([
-        this.lightningStore.getLndConnectUrls(),
-        this.bitcoinStore.getP2PInfo(),
-        this.bitcoinStore.getElectrumInfo(),
-        this.bitcoinStore.getRpcInfo(),
-      ]);
-    },
-    selectWallet(wallet: string) {
-      this.$router.push(`/connect/${wallet}`);
-    },
-    showQrModal(value: string) {
-      this.qrModalData.value = value;
-      (this.$refs['qr-modal'] as {show: () => void}).show();
-    },
-  },
+];
+const qrModalData = ref({
+  value: '',
+  size: window.innerWidth < 600 ? window.innerWidth - 60 : 500,
 });
+const showQrModal = ref(false);
+const urls = computed(() => {
+  return {
+    bitcoin: {
+      p2p: bitcoinStore.p2p,
+      electrum: bitcoinStore.electrum,
+      rpc: bitcoinStore.rpc,
+    },
+    lnd: lightningStore.lndConnectUrls,
+  };
+});
+const wallet = computed(() => {
+  return route.meta.wallet || null;
+});
+onMounted(() => {
+  fetchConnectionDetails();
+});
+function fetchConnectionDetails() {
+  return Promise.all([
+    lightningStore.getLndConnectUrls(),
+    bitcoinStore.getP2PInfo(),
+    bitcoinStore.getElectrumInfo(),
+    bitcoinStore.getRpcInfo(),
+  ]);
+}
+function selectWallet(wallet: string) {
+  router.push(`/connect/${wallet}`);
+}
 </script>
 
 <style lang="scss">

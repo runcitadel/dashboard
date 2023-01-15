@@ -1,12 +1,12 @@
 import {createApp} from 'vue';
-import BootstrapVue3 from 'bootstrap-vue-3';
+import BootstrapVueNext from 'bootstrap-vue-next';
 import {createPinia} from 'pinia';
 import {createI18n} from 'vue-i18n';
 import Toast, {PluginOptions, POSITION} from 'vue-toastification';
 import FloatingVue from 'floating-vue';
 import 'floating-vue/dist/style.css';
 import 'vue-toastification/dist/index.css';
-import 'bootstrap-vue-3/dist/bootstrap-vue-3.css';
+import 'bootstrap-vue-next/dist/bootstrap-vue-next.css';
 
 import App from './App.vue';
 import router from './router/index';
@@ -50,7 +50,7 @@ app.config.globalProperties.$filters = {
     Number(n).toLocaleString(undefined, {maximumFractionDigits: 8}),
 };
 
-app.use(BootstrapVue3);
+app.use(BootstrapVueNext);
 
 const toastOptions: PluginOptions = {
   position: POSITION['BOTTOM_RIGHT'],

@@ -2,7 +2,7 @@ import type useSystemStore from './store/system';
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
-    readonly $filters: {
+    $filters: {
       unit: (
         value: number | string,
         store: ReturnType<typeof useSystemStore>,

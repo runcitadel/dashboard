@@ -14,6 +14,10 @@ const Apps = () => import('../views/Apps.vue');
 const AppStore = () => import('../views/AppStore.vue');
 const AppStoreApp = () => import('../views/AppStoreApp.vue');
 const AppStoreCategory = () => import('../views/AppStoreCategory.vue');
+const Https = () => import('../views/Https.vue');
+const HttpsSetup = () => import('../views/HttpsSetup.vue');
+const HttpsSetupApp = () => import('../views/HttpsSetupApp.vue');
+const HttpsRunningcitadel = () => import('../views/HttpsRunningcitadel.vue');
 const Settings = () => import('../views/Settings.vue');
 const LightningAddress = () => import('../views/LightningAddress.vue');
 const ConnectWallet = () => import('../views/ConnectWallet.vue');
@@ -174,6 +178,33 @@ const routes = [
             path: 'app/:id',
             name: 'app-store-app',
             component: AppStoreApp,
+          },
+        ],
+      },
+      {
+        path: '/https',
+        component: DashboardLayout,
+        meta: {requiresAuth: true},
+        children: [
+          {
+            path: '',
+            name: 'https',
+            component: Https,
+          },
+          {
+            path: 'setup',
+            name: 'https-setup',
+            component: HttpsSetup,
+          },
+          {
+            path: 'setup/:app',
+            name: 'https-setup-app',
+            component: HttpsSetupApp,
+          },
+          {
+            path: 'setup-runningcitadel',
+            name: 'https-runningcitadel',
+            component: HttpsRunningcitadel,
           },
         ],
       },

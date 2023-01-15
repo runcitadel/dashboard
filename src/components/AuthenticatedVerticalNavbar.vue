@@ -84,6 +84,11 @@
           App Store
         </b-nav-item>
 
+        <b-nav-item to="/https" class="my-1" exact-active-class="active">
+          <LockIcon class="me-2" style="width: 24px; height: 24px" />
+          HTTPS
+        </b-nav-item>
+
         <b-nav-item to="/donate" class="my-1" active-class="active">
           <ContactsIcon class="me-2" style="width: 24px; height: 24px" />
           Donate
@@ -169,6 +174,7 @@ import {
   VisibleIcon,
   HiddenIcon,
   ContactsIcon,
+  LockIcon,
   // @ts-expect-error No type definitions for this yet
 } from '@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js';
 import {computed} from 'vue';

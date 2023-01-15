@@ -204,7 +204,7 @@ function blockReadableTime(timestamp: number) {
 </script>
 
 <style lang="scss" scoped>
-html[data-theme='dark'] {
+html[data-bs-theme='dark'] {
   .blockchain-container {
     &:before {
       background-image: linear-gradient(

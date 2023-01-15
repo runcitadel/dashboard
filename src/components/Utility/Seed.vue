@@ -64,7 +64,7 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, PropType, watch} from 'vue';
+import {ref, PropType} from 'vue';
 import ScrambledText from './ScrambledText.vue';
 
 const props = defineProps({

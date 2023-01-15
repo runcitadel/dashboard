@@ -11,6 +11,18 @@ export interface State {
   totpAuthenticated: boolean;
   seed: string[];
   installedApps: string[];
+  letsencryptSettings: {
+    email?: string | undefined;
+    agreed_lets_encrypt_tos?: boolean | undefined;
+    app_domains?: Record<string, string> | undefined;
+  };
+  runningCitadelSettings: {
+    isSetup: boolean;
+    username: string;
+    password: string;
+    subdomain: string;
+  };
+  ipAddr: string;
 }
 
 // Initial state
@@ -24,6 +36,14 @@ const useUserStore = defineStore('user', {
     totpAuthenticated: false,
     seed: [],
     installedApps: [],
+    letsencryptSettings: {},
+    runningCitadelSettings: {
+      isSetup: false,
+      username: '',
+      password: '',
+      subdomain: '',
+    },
+    ipAddr: '',
   }),
 
   // Functions to get data from the API
@@ -134,6 +154,31 @@ const useUserStore = defineStore('user', {
           this.seed = []; // Remove seed from store
         }
       }
+    },
+    async getRunningCitadelSettings() {
+      const sdkStore = useSdkStore();
+      this.runningCitadelSettings =
+        await sdkStore.citadel.auth.runningCitadelStatus();
+    },
+    async getLetsEncryptSettings() {
+      const sdkStore = useSdkStore();
+      this.letsencryptSettings =
+        await sdkStore.citadel.auth.letsEncryptStatus();
+    },
+    async enableLetsEncrypt() {
+      const sdkStore = useSdkStore();
+      if (
+        this.letsencryptSettings.agreed_lets_encrypt_tos &&
+        !!this.letsencryptSettings.email
+      ) {
+        await sdkStore.citadel.auth.enableLetsEncrypt(
+          this.letsencryptSettings.email!,
+        );
+      }
+    },
+    async getIpAddr() {
+      const sdkStore = useSdkStore();
+      this.ipAddr = await sdkStore.citadel.auth.ipAddr();
     },
   },
 });

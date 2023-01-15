@@ -410,9 +410,26 @@
                 >Power off your Citadel</small
               >
             </div>
-            <b-button variant="outline-danger" size="sm" @click="shutdownPrompt"
+            <b-button
+              variant="outline-danger"
+              size="sm"
+              @click="showShutdownModal = true"
               >Shutdown</b-button
             >
+            <b-modal
+              v-model="showShutdownModal"
+              title="Are you sure?"
+              no-close-on-backdrop
+              no-close-on-esc
+              @ok.prevent="shutdown()"
+            >
+              <div>
+                <p>
+                  Your Lightning wallet will not be able to receive any payments
+                  while your Citadel is turned off.
+                </p>
+              </div>
+            </b-modal>
           </div>
         </div>
         <div class="pt-0">
@@ -458,7 +475,7 @@
               >Start</b-button
             >
             <b-modal
-              ref="debug-modal"
+              v-model="showDebugModal"
               size="xl"
               scrollable
               header-bg-variant="dark"
@@ -467,9 +484,8 @@
               footer-text-variant="light"
               body-bg-variant="dark"
               body-text-variant="light"
-              @close="closeDebugModal"
             >
-              <template #modal-header="{close}">
+              <template #header>
                 <div class="px-2 pt-2 d-flex justify-content-between w-100">
                   <h4 v-if="loadingDebug">Generating logs...</h4>
                   <h4 v-else>
@@ -479,7 +495,7 @@
                   <a
                     href="#"
                     class="align-self-center"
-                    @click.stop.prevent="close"
+                    @click.stop.prevent="showDebugModal = false"
                   >
                     <svg
                       width="22"
@@ -509,7 +525,7 @@
               </div>
               <pre class="px-2 text-light">{{ debugContents }}</pre>
 
-              <template #modal-footer="{}">
+              <template #footer>
                 <div v-if="loadingDebug"></div>
                 <div v-else class="d-flex w-100 justify-content-between px-2">
                   <b-button
@@ -667,6 +683,8 @@ export default defineComponent({
       authenticatorToken: '',
       showRebootModal: false,
       increaseUptimeInterval: undefined,
+      showDebugModal: false,
+      showShutdownModal: false,
     } as {
       currentPassword: string;
       isIncorrectPassword: boolean;
@@ -690,6 +708,8 @@ export default defineComponent({
       showTotpModal: boolean;
       showRebootModal: boolean;
       increaseUptimeInterval?: number;
+      showDebugModal: boolean;
+      showShutdownModal: boolean;
     };
   },
   computed: {
@@ -875,7 +895,7 @@ export default defineComponent({
       this.showDmesg = false;
       this.debugFailed = false;
       this.loadingDebug = true;
-      (this.$refs['debug-modal'] as {show: () => void}).show();
+      this.showDebugModal = true;
       try {
         await this.systemStore.debug();
         while (this.loadingDebug) {
@@ -890,10 +910,6 @@ export default defineComponent({
         this.debugFailed = true;
       }
     },
-    closeDebugModal() {
-      this.loadingDebug = false;
-      (this.$refs['debug-modal'] as {hide: () => void}).hide();
-    },
     downloadTextFile(contents: string, fileName: string) {
       const blob = new Blob([contents], {
         type: 'text/plain;charset=utf-8;',
@@ -905,15 +921,7 @@ export default defineComponent({
       a.click();
       window.URL.revokeObjectURL(url);
     },
-    async shutdownPrompt() {
-      // Get user consent first
-      const approved = window.confirm(
-        'Are you sure? Your Lightning wallet will not be able to receive any payments while your Citadel is offline.',
-      );
-      if (!approved) {
-        return;
-      }
-
+    async shutdown() {
       // Shutdown request
       try {
         await this.systemStore.shutdown();
