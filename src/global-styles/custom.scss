@@ -13,7 +13,6 @@ html[data-bs-theme='light'] {
 
 // Some dark mode fixes
 html[data-bs-theme='dark'] {
-
   .wallet-transactions-container {
     position: relative;
     background: #2a3244 !important;
@@ -55,10 +54,14 @@ html[data-bs-theme='dark'] {
   .wallet-transactions-container * {
     color: white !important;
   }
-  /* INSERT MORE DARK MODE STUFF HERE */
 }
 
-:root {
+.btn.btn-success {
+  color: white !important;
+}
+
+
+html[data-bs-theme='light'] {
   --card-bg: #fff;
   --card-shadow: 0px 10px 30px rgba(209, 213, 223, 0.5);
   --card-shadow-hover: 0px 10px 30px rgba(209, 213, 223, 0.6);
@@ -67,11 +70,6 @@ html[data-bs-theme='dark'] {
   --toggle-switch-bg: linear-gradient(346.78deg, #f7fcfc 0%, #fafcfa 100%);
   --toggle-switch-selected: #fff;
 }
-
-.btn.btn-success {
-  color: white !important;
-}
-
 html[data-bs-theme='dark'] {
   --card-bg: #2a3244;
   --card-shadow: 0px 10px 30px rgba(0, 0, 0, 0.4);
@@ -226,6 +224,7 @@ button {
   background: #fff;
   box-shadow: var(--card-shadow);
   -webkit-appearance: none; //iOS messes up forms - See: https://stackoverflow.com/questions/10757146/iphone-ios-will-not-display-box-shadow-properly
+  appearance: none;
   border-radius: 1rem !important;
   height: calc(2.25em + 1.125rem + 2px);
   padding: 0.5rem 1.5rem;

@@ -208,7 +208,7 @@
           </b-alert>
           <router-view v-slot="{Component}">
             <transition name="change-page" mode="out-in">
-              <Suspense>
+              <Suspense timeout="0.5">
                 <component :is="Component" />
                 <template #fallback
                   ><div>

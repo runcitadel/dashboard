@@ -79,12 +79,24 @@ if (
 await userStore.getRunningCitadelSettings();
 await appsStore.getInstalledApps();
 // Convert appsStore.installed to an object (It's an array, convert it to an object where the key is the app id and the value is wheter userStore.letsEncrypt.appDomains[app.id] is set or not)
-const apps = appsStore.installed.reduce<Record<string, boolean>>((acc, app) => {
-  acc[app.id] = userStore.letsencryptSettings.app_domains
-    ? !!userStore.letsencryptSettings.app_domains[app.id]
-    : false;
-  return acc;
-}, {});
+const apps = appsStore.installed
+  .filter(
+    (app) =>
+      ![
+        'lnd',
+        'core-ln',
+        'bitcoin-core',
+        'bitcoin-knots',
+        'electrs',
+        'fulcrum',
+      ].includes(app.id),
+  )
+  .reduce<Record<string, boolean>>((acc, app) => {
+    acc[app.id] = userStore.letsencryptSettings.app_domains
+      ? !!userStore.letsencryptSettings.app_domains[app.id]
+      : false;
+    return acc;
+  }, {});
 
 if (userStore.letsencryptSettings.app_domains) {
   apps['dashboard'] = !!userStore.letsencryptSettings.app_domains['dashboard'];
