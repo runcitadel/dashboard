@@ -327,12 +327,6 @@ export default defineComponent({
     this.systemStore.getIsCitadelOS();
     // Preload this so when the user switches to th Lightning page, it can be displayed immediately
     this.lightningStore.getVersionInfo();
-    if (
-      window.localStorage &&
-      window.localStorage.getItem('lightmode') === 'true'
-    ) {
-      document.querySelector(':root')?.classList?.add('prefer-light-mode');
-    }
 
     //refresh this data every 20s:
     this.fetchData();
