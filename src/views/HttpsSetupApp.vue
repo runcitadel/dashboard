@@ -43,8 +43,7 @@
         <b-form-input
           v-model="domain"
           placeholder="Your domain"
-          class="mb-2"
-          type="email"
+          type="text"
           required
         ></b-form-input>
       </div>
