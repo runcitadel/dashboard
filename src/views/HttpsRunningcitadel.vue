@@ -39,7 +39,7 @@
 </template>
 <script setup lang="ts">
 import useUserStore from '../store/user';
-import {useRouter, useRoute} from 'vue-router';
+import {useRouter} from 'vue-router';
 import InputCopy from '../components/Utility/InputCopy.vue';
 
 const router = useRouter();
