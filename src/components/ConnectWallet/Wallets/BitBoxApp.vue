@@ -3,7 +3,8 @@
     <step-list>
       <step>
         Make sure Tor is up and running on your system.
-        <b-link v-b-modal.tor-modal>Click here</b-link> for instructions.
+        <b-link @click.prevent="$emit('showTorModal')">Click here</b-link> for
+        instructions.
       </step>
       <step>
         Open BitBoxApp and go to
@@ -43,10 +44,6 @@
         Citadel.
       </step>
     </step-list>
-
-    <b-modal id="tor-modal" centered hide-footer>
-      <tor-setup></tor-setup>
-    </b-modal>
   </connection-details>
 </template>
 
@@ -55,7 +52,6 @@ import ConnectionDetails from '../ConnectionDetails.vue';
 import StepList from '../StepList.vue';
 import Step from '../Step.vue';
 import InputCopy from '../../Utility/InputCopy.vue';
-import TorSetup from '../TorSetup.vue';
 
 defineProps({
   urls: {
@@ -64,5 +60,5 @@ defineProps({
   },
 });
 
-defineEmits(['showQrModal']);
+defineEmits(['showTorModal']);
 </script>

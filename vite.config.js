@@ -1,8 +1,7 @@
 import {defineConfig} from 'vite';
 import vue from '@vitejs/plugin-vue';
 
-//import Components from 'unplugin-vue-components/vite';
-//import {BootstrapVueNextResolver} from 'unplugin-vue-components/resolvers';
+import Components from 'unplugin-vue-components/vite';
 
 export default defineConfig(({mode}) => {
   const defaultHost =
@@ -31,9 +30,15 @@ export default defineConfig(({mode}) => {
     resolve: {alias: {'@': '/src'}},
     plugins: [
       vue(),
-      /*Components({
-        resolvers: [BootstrapVueNextResolver()],
-      }),*/
+      Components({
+        resolvers: [[{
+          type: 'component',
+          resolve: (name) => {
+            if (name.match(/^B[A-Z]/) && !name.startsWith("BIcon"))
+              return { name, from: 'bootstrap-vue-next' }
+          },
+        }]],
+      }),
     ],
   };
 });

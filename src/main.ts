@@ -1,5 +1,4 @@
 import {createApp} from 'vue';
-import BootstrapVueNext from 'bootstrap-vue-next';
 import {createPinia} from 'pinia';
 import {createI18n} from 'vue-i18n';
 import Toast, {PluginOptions, POSITION} from 'vue-toastification';
@@ -49,8 +48,6 @@ app.config.globalProperties.$filters = {
   localize: (n: number | string) =>
     Number(n).toLocaleString(undefined, {maximumFractionDigits: 8}),
 };
-
-app.use(BootstrapVueNext);
 
 const toastOptions: PluginOptions = {
   position: POSITION['BOTTOM_RIGHT'],

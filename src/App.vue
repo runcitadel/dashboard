@@ -74,6 +74,7 @@ import Shutdown from './components/Shutdown.vue';
 import Loading from './components/Loading.vue';
 import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue';
 import {useI18n} from 'vue-i18n';
+import {ENABLE_HTTPS} from './utils/feature-flags.js';
 
 const systemStore = useSystemStore();
 const userStore = useUserStore();
@@ -223,7 +224,8 @@ async function getLoadingStatus() {
   // Only redirect if on citadel.local, we can extend this in the future
   if (
     window.location.protocol !== 'https:' &&
-    window.location.hostname === 'citadel.local'
+    window.location.hostname === 'citadel.local' &&
+    ENABLE_HTTPS
   ) {
     try {
       const domain = await sdkStore.citadel.system.domain();

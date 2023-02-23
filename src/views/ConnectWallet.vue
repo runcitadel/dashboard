@@ -11,7 +11,7 @@
       <b-row>
         <b-col cols="12" md="4" xl="3">
           <b-form-select
-            :value="wallet"
+            :modelValue="wallet"
             :options="options"
             class="mb-4"
             @change="selectWallet"
@@ -22,6 +22,7 @@
       <router-view
         :urls="urls"
         @show-qr-modal="(value: string) => {qrModalData.value = value; showQrModal = true;}"
+        @show-tor-modal="showTorModal = true"
       ></router-view>
     </div>
 
@@ -35,6 +36,9 @@
         ></qr-code>
       </div>
     </b-modal>
+    <b-modal id="tor-modal" centered hide-footer v-model="showTorModal">
+      <tor-setup></tor-setup>
+    </b-modal>
   </div>
 </template>
 
@@ -44,6 +48,7 @@ import {ref, computed, onMounted} from 'vue';
 import useBitcoinStore from '../store/bitcoin';
 import useLightningStore from '../store/lightning';
 import QrCode from '../components/Utility/QrCode.vue';
+import TorSetup from '../components/ConnectWallet/TorSetup.vue';
 import {useRoute, useRouter} from 'vue-router';
 
 const bitcoinStore = useBitcoinStore();
@@ -87,6 +92,7 @@ const qrModalData = ref({
   size: window.innerWidth < 600 ? window.innerWidth - 60 : 500,
 });
 const showQrModal = ref(false);
+const showTorModal = ref(false);
 const urls = computed(() => {
   return {
     bitcoin: {

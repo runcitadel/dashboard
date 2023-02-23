@@ -41,6 +41,7 @@
 <script lang="ts" setup>
 import {computed, onBeforeUnmount, ref} from 'vue';
 import useAppsStore from '../store/apps';
+import {ENABLE_HTTPS} from '../utils/feature-flags.js';
 // @ts-expect-error No type definitions for this yet
 import {TrashIcon} from '@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js';
 import flatten from 'lodash/flatten';
@@ -102,6 +103,7 @@ const url = computed(() => {
       return '#';
     }
     if (
+      ENABLE_HTTPS &&
       userStore.letsencryptSettings.app_domains &&
       userStore.letsencryptSettings.app_domains[props.id]
     ) {
@@ -158,7 +160,9 @@ function openApp(event: Event) {
   return;
 }
 async function pollOfflineApp() {
-  await userStore.getLetsEncryptSettings();
+  if (ENABLE_HTTPS) {
+    await userStore.getLetsEncryptSettings();
+  }
   checkIfAppIsOffline.value = true;
   if (skipCheckApps.includes(props.id)) {
     isOffline.value = false;

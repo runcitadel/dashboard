@@ -84,9 +84,19 @@
           App Store
         </b-nav-item>
 
-        <b-nav-item to="/https" class="my-1" exact-active-class="active">
+        <b-nav-item
+          to="/https"
+          class="my-1"
+          exact-active-class="active"
+          v-if="ENABLE_HTTPS"
+        >
           <LockIcon class="me-2" style="width: 24px; height: 24px" />
           HTTPS
+        </b-nav-item>
+
+        <b-nav-item disabled class="my-1" exact-active-class="active" v-else>
+          <LockIcon class="me-2" style="width: 24px; height: 24px" />
+          <b-badge class="me-1">Soon</b-badge> HTTPS
         </b-nav-item>
 
         <b-nav-item to="/donate" class="my-1" active-class="active">
@@ -161,6 +171,7 @@ import useBitcoinStore from '../store/bitcoin';
 import useLightningStore from '../store/lightning';
 import useAppsStore from '../store/apps';
 import useUiStore from '../store/ui';
+import {ENABLE_HTTPS} from '../utils/feature-flags.js';
 
 import {
   BitcoinIcon,

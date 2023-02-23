@@ -100,7 +100,7 @@
               centered
               hide-footer
             >
-              <template #modal-header="{close}">
+              <template #modal-header>
                 <div
                   class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
                 >
@@ -109,7 +109,7 @@
                   <a
                     href="#"
                     class="align-self-center"
-                    @click.stop.prevent="close"
+                    @click.stop.prevent="showSeedModal = true"
                   >
                     <svg
                       width="18"

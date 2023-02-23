@@ -71,14 +71,23 @@
                 />
               </svg>
             </template>
-            <b-dropdown-item @click.prevent="showNodeAddressModal = true;" href="#"
+            <b-dropdown-item
+              @click.prevent="showNodeAddressModal = true"
+              href="#"
               >Lightning Node Address</b-dropdown-item
             >
             <!-- <b-dropdown-divider /> -->
             <!-- <b-dropdown-item variant="danger" href="#" disabled>Stop LND</b-dropdown-item> -->
           </b-dropdown>
 
-          <b-modal id="lightning-address-modal" size="lg" v-model="showNodeAddressModal" show centered hide-footer>
+          <b-modal
+            id="lightning-address-modal"
+            size="lg"
+            v-model="showNodeAddressModal"
+            show
+            centered
+            hide-footer
+          >
             <template #modal-header>
               <div
                 class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
@@ -88,7 +97,7 @@
                 <a
                   href="#"
                   class="align-self-center"
-                  @click.stop.prevent="showNodeAddressModal = false;"
+                  @click.stop.prevent="showNodeAddressModal = false"
                 >
                   <svg
                     width="18"
@@ -152,7 +161,7 @@
       </b-col>
       <b-col col cols="12" md="6" xl="8">
         <card-widget header="Payment Channels">
-          <template #header-right>
+          <template #header-right v-if="ENABLE_CHANNEL_OPEN">
             <b-button
               @click.prevent="showOpenChannelModal = true"
               variant="outline-primary"
@@ -303,7 +312,7 @@
                   <a
                     href="#"
                     class="align-self-center"
-                    @click.stop.prevent="showManageChannelModal = false;"
+                    @click.stop.prevent="showManageChannelModal = false"
                   >
                     <svg
                       width="18"
@@ -356,6 +365,8 @@ import useBitcoinStore from '../store/bitcoin';
 import useLightningStore, {ParsedChannel} from '../store/lightning';
 import useSystemStore from '../store/system';
 
+import {ENABLE_CHANNEL_OPEN} from '../utils/feature-flags';
+
 const status = ref('Running');
 const selectedChannel = ref<ParsedChannel | null>(null);
 const interval = ref<number | null>(null);
@@ -404,7 +415,7 @@ function onChannelOpen() {
 function onChannelClose() {
   //refresh channels, balance and txs
   fetchPageData();
-    showManageChannelModal.value = false;
+  showManageChannelModal.value = false;
 
   //refresh bitcoin balance and txs
   bitcoinStore.getBalance();

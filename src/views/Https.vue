@@ -89,6 +89,7 @@ const apps = appsStore.installed
         'bitcoin-knots',
         'electrs',
         'fulcrum',
+        'tailscale',
       ].includes(app.id),
   )
   .reduce<Record<string, boolean>>((acc, app) => {
