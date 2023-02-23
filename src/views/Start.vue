@@ -163,7 +163,7 @@ import useLightningStore from '../store/lightning';
 import useAppsStore from '../store/apps';
 import useSdkStore from '../store/sdk';
 import useToast from '../utils/toast';
-import {useI18n} from "vue-i18n";
+import {useI18n} from 'vue-i18n';
 
 import delay from '../helpers/delay';
 
@@ -187,7 +187,7 @@ export default defineComponent({
     const appsStore = useAppsStore();
     const sdkStore = useSdkStore();
     const toast = useToast();
-    const { t } = useI18n();
+    const {t} = useI18n();
 
     return {
       sdkStore,

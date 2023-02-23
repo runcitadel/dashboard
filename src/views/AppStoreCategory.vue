@@ -126,7 +126,12 @@ function truncate(text: string, chars: number) {
   if (text.length <= chars) return text;
   const truncated = text.substring(0, chars);
   // eslint-disable-next-line prettier/prettier
-  return truncated.substring(0, Math.min(truncated.length, truncated.lastIndexOf(' '))) + '…';
+  return (
+    truncated.substring(
+      0,
+      Math.min(truncated.length, truncated.lastIndexOf(' ')),
+    ) + '…'
+  );
 }
 
 appsStore.getAppStore();

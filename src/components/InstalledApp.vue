@@ -46,6 +46,7 @@ import {TrashIcon} from '@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js';
 import flatten from 'lodash/flatten';
 
 import delay from '../helpers/delay';
+import useUserStore from '../store/user';
 
 const skipCheckApps = ['bluewallet', 'ringtools'];
 
@@ -88,35 +89,23 @@ const props = defineProps({
   },
 });
 const appsStore = useAppsStore();
+const userStore = useUserStore();
 
 const isOffline = ref(false);
 const checkIfAppIsOffline = ref(false);
 
 const url = computed(() => {
-  if (window.location.origin === 'https://node.runcitadel.space') {
-    switch (props.id) {
-      case 'ride-the-lightning':
-        return 'https://rtl.runcitadel.space';
-      case 'nextcloud':
-        return 'https://cloud.runcitadel.space';
-      case 'btcpay-server':
-        return 'https://pay.runcitadel.space';
-      case 'lightning-terminal':
-        return 'https://ln-terminal.runcitadel.space';
-      case 'btc-rpc-explorer-public-fast':
-        return 'https://rpc-explorer.runcitadel.space';
-      case 'supabase':
-        return 'https://supabase-ln.runcitadel.space';
-      case 'sats4.me':
-        return 'https://sats4.me';
-    }
-    return `https://${props.id}.runcitadel.space`;
-  }
   if (window.location.origin.indexOf('.onion') > 0) {
     return `http://${props.hiddenService}${props.path}`;
   } else {
     if (props.torOnly) {
       return '#';
+    }
+    if (
+      userStore.letsencryptSettings.app_domains &&
+      userStore.letsencryptSettings.app_domains[props.id]
+    ) {
+      return `https://${userStore.letsencryptSettings.app_domains[props.id]}`;
     }
     return `http://${window.location.hostname}:${props.port}${props.path}`;
   }
@@ -169,8 +158,19 @@ function openApp(event: Event) {
   return;
 }
 async function pollOfflineApp() {
+  await userStore.getLetsEncryptSettings();
   checkIfAppIsOffline.value = true;
-  if (skipCheckApps.includes(props.id)) checkIfAppIsOffline.value = false;
+  if (skipCheckApps.includes(props.id)) {
+    isOffline.value = false;
+    checkIfAppIsOffline.value = false;
+  }
+  if (
+    window.location.protocol === 'https' &&
+    !url.value.startsWith('https://')
+  ) {
+    isOffline.value = false;
+    checkIfAppIsOffline.value = false;
+  }
   while (checkIfAppIsOffline.value) {
     try {
       await window.fetch(url.value, {mode: 'no-cors'});

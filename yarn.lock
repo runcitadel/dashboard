@@ -721,7 +721,7 @@ __metadata:
     bignumber.js: ^9.1.1
     bootstrap: ^5.3.0-alpha.1
     bootstrap-icons-vue: ^1.8.1
-    bootstrap-vue-next: ^0.6.0
+    bootstrap-vue-next: ^0.7.3
     buffer: ^6.0.3
     countup.js: ^2.3.2
     date-fns: ^2.29.3
@@ -1055,31 +1055,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/core@npm:^9.6.0":
-  version: 9.10.0
-  resolution: "@vueuse/core@npm:9.10.0"
+"@vueuse/core@npm:^9.11.1":
+  version: 9.13.0
+  resolution: "@vueuse/core@npm:9.13.0"
   dependencies:
     "@types/web-bluetooth": ^0.0.16
-    "@vueuse/metadata": 9.10.0
-    "@vueuse/shared": 9.10.0
+    "@vueuse/metadata": 9.13.0
+    "@vueuse/shared": 9.13.0
     vue-demi: "*"
-  checksum: 9e3b0c0baa1e3daf3ae508f76acf4e73ec80a2089d420f5de7c203e9fecd8cd4596a5e4635bbf09a762e0bba022f26806ee23b69d5d01a5d0e4b76e2ad2878a4
+  checksum: 2b19d8ec4305f6c65650813c0fa9c15af6b322fc253ad656eb1c4bc8d7617a2ddd46a46d7ea359c4cdc5a5724aa5fc152fa7a3816ed6ebeaec4f7e58defb7153
   languageName: node
   linkType: hard
 
-"@vueuse/metadata@npm:9.10.0":
-  version: 9.10.0
-  resolution: "@vueuse/metadata@npm:9.10.0"
-  checksum: ef9b4970cc1795e197279b59cfd82c7475323c17ae02701e5a6be26df1258330d4fafb7c05d005dfa7af97277509a8589d62467925319e1c5c17715805554bb7
+"@vueuse/metadata@npm:9.13.0":
+  version: 9.13.0
+  resolution: "@vueuse/metadata@npm:9.13.0"
+  checksum: 91e137bf2fb1406587b523edae26b58b315d3a59797c9f2ed5dde9cb707026aa740b86da5955ea7f9662a93ce92249d0b3af763c65449b4a843bbd0725eb67f6
   languageName: node
   linkType: hard
 
-"@vueuse/shared@npm:9.10.0":
-  version: 9.10.0
-  resolution: "@vueuse/shared@npm:9.10.0"
+"@vueuse/shared@npm:9.13.0":
+  version: 9.13.0
+  resolution: "@vueuse/shared@npm:9.13.0"
   dependencies:
     vue-demi: "*"
-  checksum: 1481ad7273eb8835a42fd49805d32ae97465188d260ddb28fdffebda7bedea5943bf49c3bd128121b32719307eaf1cb69b37b60fa1195c10a555e7aec3d78c22
+  checksum: e53e7312bdd2030b7970afcf4d3dc3f9a47f7721a92ccb51c364d23246233cb54758f7ddacbdb9ac63d1e86ec82e97d06cb53b05a4b8d43be877d16ab61dd9bb
   languageName: node
   linkType: hard
 
@@ -1258,17 +1258,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bootstrap-vue-next@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "bootstrap-vue-next@npm:0.6.0"
+"bootstrap-vue-next@npm:^0.7.3":
+  version: 0.7.3
+  resolution: "bootstrap-vue-next@npm:0.7.3"
   dependencies:
     "@nuxt/kit": 3.0.0
-    "@vueuse/core": ^9.6.0
+    "@vueuse/core": ^9.11.1
   peerDependencies:
     "@popperjs/core": ^2.11.6
     bootstrap: ^5.2.3
     vue: ^3.2.45
-  checksum: b4ac708cbec66977263722db4d5d4bbc366b7d8b33b65bce126297b36bce8e7b5492039890665790f49046c1045d2a0a84efd8901778ae80e65670158de6bca9
+  checksum: c8c51307589545825ffe8aa93b753bc421af81e561f835e20b6ecbabbaedd4f5cd2aee7d4153361a1fc40e20ef4c278a508444a7602c85ca014a49637c0bf0b4
   languageName: node
   linkType: hard
 

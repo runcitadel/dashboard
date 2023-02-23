@@ -71,24 +71,24 @@
                 />
               </svg>
             </template>
-            <b-dropdown-item v-b-modal.lightning-address-modal href="#"
+            <b-dropdown-item @click.prevent="showNodeAddressModal = true;" href="#"
               >Lightning Node Address</b-dropdown-item
             >
             <!-- <b-dropdown-divider /> -->
             <!-- <b-dropdown-item variant="danger" href="#" disabled>Stop LND</b-dropdown-item> -->
           </b-dropdown>
 
-          <b-modal id="lightning-address-modal" size="lg" centered hide-footer>
-            <template #modal-header="{close}">
+          <b-modal id="lightning-address-modal" size="lg" v-model="showNodeAddressModal" show centered hide-footer>
+            <template #modal-header>
               <div
                 class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
               >
-                <h3 class="text-lowercase">Lightning Address</h3>
+                <h3 class="text-lowercase">Lightning Node Address</h3>
                 <!-- Emulate built in modal header close button action -->
                 <a
                   href="#"
                   class="align-self-center"
-                  @click.stop.prevent="close"
+                  @click.stop.prevent="showNodeAddressModal = false;"
                 >
                   <svg
                     width="18"
@@ -154,7 +154,7 @@
         <card-widget header="Payment Channels">
           <template #header-right>
             <b-button
-              v-b-modal.open-channel-modal
+              @click.prevent="showOpenChannelModal = true"
               variant="outline-primary"
               size="sm"
               >+ Open Channel</b-button
@@ -289,12 +289,12 @@
             <!-- manage channel modal -->
             <b-modal
               id="manage-channel-modal"
-              ref="manage-channel-modal"
+              v-model="showManageChannelModal"
               size="lg"
               centered
               hide-footer
             >
-              <template #modal-header="{close}">
+              <template #modal-header>
                 <div
                   class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
                 >
@@ -303,7 +303,7 @@
                   <a
                     href="#"
                     class="align-self-center"
-                    @click.stop.prevent="close"
+                    @click.stop.prevent="showManageChannelModal = false;"
                   >
                     <svg
                       width="18"
@@ -323,7 +323,9 @@
                 </div>
               </template>
               <div class="px-2 px-sm-3 py-2">
+                <!-- Don't render this if there is no channel selected -->
                 <channel-manage
+                  v-if="selectedChannel"
                   :channel="selectedChannel"
                   @channelclose="onChannelClose"
                 ></channel-manage>
@@ -337,8 +339,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script lang="ts" setup>
+import {ref, computed, onMounted, onBeforeUnmount} from 'vue';
 import {format} from 'date-fns';
 
 import CardWidget from '../components/CardWidget.vue';
@@ -354,85 +356,64 @@ import useBitcoinStore from '../store/bitcoin';
 import useLightningStore, {ParsedChannel} from '../store/lightning';
 import useSystemStore from '../store/system';
 
-export default defineComponent({
-  components: {
-    LightningWallet,
-    CardWidget,
-    Stat,
-    QrCode,
-    InputCopy,
-    ChannelList,
-    ChannelOpen,
-    ChannelManage,
-  },
-  setup() {
-    const bitcoinStore = useBitcoinStore();
-    const lightningStore = useLightningStore();
-    const systemStore = useSystemStore();
-    return {bitcoinStore, lightningStore, systemStore};
-  },
-  data() {
-    return {
-      status: 'Running',
-      selectedChannel: {},
-    } as {
-      status: string;
-      selectedChannel: ParsedChannel;
-      interval?: number;
-    };
-  },
-  computed: {
-    lightningVersion(): string {
-      let version = this.lightningStore.version || '...';
-      if (!version.startsWith('v') && version !== '...') {
-        version = 'v' + version;
-      }
-      return version;
-    },
-  },
-  created() {
-    this.fetchPageData();
-    this.lightningStore.getLndConnectUrls();
-    this.systemStore.getBackupStatus();
-    this.interval = window.setInterval(this.fetchPageData, 10000);
-  },
-  beforeUnmount() {
-    window.clearInterval(this.interval);
-  },
-  methods: {
-    getReadableTime(timestamp: number | Date) {
-      return format(new Date(timestamp), 'MMM d, h:mm:ss a');
-    },
-    manageChannel(channel: ParsedChannel) {
-      if (channel) {
-        this.selectedChannel = channel;
-        (this.$refs['manage-channel-modal'] as {show: () => unknown}).show();
-      }
-    },
-    onChannelOpen() {
-      //refresh channels, balance and txs
-      this.fetchPageData();
-      (this.$refs['open-channel-modal'] as {hide: () => unknown}).hide();
+const status = ref('Running');
+const selectedChannel = ref<ParsedChannel | null>(null);
+const interval = ref<number | null>(null);
+const showNodeAddressModal = ref(false);
+const showOpenChannelModal = ref(false);
+const showManageChannelModal = ref(false);
 
-      //refresh bitcoin balance and txs
-      this.bitcoinStore.getBalance();
-      this.bitcoinStore.getTransactions();
-    },
-    onChannelClose() {
-      //refresh channels, balance and txs
-      this.fetchPageData();
-      (this.$refs['manage-channel-modal'] as {hide: () => unknown}).hide();
+const bitcoinStore = useBitcoinStore();
+const lightningStore = useLightningStore();
+const systemStore = useSystemStore();
 
-      //refresh bitcoin balance and txs
-      this.bitcoinStore.getBalance();
-      this.bitcoinStore.getTransactions();
-    },
-    fetchPageData() {
-      this.lightningStore.getLndPageData();
-    },
-    src(icon: string) {
-      return new URL(`../assets/${icon}`, import.meta.url).href;
-    },
-  },
+const lightningVersion = computed((): string => {
+  let version = lightningStore.version || '...';
+  if (!version.startsWith('v') && version !== '...') {
+    version = 'v' + version;
+  }
+  return version;
 });
+onMounted(() => {
+  fetchPageData();
+  lightningStore.getLndConnectUrls();
+  systemStore.getBackupStatus();
+  interval.value = window.setInterval(fetchPageData, 10000);
+});
+onBeforeUnmount(() => {
+  window.clearInterval(interval.value!);
+});
+function getReadableTime(timestamp: number | Date) {
+  return format(new Date(timestamp), 'MMM d, h:mm:ss a');
+}
+function manageChannel(channel: ParsedChannel) {
+  if (channel) {
+    selectedChannel.value = channel;
+    showManageChannelModal.value = true;
+  }
+}
+function onChannelOpen() {
+  //refresh channels, balance and txs
+  fetchPageData();
+  showOpenChannelModal.value = false;
+
+  //refresh bitcoin balance and txs
+  bitcoinStore.getBalance();
+  bitcoinStore.getTransactions();
+}
+function onChannelClose() {
+  //refresh channels, balance and txs
+  fetchPageData();
+    showManageChannelModal.value = false;
+
+  //refresh bitcoin balance and txs
+  bitcoinStore.getBalance();
+  bitcoinStore.getTransactions();
+}
+function fetchPageData() {
+  lightningStore.getLndPageData();
+}
+function src(icon: string) {
+  return new URL(`../assets/${icon}`, import.meta.url).href;
+}
 </script>

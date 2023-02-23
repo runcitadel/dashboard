@@ -22,6 +22,7 @@
           <div v-if="!!$slots['header-right'] || !!$slots['menu']">
             <slot name="header-right"></slot>
             <b-dropdown
+              v-if="!!$slots['menu']"
               variant="link"
               toggle-class="text-decoration-none p-0"
               no-caret

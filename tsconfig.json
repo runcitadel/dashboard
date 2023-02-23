@@ -9,6 +9,6 @@
     "allowJs": false,
     "skipLibCheck": true,
     "types": ["vite/client"],
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": true
   }
 }

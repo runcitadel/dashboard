@@ -65,10 +65,10 @@ function toggleShowPassword() {
   height: 100%;
   right: 0;
   background: none;
-  color: rgb(54, 54, 54);
+  color: var(--bs-body-color);
   &:hover {
     background: none;
-    color: rgb(54, 54, 54);
+    color: var(--bs-btn-hover-color);
   }
 }
 </style>

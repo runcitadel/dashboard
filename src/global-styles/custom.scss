@@ -11,6 +11,12 @@ html[data-bs-theme='light'] {
   }
 }
 
+// Dark/light transition
+* {
+  transition: ease-in-out 0.75s;
+  transition-property: color, background-color;
+}
+
 // Some dark mode fixes
 html[data-bs-theme='dark'] {
   .wallet-transactions-container {
@@ -54,12 +60,15 @@ html[data-bs-theme='dark'] {
   .wallet-transactions-container * {
     color: white !important;
   }
+
+  .badge.bg-success {
+    color: white !important;
+  }
 }
 
 .btn.btn-success {
   color: white !important;
 }
-
 
 html[data-bs-theme='light'] {
   --card-bg: #fff;
@@ -157,7 +166,8 @@ button {
 }
 
 .neu-input {
-  background: linear-gradient(346.78deg, #f7fcfc 0%, #fafcfa 100%);
+  color: var(--bs-body-color);
+  background-color: var(--bs-form-control-bg);
   border: 1px solid rgba(0, 0, 0, 0.02);
   box-shadow: inset 0px 5px 10px rgba(0, 0, 0, 0.08);
   color: rgba(0, 0, 0, 0.8);
@@ -220,8 +230,9 @@ button {
 }
 
 .card-input {
+  color: var(--bs-body-color);
+  background-color: var(--bs-form-control-bg);
   position: relative;
-  background: #fff;
   box-shadow: var(--card-shadow);
   -webkit-appearance: none; //iOS messes up forms - See: https://stackoverflow.com/questions/10757146/iphone-ios-will-not-display-box-shadow-properly
   appearance: none;
@@ -230,7 +241,6 @@ button {
   padding: 0.5rem 1.5rem;
   outline: 0 !important;
   border: none !important;
-  color: black !important;
 
   &:hover,
   &:focus,
@@ -831,4 +841,9 @@ html[data-bs-theme='dark'] {
 
 .btn svg {
   width: 24px;
+}
+
+// Workaround for a bug (?) in Bootstrap
+.modal-dialog {
+  z-index: var(--bs-modal-zindex);
 }
