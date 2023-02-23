@@ -1,5 +1,5 @@
 // Enable HTTPS-related features
-export const ENABLE_HTTPS = true;
+export const ENABLE_HTTPS = false;
 // Enable opening channels from the dashboard
 export const ENABLE_CHANNEL_OPEN = false;
 // Show the button to send on-chain sats
