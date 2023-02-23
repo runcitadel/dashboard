@@ -161,13 +161,9 @@
                     target="_blank"
                     >Public</a
                   >
-                  <a
-                    v-for="(link, name) in app.repo"
-                    v-else
-                    :key="name"
-                    :href="link"
-                    >{{ name }}
-                  </a>
+                  <p v-for="(link, name) in app.repo" v-else :key="name">
+                    <a :href="link">{{ name }} </a>
+                  </p>
                 </td>
               </tr>
               <tr>
