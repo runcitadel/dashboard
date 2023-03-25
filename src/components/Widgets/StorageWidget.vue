@@ -103,7 +103,7 @@
             <small>{{ t('storage-full-suggestion') }}</small>
           </b-alert>
         </div>
-        <div class="pt-1">
+        <div class="pt-1 card-footer">
           <a
             class="card-link px-3 px-lg-4"
             @click="
