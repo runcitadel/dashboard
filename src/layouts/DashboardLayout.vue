@@ -29,6 +29,9 @@
             <SunIcon />
           </div>
         </div>
+        <div class="icon-24px d-flex align-items-center toggle-theme-icon ms-2" v-if="new Date().getMonth() == 3 && new Date().getDate() == 1">
+          <RefreshIcon @click="toggleAprilFools" />
+        </div>
 
         <div
           class="nav-hamburger-icon d-lg-none d-xl-none ms-3"
@@ -251,6 +254,7 @@ import {
   BellIcon,
   SunIcon,
   MoonIcon,
+  RefreshIcon,
   // @ts-expect-error No type definitions for this yet
 } from '@bitcoin-design/bitcoin-icons-vue/filled/esm/index.js';
 import {BIconExclamationCircle} from 'bootstrap-icons-vue';
@@ -262,6 +266,7 @@ export default defineComponent({
     BellIcon,
     SunIcon,
     MoonIcon,
+    RefreshIcon,
     BIconExclamationCircle,
   },
   setup() {
@@ -401,6 +406,10 @@ export default defineComponent({
     readableSize(n: number) {
       return readableSize(n);
     },
+    toggleAprilFools() {
+      const currentState = document.documentElement.getAttribute('data-april-fools');
+      document.documentElement.setAttribute('data-april-fools', currentState == "today" ? "not-today" : "today");
+    }
   },
 });
 </script>

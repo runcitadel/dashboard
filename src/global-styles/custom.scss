@@ -11,6 +11,27 @@ html[data-bs-theme='light'] {
   }
 }
 
+html[data-april-fools='today'] {
+  transform: rotate(180deg);
+  p, span, h1, h2, h3, h4, h5, h6, .btn-content, small, a, .text-end, .card-footer, .block-details {
+    transform: rotate(180deg);
+    p, span, h1, h2, h3, h4, h5, h6, .btn-content, small, a, .text-end, .card-footer, .block-details {
+      transform: rotate(0deg);
+    }
+  }
+
+  .navbar.nav-horizontal {
+    top: unset !important;
+  }
+
+  .nav-vertical {
+    bottom: 0px !important;
+    margin-top: auto !important;
+    position: absolute !important;
+    padding-left: 2rem !important;
+  }
+}
+
 // Dark/light transition
 * {
   transition: ease-in-out 0.75s;

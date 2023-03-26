@@ -42,7 +42,7 @@
                   <div class="blockchain-block-icon-chainlink"></div>
                   <div class="blockchain-block-icon-bg"></div>
                 </div>
-                <div class="align-self-center">
+                <div class="align-self-center block-details">
                   <h6 class="mb-1 font-weight-normal">
                     {{ t('block') }} {{ block.height.toLocaleString() }}
                   </h6>

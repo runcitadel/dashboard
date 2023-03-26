@@ -54,7 +54,7 @@
               ></span>
             </div>
             <blockchain></blockchain>
-            <div class="px-3 px-lg-4 py-3">
+            <div class="px-3 px-lg-4 py-3 card-footer">
               <router-link to="/bitcoin" class="card-link">{{
                 t('manage')
               }}</router-link>
