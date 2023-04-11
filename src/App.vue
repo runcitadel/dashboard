@@ -160,7 +160,7 @@ onMounted(() => {
   const initTheme = getThemePreference();
   uiStore.setTheme(initTheme);
   if (new Date().getMonth() == 3 && new Date().getDate() == 1) {
-    document.documentElement.setAttribute('data-april-fools', "today");
+    document.documentElement.setAttribute('data-april-fools', 'today');
   }
 });
 

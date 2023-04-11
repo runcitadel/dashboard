@@ -31,13 +31,19 @@ export default defineConfig(({mode}) => {
     plugins: [
       vue(),
       Components({
-        resolvers: [[{
-          type: 'component',
-          resolve: (name) => {
-            if (name.match(/^B[A-Z]/) && !name.startsWith("BIcon"))
-              return { name, from: 'bootstrap-vue-next' }
-          },
-        }]],
+        dirs: [],
+        resolvers: [
+          [
+            {
+              type: 'component',
+              resolve: (name) => {
+                if (name.match(/^B[A-Z]/) && !name.startsWith('BIcon')) {
+                  return {name, from: 'bootstrap-vue-next'};
+                }
+              },
+            },
+          ],
+        ],
       }),
     ],
   };

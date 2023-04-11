@@ -20,6 +20,7 @@ declare module '@vue/runtime-core' {
     BCollapse: typeof import('bootstrap-vue-next')['BCollapse']
     BDropdown: typeof import('bootstrap-vue-next')['BDropdown']
     BDropdownItem: typeof import('bootstrap-vue-next')['BDropdownItem']
+    BFormCheckbox: typeof import('bootstrap-vue-next')['BFormCheckbox']
     BFormInput: typeof import('bootstrap-vue-next')['BFormInput']
     BFormSelect: typeof import('bootstrap-vue-next')['BFormSelect']
     BFormSelectOption: typeof import('bootstrap-vue-next')['BFormSelectOption']

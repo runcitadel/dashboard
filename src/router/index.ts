@@ -15,7 +15,9 @@ const AppStore = () => import('../views/AppStore.vue');
 const AppStoreApp = () => import('../views/AppStoreApp.vue');
 const AppStoreCategory = () => import('../views/AppStoreCategory.vue');
 const Https = () => import('../views/Https.vue');
+const Nirvati = () => import('../views/Nirvati.vue');
 const HttpsSetup = () => import('../views/HttpsSetup.vue');
+const HttpsIncompatible = () => import('../views/HttpsIncompatible.vue');
 const HttpsSetupApp = () => import('../views/HttpsSetupApp.vue');
 const HttpsRunningcitadel = () => import('../views/HttpsRunningcitadel.vue');
 const Settings = () => import('../views/Settings.vue');
@@ -136,6 +138,18 @@ const routes = [
         ],
       },
       {
+        path: '/nirvati',
+        component: DashboardLayout,
+        meta: {requiresAuth: true},
+        children: [
+          {
+            path: '',
+            name: 'nirvati',
+            component: Nirvati,
+          },
+        ],
+      },
+      {
         path: '/lightning-address',
         component: DashboardLayout,
         meta: {requiresAuth: true},
@@ -190,6 +204,11 @@ const routes = [
             path: '',
             name: 'https',
             component: Https,
+          },
+          {
+            path: 'incompatible',
+            name: 'https-incompatible',
+            component: HttpsIncompatible,
           },
           {
             path: 'setup',

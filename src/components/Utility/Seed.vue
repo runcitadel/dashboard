@@ -111,7 +111,7 @@ const inputWordsInput = ref<HTMLInputElement | null>(null);
 function onInput() {
   // Emit "complete" if user has entered all recovery words
   if (
-    inputWords.value.length === 24 &&
+    inputWords.value.length === props.words.length &&
     !inputWords.value.includes(undefined as unknown as string) &&
     !inputWords.value.includes('')
   ) {

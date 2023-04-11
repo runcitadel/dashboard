@@ -69,15 +69,20 @@ const appsStore = useAppsStore();
 const userStore = useUserStore();
 const sdkStore = useSdkStore();
 const router = useRouter();
-await userStore.getLetsEncryptSettings();
-if (
-  !userStore.letsencryptSettings.agreed_lets_encrypt_tos ||
-  !userStore.letsencryptSettings.email
-) {
-  router.push('/https/setup');
+try {
+  await userStore.getLetsEncryptSettings();
+  if (
+    !userStore.letsencryptSettings.agreed_lets_encrypt_tos ||
+    !userStore.letsencryptSettings.email
+  ) {
+    router.push('/https/setup');
+  }
+  await userStore.getRunningCitadelSettings();
+  await appsStore.getInstalledApps();
+} catch {
+  //await sdkStore.citadel.system.restartTor();
+  router.push('/https/incompatible');
 }
-await userStore.getRunningCitadelSettings();
-await appsStore.getInstalledApps();
 // Convert appsStore.installed to an object (It's an array, convert it to an object where the key is the app id and the value is wheter userStore.letsEncrypt.appDomains[app.id] is set or not)
 const apps = appsStore.installed
   .filter(
