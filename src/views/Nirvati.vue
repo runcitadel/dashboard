@@ -14,7 +14,7 @@
       <div class="px-3 px-lg-4 pb-3">
         Nirvati is an attempt to fix various issues Citadel has, and increase
         the amount of users that can use Citadel. You can try Nirvati from the
-        <a href="/app-store/app/nirvati">Nirvati </a> app in the app store.
+        <a href="/app-store/app/nirvati">Nirvati</a> app in the app store.
       </div>
     </div>
   </div>
