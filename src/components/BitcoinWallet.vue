@@ -75,7 +75,7 @@
               />
             </svg>
 
-            <small class="align-self-center mt-3 text-muted"
+            <small class="align-self-center mt-3 text-body-secondary"
               >No transactions</small
             >
           </div>
@@ -177,7 +177,7 @@
                           tx.confirmations
                         } confirmations`
                       "
-                      class="text-muted mt-0 tx-timestamp"
+                      class="text-body-secondary mt-0 tx-timestamp"
                       :style="
                         tx.confirmations > 0
                           ? 'margin-left: 25px;'
@@ -218,7 +218,7 @@
                       <span v-else-if="tx.type === 'outgoing'">-</span>
                       {{ localize(unit(tx.amount)?.toString() as string) }}
                     </span>
-                    <small class="text-muted">{{
+                    <small class="text-body-secondary">{{
                       formatUnit(systemStore.unit)
                     }}</small>
                   </div>
@@ -235,7 +235,7 @@
             <div class="pb-3">
               <a
                 href="#"
-                class="card-link text-muted d-flex align-items-center"
+                class="card-link text-body-secondary d-flex align-items-center"
                 @click.stop.prevent="reset"
               >
                 <svg
@@ -260,7 +260,7 @@
                   >Amount</label
                 >
                 <!--<b-form-checkbox v-model="withdraw.sweep" size="sm" switch>
-                  <small class="text-muted">Max</small>
+                  <small class="text-body-secondary">Max</small>
                 </b-form-checkbox>-->
               </div>
               <b-input-group class="neu-input-group">
@@ -286,7 +286,7 @@
               <div class="w-100 d-flex justify-content-between">
                 <div></div>
                 <small
-                  class="text-muted mt-1 d-block text-end mb-0"
+                  class="text-body-secondary mt-1 d-block text-end mb-0"
                   :style="{opacity: withdraw.amount > 0 ? 1 : 0}"
                   >~
                   {{
@@ -330,7 +330,7 @@
             <div class="pt-2 pb-3">
               <a
                 href="#"
-                class="card-link text-muted d-flex align-items-center"
+                class="card-link text-body-secondary d-flex align-items-center"
                 @click.stop.prevent="reset"
               >
                 <svg
@@ -353,10 +353,10 @@
               <h3 class="mb-0">
                 {{ localize(unit(withdraw.amount)?.toString() as string) }}
               </h3>
-              <span class="d-block mb-1 text-muted">
+              <span class="d-block mb-1 text-body-secondary">
                 {{ formatUnit(systemStore.unit) }}
               </span>
-              <small class="text-muted d-block mb-3"
+              <small class="text-body-secondary d-block mb-3"
                 >~
                 {{
                   satsToUSD(
@@ -387,7 +387,7 @@
               v-if="withdraw.selectedFee.type === 'custom'"
               class="d-flex justify-content-between pb-3"
             >
-              <span class="text-muted">
+              <span class="text-body-secondary">
                 <b>
                   {{ withdraw.selectedFee.satPerByte }}
                 </b>
@@ -413,7 +413,7 @@
                   Transaction fee
                 </small>
               </span>
-              <span class="text-end text-muted">
+              <span class="text-end text-body-secondary">
                 <b>{{
                   localize(unit(projectedBalanceInSats)?.toString() as string)
                 }}</b>
@@ -423,7 +423,7 @@
               </span>
             </div>
             <div v-else class="d-flex justify-content-between pb-3">
-              <span class="text-muted">
+              <span class="text-body-secondary">
                 <b>
                   {{
                     localize(
@@ -447,7 +447,7 @@
                   Transaction fee
                 </small>
               </span>
-              <span class="text-end text-muted">
+              <span class="text-end text-body-secondary">
                 <b>{{
                   localize(unit(projectedBalanceInSats)?.toString() as string)
                 }}</b>
@@ -469,7 +469,7 @@
             <div class="pt-2 pb-3">
               <a
                 href="#"
-                class="card-link text-muted d-flex align-items-center"
+                class="card-link text-body-secondary d-flex align-items-center"
                 @click.stop.prevent="reset"
               >
                 <svg
@@ -500,7 +500,7 @@
                   {{ formatUnit(systemStore.unit) }}
                 </b>
               </span>
-              <small class="text-muted d-block">Transaction ID</small>
+              <small class="text-body-secondary d-block">Transaction ID</small>
             </div>
             <!-- Copy Address Input Field -->
             <input-copy size="sm" :value="withdraw.txHash"></input-copy>
@@ -514,7 +514,7 @@
             <div class="pt-2 pb-3">
               <a
                 href="#"
-                class="card-link text-muted d-flex align-items-center"
+                class="card-link text-body-secondary d-flex align-items-center"
                 @click.stop.prevent="reset"
               >
                 <svg
@@ -533,7 +533,7 @@
                 Back
               </a>
             </div>
-            <p class="text-center text-muted mb-3">
+            <p class="text-center text-body-secondary mb-3">
               <span>
                 Send
                 <b>only Bitcoin</b> to this address

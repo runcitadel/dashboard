@@ -3,7 +3,7 @@
     <div class="mt-3 mb-4">
       <div class="">
         <h1>{{ t('apps.store.heading') }}</h1>
-        <p class="text-muted">
+        <p class="text-body-secondary">
           {{ t('apps.store.subheading') }}
         </p>
       </div>
@@ -72,7 +72,7 @@
               <h3 class="app-name font-weight-bolder text-dark mb-1">
                 {{ app.name }}
               </h3>
-              <p class="text-muted mb-0">
+              <p class="text-body-secondary mb-0">
                 {{ app.tagline }}
               </p>
             </div>
@@ -111,7 +111,7 @@
           <h4 class="font-weight-normal mt-4">
             Get your app on the Citadel App Store
           </h4>
-          <p class="text-muted mb-3">
+          <p class="text-body-secondary mb-3">
             Use any programming language, database or framework to build your
             app for Citadel.
           </p>

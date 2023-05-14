@@ -13,7 +13,7 @@
                 >
                 {{ readableSize(storage.used) }}
               </h3>
-              <p class="text-muted mb-0">
+              <p class="text-body-secondary mb-0">
                 {{ t('used-out-of', {storage: readableSize(storage.total)}) }}
               </p>
             </div>
@@ -87,7 +87,7 @@
             "
           ></b-progress>
           <div class="text-end">
-            <small class="text-muted">{{
+            <small class="text-body-secondary">{{
               t('available', {
                 storage: readableSize(storage.total - storage.used),
               })
@@ -150,7 +150,7 @@
                       <span v-else>{{ getAppName(app.id) }}</span>
 
                       <!-- There's an edge case where a negative value may be returned by the API -->
-                      <small v-if="app.used < 0" class="text-muted">{{
+                      <small v-if="app.used < 0" class="text-body-secondary">{{
                         t('calculating')
                       }}</small>
                       <span v-else>{{ readableSize(app.used) }}</span>

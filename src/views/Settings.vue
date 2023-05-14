@@ -570,7 +570,7 @@
                 <div class="d-flex align-items-center icon-16px">
                   <BellIcon />
                 </div>
-                <small class="text-muted ms-1"
+                <small class="text-body-secondary ms-1"
                   >{{ systemStore.availableUpdate.name }} is now
                   available</small
                 >

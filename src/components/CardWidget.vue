@@ -10,7 +10,7 @@
     <div>
       <div v-if="header" class="card-custom-header py-4 px-3 px-lg-4">
         <div class="d-flex w-100 justify-content-between align-items-center">
-          <h6 class="mb-0 font-weight-normal text-muted">{{ header }}</h6>
+          <h6 class="mb-0 font-weight-normal text-body-secondary">{{ header }}</h6>
           <status
             v-if="props.status"
             :variant="props.status.variant"
@@ -71,7 +71,7 @@
                 <h3 v-else class="mb-1">
                   <slot name="title"></slot>
                 </h3>
-                <p v-if="subTitle" class="text-muted mb-0">{{ subTitle }}</p>
+                <p v-if="subTitle" class="text-body-secondary mb-0">{{ subTitle }}</p>
               </div>
             </div>
             <img v-if="icon" :alt="header" :src="src(icon)" />

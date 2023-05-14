@@ -79,7 +79,7 @@
                 fill="#EDEEF1"
               />
             </svg>
-            <small class="align-self-center mt-3 text-muted">
+            <small class="align-self-center mt-3 text-body-secondary">
               {{ t('no-transactions') }}</small
             >
           </div>
@@ -208,7 +208,7 @@
                     <small
                       v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
                       v-tooltip.right="getReadableTime(tx.timestamp)"
-                      class="text-muted mt-0 tx-timestamp"
+                      class="text-body-secondary mt-0 tx-timestamp"
                       style="margin-left: 25px"
                       >{{ getTimeFromNow(tx.timestamp) }}</small
                     >
@@ -216,7 +216,7 @@
                     <!-- if invoice isn't settled -->
                     <small
                       v-else-if="tx.type === 'pending'"
-                      class="text-muted mt-0 tx-timestamp"
+                      class="text-body-secondary mt-0 tx-timestamp"
                       style="margin-left: 21px"
                       :title="`Invoice expires on ${getReadableTime(
                         tx.expiresOn as Date
@@ -227,7 +227,7 @@
                     <!-- If invoice expired -->
                     <small
                       v-else-if="tx.type === 'expired'"
-                      class="text-muted mt-0 tx-timestamp"
+                      class="text-body-secondary mt-0 tx-timestamp"
                       style="margin-left: 25px"
                       :title="getReadableTime(tx.expiresOn as Date)"
                       >Invoice expired
@@ -257,7 +257,7 @@
                         )
                       }}
                     </span>
-                    <small class="text-muted">{{
+                    <small class="text-body-secondary">{{
                       $filters.formatUnit(systemStore.unit)
                     }}</small>
                   </div>
@@ -276,7 +276,7 @@
           <div class="pb-3">
             <a
               href="#"
-              class="card-link text-muted d-flex align-items-center"
+              class="card-link text-body-secondary d-flex align-items-center"
               @click.stop.prevent="reset"
             >
               <svg
@@ -314,7 +314,7 @@
           <div v-if="send.isValidInvoice && send.amount">
             <div class="d-flex justify-content-between mb-3 align-items-center">
               <div>
-                <small class="d-block text-muted mb-1">Paying</small>
+                <small class="d-block text-body-secondary mb-1">Paying</small>
                 <h4 class="d-block mb-0">
                   {{
                     $filters.localize(
@@ -322,11 +322,11 @@
                     )
                   }}
                 </h4>
-                <small class="d-block text-muted">
+                <small class="d-block text-body-secondary">
                   {{ $filters.formatUnit(systemStore.unit) }}
                 </small>
               </div>
-              <small class="d-block text-muted"
+              <small class="d-block text-body-secondary"
                 >~
                 {{
                   satsToUSD(
@@ -339,7 +339,7 @@
             </div>
 
             <div v-if="send.description">
-              <small class="d-block text-muted mb-1">For</small>
+              <small class="d-block text-body-secondary mb-1">For</small>
               <span>{{ send.description }}</span>
             </div>
           </div>
@@ -354,7 +354,7 @@
           <div class="pb-3">
             <a
               href="#"
-              class="card-link text-muted d-flex align-items-center"
+              class="card-link text-body-secondary d-flex align-items-center"
               @click.stop.prevent="reset"
             >
               <svg
@@ -405,7 +405,7 @@
           <div class="pb-3">
             <a
               href="#"
-              class="card-link text-muted d-flex align-items-center"
+              class="card-link text-body-secondary d-flex align-items-center"
               @click.stop.prevent="reset"
             >
               <svg
@@ -447,7 +447,7 @@
               </b-input-group-append>
             </b-input-group>
             <small
-              class="text-muted mt-2 d-block text-end mb-0"
+              class="text-body-secondary mt-2 d-block text-end mb-0"
               :style="{opacity: (receive.amount || 0) > 0 ? 1 : 0}"
               >~
               {{
@@ -462,7 +462,7 @@
 
           <label class="visually-hidden" for="input-description">
             Description
-            <small class="text-muted">(optional)</small>
+            <small class="text-body-secondary">(optional)</small>
           </label>
           <b-form-input
             id="input-description"
@@ -483,7 +483,7 @@
           <div class="pb-3">
             <a
               href="#"
-              class="card-link text-muted d-flex align-items-center"
+              class="card-link text-body-secondary d-flex align-items-center"
               @click.stop.prevent="reset"
             >
               <svg
@@ -503,7 +503,7 @@
             </a>
           </div>
 
-          <p class="text-center text-muted mb-2">
+          <p class="text-center text-body-secondary mb-2">
             <!-- If still generating invoice, show blinking loading text -->
             <span v-if="receive.isGeneratingInvoice" class="blink"
               >Generating Invoice</span
@@ -543,7 +543,7 @@
                 :value="receive.invoiceQR"
                 class="mb-2"
               ></input-copy>
-              <small class="text-center d-block text-muted">
+              <small class="text-center d-block text-body-secondary">
                 This invoice will expire
                 {{ getTimeFromNow(receive.expiresOn as Date) }}
               </small>
@@ -560,7 +560,7 @@
           <div class="pb-3">
             <a
               href="#"
-              class="card-link text-muted d-flex align-items-center"
+              class="card-link text-body-secondary d-flex align-items-center"
               @click.stop.prevent="reset"
             >
               <svg
@@ -602,7 +602,7 @@
               <b>{{ receive.description }}</b>
             </span>
             <br />
-            <small class="text-muted">{{
+            <small class="text-body-secondary">{{
               getReadableTime(receive.timestamp as number | Date)
             }}</small>
           </p>
@@ -617,7 +617,7 @@
           <div class="pb-3">
             <a
               href="#"
-              class="card-link text-muted d-flex align-items-center"
+              class="card-link text-body-secondary d-flex align-items-center"
               @click.stop.prevent="reset"
             >
               <svg
@@ -660,10 +660,10 @@
           </p>
           <div class="pt-2 mb-3">
             <div class="d-flex justify-content-between">
-              <small class="text-muted">{{
+              <small class="text-body-secondary">{{
                 getReadableTime(paymentInfo.timestamp as number | Date)
               }}</small>
-              <small class="text-muted">
+              <small class="text-body-secondary">
                 Fee:
                 {{
                   $filters.localize(
@@ -681,7 +681,7 @@
                 size="sm"
                 :value="paymentInfo.paymentPreImage"
               ></input-copy>
-              <small class="text-center text-muted d-block mt-2"
+              <small class="text-center text-body-secondary d-block mt-2"
                 >Payment proof (preimage)</small
               >
             </div>
@@ -697,7 +697,7 @@
           <div class="pb-3">
             <a
               href="#"
-              class="card-link text-muted d-flex align-items-center"
+              class="card-link text-body-secondary d-flex align-items-center"
               @click.stop.prevent="reset"
             >
               <svg
@@ -723,7 +723,7 @@
           <p class="text-center mb-4 pb-1">
             This invoice was not paid
             <br />
-            <small class="text-muted"
+            <small class="text-body-secondary"
               >Expired on
               {{ getReadableTime(expiredInvoice.expiresOn!) }}</small
             >

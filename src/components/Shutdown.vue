@@ -9,7 +9,7 @@
       class="mb-5 logo"
       :class="hasShutdown ? 'logo-gray' : ''"
     />
-    <span class="text-muted w-75 text-center">
+    <span class="text-body-secondary w-75 text-center">
       <small v-if="hasShutdown"
         >Shutdown complete. You can now safely unplug your Citadel from the
         power and internet.</small

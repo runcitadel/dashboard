@@ -15,12 +15,12 @@
     </a>
     <span
       v-if="isUninstalling"
-      class="text-center text-small text-muted text-truncate mb-1"
+      class="text-center text-small text-body-secondary text-truncate mb-1"
       >Uninstalling...</span
     >
     <span
       v-else-if="isOffline"
-      class="text-center text-small text-muted text-truncate mb-1"
+      class="text-center text-small text-body-secondary text-truncate mb-1"
       >Starting...</span
     >
     <span v-else class="text-center text-truncate mb-1">{{ name }}</span>

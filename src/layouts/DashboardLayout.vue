@@ -228,7 +228,7 @@
         </div>
 
         <!-- Footer -->
-        <footer class="d-flex justify-content-end text-muted pe-sm-2 pe-xl-3">
+        <footer class="d-flex justify-content-end text-body-secondary pe-sm-2 pe-xl-3">
           <p>
             <small> Powered by Citadel </small>
           </p>

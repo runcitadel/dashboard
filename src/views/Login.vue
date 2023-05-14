@@ -10,11 +10,11 @@
         class="mb-2 logo"
       />
       <h1 class="text-center mb-2">{{ t('login.welcome-back') }}</h1>
-      <p v-if="!showTotpInput" class="text-muted w-75 text-center">
+      <p v-if="!showTotpInput" class="text-body-secondary w-75 text-center">
         {{ t('login.enter-your-password') }}
       </p>
 
-      <p v-else class="text-muted w-75 text-center">
+      <p v-else class="text-body-secondary w-75 text-center">
         {{ t('login.enter-2fa-code') }}
       </p>
 

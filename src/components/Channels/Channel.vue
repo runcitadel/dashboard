@@ -63,8 +63,8 @@
             class="my-1"
           ></bar>
           <div class="d-flex justify-content-between">
-            <small class="text-muted font-weight-bold">Max Send</small>
-            <small class="text-muted font-weight-bold text-end"
+            <small class="text-body-secondary font-weight-bold">Max Send</small>
+            <small class="text-body-secondary font-weight-bold text-end"
               >Max Receive</small
             >
           </div>

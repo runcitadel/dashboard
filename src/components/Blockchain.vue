@@ -46,7 +46,7 @@
                   <h6 class="mb-1 font-weight-normal">
                     {{ t('block') }} {{ block.height.toLocaleString() }}
                   </h6>
-                  <small v-if="block.numTransactions" class="text-muted">
+                  <small v-if="block.numTransactions" class="text-body-secondary">
                     {{ block.numTransactions.toLocaleString() }}
                     {{
                       block.numTransactions === 1
@@ -54,14 +54,14 @@
                         : t('transactions')
                     }}
                   </small>
-                  <small v-if="block.size" class="text-muted">
+                  <small v-if="block.size" class="text-body-secondary">
                     <span>&bull; {{ Math.round(block.size / 1000) }} KB</span>
                   </small>
                 </div>
               </div>
               <small
                 v-if="block.time"
-                class="text-muted align-self-center text-end blockchain-block-timestamp"
+                class="text-body-secondary align-self-center text-end blockchain-block-timestamp"
                 :title="blockReadableTime(block.time)"
                 >{{ blockTime(block.time) }}</small
               >

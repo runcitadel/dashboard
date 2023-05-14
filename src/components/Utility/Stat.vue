@@ -20,7 +20,7 @@
               count-on-load
             />
           </h3>
-          <span class="text-muted" style="margin-left: 0.5rem">{{
+          <span class="text-body-secondary" style="margin-left: 0.5rem">{{
             suffix
           }}</span>
         </div>
@@ -53,7 +53,7 @@
           :class="{
             'text-success': change.value > 0,
             'text-danger': change.value < 0,
-            'text-muted': change.value === 0,
+            'text-body-secondary': change.value === 0,
           }"
         >
           {{ change.value >= 0 ? '+' : '' }}{{ change.value

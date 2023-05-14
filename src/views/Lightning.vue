@@ -31,7 +31,7 @@
             </svg>
             <small class="ms-1 text-success">{{ status }}</small>
             <h3 class="d-block font-weight-bold mb-1">Lightning Network</h3>
-            <span class="d-block text-muted">
+            <span class="d-block text-body-secondary">
               {{ lightningVersion }}
             </span>
           </div>

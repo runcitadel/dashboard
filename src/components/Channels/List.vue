@@ -6,7 +6,7 @@
         class="d-flex align-items-center justify-content-center flex-column"
         style="height: 100%"
       >
-        <p class="text-muted w-75 text-center">
+        <p class="text-body-secondary w-75 text-center">
           You need to open payment channels with other nodes to transact on the
           Lightning Network.
           <br />When you open a channel, the balance is automatically deducted

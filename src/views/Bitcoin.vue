@@ -20,11 +20,11 @@
             </svg>
             <small class="ms-1 text-success">Running</small>
             <h3 class="d-block font-weight-bold mb-1">Bitcoin</h3>
-            <span v-if="knotsVersion" class="d-block text-muted"
+            <span v-if="knotsVersion" class="d-block text-body-secondary"
               >Bitcoin Knots {{ knotsVersion }} (Based on Bitcoin Core
               {{ coreVersion }})</span
             >
-            <span v-else class="d-block text-muted"
+            <span v-else class="d-block text-body-secondary"
               >Bitcoin Core {{ coreVersion }}</span
             >
           </div>
@@ -72,7 +72,7 @@
               ></b-progress>
               <small
                 v-if="bitcoinStore.currentBlock < bitcoinStore.blockHeight - 1"
-                class="text-muted d-block text-end"
+                class="text-body-secondary d-block text-end"
               >
                 {{ bitcoinStore.currentBlock.toLocaleString() }} of
                 {{ bitcoinStore.blockHeight.toLocaleString() }} blocks

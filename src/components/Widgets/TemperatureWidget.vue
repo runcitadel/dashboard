@@ -29,12 +29,12 @@
                 >
                   <span
                     v-if="cpuTemperatureUnit === 'celsius'"
-                    class="text-muted"
+                    class="text-body-secondary"
                     >&#176;C</span
                   >
                   <span
                     v-else-if="cpuTemperatureUnit === 'fahrenheit'"
-                    class="text-muted"
+                    class="text-body-secondary"
                     >&#176;F</span
                   >
                 </div>

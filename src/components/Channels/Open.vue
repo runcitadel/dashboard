@@ -41,11 +41,11 @@
           <div class="mt-1 w-100 d-flex justify-content-between">
             <!-- TODO: Enable Sweep -->
             <!-- <b-form-checkbox v-model="sweep" size="sm" switch>
-              <small class="text-muted">Use all funds</small>
+              <small class="text-body-secondary">Use all funds</small>
             </b-form-checkbox>-->
             <div></div>
             <small
-              class="text-muted d-block mb-0"
+              class="text-body-secondary d-block mb-0"
               :style="{opacity: fundingAmount > 0 ? 1 : 0}"
               >~
               {{

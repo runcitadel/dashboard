@@ -2,7 +2,7 @@
   <div class="nav-vertical d-flex flex-column justify-content-between">
     <div>
       <div class="balance-container w-100 px-3 pt-4 pb-3 mb-3">
-        <p class="text-muted">
+        <p class="text-body-secondary">
           Balance
           <span
             class="icon-container"
@@ -27,7 +27,7 @@
                 }"
               />
             </h3>
-            <small class="text-muted"
+            <small class="text-body-secondary"
               >~
               {{
                 satsToUSD(
@@ -45,7 +45,7 @@
         </span>
         <div v-else>
           <h3>***,***</h3>
-          <small class="text-muted">~ $***</small>
+          <small class="text-body-secondary">~ $***</small>
         </div>
         <sats-btc-switch class="mt-3" size="md"></sats-btc-switch>
       </div>

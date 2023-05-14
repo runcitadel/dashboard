@@ -3,7 +3,7 @@
     <div class="mt-3 mb-1 mb-sm-3 pb-lg-2">
       <router-link
         to="/app-store"
-        class="card-link text-muted d-flex align-items-center mb-4"
+        class="card-link text-body-secondary d-flex align-items-center mb-4"
         ><svg
           width="7"
           height="13"
@@ -34,7 +34,7 @@
             <h3 class="d-block font-weight-bold mb-1">
               {{ app.name }}
             </h3>
-            <p class="text-muted">{{ app.tagline }}</p>
+            <p class="text-body-secondary">{{ app.tagline }}</p>
             <p>
               <small>{{ Object.keys(app.developers)[0] }}</small>
             </p>
@@ -106,7 +106,7 @@
           >
           <small
             :style="{opacity: isInstalling || isUninstalling ? 1 : 0}"
-            class="mt-1 d-block text-muted text-center"
+            class="mt-1 d-block text-body-secondary text-center"
             >This may take a few minutes</small
           >
           <div
@@ -204,7 +204,7 @@
                       style="width: 50px; height: 50px; border-radius: 12px"
                       class="me-2"
                     />
-                    <span class="text-muted my-0">{{
+                    <span class="text-body-secondary my-0">{{
                       formatDependency(dependency)
                     }}</span>
                   </div>
@@ -265,7 +265,7 @@
                       style="width: 50px; height: 50px; border-radius: 12px"
                       class="me-2"
                     />
-                    <span class="text-muted my-0">{{
+                    <span class="text-body-secondary my-0">{{
                       formatDependency(realDependency)
                     }}</span>
                   </div>
@@ -309,7 +309,7 @@
                       :to="`/app-store/category/${encodeURIComponent(
                         'Electrum Servers',
                       )}`"
-                      class="text-muted"
+                      class="text-body-secondary"
                       >Install</b-link
                     >
                   </div>

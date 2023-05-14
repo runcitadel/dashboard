@@ -49,7 +49,7 @@
         <div
           class="d-flex flex-column justify-content-center align-items-center py-5 mb-lg-5"
         >
-          <p class="text-muted mb-2">{{ t('apps.overview.none-installed') }}</p>
+          <p class="text-body-secondary mb-2">{{ t('apps.overview.none-installed') }}</p>
           <b-button variant="success" class="px-4" :to="'app-store'">{{
             t('apps.overview.go-to-app-store')
           }}</b-button>

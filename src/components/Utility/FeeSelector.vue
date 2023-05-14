@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="d-flex w-100 justify-content-between">
-      <small class="text-muted d-block mb-0">Transaction Fee</small>
+      <small class="text-body-secondary d-block mb-0">Transaction Fee</small>
       <b-form-checkbox
         v-model="useCustomFee"
         class="d-flex align-items-center"
         size="sm"
         switch
       >
-        <small class="text-muted ms-1">Custom</small>
+        <small class="text-body-secondary ms-1">Custom</small>
       </b-form-checkbox>
     </div>
     <div v-if="useCustomFee" class="vue-slider-container">
@@ -34,7 +34,7 @@
             <span class="vue-slider-dot-tooltip-text d-block"
               >{{ value }} sat/vB
             </span>
-            <small class="text-muted"
+            <small class="text-body-secondary"
               >≈
               {{
                 satsToUSD(
@@ -50,8 +50,8 @@
         </template>
       </vue-slider>
       <div class="d-flex w-100 justify-content-between custom-fee-labels">
-        <small class="text-muted mb-0">Slow</small>
-        <small class="text-muted mb-0">Fast</small>
+        <small class="text-body-secondary mb-0">Slow</small>
+        <small class="text-body-secondary mb-0">Fast</small>
       </div>
     </div>
     <div v-else class="vue-slider-container">
@@ -68,7 +68,7 @@
       >
         <template #label="{active, value}">
           <div :class="['vue-slider-mark-label', 'text-center', {active}]">
-            <span class="text-muted">~ {{ timeToConfirm(value) }}</span>
+            <span class="text-body-secondary">~ {{ timeToConfirm(value) }}</span>
           </div>
         </template>
         <template #tooltip="{value, focus}">
@@ -81,7 +81,7 @@
             <span class="vue-slider-dot-tooltip-text d-block mb-0"
               >{{ fee[value].perByte }} sat/vB
             </span>
-            <small class="text-muted"
+            <small class="text-body-secondary"
               >≈
               {{
                 satsToUSD(

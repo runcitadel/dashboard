@@ -4,7 +4,7 @@
       <h1>
         {{ t(`greetings.${greeting}`, {username: userStore.name}) }}
       </h1>
-      <p class="text-muted">{{ t('overview') }}</p>
+      <p class="text-body-secondary">{{ t('overview') }}</p>
     </div>
     <b-row>
       <b-col col cols="12" md="6" xl="4">

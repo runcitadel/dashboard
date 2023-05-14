@@ -44,8 +44,8 @@
         class="my-1"
       ></bar>
       <div class="d-flex justify-content-between">
-        <b class="text-muted">Max Send</b>
-        <b class="text-muted text-end">Max Receive</b>
+        <b class="text-body-secondary">Max Send</b>
+        <b class="text-body-secondary text-end">Max Receive</b>
       </div>
     </div>
 
@@ -54,21 +54,21 @@
         <div
           class="d-flex justify-content-between align-items-center mt-1 mb-3"
         >
-          <span class="text-muted">Status</span>
+          <span class="text-body-secondary">Status</span>
           <span class="text-capitalize font-weight-bold">{{
             channel.status
           }}</span>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-muted">Channel Type</span>
+          <span class="text-body-secondary">Channel Type</span>
           <span class="text-capitalize font-weight-bold"
             >{{ channel.private ? 'Private' : 'Public' }} Channel</span
           >
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-muted">Remote Peer Alias</span>
+          <span class="text-body-secondary">Remote Peer Alias</span>
           <div class="w-75 text-end">
             <span class="font-weight-bold" style="overflow-wrap: break-word">{{
               channel.remoteAlias
@@ -80,14 +80,14 @@
           v-if="channel.status !== 'Closing'"
           class="d-flex justify-content-between align-items-center mb-3"
         >
-          <span class="text-muted">Opened By</span>
+          <span class="text-body-secondary">Opened By</span>
           <span class="text-capitalize font-weight-bold">{{
             channel.initiator ? 'Your node' : 'Remote peer'
           }}</span>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-muted">Local Balance</span>
+          <span class="text-body-secondary">Local Balance</span>
           <span
             v-tooltip.left="
               satsToUSD(
@@ -108,7 +108,7 @@
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-muted">Remote Balance</span>
+          <span class="text-body-secondary">Remote Balance</span>
           <span
             v-tooltip.left="
               satsToUSD(
@@ -129,7 +129,7 @@
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-muted">Channel Capacity</span>
+          <span class="text-body-secondary">Channel Capacity</span>
           <span
             v-tooltip.left="
               satsToUSD(
@@ -153,7 +153,7 @@
           v-if="channel.status === 'Online'"
           class="d-flex justify-content-between align-items-center mb-3"
         >
-          <span class="text-muted">Withdrawal Timelock</span>
+          <span class="text-body-secondary">Withdrawal Timelock</span>
           <span class="text-capitalize font-weight-bold"
             >{{ parseInt(channel.csvDelay).toLocaleString() }} Blocks</span
           >
@@ -163,7 +163,7 @@
           v-if="channel.status === 'Online'"
           class="d-flex justify-content-between align-items-center mb-3"
         >
-          <span class="text-muted">Commit Fee</span>
+          <span class="text-body-secondary">Commit Fee</span>
           <span class="text-capitalize font-weight-bold">
             {{
               $filters.localize(
@@ -175,7 +175,7 @@
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-muted">Remote Pub Key</span>
+          <span class="text-body-secondary">Remote Pub Key</span>
           <div class="w-75 text-end">
             <small class="font-weight-bold" style="overflow-wrap: break-word">{{
               channel.remotePubkey

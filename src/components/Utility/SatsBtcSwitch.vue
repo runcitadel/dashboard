@@ -13,8 +13,8 @@
         'toggle-right': systemStore.unit === 'btc',
       }"
     >
-      <span v-if="systemStore.unit === 'sats'" class="text-muted">Sats</span>
-      <span v-else-if="systemStore.unit === 'btc'" class="text-muted">BTC</span>
+      <span v-if="systemStore.unit === 'sats'" class="text-body-secondary">Sats</span>
+      <span v-else-if="systemStore.unit === 'btc'" class="text-body-secondary">BTC</span>
     </div>
   </div>
 </template>

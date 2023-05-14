@@ -3,7 +3,7 @@
     <div class="mt-3 mb-4">
       <div class="">
         <h1>{{ t('apps.store.heading') }}</h1>
-        <p class="text-muted">
+        <p class="text-body-secondary">
           {{ t('apps.store.subheading') }}
         </p>
       </div>
@@ -38,10 +38,10 @@
               <h3 class="app-name font-weight-bolder text-dark mb-1">
                 {{ app.name }}
               </h3>
-              <h6 class="text-muted mb-2">
+              <h6 class="text-body-secondary mb-2">
                 {{ app.tagline }}
               </h6>
-              <p class="text-muted mb-0">
+              <p class="text-body-secondary mb-0">
                 {{
                   truncate(
                     app.description

@@ -10,7 +10,7 @@
         class="mb-2 logo"
       />
       <h1 class="text-center mb-2">{{ heading }}</h1>
-      <p class="text-muted w-75 text-center">{{ text }}</p>
+      <p class="text-body-secondary w-75 text-center">{{ text }}</p>
 
       <div
         class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center"
@@ -63,16 +63,16 @@
 
         <div v-show="currentStep === 7">
           <div class="text-center bg-white p-3 rounded">
-            <small class="d-block text-muted text-small text-center mb-3"
+            <small class="d-block text-body-secondary text-small text-center mb-3"
               >By clicking next, I agree that:</small
             >
-            <span class="d-block text-muted text-small mb-1">
+            <span class="d-block text-body-secondary text-small mb-1">
               <b-icon-exclamation-circle-fill
                 variant="warning"
                 class="me-1"
               />Citadel is in beta and should not be considered secure
             </span>
-            <span class="d-block text-muted text-small mb-1">
+            <span class="d-block text-body-secondary text-small mb-1">
               <b-icon-exclamation-circle-fill variant="warning" class="me-1" />I
               should not put more funds on my Citadel than I'm prepared to lose
             </span>
@@ -80,7 +80,7 @@
         </div>
 
         <div v-show="currentStep === 8" class="text-center">
-          <p class="text-muted">
+          <p class="text-body-secondary">
             But you don't have to wait for the sync to complete... You can start
             using Citadel right away!
           </p>

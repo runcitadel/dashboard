@@ -16,7 +16,7 @@
           @click="$emit('showQrModal', urls.bitcoin.rpc.connectionString)"
         ></qr-code>
         <hr />
-        <p class="text-muted">Or manually enter the following details</p>
+        <p class="text-body-secondary">Or manually enter the following details</p>
         <ul class="connect-wallet-substeps">
           <li class="connect-wallet-substep">
             In the <span class="font-weight-bold">"RPC Username"</span>, enter

@@ -11,7 +11,7 @@
             height="200"
             class="mb-5 logo"
           />
-          <span class="text-muted w-75 text-center">
+          <span class="text-body-secondary w-75 text-center">
             <small
               >For security reasons, Citadel cannot be embedded in an
               iframe.</small
@@ -24,7 +24,7 @@
         :progress="systemStore.updateStatus.progress"
       >
         <div class="text-center">
-          <small class="text-muted d-block">{{
+          <small class="text-body-secondary d-block">{{
             `${systemStore.updateStatus.description}...`
           }}</small>
           <b-alert class="system-alert" variant="warning" show>
