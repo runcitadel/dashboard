@@ -419,7 +419,7 @@ const useLightningStore = defineStore('lightning', {
 
     async getLndConnectUrls() {
       const sdkStore = useSdkStore();
-      const urls = await sdkStore.citadel.system.getLndConnectUrls();
+      const urls = await sdkStore.citadel.lightning.getLndConnectUrls();
       if (urls) {
         this.lndConnectUrls = urls;
       }
